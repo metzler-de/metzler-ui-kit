@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metzler Design System</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #fff; }
+    ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+    input::placeholder { color: #A1A1A1; }
+    a { color: #015253; }
+    h1[id] { scroll-margin-top: 72px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // ── UTILITIES ──
+    const hexToRgb = (hex) => { const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return `rgb(${r},${g},${b})`; };
+    const rgbaToHex = (rgba) => { const m=rgba.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/); if(!m)return null; const h=n=>parseInt(n).toString(16).padStart(2,"0"); return `#${h(m[1])}${h(m[2])}${h(m[3])}`.toUpperCase(); };
+    const getHex = v => v.startsWith("#") ? v.toUpperCase() : rgbaToHex(v);
+
+    const S = 1.2;
+    const f = n => Math.round(n * S);
+    const font = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+
+    // ── NAV ITEMS ──
+    const navItems = [
+      { type:"group", label:"Getting started" },
+      { type:"item",  label:"Introduction",      id:"instruction" },
+      { type:"group", label:"Tokens" },
+      { type:"item",  label:"Colors",            id:"colors" },
+      { type:"item",  label:"Typography",        id:"typography" },
+      { type:"item",  label:"Spacing",           id:"spacing" },
+      { type:"item",  label:"Shadows",           id:"shadows" },
+      { type:"group", label:"Icons" },
+      { type:"item",  label:"Icons",             id:"icons" },
+      { type:"group", label:"Components" },
+      { type:"item",  label:"Buttons",           id:"buttons" },
+      { type:"item",  label:"Form Elements",     id:"form-elements" },
+      { type:"item",  label:"Dropdown",          id:"dropdown" },
+      { type:"item",  label:"Tooltip",           id:"tooltip" },
+      { type:"item",  label:"Alert",             id:"alert" },
+      { type:"item",  label:"Badge",             id:"badge" },
+      { type:"item",  label:"Toast",             id:"toast" },
+      { type:"item",  label:"Tabs",              id:"tabs" },
+      { type:"group", label:"Patterns" },
+      { type:"item",  label:"Notifications",     id:"notifications" },
+      { type:"item",  label:"Ratings",           id:"ratings-badges" },
+      { type:"item",  label:"Product Cards",     id:"product-cards" },
+      { type:"item",  label:"Header",            id:"header" },
+      { type:"item",  label:"Footer",            id:"footer" },
+    ];
+    const allNavItems = navItems.filter(n=>n.type==="item");
+
+    // ── COLOR GROUPS ── (exact values from Figma Variables: "Metzler colors")
+    const colorGroups = [
+      { id:"colors", group:"Colors", desc:"All color tokens used in the Metzler design system.", tokens:[
+        {value:"#015253", label:"Primary / Default",  rgb:"rgb(1, 82, 83)",        usage:"Main CTA buttons, active nav links, focus rings, primary section backgrounds"},
+        {value:"#01292A", label:"Primary / Dark",      rgb:"rgb(1, 41, 42)",        usage:"Footer background, dark overlays, deep emphasis elements"},
+        {value:"#006D75", label:"Primary / Hover",     rgb:"rgb(0, 109, 117)",      usage:"Hover state on all filled primary buttons and teal interactive elements"},
+        {value:"rgba(1,82,83,0.1)",  label:"Primary / 10%", rgb:"rgba(1,82,83,0.10)", usage:"Light teal backgrounds on hover states, selected filter chips, subtle highlights"},
+        {value:"rgba(1,82,83,0.05)", label:"Primary / 5%",  rgb:"rgba(1,82,83,0.05)", usage:"Very subtle page section tints, info box backgrounds, alternating row fills"},
+        {value:"#009951", label:"Green / Select",      rgb:"rgb(0, 153, 81)",       usage:"Success notifications, in-stock badges, checked checkboxes, selected radio buttons"},
+        {value:"rgba(0,153,81,0.5)",label:"Green / Inactive 50%",rgb:"rgba(0,153,81,0.50)",usage:"Muted success states, disabled selected items, greyed-out availability indicators"},
+        {value:"#C90000", label:"Red / Default",       rgb:"rgb(201, 0, 0)",        usage:"Sale prices, destructive action labels, critical error messages, sale percentage badges"},
+        {value:"#FF4D4F", label:"Red / Error",         rgb:"rgb(255, 77, 79)",      usage:"Form validation errors, invalid field borders, error toast notifications"},
+        {value:"#000000", label:"Base / Black",        rgb:"rgb(0, 0, 0)",          usage:"Primary body text, headings, icon fill — main text color across all UI"},
+        {value:"rgba(0,0,0,0.8)",   label:"Base / Black 80%",rgb:"rgba(0,0,0,0.80)",usage:"Overlays, scrim backgrounds, semi-transparent dark layers"},
+        {value:"#FFFFFF", label:"Base / White",        rgb:"rgb(255, 255, 255)",    usage:"Card backgrounds, modal surfaces, text on dark backgrounds, icon fill on teal"},
+        {value:"rgba(255,255,255,0.5)",label:"Base / White 50%",rgb:"rgba(255,255,255,0.50)",usage:"Subtle light overlay on images, ghost state on dark backgrounds"},
+        {value:"#A1A1A1", label:"Gray / Default",      rgb:"rgb(161, 161, 161)",    usage:"Placeholder text, disabled labels, inactive icons, secondary metadata"},
+        {value:"#DADADA", label:"Gray / Border",       rgb:"rgb(218, 218, 218)",    usage:"Dividers, card borders, input field outlines, separator lines"},
+        {value:"#F0F0F0", label:"Gray / Medium",       rgb:"rgb(240, 240, 240)",    usage:"Hover backgrounds, inactive tabs, skeleton shimmer base"},
+        {value:"#F5F6FA", label:"Gray / Light",        rgb:"rgb(245, 246, 250)",    usage:"Page backgrounds, sidebar fills, alternating table rows, input default background"},
+        {value:"#5CDBD3", label:"Other / Links",       rgb:"rgb(92, 219, 211)",     usage:"Hyperlinks on dark backgrounds (footer), hover color for footer links, teal accent highlights"},
+        {value:"#3B9ADB", label:"Other / Blue",        rgb:"rgb(59, 154, 219)",     usage:"Info notification icons, informational badges, tooltip accents, help indicators"},
+        {value:"#FFC628", label:"Other / Gold",        rgb:"rgb(255, 198, 40)",     usage:"Star ratings, premium badges, promotional highlights, award indicators"},
+      ]},
+    ];
+
+    // ── LOGO ──
+    const Logo = ({ height=28, color="dark" }) => {
+      const tf = color==="light" ? "#fff" : "#1a171a";
+      return (
+        <svg viewBox="0 0 1095.83 184.29" style={{height,width:"auto",display:"block"}} xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <rect x="0" y="0" width="184.3" height="184.3" rx="5.75" fill="#fff"/>
+            <path fill="#cc322b" d="M178.55,0H5.75C2.58,0,0,2.58,0,5.75v172.8c0,3.16,2.58,5.75,5.75,5.75h172.8c3.16,0,5.75-2.58,5.75-5.75V5.75c0-3.16-2.58-5.75-5.75-5.75ZM70.19,34.81l19.04,32.98-9.58,16.57-28.59-49.55h19.13ZM70.28,108.58h0l-23.45-40.64v85.89h-16.57V34.81h16.57l33.02,57.21L123.92,15.65h19.13l-63.22,109.52-9.58-16.57.02-.02ZM153.14,153.83h-16.57v-85.87l-33,57.14h-19.13l52.11-90.28h16.57v119.02l.02-.02Z"/>
+            <g>
+              <path fill={tf} d="M338.52,153.83l-.33-63.09-30.6,51.35h-14.96l-30.44-49.66v61.39h-31.11V34.81h27.72l41.82,68.7,40.82-68.7h27.72l.33,119.02h-30.98Z"/>
+              <path fill={tf} d="M489.31,127.82v26.01h-95.55V34.81h95.58v26.01h-62.24v20.06h52.89v25.16h-52.89v21.76h62.24Z"/>
+              <path fill={tf} d="M965.1,127.82v26.01h-95.55V34.81h95.58v26.01h-62.24v20.06h52.89v25.16h-52.89v21.76h62.24Z"/>
+              <path fill={tf} d="M544.54,61.5h-36.56v-26.7h106.62v26.7h-36.39v92.32h-33.67V61.5Z"/>
+              <path fill={tf} d="M737.47,127.13v26.72H633.33v-21.09l60.01-71.24h-60.12v-26.72h104.14v21.09l-60.01,71.24h60.12Z"/>
+              <path fill={tf} d="M758.29,34.79h33.67v92.35h56.78v26.7h-90.45V34.79Z"/>
+              <path fill={tf} d="M1038.2,122.21h-18.37v31.62h-33.67V34.81h54.4c10.78,0,20.13,1.78,28.06,5.34,7.93,3.56,14.05,8.66,18.37,15.3,4.3,6.64,6.46,14.43,6.46,23.38s-2,16.12-6.03,22.54c-4.03,6.41-9.78,11.42-17.26,15.05l25.68,37.41h-36.05l-21.6-31.62ZM1054.19,65.94c-3.52-3.05-8.73-4.59-15.65-4.59h-18.71v34.85h18.71c6.9,0,12.14-1.49,15.65-4.5,3.52-3.01,5.28-7.28,5.28-12.83s-1.76-9.86-5.28-12.92Z"/>
+            </g>
+          </g>
+        </svg>
+      );
+    };
+
+    // ── ICONS ──
+    const Icon = ({ name, size=20, color="#000000" }) => {
+      if (name==="profile") return (
+        <svg width={size} height={size} viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 24L2.54 22.06C4.13 20.05 6.55 18.87 9.12 18.87H16.88C19.45 18.87 21.87 20.05 23.46 22.06L25 24" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M13 0.8C16.97 0.8 20.19 4.02 20.19 8C20.19 11.98 16.97 15.2 13 15.2C9.03 15.2 5.81 11.98 5.81 8C5.81 4.02 9.03 0.8 13 0.8Z" stroke={color} strokeWidth="1.5"/>
+        </svg>
+      );
+      const icons = {
+        search:     <svg width={size} height={size} viewBox="0 0 18 19" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke={color} strokeWidth="2"/><line x1="12.5" y1="13" x2="17" y2="17.5" stroke={color} strokeWidth="2" strokeLinecap="round"/></svg>,
+        close:      <svg width={size} height={size} viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke={color} strokeWidth="2" strokeLinecap="round"/></svg>,
+        check:      <svg width={size} height={size} viewBox="0 0 20 20" fill="none"><path d="M5 10l3 3 7-7" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+        info:       <svg width={size} height={size} viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="7.5" stroke={color} strokeWidth="1.5"/><line x1="8.5" y1="7" x2="8.5" y2="13" stroke={color} strokeWidth="1.5" strokeLinecap="round"/><circle cx="8.5" cy="5" r="1" fill={color}/></svg>,
+        plus:       <svg width={size} height={size} viewBox="0 0 14 14" fill="none"><line x1="7" y1="1" x2="7" y2="13" stroke={color} strokeWidth="1.5" strokeLinecap="round"/><line x1="1" y1="7" x2="13" y2="7" stroke={color} strokeWidth="1.5" strokeLinecap="round"/></svg>,
+        minus:      <svg width={size} height={size} viewBox="0 0 14 14" fill="none"><line x1="1" y1="7" x2="13" y2="7" stroke={color} strokeWidth="1.5" strokeLinecap="round"/></svg>,
+        star:       <svg width={size} height={size} viewBox="0 0 14 14" fill={color}><path d="M7 0l2.1 4.3 4.9.7-3.5 3.4.8 4.6L7 10.8 2.7 13l.8-4.6L0 5l4.9-.7z"/></svg>,
+        menu:       <svg width={size} height={size*0.7} viewBox="0 0 21 15" fill="none"><rect width="21" height="2" rx="1" fill={color}/><rect y="6" width="21" height="2" rx="1" fill={color}/><rect y="12" width="21" height="2" rx="1" fill={color}/></svg>,
+      };
+      return icons[name] || null;
+    };
+
+    // ── ATOMS ──
+    // Checkbox — matches Figma node 6746:101137
+    // States: Default (unchecked), Checked-teal (#015253), Checked-green (#009951)
+    // Size: 25×25px Desktop; borderRadius: 4px
+    const Checkbox = ({ state="Default", variant="Filter", label, size=25 }) => {
+      const isChecked = state === "Checked";
+      const bg = isChecked ? (variant==="Configurator" ? "#009951" : "#015253") : "#fff";
+      const border = isChecked ? "none" : "1px solid #A1A1A1";
+      return (
+        <div style={{display:"flex",alignItems:"center",gap:9,cursor:"pointer",userSelect:"none"}}>
+          <div style={{width:size,height:size,borderRadius:4,border,background:bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxSizing:"border-box"}}>
+            {isChecked && (
+              <svg width={Math.round(size*0.56)} height={Math.round(size*0.56)} viewBox="0 0 14 14" fill="none">
+                <path d="M2 7l3.5 3.5L12 3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
+          </div>
+          {label && <span style={{fontFamily:font,fontSize:14,color:"#000000"}}>{label}</span>}
+        </div>
+      );
+    };
+
+    // RadioBtn — matches Figma node 6746:101369
+    // States: Default, Active, Disabled, Error
+    // Size: 20×20px Desktop; fully rounded
+    const RadioBtn = ({ state="Default", label }) => {
+      const cfg = {
+        Default:  { bg:"#fff",      border:"1px solid #A1A1A1", dot:false },
+        Active:   { bg:"#fff",      border:"1px solid #009951", dot:true,  dotColor:"#009951" },
+        Disabled: { bg:"#F5F6FA",   border:"1px solid #DADADA", dot:false },
+        Error:    { bg:"#fff",      border:"1px solid #C90000", dot:false },
+      };
+      const c = cfg[state] || cfg.Default;
+      return (
+        <div style={{display:"flex",alignItems:"center",gap:9,cursor:state==="Disabled"?"not-allowed":"pointer",userSelect:"none",opacity:state==="Disabled"?0.7:1}}>
+          <div style={{width:20,height:20,borderRadius:"50%",border:c.border,background:c.bg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxSizing:"border-box"}}>
+            {c.dot && <div style={{width:13,height:13,borderRadius:"50%",background:c.dotColor}}/>}
+          </div>
+          {label && <span style={{fontFamily:font,fontSize:14,color:state==="Disabled"?"#A1A1A1":"#000000"}}>{label}</span>}
+        </div>
+      );
+    };
+    const Badge = ({ children, color="green" }) => {
+      const b={green:"#E6F9F0",red:"#FFF1F0",blue:"#E6F7FF",gray:"#F5F6FA"}, t={green:"#009951",red:"#C90000",blue:"#3B9ADB",gray:"#666"};
+      return <span style={{display:"inline-block",padding:"4px 10px",borderRadius:4,background:b[color],color:t[color],fontSize:f(12),fontWeight:500,fontFamily:font}}>{children}</span>;
+    };
+    const SaleBadge = ({ pct=10 }) => <div style={{background:"#C90000",borderRadius:4,padding:"2px 8px",display:"inline-flex",alignItems:"center"}}><span style={{fontWeight:800,fontSize:f(16),color:"#fff"}}>-{pct}%</span></div>;
+
+    // ── COLOR CARD ──
+    const ColorCard = ({ value, label, rgb, usage }) => {
+      const [cp,setCp]=useState(false);
+      const hex=getHex(value);
+      const isLight=["#FFFFFF","#F5F6FA","#F0F0F0","#F4FBFA","#FAFEFE"].includes(hex) || value.includes("0.05") || value.includes("0.1");
+      return (
+        <div onClick={()=>{navigator.clipboard?.writeText(hex||value).catch(()=>{});setCp(true);setTimeout(()=>setCp(false),1500);}}
+          style={{cursor:"pointer",borderRadius:12,overflow:"hidden",border:"1px solid #E8E8E8",fontFamily:font,background:"#fff",display:"flex",flexDirection:"column",width:"100%"}}>
+          <div style={{height:f(80),background:value,borderBottom:"1px solid #E8E8E8",position:"relative",flexShrink:0}}>
+            {cp&&<div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.45)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:f(12),fontWeight:700}}>Copied!</span></div>}
+            <div style={{position:"absolute",bottom:8,right:10,background:"rgba(0,0,0,0.18)",borderRadius:4,padding:"2px 7px"}}>
+              <span style={{fontSize:f(10),color:"#fff",fontFamily:"monospace",fontWeight:600}}>click to copy</span>
+            </div>
+          </div>
+          <div style={{padding:`${f(12)}px ${f(14)}px ${f(14)}px`,display:"flex",flexDirection:"column",gap:f(6),flex:1}}>
+            <div style={{fontSize:f(14),fontWeight:700,color:"#000000"}}>{label}</div>
+            <div style={{display:"flex",gap:f(8),flexWrap:"wrap"}}>
+              {hex&&<span style={{fontSize:f(11),fontFamily:"monospace",color:"#015253",background:"rgba(1,82,83,0.07)",padding:"2px 7px",borderRadius:4,fontWeight:600}}>{hex}</span>}
+              <span style={{fontSize:f(11),fontFamily:"monospace",color:"#555",background:"#F5F6FA",padding:"2px 7px",borderRadius:4}}>{rgb}</span>
+            </div>
+            <div style={{fontSize:f(12),color:"#666",lineHeight:1.55,marginTop:f(2),borderTop:"1px solid #F0F0F0",paddingTop:f(8)}}>{usage}</div>
+          </div>
+        </div>
+      );
+    };
+
+    // ── CODE BLOCK ──
+    const CodeBlock = ({code}) => {
+      const [copied,setCopied] = useState(false);
+      return (
+        <div style={{position:'relative',marginTop:8,marginBottom:16}}>
+          <button onClick={()=>{navigator.clipboard?.writeText(code).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),1500);}}
+            style={{position:'absolute',top:8,right:8,background:copied?'#009900':'#015253',color:'#fff',border:'none',borderRadius:4,padding:'4px 10px',fontSize:f(11),fontFamily:font,cursor:'pointer',zIndex:1,transition:'background 0.2s'}}>
+            {copied?'Copied!':'Copy'}
+          </button>
+          <pre style={{background:'#01292A',color:'#5CDBD3',padding:`${f(14)}px ${f(16)}px`,borderRadius:8,fontSize:f(12),fontFamily:'monospace',overflowX:'auto',lineHeight:1.6,margin:0}}>
+            <code>{code}</code>
+          </pre>
+        </div>
+      );
+    };
+
+    // ── PREVIEW & HELPER COMPONENTS ──
+    const Preview = ({children}) => <div style={{background:'#F8F9FA',border:'1px solid #E8E8E8',borderRadius:8,padding:24,marginBottom:20}}>{children}</div>;
+    const CLbl = ({children}) => <div style={{fontSize:14,fontWeight:600,color:"#000000",fontFamily:font,marginTop:28,marginBottom:10}}>{children}</div>;
+    const Lead = ({children}) => <div style={{fontSize:16,color:"#555",fontFamily:font,marginBottom:24,lineHeight:1.65,borderBottom:'1px solid #E8E8E8',paddingBottom:20}}>{children}</div>;
+    const SH1 = ({id,children}) => <h1 id={id} style={{fontSize:32,fontWeight:700,color:"#000000",fontFamily:font,marginTop:48,marginBottom:8,scrollMarginTop:80}}>{children}</h1>;
+    const ShowRow = ({label,children,dark=true}) => (
+      <div style={{marginBottom:f(24)}}>
+        {label&&<div style={{fontSize:f(11),textTransform:'uppercase',letterSpacing:'0.06em',color:'#A1A1A1',fontFamily:font,fontWeight:600,marginBottom:f(12)}}>{label}</div>}
+        <div style={{display:'flex',gap:f(20),alignItems:'flex-start',flexWrap:'wrap'}}>{children}</div>
+      </div>
+    );
+
+    // ── NEW SECTION COMPONENTS ──
+
+    // Spacing Section — exact Figma "Spacing Tokens" variable values
+    const SpacingSection = () => {
+      const tokens = [
+        {name:'spacing/1',px:4},{name:'spacing/2',px:8},{name:'spacing/3',px:12},
+        {name:'spacing/4',px:16},{name:'spacing/5',px:20},{name:'spacing/6',px:24},
+        {name:'spacing/8',px:32},{name:'spacing/10',px:40},{name:'spacing/12',px:48},
+        {name:'spacing/16',px:64},{name:'spacing/20',px:80},{name:'spacing/24',px:96},
+      ];
+      return (
+        <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,overflow:'hidden'}}>
+          <div style={{display:'grid',gridTemplateColumns:'180px 60px 1fr',padding:'10px 16px',background:'#F5F6FA',borderBottom:'1px solid #E8E8E8'}}>
+            {['Token','Value','Visual'].map(h=><span key={h} style={{fontSize:f(10),fontWeight:600,color:'#A1A1A1',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.06em'}}>{h}</span>)}
+          </div>
+          {tokens.map(t=>(
+            <div key={t.name} style={{display:'grid',gridTemplateColumns:'180px 60px 1fr',padding:'10px 16px',borderBottom:'0.5px solid #F0F0F0',alignItems:'center'}}>
+              <span style={{fontSize:f(12),fontFamily:'monospace',color:'#015253'}}>{t.name}</span>
+              <span style={{fontSize:f(12),fontFamily:font,color:'#666'}}>{t.px}px</span>
+              <div style={{height:8,width:t.px*2,background:'rgba(1,82,83,0.5)',borderRadius:4}}/>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    // Shadow Section
+    const ShadowSection = () => {
+      const shadows = [
+        {name:'shadow/sm', value:'0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06)', use:'Buttons, inputs, small cards'},
+        {name:'shadow/md', value:'0 4px 8px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.08)', use:'Dropdowns, tooltips, hover cards'},
+        {name:'shadow/lg', value:'0 8px 24px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08)', use:'Modals, dialogs, drawers'},
+        {name:'shadow/xl', value:'0 16px 48px rgba(0,0,0,0.14), 0 8px 16px rgba(0,0,0,0.10)', use:'Full-page overlays, notification trays'},
+      ];
+      return (
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:f(20)}}>
+          {shadows.map(s=>(
+            <div key={s.name} style={{background:'#fff',borderRadius:12,padding:f(24),boxShadow:s.value,border:'1px solid #F5F5F5'}}>
+              <div style={{fontSize:f(12),fontFamily:'monospace',color:'#015253',fontWeight:600,marginBottom:6}}>{s.name}</div>
+              <div style={{fontSize:f(11),color:'#666',fontFamily:font,lineHeight:1.5}}>{s.use}</div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    // Tooltip Section
+    const TooltipSection = () => {
+      return (
+        <div>
+          <ShowRow label="Tooltip variants — Dark (default on light bg) · Light (on dark bg)">
+            <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:8}}>
+              <div style={{padding:'8px 12px',borderRadius:6,background:'#015253',color:'#fff',fontSize:f(12),fontFamily:font,boxShadow:'0 2px 8px rgba(0,0,0,0.18)'}}>Tooltip text</div>
+              <span style={{fontSize:f(10),color:'#A1A1A1',fontFamily:font}}>Type=Dark</span>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:8}}>
+              <div style={{padding:'8px 12px',borderRadius:6,background:'#fff',color:'#000000',border:'1px solid #CCCCCC',fontSize:f(12),fontFamily:font,boxShadow:'0 2px 8px rgba(0,0,0,0.10)'}}>Tooltip text</div>
+              <span style={{fontSize:f(10),color:'#A1A1A1',fontFamily:font}}>Type=Light</span>
+            </div>
+          </ShowRow>
+          <ShowRow label="Position variants" dark={false}>
+            {['Top','Bottom'].map(pos=>(
+              <div key={pos} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:8}}>
+                {pos==='Bottom' && <div style={{width:32,height:32,borderRadius:'50%',background:'#F0F0F0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:f(12),fontFamily:font,color:'#666'}}>⊕</div>}
+                <div style={{padding:'8px 12px',borderRadius:6,background:'#015253',color:'#fff',fontSize:f(12),fontFamily:font}}>Position={pos}</div>
+                {pos==='Top' && <div style={{width:32,height:32,borderRadius:'50%',background:'#F0F0F0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:f(12),fontFamily:font,color:'#666'}}>⊕</div>}
+              </div>
+            ))}
+          </ShowRow>
+        </div>
+      );
+    };
+
+    // Alert Section
+    const AlertSection = () => {
+      const alerts = [
+        {type:'Info',    border:'#1A53A4',bg:'#EBF2FF',dot:'#1A53A4',title:'Info',    desc:'Neutral system messages, tips, and general information.'},
+        {type:'Success', border:'#009900',bg:'#E8F5E9',dot:'#009900',title:'Success', desc:'Action completed. Used for order confirmations, saves, and uploads.'},
+        {type:'Warning', border:'#E67E00',bg:'#FFF3E0',dot:'#E67E00',title:'Warning', desc:'Potential issue needing the user\'s attention. Non-blocking.'},
+        {type:'Error',   border:'#C90000',bg:'#FFEBEE',dot:'#C90000',title:'Error',   desc:'Action failed or critical validation error. Blocking.'},
+      ];
+      return (
+        <Preview>
+          <div style={{display:'flex',flexDirection:'column',gap:12}}>
+            {alerts.map(a=>(
+              <div key={a.type} style={{display:'flex',alignItems:'center',gap:16,padding:'14px 16px',borderRadius:8,background:a.bg,border:`1.5px solid ${a.border}`}}>
+                <div style={{width:10,height:10,borderRadius:'50%',background:a.dot,flexShrink:0}}/>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:f(13),fontWeight:700,color:'#000000',fontFamily:font,marginBottom:2}}>{a.title}</div>
+                  <div style={{fontSize:f(12),color:'#444',fontFamily:font}}>{a.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Preview>
+      );
+    };
+
+    // Badge Section
+    const BadgeSection = () => {
+      return (
+        <div>
+          <CLbl>Status Badges</CLbl>
+          <ShowRow>
+            {[
+              {label:'Primary',  bg:'#015253',color:'#fff'},
+              {label:'Success',  bg:'#009900',color:'#fff'},
+              {label:'Warning',  bg:'#E67E00',color:'#fff'},
+              {label:'Error',    bg:'#C90000',color:'#fff'},
+              {label:'Neutral',  bg:'#F0F0F0',color:'#444444'},
+            ].map(b=>(
+              <span key={b.label} style={{display:'inline-block',padding:'3px 10px',borderRadius:999,background:b.bg,color:b.color,fontSize:f(11),fontWeight:500,fontFamily:font}}>{b.label}</span>
+            ))}
+            <span style={{display:'inline-block',padding:'3px 10px',borderRadius:999,background:'#fff',color:'#015253',border:'1px solid #015253',fontSize:f(11),fontWeight:500,fontFamily:font}}>Outlined</span>
+          </ShowRow>
+          <CLbl>Product Badges</CLbl>
+          <ShowRow label="Sale · In stock · New · Out of stock">
+            <Badge color="red">Sale -20%</Badge>
+            <Badge color="green">In stock</Badge>
+            <Badge color="blue">New</Badge>
+            <Badge color="gray">Out of stock</Badge>
+          </ShowRow>
+        </div>
+      );
+    };
+
+    // Toast Section
+    const ToastSection = () => {
+      const toasts = [
+        {type:'Success',border:'#009900',dot:'#009900',msg:'Action completed successfully'},
+        {type:'Error',  border:'#C90000',dot:'#C90000',msg:'Something went wrong'},
+        {type:'Info',   border:'#1A53A4',dot:'#1A53A4',msg:'Here is some information'},
+        {type:'Warning',border:'#E67E00',dot:'#E67E00',msg:'Please review this item'},
+      ];
+      return (
+        <div style={{display:'flex',flexDirection:'column',gap:10,maxWidth:380}}>
+          {toasts.map(t=>(
+            <div key={t.type} style={{display:'flex',alignItems:'center',gap:10,padding:'14px 16px',borderRadius:8,background:'#fff',border:`1px solid ${t.border}`,boxShadow:'0 4px 12px rgba(0,0,0,0.10)'}}>
+              <div style={{width:8,height:8,borderRadius:'50%',background:t.dot,flexShrink:0}}/>
+              <span style={{fontSize:f(13),fontFamily:font,fontWeight:500,color:'#000000',flex:1}}>{t.msg}</span>
+              <span style={{fontSize:f(16),color:'#A1A1A1',cursor:'pointer',lineHeight:1}}>×</span>
+            </div>
+          ))}
+          <div style={{fontSize:f(11),color:'#A1A1A1',fontFamily:font,marginTop:4}}>Auto-dismisses after 4s · position: bottom-right</div>
+        </div>
+      );
+    };
+
+    // Tabs Section
+    const TabsSection = () => {
+      const [active, setActive] = useState(0);
+      const tabs = ['Overview','Specifications','Reviews','Installation'];
+      return (
+        <div>
+          <div style={{display:'flex',borderBottom:'2px solid #E8E8E8'}}>
+            {tabs.map((tab,i)=>(
+              <button key={tab} onClick={()=>i!==3&&setActive(i)} style={{padding:`${f(10)}px ${f(16)}px`,background:'none',border:'none',fontFamily:font,fontSize:f(14),fontWeight:i===active?700:400,color:i===active?'#015253':i===3?'#CCCCCC':'#666',borderBottom:i===active?`3px solid #015253`:'3px solid transparent',marginBottom:-2,cursor:i===3?'not-allowed':'pointer',transition:'all 0.15s'}}>
+                {tab}{i===3&&' (Disabled)'}
+              </button>
+            ))}
+          </div>
+          <div style={{padding:`${f(20)}px 0`,fontSize:f(14),color:'#555',fontFamily:font,lineHeight:1.7}}>
+            {active===0&&'Overview: General product information and key highlights are displayed here.'}
+            {active===1&&'Specifications: Technical details, dimensions, materials, and compatibility are listed here.'}
+            {active===2&&'Reviews: Customer ratings and written reviews appear in this tab.'}
+          </div>
+        </div>
+      );
+    };
+
+    // Dropdown Section
+    const DropdownItem = ({label,last,onSelect}) => {
+      const [hov,setHov]=useState(false);
+      return <div onClick={onSelect} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{padding:`${f(12)}px ${f(16)}px`,fontFamily:font,fontSize:f(14),color:'#000000',cursor:'pointer',borderBottom:last?'none':'1px solid #F5F5F5',background:hov?'rgba(1,82,83,0.05)':'transparent',transition:'background 0.12s'}}>{label}</div>;
+    };
+    const DropdownDemo = () => {
+      const [open,setOpen] = useState(false);
+      const [sel,setSel] = useState('');
+      const opts = ['Option 1 — Small','Option 2 — Medium','Option 3 — Large','Option 4 — XL'];
+      return (
+        <div style={{position:'relative',width:'100%',maxWidth:500}} onClick={e=>e.stopPropagation()}>
+          <div onClick={()=>setOpen(!open)} style={{width:'100%',height:f(60),padding:`8px ${f(16)}px`,borderRadius:8,background:'#fff',border:`1.5px solid ${open?'#015253':'#CCCCCC'}`,cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',boxSizing:'border-box',transition:'border-color 0.2s'}}>
+            <div>
+              <div style={{fontSize:f(11),color:'#015253',fontFamily:font}}>Label</div>
+              <div style={{fontSize:f(14),color:sel?'#000000':'#AAAAAA',fontFamily:font}}>{sel||'Select option'}</div>
+            </div>
+            <span style={{fontSize:f(12),color:'#015253',transition:'transform 0.2s',display:'inline-block',transform:open?'rotate(180deg)':'none'}}>▾</span>
+          </div>
+          {open&&(
+            <div style={{position:'absolute',top:'calc(100% + 4px)',left:0,right:0,background:'#fff',border:'1px solid #E0E0E0',borderRadius:8,boxShadow:'0 4px 16px rgba(0,0,0,0.10)',zIndex:100,overflow:'hidden'}}>
+              {opts.map((opt,i)=>(
+                <DropdownItem key={opt} label={opt} last={i===opts.length-1} onSelect={()=>{setSel(opt);setOpen(false);}}/>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    };
+    const DropdownSection = () => (
+      <div>
+        <Preview><DropdownDemo/></Preview>
+        <div style={{marginTop:f(24)}}>
+          <CLbl>States</CLbl>
+          <ShowRow label="Default · Active (open) · Error">
+            {[
+              {label:'Default', border:'#CCCCCC', val:''},
+              {label:'Active',  border:'#015253', val:'Selected value'},
+              {label:'Error',   border:'#C90000', val:''},
+            ].map(s=>(
+              <div key={s.label} style={{display:'flex',flexDirection:'column',gap:6,alignItems:'flex-start'}}>
+                <div style={{width:220,height:f(60),padding:`8px 16px`,borderRadius:8,background:'#fff',border:`1.5px solid ${s.border}`,display:'flex',justifyContent:'space-between',alignItems:'center',boxSizing:'border-box'}}>
+                  <div>
+                    <div style={{fontSize:f(11),color:'#015253',fontFamily:font}}>Label</div>
+                    <div style={{fontSize:f(14),color:s.val?'#000000':'#AAAAAA',fontFamily:font}}>{s.val||'Select option'}</div>
+                  </div>
+                  <span style={{fontSize:f(12),color:'#015253'}}>▾</span>
+                </div>
+                <span style={{fontSize:f(10),color:'#A1A1A1',fontFamily:font}}>Condition={s.label}</span>
+              </div>
+            ))}
+          </ShowRow>
+        </div>
+      </div>
+    );
+
+    // ── BUTTONS SECTION ──
+    // Exact Figma specs: cornerRadius=4 (corner-radius/m), padding 10px 15px (Desktop), bg #015253, hover #006D75
+    const ButtonsSection = () => {
+      return (
+        <div>
+          <CLbl>Filled buttons — Default · Hover · Disabled</CLbl>
+          <ShowRow>
+            {[
+              {label:'Default',   bg:'#015253', cursor:'pointer'},
+              {label:'Hover',     bg:'#006D75', cursor:'pointer'},
+              {label:'Disabled',  bg:'#015253', cursor:'not-allowed', opacity:0.4},
+            ].map(s=>(
+              <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:8}}>
+                <button style={{padding:'10px 15px',borderRadius:4,fontFamily:font,fontSize:14,fontWeight:500,background:s.bg,color:'#fff',border:'none',cursor:s.cursor,opacity:s.opacity||1,letterSpacing:'0.02em'}}>
+                  Button label
+                </button>
+                <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font}}>Condition={s.label}</span>
+              </div>
+            ))}
+          </ShowRow>
+          <CLbl>Outlined / Secondary buttons</CLbl>
+          <ShowRow>
+            {[
+              {label:'Default', border:'#DADADA', color:'#000000', bg:'#fff'},
+              {label:'Hover',   border:'#015253', color:'#015253', bg:'rgba(1,82,83,0.05)'},
+              {label:'Disabled',border:'#DADADA', color:'#A1A1A1', bg:'#fff', opacity:0.6},
+            ].map(s=>(
+              <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:8}}>
+                <button style={{padding:'10px 15px',borderRadius:4,fontFamily:font,fontSize:14,fontWeight:500,background:s.bg,color:s.color,border:`1px solid ${s.border}`,cursor:s.opacity?'not-allowed':'pointer',opacity:s.opacity||1}}>
+                  Button label
+                </button>
+                <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font}}>Condition={s.label}</span>
+              </div>
+            ))}
+          </ShowRow>
+          <CLbl>Sizes — Small (Desktop 35px) · Medium (Mobile 36px) · Big (Mobile 45px)</CLbl>
+          <ShowRow>
+            {[
+              {label:'Small Desktop', h:35, px:15, py:10, fz:14},
+              {label:'Small Mobile',  h:30, px:10, py:10, fz:13},
+              {label:'Medium Mobile', h:36, px:10, py:10, fz:13},
+              {label:'Big Mobile',    h:45, px:15, py:10, fz:14},
+            ].map(s=>(
+              <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:8}}>
+                <button style={{height:s.h,padding:`${s.py}px ${s.px}px`,borderRadius:4,fontFamily:font,fontSize:s.fz,fontWeight:500,background:'#015253',color:'#fff',border:'none',cursor:'pointer'}}>
+                  Button
+                </button>
+                <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font}}>{s.label} ({s.h}px)</span>
+              </div>
+            ))}
+          </ShowRow>
+        </div>
+      );
+    };
+
+    // ── TEXTFIELD — exact Figma: node 8321:138637 ──
+    // Conditions: Default (gray border #DADADA) · Active (green #009951, floating label, cursor)
+    // Done (green #009951, floating label, value) · Error (red #C90000, error msg bottom-right)
+    // Desktop 500×50px · borderRadius 4px · padding 13px 15px · font 16px Helvetica Neue Regular
+    const Textfield = ({ condition='Default', device='Desktop' }) => {
+      const w = device==='Desktop' ? 500 : 340;
+      const isDefault = condition==='Default';
+      const isActive  = condition==='Active';
+      const isDone    = condition==='Done';
+      const isError   = condition==='Error';
+      const hasValue  = isActive || isDone;
+      const border = isError ? '#C90000' : (hasValue ? '#009951' : '#DADADA');
+      return (
+        <div style={{display:'flex',flexDirection:'column',gap:8,position:'relative',width:w}}>
+          <div style={{position:'relative',width:'100%',height:50,borderRadius:4,border:`1px solid ${border}`,background:'#fff',display:'flex',alignItems:'center',padding:'13px 15px',boxSizing:'border-box',gap:3}}>
+            {/* Floating label — shown when Active or Done */}
+            {(hasValue) && (
+              <div style={{position:'absolute',top:-7,left:11,background:'#fff',padding:'0 5px',lineHeight:'14px'}}>
+                <span style={{fontFamily:font,fontSize:12,color:'#000',whiteSpace:'nowrap'}}>Name</span>
+              </div>
+            )}
+            {/* Input text or placeholder */}
+            <span style={{fontFamily:font,fontSize:16,lineHeight:'24px',color:hasValue?'#000':'#A1A1A1',flex:1,whiteSpace:'nowrap'}}>
+              {hasValue ? 'Vossberg' : 'Name'}
+            </span>
+            {/* Cursor indicator for Active */}
+            {isActive && (
+              <div style={{width:1,height:19,background:'#000',flexShrink:0,marginLeft:1}}/>
+            )}
+          </div>
+          {/* Error message — bottom right */}
+          {isError && (
+            <div style={{position:'absolute',bottom:-18,right:0,background:'#fff',padding:'0 5px'}}>
+              <span style={{fontFamily:font,fontSize:10,lineHeight:'14px',color:'#C90000',whiteSpace:'nowrap'}}>Fill out this field</span>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    // ── FORM ELEMENTS SECTION ──
+    const FormElementsSection = () => {
+      return (
+        <div>
+          <CLbl>Textfield — Desktop</CLbl>
+          <div style={{display:'flex',flexDirection:'column',gap:32,marginBottom:32}}>
+            {['Default','Active','Done','Error'].map(cond=>(
+              <div key={cond} style={{display:'flex',flexDirection:'column',gap:10}}>
+                <Textfield condition={cond} device="Desktop" />
+                <span style={{fontSize:12,color:'#A1A1A1',fontFamily:font}}>Condition={cond}</span>
+              </div>
+            ))}
+          </div>
+          <CLbl>Textfield — Mobile</CLbl>
+          <div style={{display:'flex',flexDirection:'column',gap:32,marginBottom:32}}>
+            {['Default','Active','Done','Error'].map(cond=>(
+              <div key={cond} style={{display:'flex',flexDirection:'column',gap:10}}>
+                <Textfield condition={cond} device="Mobile" />
+                <span style={{fontSize:12,color:'#A1A1A1',fontFamily:font}}>Condition={cond} · Mobile</span>
+              </div>
+            ))}
+          </div>
+          <CLbl>Checkbox</CLbl>
+          <ShowRow>
+            <div style={{display:'flex',flexDirection:'column',gap:20}}>
+              <div>
+                <div style={{fontSize:11,color:'#999',fontFamily:font,marginBottom:8,textTransform:'uppercase',letterSpacing:'0.5px'}}>Default</div>
+                <Checkbox state="Default" label="Unchecked" />
+              </div>
+              <div>
+                <div style={{fontSize:11,color:'#999',fontFamily:font,marginBottom:8,textTransform:'uppercase',letterSpacing:'0.5px'}}>Checked — Filter (Teal)</div>
+                <Checkbox state="Checked" variant="Filter" label="Checked" />
+              </div>
+              <div>
+                <div style={{fontSize:11,color:'#999',fontFamily:font,marginBottom:8,textTransform:'uppercase',letterSpacing:'0.5px'}}>Checked — Configurator (Green)</div>
+                <Checkbox state="Checked" variant="Configurator" label="Checked" />
+              </div>
+            </div>
+          </ShowRow>
+          <CLbl>Radio Button</CLbl>
+          <ShowRow>
+            <div style={{display:'flex',flexDirection:'column',gap:20}}>
+              {['Default','Active','Disabled','Error'].map(s=>(
+                <div key={s}>
+                  <div style={{fontSize:11,color:'#999',fontFamily:font,marginBottom:8,textTransform:'uppercase',letterSpacing:'0.5px'}}>{s}</div>
+                  <RadioBtn state={s} label={s === 'Active' ? 'Selected' : s === 'Disabled' ? 'Disabled option' : s === 'Error' ? 'Error state' : 'Unselected'} />
+                </div>
+              ))}
+            </div>
+          </ShowRow>
+        </div>
+      );
+    };
+
+    // ── ICONS SECTION ──
+    const IconsSection = () => {
+      const icons = ['search','close','check','info','plus','minus','star','menu'];
+      return (
+        <div>
+          <ShowRow>
+            {icons.map(i=>(
+              <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:f(8)}}>
+                <div style={{width:48,height:48,borderRadius:8,background:'#F5F6FA',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <Icon name={i} size={24} />
+                </div>
+                <span style={{fontSize:f(11),fontFamily:font,color:'#666'}}>{i}</span>
+              </div>
+            ))}
+          </ShowRow>
+        </div>
+      );
+    };
+
+    // ── NOTIFICATIONS SECTION ──
+    const NotificationsSection = () => {
+      const NotifItem = ({type,title,msg}) => {
+        const cfg={error:{bg:"#FFF1F0",border:"#C90000",dot:"#C90000",icon:"info"},success:{bg:"#E8F5E9",border:"#009900",dot:"#009900",icon:"check"},info:{bg:"#EBF2FF",border:"#1A53A4",dot:"#1A53A4",icon:"info"}};
+        const c=cfg[type]||cfg.error;
+        return (
+          <div style={{display:"flex",alignItems:"flex-start",gap:f(12),padding:`${f(12)}px ${f(16)}px`,borderRadius:8,background:c.bg,border:`1.5px solid ${c.border}`}}>
+            <div style={{width:10,height:10,borderRadius:'50%',background:c.dot,flexShrink:0,marginTop:4}}/>
+            <div style={{flex:1}}>
+              <div style={{fontSize:f(13),fontWeight:700,color:"#000000",fontFamily:font,marginBottom:2}}>{title}</div>
+              <div style={{fontSize:f(12),color:"#555",fontFamily:font}}>{msg}</div>
+            </div>
+            <Icon name="close" size={16} color="#999" style={{cursor:'pointer'}}/>
+          </div>
+        );
+      };
+      return (
+        <Preview>
+          <div style={{display:'flex',flexDirection:'column',gap:f(12)}}>
+            <NotifItem type="success" title="Success" msg="Your order has been placed successfully." />
+            <NotifItem type="error" title="Error" msg="There was an issue processing your request." />
+            <NotifItem type="info" title="Info" msg="This is an informational notification." />
+          </div>
+        </Preview>
+      );
+    };
+
+    // ── RATINGS & BADGES SECTION ──
+    const RatingsSection = () => {
+      const ratings = [1,2,3,4,5];
+      return (
+        <div>
+          <CLbl>Star Ratings</CLbl>
+          <ShowRow>
+            {ratings.map(r=>(
+              <div key={r} style={{display:'flex',alignItems:'center',gap:f(8)}}>
+                {[...Array(5)].map((_, i)=>(
+                  <span key={i} style={{cursor:'pointer'}}>
+                    <Icon name="star" size={18} color={i<r?"#FFB800":"#DDD"} />
+                  </span>
+                ))}
+                <span style={{fontSize:f(12),color:'#666',fontFamily:font}}>{r}/5</span>
+              </div>
+            ))}
+          </ShowRow>
+        </div>
+      );
+    };
+
+    // ── PRODUCT CARDS SECTION ──
+    const ProductCardsSection = () => {
+      const ProductCard = ({title,price,salePrice}) => (
+        <div style={{width:200,borderRadius:12,border:'1px solid #E8E8E8',background:'#fff',overflow:'hidden'}}>
+          <div style={{width:'100%',height:200,background:'#F5F6FA',display:'flex',alignItems:'center',justifyContent:'center',fontSize:f(12),color:'#999'}}>Product Image</div>
+          <div style={{padding:f(16)}}>
+            <div style={{fontSize:f(13),fontWeight:700,color:'#000000',fontFamily:font,marginBottom:f(8)}}>{title}</div>
+            <div style={{display:'flex',alignItems:'center',gap:f(8),marginBottom:f(8)}}>
+              {salePrice?<>
+                <span style={{fontSize:f(14),fontWeight:700,color:'#C90000',fontFamily:font}}>${salePrice}</span>
+                <span style={{fontSize:f(12),color:'#999',textDecoration:'line-through',fontFamily:font}}>${price}</span>
+              </>:<span style={{fontSize:f(14),fontWeight:700,color:'#000000',fontFamily:font}}>${price}</span>}
+            </div>
+            <button style={{width:'100%',padding:f(10),borderRadius:8,background:'#015253',color:'#fff',border:'none',fontFamily:font,fontSize:f(12),fontWeight:600,cursor:'pointer'}}>Add to Cart</button>
+          </div>
+        </div>
+      );
+      return (
+        <Preview>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:f(20)}}>
+            <ProductCard title="Product One" price="99.99" />
+            <ProductCard title="Product Sale" price="99.99" salePrice="79.99" />
+            <ProductCard title="Product Three" price="149.99" />
+          </div>
+        </Preview>
+      );
+    };
+
+    // ── HEADER SECTION ──
+    const HeaderSection = () => {
+      return (
+        <Preview>
+          <div style={{background:"#015253",padding:`${f(16)}px ${f(24)}px`,borderRadius:8}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <Logo height={24} color="light" />
+              <nav style={{display:'flex',gap:f(24),fontFamily:font}}>
+                {['Products','About','Contact'].map(l=><a key={l} href="#" style={{fontSize:f(14),color:'#fff',textDecoration:'none',cursor:'pointer'}}>{l}</a>)}
+              </nav>
+              <button style={{padding:`${f(8)}px ${f(16)}px`,borderRadius:8,background:'#fff',color:'#015253',border:'none',fontFamily:font,fontSize:f(13),fontWeight:600,cursor:'pointer'}}>Login</button>
+            </div>
+          </div>
+        </Preview>
+      );
+    };
+
+    // ── FOOTER SECTION ──
+    const FooterSection = () => {
+      return (
+        <Preview>
+          <div style={{background:"#01292A",color:'#fff',padding:f(40),borderRadius:8}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:f(32),marginBottom:f(32)}}>
+              {[
+                {title:'Company',links:['About','Careers','Blog']},
+                {title:'Products',links:['Klingeln','Boxen','Leuchten']},
+                {title:'Support',links:['Help','Contact','FAQ']},
+                {title:'Legal',links:['Privacy','Terms','Cookies']},
+              ].map(col=>(
+                <div key={col.title}>
+                  <div style={{fontSize:f(13),fontWeight:700,fontFamily:font,marginBottom:f(12)}}>{col.title}</div>
+                  {col.links.map(l=><div key={l} style={{fontSize:f(12),color:'#5CDBD3',fontFamily:font,marginBottom:6,cursor:'pointer'}}>{l}</div>)}
+                </div>
+              ))}
+            </div>
+            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',paddingTop:f(16),fontSize:f(11),color:'#999',fontFamily:font}}>
+              © 2024 Metzler. All rights reserved.
+            </div>
+          </div>
+        </Preview>
+      );
+    };
+
+    // ── TOP NAVBAR — full width, inner content capped at 1400px centered ──
+    const TopNav = () => (
+      <header style={{position:'fixed',top:0,left:0,right:0,height:57,background:'#015253',borderBottom:'1px solid #014748',zIndex:1000,display:'flex',alignItems:'center'}}>
+        <div style={{maxWidth:1400,width:'100%',margin:'0 auto',padding:'0 32px',display:'flex',alignItems:'center',gap:32}}>
+          <div style={{display:'flex',alignItems:'center',gap:12,flexShrink:0}}>
+            <Logo height={22} color="light" />
+            <span style={{color:'rgba(255,255,255,0.4)',fontSize:14,fontFamily:font}}>|</span>
+            <span style={{color:'rgba(255,255,255,0.85)',fontSize:14,fontWeight:600,fontFamily:font}}>Design System</span>
+          </div>
+          <nav style={{display:'flex',gap:24}}>
+            {['Docs','Components','Icons'].map(l=>(
+              <a key={l} href="#" style={{fontSize:14,color:'rgba(255,255,255,0.75)',textDecoration:'none',fontFamily:font}}
+                onMouseEnter={e=>e.target.style.color='#fff'} onMouseLeave={e=>e.target.style.color='rgba(255,255,255,0.75)'}>{l}</a>
+            ))}
+          </nav>
+          <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:12}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.12)',borderRadius:6,padding:'6px 14px',cursor:'pointer'}}>
+              <Icon name="search" size={14} color="rgba(255,255,255,0.7)" />
+              <span style={{fontSize:13,color:'rgba(255,255,255,0.7)',fontFamily:font}}>Search...</span>
+              <span style={{fontSize:11,color:'rgba(255,255,255,0.4)',fontFamily:font,marginLeft:12,background:'rgba(255,255,255,0.1)',padding:'1px 6px',borderRadius:3}}>⌘K</span>
+            </div>
+            <span style={{fontSize:12,color:'rgba(255,255,255,0.5)',fontFamily:'monospace'}}>v1.0</span>
+          </div>
+        </div>
+      </header>
+    );
+
+    // ── LEFT SIDEBAR — sticky, inside the 1400px container ──
+    const SiteNav = ({activeId, onNavClick}) => (
+      <nav style={{width:260,flexShrink:0,position:'sticky',top:57,height:'calc(100vh - 57px)',overflowY:'auto',borderRight:'1px solid #E8E8E8',padding:'16px 0 40px',background:'#fff'}}>
+        {navItems.map(item=>(
+          <div key={item.label}>
+            {item.type==='group'
+              ? <div style={{fontSize:11,fontWeight:700,color:'#A1A1A1',textTransform:'uppercase',letterSpacing:'0.06em',padding:'20px 20px 6px',fontFamily:font}}>{item.label}</div>
+              : <button onClick={()=>onNavClick(item.id)} style={{width:'100%',padding:'6px 20px',background:'none',border:'none',textAlign:'left',fontFamily:font,fontSize:14,color:activeId===item.id?'#015253':'#444',fontWeight:activeId===item.id?600:400,cursor:'pointer',borderLeft:activeId===item.id?'3px solid #015253':'3px solid transparent',transition:'all 0.15s'}}>
+                  {item.label}
+                </button>
+            }
+          </div>
+        ))}
+      </nav>
+    );
+
+    // ── INTRODUCTION SECTION ──
+    const IntroductionSection = () => (
+      <div>
+        <SH1 id="instruction">Introduction</SH1>
+        <Lead>
+          Welcome to the Metzler Design System documentation. This comprehensive guide contains all design tokens, components, and patterns used across the Metzler ecosystem of products.
+        </Lead>
+        <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,padding:f(24),marginBottom:f(24)}}>
+          <h3 style={{fontSize:f(18),fontWeight:700,color:'#000000',fontFamily:font,marginBottom:f(12)}}>Getting Started</h3>
+          <ul style={{fontSize:f(14),color:'#555',fontFamily:font,lineHeight:1.8,marginLeft:f(24)}}>
+            <li>Review color tokens and typography scales</li>
+            <li>Explore component variants and states</li>
+            <li>Copy component code snippets for your projects</li>
+            <li>Follow accessibility and interaction guidelines</li>
+          </ul>
+        </div>
+      </div>
+    );
+
+    // ── MAIN DESIGN SYSTEM COMPONENT ──
+    const DesignSystem = () => {
+      const [activeId, setActiveId] = useState('instruction');
+      const contentRef = useRef(null);
+
+      useEffect(() => {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                setActiveId(entry.target.id);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        allNavItems.forEach(item => {
+          const el = document.getElementById(item.id);
+          if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+      }, []);
+
+      const navClick = (id) => {
+        document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+        setActiveId(id);
+      };
+
+      return (
+        <div style={{background:'#fff',minHeight:'100vh'}}>
+          <TopNav />
+
+          {/* 1400px centered page wrapper */}
+          <div style={{maxWidth:1400,margin:'0 auto',paddingTop:57,display:'flex',minHeight:'100vh'}}>
+            <SiteNav activeId={activeId} onNavClick={navClick} />
+
+            {/* CONTENT — fills remaining space */}
+            <main style={{flex:1,minWidth:0}}>
+            <div style={{padding:'40px 48px 80px'}}>
+              <div style={{marginBottom:32}}>
+                <div style={{fontSize:42,fontWeight:700,color:'#000',fontFamily:font,marginBottom:8,lineHeight:1.1}}>Metzler Design System</div>
+                <div style={{fontSize:16,color:'#666',fontFamily:font,lineHeight:1.6}}>Complete component and token documentation for Metzler products. Sourced directly from Figma.</div>
+              </div>
+
+            {/* INTRODUCTION */}
+            <IntroductionSection />
+
+            {/* COLORS */}
+            <SH1 id="colors">Colors</SH1>
+            <Lead>All color tokens used across Metzler products. Click any swatch to copy the hex value.</Lead>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:f(16),marginBottom:f(32)}}>
+              {colorGroups[0].tokens.map(t=><ColorCard key={t.value} {...t} />)}
+            </div>
+
+            {/* TYPOGRAPHY */}
+            <SH1 id="typography">Typography</SH1>
+            <Lead>Font family: Helvetica Neue. All text styles below match Figma text styles exactly.</Lead>
+
+            {/* Text styles table */}
+            <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,overflow:'hidden',marginBottom:f(32)}}>
+              <div style={{display:'grid',gridTemplateColumns:'200px 60px 70px 70px 160px 1fr',padding:'10px 16px',background:'#F5F6FA',borderBottom:'1px solid #E8E8E8'}}>
+                {['Style name','Size','Weight','Line-h.','Token','Preview'].map(h=><span key={h} style={{fontSize:11,fontWeight:600,color:'#A1A1A1',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.06em'}}>{h}</span>)}
+              </div>
+              {[
+                {name:'Large text / Desktop', size:46, weight:700, lh:42,   token:'large-text-desktop'},
+                {name:'Large text / Mobile',  size:26, weight:700, lh:32,   token:'large-text-mobile'},
+                {name:'Title / H1 Desktop',   size:24, weight:700, lh:30,   token:'title-h1-desktop'},
+                {name:'Title / H1 Mobile',    size:16, weight:700, lh:'auto',token:'title-h1-mobile'},
+                {name:'Title / H2 Desktop',   size:22, weight:700, lh:'auto',token:'title-h2-desktop'},
+                {name:'Title / H2 Mobile',    size:14, weight:700, lh:'auto',token:'title-h2-mobile'},
+                {name:'Title / H3 Desktop',   size:18, weight:700, lh:22,   token:'title-h3-desktop'},
+                {name:'Title / H3 Mobile',    size:12, weight:700, lh:22,   token:'title-h3-mobile'},
+                {name:'Title / H4 Desktop',   size:16, weight:700, lh:22,   token:'title-h4-desktop'},
+                {name:'Title / H4 Mobile',    size:10, weight:700, lh:'auto',token:'title-h4-mobile'},
+                {name:'Label / Price Desktop',size:30, weight:700, lh:'auto',token:'label-price-desktop'},
+                {name:'Label / Price Mobile', size:26, weight:700, lh:'auto',token:'label-price-mobile'},
+                {name:'Body / 18 Bold',       size:18, weight:700, lh:'auto',token:'body-18-bold'},
+                {name:'Body / 18 Medium',     size:18, weight:500, lh:22,   token:'body-18-medium'},
+                {name:'Body / 18 Regular',    size:18, weight:400, lh:26,   token:'body-18-regular'},
+                {name:'Body / 16 Bold',       size:16, weight:700, lh:22,   token:'body-16-bold'},
+                {name:'Body / 16 Regular 24', size:16, weight:400, lh:24,   token:'body-16-regular-24'},
+                {name:'Body / 16 Regular 22', size:16, weight:400, lh:22,   token:'body-16-regular-22'},
+                {name:'Body / 14 Bold',       size:14, weight:700, lh:16,   token:'body-14-bold'},
+                {name:'Body / 14 Regular',    size:14, weight:400, lh:16,   token:'body-14-regular'},
+                {name:'Body / 13 Bold',       size:13, weight:700, lh:20,   token:'body-13-bold'},
+                {name:'Body / 13 Regular',    size:13, weight:400, lh:20,   token:'body-13-regular'},
+                {name:'Body / 12 Bold',       size:12, weight:700, lh:16,   token:'body-12-bold'},
+                {name:'Body / 12 Regular',    size:12, weight:400, lh:14,   token:'body-12-regular'},
+                {name:'Body / 10 Regular',    size:10, weight:400, lh:14,   token:'body-10-regular'},
+              ].map((s,i)=>(
+                <div key={s.token} style={{display:'grid',gridTemplateColumns:'200px 60px 70px 70px 160px 1fr',padding:'6px 16px',borderBottom:'0.5px solid #F0F0F0',alignItems:'center',height:52,background:i%2===0?'#fff':'#FAFAFA',overflow:'hidden'}}>
+                  <span style={{fontSize:13,fontFamily:'monospace',color:'#015253'}}>{s.name}</span>
+                  <span style={{fontSize:13,fontFamily:font,color:'#666'}}>{s.size}px</span>
+                  <span style={{fontSize:13,fontFamily:font,color:'#666'}}>{s.weight}</span>
+                  <span style={{fontSize:13,fontFamily:font,color:'#666'}}>{s.lh==='auto'?'auto':s.lh+'px'}</span>
+                  <span style={{fontSize:13,fontFamily:'monospace',color:'#999',whiteSpace:'nowrap'}}>{s.token}</span>
+                  <div style={{overflow:'hidden',height:52,display:'flex',alignItems:'center'}}>
+                    <span style={{fontFamily:font,fontSize:s.size,fontWeight:s.weight,lineHeight:1,color:'#000',whiteSpace:'nowrap'}}>Aa — Helvetica Neue</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* SPACING */}
+            <SH1 id="spacing">Spacing</SH1>
+            <Lead>12 spacing tokens from Figma "Spacing Tokens" variables. Base unit is 4px (spacing/1), scaled up to 96px (spacing/24).</Lead>
+            <div style={{marginBottom:f(32)}}><SpacingSection/></div>
+
+            {/* CORNER RADIUS */}
+            <div style={{marginBottom:f(32)}}>
+              <div style={{fontSize:f(20),fontWeight:700,color:'#000',fontFamily:font,marginBottom:f(8),marginTop:f(16)}}>Corner Radius</div>
+              <Lead>7 radius tokens from Figma "Corner-radius" variables.</Lead>
+              <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,overflow:'hidden'}}>
+                <div style={{display:'grid',gridTemplateColumns:'100px 80px 1fr',padding:'10px 16px',background:'#F5F6FA',borderBottom:'1px solid #E8E8E8'}}>
+                  {['Token','Value','Preview'].map(h=><span key={h} style={{fontSize:10,fontWeight:600,color:'#A1A1A1',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.06em'}}>{h}</span>)}
+                </div>
+                {[
+                  {name:'xs',    px:1},
+                  {name:'s',     px:2},
+                  {name:'m',     px:4,  note:'buttons'},
+                  {name:'l',     px:8,  note:'cards, inputs, modals'},
+                  {name:'xl',    px:12, note:'product cards, badges'},
+                  {name:'xxl',   px:20},
+                  {name:'large', px:9999, note:'pill / fully rounded'},
+                ].map(t=>(
+                  <div key={t.name} style={{display:'grid',gridTemplateColumns:'100px 80px 1fr',padding:'10px 16px',borderBottom:'0.5px solid #F0F0F0',alignItems:'center'}}>
+                    <span style={{fontSize:12,fontFamily:'monospace',color:'#015253'}}>{t.name}{t.note?` — ${t.note}`:''}</span>
+                    <span style={{fontSize:12,fontFamily:font,color:'#666'}}>{t.px===9999?'9999px (pill)':t.px+'px'}</span>
+                    <div style={{width:48,height:24,background:'rgba(1,82,83,0.15)',borderRadius:Math.min(t.px,12),border:'1px solid #015253'}}/>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SHADOWS */}
+            <SH1 id="shadows">Shadows & Elevation</SH1>
+            <Lead>4 elevation levels for depth hierarchy on cards, dropdowns, and overlays.</Lead>
+            <div style={{padding:`${f(20)}px 0`,marginBottom:f(32)}}><ShadowSection/></div>
+
+            {/* ICONS */}
+            <SH1 id="icons">Icons</SH1>
+            <Lead>Minimal icon set used throughout Metzler products. All icons are 24px × 24px at base size.</Lead>
+            <Preview><IconsSection/></Preview>
+
+            {/* BUTTONS */}
+            <SH1 id="buttons">Buttons</SH1>
+            <Lead>Primary and secondary button variants with hover and disabled states.</Lead>
+            <Preview><ButtonsSection/></Preview>
+            <CodeBlock code={`/* Primary Button — Figma: cornerRadius/m=4, padding 10px 15px, bg Primary/Default */
+<button style={{
+  padding: '10px 15px',
+  borderRadius: 4,        /* corner-radius/m */
+  background: '#015253',  /* Primary/Default */
+  color: '#ffffff',       /* Base/White */
+  border: 'none',
+  fontSize: 14,
+  fontWeight: 500,
+  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+  cursor: 'pointer',
+}}>
+  Button label
+</button>
+
+/* Hover state */
+button:hover { background: '#006D75'; }  /* Primary/Hover */
+
+/* Outlined / Secondary */
+<button style={{
+  padding: '10px 15px',
+  borderRadius: 4,
+  background: '#ffffff',
+  color: '#000000',
+  border: '1px solid #DADADA',  /* Gray/Border */
+  cursor: 'pointer',
+}}>
+  Button label
+</button>`} />
+
+            {/* FORM ELEMENTS */}
+            <SH1 id="form-elements">Form Elements</SH1>
+            <Lead>Text inputs, checkboxes, and radio buttons with validation states.</Lead>
+            <Preview><FormElementsSection/></Preview>
+            <CodeBlock code={`/* Textfield — Figma node 8321:138637
+   Desktop: 500×50px · Mobile: 340×50px
+   borderRadius: 4px (corner-radius/m)
+   padding: 13px 15px · font: 16px Helvetica Neue Regular */
+
+/* Default — border: #DADADA (Gray/Border) */
+<div style={{position:'relative', width:500, height:50,
+  borderRadius:4, border:'1px solid #DADADA', background:'#fff',
+  display:'flex', alignItems:'center', padding:'13px 15px'}}>
+  <span style={{fontSize:16, color:'#A1A1A1'}}>Name</span>
+</div>
+
+/* Active / Done — border: #009951 (Green/Select), floating label */
+<div style={{position:'relative', width:500, height:50,
+  borderRadius:4, border:'1px solid #009951', background:'#fff',
+  display:'flex', alignItems:'center', padding:'13px 15px'}}>
+  {/* Floating label */}
+  <div style={{position:'absolute', top:-7, left:11,
+    background:'#fff', padding:'0 5px'}}>
+    <span style={{fontSize:12, color:'#000'}}>Name</span>
+  </div>
+  <span style={{fontSize:16, color:'#000'}}>Vossberg</span>
+</div>
+
+/* Error — border: #C90000 (Red/Default), error message below */
+<div style={{position:'relative', width:500, height:50,
+  borderRadius:4, border:'1px solid #C90000', background:'#fff',
+  display:'flex', alignItems:'center', padding:'13px 15px'}}>
+  <span style={{fontSize:16, color:'#A1A1A1'}}>Name</span>
+  <div style={{position:'absolute', bottom:-18, right:0, background:'#fff', padding:'0 5px'}}>
+    <span style={{fontSize:10, color:'#C90000'}}>Fill out this field</span>
+  </div>
+</div>`} />
+
+            {/* DROPDOWN */}
+            <SH1 id="dropdown">Dropdown</SH1>
+            <Lead>Select input matching Textfield style with default, active, and error states.</Lead>
+            <DropdownSection />
+            <CodeBlock code={`const [open, setOpen] = useState(false);
+const [selected, setSelected] = useState('');
+
+<div style={{position:'relative',width:200}}>
+  <button onClick={()=>setOpen(!open)}>
+    {selected || 'Select option'}
+  </button>
+  {open && (
+    <div style={{position:'absolute',top:'100%'}}>
+      {/* dropdown items */}
+    </div>
+  )}
+</div>`} />
+
+            {/* TOOLTIP */}
+            <SH1 id="tooltip">Tooltip</SH1>
+            <Lead>Short contextual labels appearing on hover. Dark variant is default for Metzler.</Lead>
+            <TooltipSection />
+
+            {/* ALERT */}
+            <SH1 id="alert">Alert</SH1>
+            <Lead>Inline feedback banners with four severity levels: Info, Success, Warning, Error.</Lead>
+            <AlertSection />
+            <CodeBlock code={`<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
+  padding: '14px 16px',
+  borderRadius: 8,
+  background: '#FFEBEE',
+  border: '1.5px solid #C90000'
+}}>
+  <div style={{width:10,height:10,
+    borderRadius:'50%',background:'#C90000'}}/>
+  <div>
+    <div style={{fontWeight:700}}>Error</div>
+    <div>Action failed or validation error.</div>
+  </div>
+</div>`} />
+
+            {/* BADGE */}
+            <SH1 id="badge">Badge</SH1>
+            <Lead>Pill-shaped labels for status, categories, and counts.</Lead>
+            <BadgeSection />
+            <CodeBlock code={`<span style={{
+  display: 'inline-block',
+  padding: '3px 10px',
+  borderRadius: 999,
+  background: '#E6F9F0',
+  color: '#009951',
+  fontSize: 11,
+  fontWeight: 500
+}}>
+  In stock
+</span>`} />
+
+            {/* TOAST */}
+            <SH1 id="toast">Toast</SH1>
+            <Lead>Temporary notifications auto-dismissing after 4 seconds. Maximum 3 simultaneous.</Lead>
+            <ToastSection />
+            <CodeBlock code={`<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
+  padding: '14px 16px',
+  borderRadius: 8,
+  background: '#fff',
+  border: '1px solid #009900',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.10)'
+}}>
+  <div style={{width:8,height:8,
+    borderRadius:'50%',background:'#009900'}}/>
+  <span>Action completed successfully</span>
+  <span style={{cursor:'pointer'}}>×</span>
+</div>`} />
+
+            {/* TABS */}
+            <SH1 id="tabs">Tabs</SH1>
+            <Lead>Tab bar for switching content sections. Max 5 tabs per group.</Lead>
+            <Preview><TabsSection/></Preview>
+            <CodeBlock code={`const [active, setActive] = useState(0);
+const tabs = ['Overview', 'Specifications', 'Reviews'];
+
+<div>
+  <div style={{display:'flex',borderBottom:'2px solid #E8E8E8'}}>
+    {tabs.map((tab,i)=>(
+      <button key={tab} onClick={()=>setActive(i)}
+        style={{
+          borderBottom: i===active ? '3px solid #015253' : 'none',
+          fontWeight: i===active ? 700 : 400
+        }}>
+        {tab}
+      </button>
+    ))}
+  </div>
+  <div>{/* content for active tab */}</div>
+</div>`} />
+
+            {/* NOTIFICATIONS */}
+            <SH1 id="notifications">Notifications</SH1>
+            <Lead>Contextual feedback messages for user actions and system events.</Lead>
+            <NotificationsSection />
+
+            {/* RATINGS & BADGES */}
+            <SH1 id="ratings-badges">Ratings</SH1>
+            <Lead>5-star rating display for product reviews and user feedback.</Lead>
+            <Preview><RatingsSection/></Preview>
+
+            {/* PRODUCT CARDS */}
+            <SH1 id="product-cards">Product Cards</SH1>
+            <Lead>Reusable card component for displaying products with images, pricing, and actions.</Lead>
+            <ProductCardsSection />
+
+            {/* HEADER */}
+            <SH1 id="header">Header</SH1>
+            <Lead>Navigation header with logo, menu, and user account access.</Lead>
+            <HeaderSection />
+
+            {/* FOOTER */}
+            <SH1 id="footer">Footer</SH1>
+            <Lead>Site footer with links, social icons, and legal information.</Lead>
+            <FooterSection />
+
+            <div style={{marginTop:60,paddingTop:40,borderTop:'1px solid #E8E8E8'}}>
+              <div style={{fontSize:12,color:'#999',fontFamily:font}}>
+                Metzler Design System v1.0 · Last updated April 2026 · Tokens sourced from Figma
+              </div>
+            </div>
+
+            </div>{/* /padding wrapper */}
+            </main>
+          </div>{/* /1400px centered wrapper */}
+        </div>
+      );
+    };
+
+    // ── RENDER ──
+    ReactDOM.createRoot(document.getElementById('root')).render(<DesignSystem />);
+  </script>
+</body>
+</html>
