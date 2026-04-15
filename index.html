@@ -864,52 +864,85 @@
 
             {/* TYPOGRAPHY */}
             <SH1 id="typography">Typography</SH1>
-            <Lead>Font family: Helvetica Neue. All text styles below match Figma text styles exactly.</Lead>
+            <Lead>Font family: Helvetica Neue. Sizes in <code style={{fontFamily:'monospace',fontSize:14,background:'#F5F6FA',padding:'1px 5px',borderRadius:3}}>rem</code> — base is 16px = 1rem.</Lead>
 
-            {/* Text styles table */}
-            <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,overflow:'hidden',marginBottom:f(32)}}>
-              <div style={{display:'grid',gridTemplateColumns:'200px 60px 70px 70px 160px 1fr',padding:'10px 16px',background:'#F5F6FA',borderBottom:'1px solid #E8E8E8'}}>
-                {['Style name','Size','Weight','Line-h.','Token','Preview'].map(h=><span key={h} style={{fontSize:11,fontWeight:600,color:'#A1A1A1',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.06em'}}>{h}</span>)}
-              </div>
-              {[
-                {name:'Large text / Desktop', size:46, weight:700, lh:42,   token:'large-text-desktop'},
-                {name:'Large text / Mobile',  size:26, weight:700, lh:32,   token:'large-text-mobile'},
-                {name:'Title / H1 Desktop',   size:24, weight:700, lh:30,   token:'title-h1-desktop'},
-                {name:'Title / H1 Mobile',    size:16, weight:700, lh:'auto',token:'title-h1-mobile'},
-                {name:'Title / H2 Desktop',   size:22, weight:700, lh:'auto',token:'title-h2-desktop'},
-                {name:'Title / H2 Mobile',    size:14, weight:700, lh:'auto',token:'title-h2-mobile'},
-                {name:'Title / H3 Desktop',   size:18, weight:700, lh:22,   token:'title-h3-desktop'},
-                {name:'Title / H3 Mobile',    size:12, weight:700, lh:22,   token:'title-h3-mobile'},
-                {name:'Title / H4 Desktop',   size:16, weight:700, lh:22,   token:'title-h4-desktop'},
-                {name:'Title / H4 Mobile',    size:10, weight:700, lh:'auto',token:'title-h4-mobile'},
-                {name:'Label / Price Desktop',size:30, weight:700, lh:'auto',token:'label-price-desktop'},
-                {name:'Label / Price Mobile', size:26, weight:700, lh:'auto',token:'label-price-mobile'},
-                {name:'Body / 18 Bold',       size:18, weight:700, lh:'auto',token:'body-18-bold'},
-                {name:'Body / 18 Medium',     size:18, weight:500, lh:22,   token:'body-18-medium'},
-                {name:'Body / 18 Regular',    size:18, weight:400, lh:26,   token:'body-18-regular'},
-                {name:'Body / 16 Bold',       size:16, weight:700, lh:22,   token:'body-16-bold'},
-                {name:'Body / 16 Regular 24', size:16, weight:400, lh:24,   token:'body-16-regular-24'},
-                {name:'Body / 16 Regular 22', size:16, weight:400, lh:22,   token:'body-16-regular-22'},
-                {name:'Body / 14 Bold',       size:14, weight:700, lh:16,   token:'body-14-bold'},
-                {name:'Body / 14 Regular',    size:14, weight:400, lh:16,   token:'body-14-regular'},
-                {name:'Body / 13 Bold',       size:13, weight:700, lh:20,   token:'body-13-bold'},
-                {name:'Body / 13 Regular',    size:13, weight:400, lh:20,   token:'body-13-regular'},
-                {name:'Body / 12 Bold',       size:12, weight:700, lh:16,   token:'body-12-bold'},
-                {name:'Body / 12 Regular',    size:12, weight:400, lh:14,   token:'body-12-regular'},
-                {name:'Body / 10 Regular',    size:10, weight:400, lh:14,   token:'body-10-regular'},
-              ].map((s,i)=>(
-                <div key={s.token} style={{display:'grid',gridTemplateColumns:'200px 60px 70px 70px 160px 1fr',padding:'6px 16px',borderBottom:'0.5px solid #F0F0F0',alignItems:'center',height:52,background:i%2===0?'#fff':'#FAFAFA',overflow:'hidden'}}>
-                  <span style={{fontSize:13,fontFamily:'monospace',color:'#015253'}}>{s.name}</span>
-                  <span style={{fontSize:13,fontFamily:font,color:'#666'}}>{s.size}px</span>
-                  <span style={{fontSize:13,fontFamily:font,color:'#666'}}>{s.weight}</span>
-                  <span style={{fontSize:13,fontFamily:font,color:'#666'}}>{s.lh==='auto'?'auto':s.lh+'px'}</span>
-                  <span style={{fontSize:13,fontFamily:'monospace',color:'#999',whiteSpace:'nowrap'}}>{s.token}</span>
-                  <div style={{overflow:'hidden',height:52,display:'flex',alignItems:'center'}}>
-                    <span style={{fontFamily:font,fontSize:s.size,fontWeight:s.weight,lineHeight:1,color:'#000',whiteSpace:'nowrap'}}>Aa — Helvetica Neue</span>
+            {/* Typography scale — row-based, grouped */}
+            {(() => {
+              const groups = [
+                {
+                  label: 'Display — hero & landing',
+                  rows: [
+                    {name:'Display',  rem:'2.875rem', px:'46px', weight:700, lh:'1.15', token:'--text-display',  preview:'Aa — Helvetica Neue', use:'Landing hero'},
+                  ]
+                },
+                {
+                  label: 'Headings — page & section structure',
+                  rows: [
+                    {name:'H1',  rem:'1.5rem',   px:'24px', weight:700, lh:'1.25', token:'--text-h1', preview:'Aa — Helvetica Neue', use:'Page title'},
+                    {name:'H2',  rem:'1.375rem', px:'22px', weight:700, lh:'1.3',  token:'--text-h2', preview:'Aa — Helvetica Neue', use:'Section heading'},
+                    {name:'H3',  rem:'1.125rem', px:'18px', weight:700, lh:'1.375',token:'--text-h3', preview:'Aa — Helvetica Neue', use:'Card & drawer titles'},
+                    {name:'H4',  rem:'1rem',     px:'16px', weight:700, lh:'1.375',token:'--text-h4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
+                  ]
+                },
+                {
+                  label: 'Body — reading & content',
+                  rows: [
+                    {name:'Body Regular',    rem:'1rem',     px:'16px', weight:400, lh:'1.5',  token:'--text-body',        preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
+                    {name:'Body Bold',       rem:'1rem',     px:'16px', weight:700, lh:'1.375',token:'--text-body-bold',    preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, labels'},
+                    {name:'Body SM Regular', rem:'0.875rem', px:'14px', weight:400, lh:'1.5',  token:'--text-body-sm',      preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
+                    {name:'Body SM Bold',    rem:'0.875rem', px:'14px', weight:700, lh:'1.375',token:'--text-body-sm-bold', preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
+                    {name:'Caption Regular', rem:'0.75rem',  px:'12px', weight:400, lh:'1.4',  token:'--text-caption',      preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
+                    {name:'Caption Bold',    rem:'0.75rem',  px:'12px', weight:700, lh:'1.4',  token:'--text-caption-bold', preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
+                  ]
+                },
+              ];
+              return (
+                <div style={{marginBottom:32}}>
+                  {groups.map(g=>(
+                    <div key={g.label} style={{marginBottom:28}}>
+                      {/* Group label */}
+                      <div style={{fontSize:10,fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#A1A1A1',fontFamily:font,marginBottom:4,paddingBottom:6,borderBottom:'1px solid #E8E8E8'}}>{g.label}</div>
+                      {/* Rows */}
+                      {g.rows.map((row,i)=>(
+                        <div key={row.token} style={{display:'flex',alignItems:'baseline',gap:20,padding:'10px 0',borderBottom:'0.5px solid #F0F0F0'}}>
+                          {/* Meta: name + specs */}
+                          <div style={{minWidth:210,flexShrink:0}}>
+                            <div style={{fontSize:13,fontWeight:600,color:'#000',fontFamily:font,marginBottom:2}}>{row.name}</div>
+                            <div style={{fontSize:11,color:'#A1A1A1',fontFamily:'monospace'}}>{row.rem} / {row.weight} / lh {row.lh}</div>
+                            <div style={{fontSize:11,color:'#015253',fontFamily:'monospace',marginTop:1}}>{row.token}</div>
+                          </div>
+                          {/* Preview */}
+                          <div style={{flex:1,overflow:'hidden',whiteSpace:'nowrap',textOverflow:'ellipsis',fontFamily:font,fontSize:row.px,fontWeight:row.weight,lineHeight:row.lh,color:'#000'}}>{row.preview}</div>
+                          {/* Usage */}
+                          <div style={{minWidth:130,fontSize:11,color:'#A1A1A1',fontFamily:font,textAlign:'right',flexShrink:0}}>{row.use}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
+                  {/* CSS variables code block */}
+                  <div style={{background:'#01292A',borderRadius:8,padding:'16px 20px',fontFamily:'monospace',fontSize:12,lineHeight:1.85,color:'#5CDBD3',position:'relative',marginTop:8}}>
+                    <div style={{position:'absolute',top:10,right:12,fontSize:10,color:'rgba(255,255,255,0.3)',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.08em'}}>CSS Variables</div>
+                    <span style={{color:'rgba(255,255,255,0.35)'}}>/* Typography tokens — paste in :root &#123;&#125; */</span>{'\n'}
+                    <span style={{color:'rgba(255,255,255,0.35)'}}>/* Base: 1rem = 16px (browser default) */</span>{'\n\n'}
+                    <span style={{color:'rgba(255,255,255,0.5)'}}>/* Display */</span>{'\n'}
+                    {'--text-display:      2.875rem; /* 46px, weight 700 */'}{'\n\n'}
+                    <span style={{color:'rgba(255,255,255,0.5)'}}>/* Headings */</span>{'\n'}
+                    {'--text-h1:           1.5rem;   /* 24px, weight 700 */'}{'\n'}
+                    {'--text-h2:           1.375rem; /* 22px, weight 700 */'}{'\n'}
+                    {'--text-h3:           1.125rem; /* 18px, weight 700 */'}{'\n'}
+                    {'--text-h4:           1rem;     /* 16px, weight 700 */'}{'\n\n'}
+                    <span style={{color:'rgba(255,255,255,0.5)'}}>/* Body */</span>{'\n'}
+                    {'--text-body:         1rem;     /* 16px, weight 400 */'}{'\n'}
+                    {'--text-body-bold:    1rem;     /* 16px, weight 700 */'}{'\n'}
+                    {'--text-body-sm:      0.875rem; /* 14px, weight 400 */'}{'\n'}
+                    {'--text-body-sm-bold: 0.875rem; /* 14px, weight 700 */'}{'\n'}
+                    {'--text-caption:      0.75rem;  /* 12px, weight 400 */'}{'\n'}
+                    {'--text-caption-bold: 0.75rem;  /* 12px, weight 700 */'}
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })()}
 
             {/* SPACING */}
             <SH1 id="spacing">Spacing</SH1>
