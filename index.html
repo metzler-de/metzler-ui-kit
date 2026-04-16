@@ -206,15 +206,210 @@
     // ── CODE BLOCK ──
     const CodeBlock = ({code}) => {
       const [copied,setCopied] = useState(false);
+
+      // ── Syntax colours (VS Code dark theme inspired) ──
+      const C = {
+        comment:   '#5a8a6a',   // /* comments */        muted green
+        selector:  '#DCDCAA',   // .class-name { }       yellow
+        brace:     'rgba(255,255,255,0.45)', // { }      neutral
+        prop:      '#9CDCFE',   // property-name:        sky blue
+        colon:     'rgba(255,255,255,0.35)', // :        punctuation
+        semi:      'rgba(255,255,255,0.35)', // ;
+        value:     '#CE9178',   // values                salmon/orange
+        hex:       '#B5CEA8',   // #015253 color values  light green
+        num:       '#B5CEA8',   // px / rem numbers      light green
+        htmlTag:   '#569CD6',   // <button>              blue
+        htmlAttr:  '#9CDCFE',   // class=                sky blue
+        htmlStr:   '#CE9178',   // "btn-primary"         salmon
+        pseudo:    '#C586C0',   // :hover :active        purple
+        atRule:    '#C586C0',   // -webkit-              purple
+        text:      '#5CDBD3',   // default               teal
+      };
+
+      // ── CSS property line: "  property: value; /* cmt */" ──
+      const highlightPropLine = (line) => {
+        const indent = line.match(/^(\s*)/)[1];
+        const trimmed = line.trimStart();
+        const cmtMatch = trimmed.match(/^(.*?)(\/\*.*?\*\/\s*)$/);
+        const body = cmtMatch ? cmtMatch[1] : trimmed;
+        const cmt  = cmtMatch ? cmtMatch[2] : '';
+        const colonIdx = body.indexOf(':');
+        if (colonIdx === -1)
+          return <>{indent}<span style={{color:C.text}}>{body}</span>{cmt&&<span style={{color:C.comment}}>{cmt}</span>}</>;
+        const prop   = body.slice(0, colonIdx);
+        const rest   = body.slice(colonIdx + 1);
+        const valRaw = rest.replace(/;\s*$/, '').trim();
+        const semi   = rest.trimEnd().endsWith(';') ? ';' : '';
+        const isHex  = /^#[0-9a-fA-F]{3,8}$/.test(valRaw) || /^rgba?\(/.test(valRaw);
+        return (
+          <>
+            {indent}
+            <span style={{color:C.prop}}>{prop}</span>
+            <span style={{color:C.colon}}>: </span>
+            <span style={{color:isHex ? C.hex : C.value}}>{valRaw}</span>
+            <span style={{color:C.semi}}>{semi}</span>
+            {cmt && <span style={{color:C.comment}}>  {cmt.trim()}</span>}
+          </>
+        );
+      };
+
+      // ── HTML/JSX attribute string tokeniser ──
+      // Handles: attr="val"  attr='val'  attr={{obj}}  attr={expr}  boolAttr
+      const tokenizeAttrs = (attrStr) => {
+        const out = []; let i = 0; let k = 0;
+        const n = attrStr.length;
+        while (i < n) {
+          // Whitespace
+          let ws = '';
+          while (i < n && /\s/.test(attrStr[i])) ws += attrStr[i++];
+          if (ws) out.push(<span key={k++} style={{color:C.text}}>{ws}</span>);
+          if (i >= n) break;
+          // Attr name
+          let name = '';
+          while (i < n && /[\w:-]/.test(attrStr[i])) name += attrStr[i++];
+          if (!name) { out.push(<span key={k++} style={{color:C.text}}>{attrStr[i++]}</span>); continue; }
+          if (i < n && attrStr[i] === '=') {
+            out.push(<span key={k++} style={{color:C.htmlAttr}}>{name}</span>);
+            out.push(<span key={k++} style={{color:C.colon}}>=</span>);
+            i++; // skip =
+            // Value
+            let val = ''; let valColor = C.htmlStr;
+            if (attrStr[i] === '"' || attrStr[i] === "'") {
+              const q = attrStr[i++]; val = q;
+              while (i < n && attrStr[i] !== q) val += attrStr[i++];
+              val += attrStr[i] || ''; if (i < n) i++;
+            } else if (attrStr[i] === '{') {
+              valColor = C.value; // JSX expr → salmon
+              let depth = 0;
+              while (i < n) {
+                const ch = attrStr[i++]; val += ch;
+                if (ch === '{') depth++;
+                else if (ch === '}') { depth--; if (depth === 0) break; }
+              }
+            }
+            out.push(<span key={k++} style={{color:valColor}}>{val}</span>);
+          } else {
+            out.push(<span key={k++} style={{color:C.htmlAttr}}>{name}</span>); // boolean attr
+          }
+        }
+        return out;
+      };
+
+      // ── Find closing > or /> index, skipping quoted strings & braces ──
+      const findTagClose = (str) => {
+        let i = 0;
+        while (i < str.length) {
+          const ch = str[i];
+          if (ch === '"' || ch === "'") { const q=ch; i++; while(i<str.length&&str[i]!==q)i++; }
+          else if (ch === '{') { let d=1; i++; while(i<str.length&&d>0){if(str[i]==='{')d++;else if(str[i]==='}')d--;i++;} continue; }
+          else if (ch === '/' && str[i+1] === '>') return i;
+          else if (ch === '>') return i;
+          i++;
+        }
+        return -1;
+      };
+
+      // ── Per-line highlighter ──
+      const highlightLine = (line, idx) => {
+        const trimmed = line.trim();
+
+        // Blank
+        if (!trimmed) return <div key={idx} style={{height:'0.7em'}}/>;
+
+        // Block comment  /* ... */
+        if (/^\/\*/.test(trimmed))
+          return <div key={idx}><span style={{color:C.comment}}>{line}</span></div>;
+
+        // HTML comment  <!-- ... -->
+        if (/^<!--/.test(trimmed))
+          return <div key={idx}><span style={{color:C.comment}}>{line}</span></div>;
+
+        // HTML / JSX tag line  <tag ...>  </tag>
+        if (/^\s*<\/?[\w!]/.test(line)) {
+          const parts = []; let k = 0;
+          const indentM = line.match(/^(\s+)/);
+          let rest = indentM ? (parts.push(indentM[1]), line.slice(indentM[1].length)) : line;
+
+          // Tag name  <div  </div
+          const tagM = rest.match(/^(<\/?)(\w[\w-]*)/);
+          if (tagM) {
+            parts.push(<span key={k++} style={{color:C.htmlTag}}>{tagM[1]}{tagM[2]}</span>);
+            rest = rest.slice(tagM[0].length);
+          }
+
+          // Find where attrs end (closing > or />)
+          const closeIdx = findTagClose(rest);
+          const attrStr  = closeIdx >= 0 ? rest.slice(0, closeIdx) : rest;
+          const afterClose = closeIdx >= 0 ? rest.slice(closeIdx) : '';
+
+          // Tokenise attrs
+          tokenizeAttrs(attrStr).forEach((el,i) => parts.push(React.cloneElement(el,{key:k++})));
+
+          // Closing bracket + inline text after
+          if (afterClose) {
+            const cbM = afterClose.match(/^(\/?>)(.*)/s);
+            if (cbM) {
+              parts.push(<span key={k++} style={{color:C.htmlTag}}>{cbM[1]}</span>);
+              if (cbM[2].trim()) {
+                // Split: optional text · closing tag · optional remainder
+                const splitM = cbM[2].match(/^([^<]*?)(<\/[\w][\w-]*>)(.*)$/s);
+                if (splitM) {
+                  if (splitM[1]) parts.push(<span key={k++} style={{color:C.text}}>{splitM[1]}</span>);
+                  parts.push(<span key={k++} style={{color:C.htmlTag}}>{splitM[2]}</span>);
+                  if (splitM[3]) parts.push(<span key={k++} style={{color:C.text}}>{splitM[3]}</span>);
+                } else {
+                  parts.push(<span key={k++} style={{color:C.text}}>{cbM[2]}</span>);
+                }
+              }
+            } else parts.push(<span key={k++} style={{color:C.text}}>{afterClose}</span>);
+          }
+          return <div key={idx}>{parts}</div>;
+        }
+
+        // Self-close  />  or lone  >  on its own line
+        if (/^\s*\/?>$/.test(trimmed)) {
+          const indent = line.match(/^(\s*)/)[1];
+          return <div key={idx}>{indent}<span style={{color:C.htmlTag}}>{trimmed}</span></div>;
+        }
+
+        // Closing CSS brace  }
+        if (/^\s*\}\s*$/.test(line)) {
+          const indent = line.match(/^(\s*)/)[1];
+          return <div key={idx}>{indent}<span style={{color:C.brace}}>{'}'}</span></div>;
+        }
+
+        // CSS property line: word-chars then colon (not a URL)
+        if (/^\s*-?[\w-]+\s*:(?!\/\/)/.test(line))
+          return <div key={idx}>{highlightPropLine(line)}</div>;
+
+        // CSS selector: must start with . # & * or end with { or ,
+        // (plain text like "Button" or SVG path data should fall through to default)
+        if (/^\s*[.#&*]/.test(line) || (/^\s*[\w-]/.test(line) && /[{,]\s*$/.test(line))) {
+          const m = line.match(/^(\s*)(.*?)(\s*\{)?\s*$/);
+          const indent = m[1], brace = m[3]||'';
+          const selParts = m[2].split(/(::?[\w-]+)/g).map((p,i) =>
+            /^::?[\w-]/.test(p)
+              ? <span key={i} style={{color:C.pseudo}}>{p}</span>
+              : <span key={i} style={{color:C.selector}}>{p}</span>
+          );
+          return <div key={idx}>{indent}{selParts}{brace&&<span style={{color:C.brace}}>{brace}</span>}</div>;
+        }
+
+        // Default: plain text, SVG path data, text content, etc.
+        return <div key={idx}><span style={{color:C.text}}>{line}</span></div>;
+      };
+
+      const lines = code.split('\n');
+
       return (
         <div style={{position:'relative',marginTop:8,marginBottom:16}}>
           <button onClick={()=>{navigator.clipboard?.writeText(code).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),1500);}}
             style={{position:'absolute',top:8,right:8,background:copied?'#009900':'#015253',color:'#fff',border:'none',borderRadius:4,padding:'4px 10px',fontSize:f(11),fontFamily:font,cursor:'pointer',zIndex:1,transition:'background 0.2s'}}>
             {copied?'Copied!':'Copy'}
           </button>
-          <pre style={{background:'#01292A',color:'#5CDBD3',padding:`${f(14)}px ${f(16)}px`,borderRadius:8,fontSize:f(12),fontFamily:'monospace',overflowX:'auto',lineHeight:1.6,margin:0}}>
-            <code>{code}</code>
-          </pre>
+          <div style={{background:'#01292A',padding:`${f(14)}px ${f(16)}px`,borderRadius:8,fontSize:f(12),fontFamily:'monospace',overflowX:'auto',lineHeight:1.65,margin:0,whiteSpace:'pre'}}>
+            {lines.map((line,i) => highlightLine(line,i))}
+          </div>
         </div>
       );
     };
@@ -459,54 +654,271 @@
     // ── BUTTONS SECTION ──
     // Exact Figma specs: cornerRadius=4 (corner-radius/m), padding 10px 15px (Desktop), bg #015253, hover #006D75
     const ButtonsSection = () => {
+      // Shared base — Figma node 5582-13047, Desktop: h=50px, radius=4px, Bold 18px
+      const base = {
+        display:'inline-flex', alignItems:'center', justifyContent:'center',
+        height:50, borderRadius:4,
+        fontFamily:font, fontSize:18, fontWeight:600, lineHeight:1,
+        whiteSpace:'nowrap', userSelect:'none',
+        transition:'background 0.15s, border-color 0.15s',
+      };
+
+      // White arrow icon — Figma "Arrow right", 9×16 px
+      const ArrowRight = () => (
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none" style={{flexShrink:0}}>
+          <path d="M0.224395 0.226758C0.523588 -0.0755859 1.00856 -0.0755859 1.30775 0.226758L9 8L1.30775 15.7732C1.00856 16.0756 0.523588 16.0756 0.224395 15.7732C-0.0747983 15.4709 -0.0747983 14.9808 0.224395 14.6785L6.83328 8L0.224395 1.32152C-0.0747983 1.01918 -0.0747983 0.529101 0.224395 0.226758Z" fill="#ffffff"/>
+        </svg>
+      );
+
+      // Sub-heading inside the section
+      const BH = ({children}) => (
+        <h2 style={{fontSize:20,fontWeight:700,color:'#000',fontFamily:font,marginTop:40,marginBottom:6}}>{children}</h2>
+      );
+      // Description under the sub-heading
+      const BD = ({children}) => (
+        <p style={{fontSize:14,color:'#555',fontFamily:font,marginBottom:16,lineHeight:1.65,marginTop:0}}>{children}</p>
+      );
+      // State label below each button in preview
+      const SL = ({children}) => (
+        <span style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em',color:'#A1A1A1',fontFamily:font,fontWeight:600}}>{children}</span>
+      );
+      // Inline token chip
+      const Chip = ({children}) => (
+        <code style={{fontSize:12,background:'#F0F4F4',color:'#015253',borderRadius:3,padding:'1px 5px',fontFamily:'monospace'}}>{children}</code>
+      );
+
+      // States data
+      const primaryStates = [
+        {label:'Default',        bg:'#015253', cursor:'pointer'},
+        {label:'Hover / Active', bg:'#006D75', cursor:'pointer'},
+        {label:'Disabled',       bg:'#A1A1A1', cursor:'not-allowed'},
+      ];
+      const secondaryStates = [
+        {label:'Default',        bg:'transparent',         border:'#015253', color:'#015253', cursor:'pointer'},
+        {label:'Hover / Active', bg:'rgba(1,82,83,0.05)',  border:'#015253', color:'#015253', cursor:'pointer'},
+        {label:'Disabled',       bg:'transparent',         border:'#A1A1A1', color:'#A1A1A1', cursor:'not-allowed'},
+      ];
+
+      // Renders a row of state variants
+      const StateRow = ({states, renderBtn}) => (
+        <div style={{display:'flex',gap:32,flexWrap:'wrap',alignItems:'flex-start'}}>
+          {states.map(s => (
+            <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:10}}>
+              {renderBtn(s)}
+              <SL>{s.label}</SL>
+            </div>
+          ))}
+        </div>
+      );
+
+      // Column header label
+      const ColHdr = ({children}) => (
+        <div style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.07em',color:'#A1A1A1',fontFamily:font,fontWeight:600,textAlign:'center',minWidth:160}}>{children}</div>
+      );
+      // Row type label
+      const RowLbl = ({children}) => (
+        <div style={{fontSize:12,fontWeight:600,color:'#000',fontFamily:font,minWidth:110,flexShrink:0,paddingTop:14}}>{children}</div>
+      );
+
       return (
         <div>
-          <CLbl>Filled buttons — Default · Hover · Disabled</CLbl>
-          <ShowRow>
-            {[
-              {label:'Default',   bg:'#015253', cursor:'pointer'},
-              {label:'Hover',     bg:'#006D75', cursor:'pointer'},
-              {label:'Disabled',  bg:'#015253', cursor:'not-allowed', opacity:0.4},
-            ].map(s=>(
-              <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:8}}>
-                <button style={{padding:'10px 15px',borderRadius:4,fontFamily:font,fontSize:14,fontWeight:500,background:s.bg,color:'#fff',border:'none',cursor:s.cursor,opacity:s.opacity||1,letterSpacing:'0.02em'}}>
-                  Button label
-                </button>
-                <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font}}>Condition={s.label}</span>
-              </div>
-            ))}
-          </ShowRow>
-          <CLbl>Outlined / Secondary buttons</CLbl>
-          <ShowRow>
-            {[
-              {label:'Default', border:'#DADADA', color:'#000000', bg:'#fff'},
-              {label:'Hover',   border:'#015253', color:'#015253', bg:'rgba(1,82,83,0.05)'},
-              {label:'Disabled',border:'#DADADA', color:'#A1A1A1', bg:'#fff', opacity:0.6},
-            ].map(s=>(
-              <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:8}}>
-                <button style={{padding:'10px 15px',borderRadius:4,fontFamily:font,fontSize:14,fontWeight:500,background:s.bg,color:s.color,border:`1px solid ${s.border}`,cursor:s.opacity?'not-allowed':'pointer',opacity:s.opacity||1}}>
-                  Button label
-                </button>
-                <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font}}>Condition={s.label}</span>
-              </div>
-            ))}
-          </ShowRow>
-          <CLbl>Sizes — Small (Desktop 35px) · Medium (Mobile 36px) · Big (Mobile 45px)</CLbl>
-          <ShowRow>
-            {[
-              {label:'Small Desktop', h:35, px:15, py:10, fz:14},
-              {label:'Small Mobile',  h:30, px:10, py:10, fz:13},
-              {label:'Medium Mobile', h:36, px:10, py:10, fz:13},
-              {label:'Big Mobile',    h:45, px:15, py:10, fz:14},
-            ].map(s=>(
-              <div key={s.label} style={{display:'flex',flexDirection:'column',alignItems:'flex-start',gap:8}}>
-                <button style={{height:s.h,padding:`${s.py}px ${s.px}px`,borderRadius:4,fontFamily:font,fontSize:s.fz,fontWeight:500,background:'#015253',color:'#fff',border:'none',cursor:'pointer'}}>
-                  Button
-                </button>
-                <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font}}>{s.label} ({s.h}px)</span>
-              </div>
-            ))}
-          </ShowRow>
+
+          {/* ──── Single combined preview — all types × all states on white ──── */}
+          <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,padding:'24px 28px',marginBottom:20,overflowX:'auto'}}>
+
+            {/* Column headers */}
+            <div style={{display:'flex',gap:20,alignItems:'center',marginBottom:20,paddingLeft:118}}>
+              <ColHdr>Default</ColHdr>
+              <ColHdr>Hover / Active</ColHdr>
+              <ColHdr>Disabled</ColHdr>
+            </div>
+
+            {/* Primary row */}
+            <div style={{display:'flex',gap:20,alignItems:'center',marginBottom:20,borderTop:'1px solid #F0F0F0',paddingTop:20}}>
+              <RowLbl>Primary</RowLbl>
+              {primaryStates.map(s => (
+                <div key={s.label} style={{minWidth:160,display:'flex',justifyContent:'center'}}>
+                  <button style={{...base, padding:'0 25px', background:s.bg, color:'#fff', border:'none', cursor:s.cursor}}>
+                    Button
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Secondary row */}
+            <div style={{display:'flex',gap:20,alignItems:'center',marginBottom:20,borderTop:'1px solid #F0F0F0',paddingTop:20}}>
+              <RowLbl>Secondary</RowLbl>
+              {secondaryStates.map(s => (
+                <div key={s.label} style={{minWidth:160,display:'flex',justifyContent:'center'}}>
+                  <button style={{...base, padding:'0 25px', background:s.bg, color:s.color, border:`1.5px solid ${s.border}`, cursor:s.cursor}}>
+                    Button
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Arrow row */}
+            <div style={{display:'flex',gap:20,alignItems:'center',borderTop:'1px solid #F0F0F0',paddingTop:20}}>
+              <RowLbl>With Arrow</RowLbl>
+              {primaryStates.map(s => (
+                <div key={s.label} style={{minWidth:160,display:'flex',justifyContent:'center'}}>
+                  <button style={{...base, padding:'0 20px 0 25px', gap:7, background:s.bg, color:'#fff', border:'none', cursor:s.cursor}}>
+                    Button
+                    <ArrowRight/>
+                  </button>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+          {/* ──────────── Code blocks per type ──────────── */}
+          <BH>Primary Button</BH>
+          <BD>
+            Filled teal button — the main call-to-action. Use for the single most important action on a
+            page ("Add to cart", "Confirm order"). Never place two primary buttons side by side.{' '}
+            Default: <Chip>#015253</Chip> · Hover/Active: <Chip>#006D75</Chip> · Disabled: <Chip>#A1A1A1</Chip>
+          </BD>
+          <CodeBlock code={
+`/* ── Primary Button ── Figma node 5582-13047 ──────────────── */
+/* Desktop: h=50px · radius=4px · Helvetica Neue Bold 18px    */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 25px;
+  border-radius: 4px;                 /* corner-radius/m */
+  background-color: #015253;          /* color/primary/default */
+  color: #ffffff;
+  border: none;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;                    /* SemiBold */
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: #006D75;          /* color/primary/hover */
+}
+
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+  background-color: #A1A1A1;          /* color/gray/default */
+  cursor: not-allowed;
+}
+
+<!-- HTML -->
+<button class="btn-primary">Button</button>
+<button class="btn-primary" disabled>Button</button>`
+          }/>
+
+          <BH>Secondary Button</BH>
+          <BD>
+            Outlined button for supporting actions. Transparent background with a <Chip>1.5px</Chip> teal
+            border. Hover adds a subtle tint <Chip>rgba(1,82,83,0.05)</Chip>. Disabled: border and text
+            turn to <Chip>#A1A1A1</Chip>. Same height and font as primary.
+          </BD>
+          <CodeBlock code={
+`/* ── Secondary Button ── Figma node 5582-13047 ────────────── */
+/* Outlined · 1.5px border · height 50px · same font as primary */
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 25px;
+  border-radius: 4px;                 /* corner-radius/m */
+  background-color: transparent;
+  color: #015253;                     /* color/primary/default */
+  border: 1.5px solid #015253;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;                    /* SemiBold */
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active {
+  background-color: rgba(1, 82, 83, 0.05);  /* color/primary/5% */
+  border-color: #015253;
+}
+
+.btn-secondary:disabled,
+.btn-secondary[aria-disabled="true"] {
+  color: #A1A1A1;                     /* color/gray/default */
+  border-color: #A1A1A1;
+  cursor: not-allowed;
+}
+
+<!-- HTML -->
+<button class="btn-secondary">Button</button>
+<button class="btn-secondary" disabled>Button</button>`
+          }/>
+
+          <BH>Button with Arrow</BH>
+          <BD>
+            Primary button variant with a right-pointing arrow — signals navigation or forward progression
+            ("View details", "Next step"). Right padding reduced to <Chip>20px</Chip>, gap between label
+            and icon <Chip>7px</Chip>. Arrow: SVG 9×16 px, fill white. Same color states as primary.
+          </BD>
+          <CodeBlock code={
+`/* ── Button with Arrow ── Figma node 5582-13047 ───────────── */
+/* Primary + right arrow · gap=7px · pl=25px, pr=20px         */
+
+.btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 50px;
+  padding: 0 20px 0 25px;            /* less right padding for icon */
+  border-radius: 4px;
+  background-color: #015253;         /* color/primary/default */
+  color: #ffffff;
+  border: none;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 600;                  /* SemiBold */
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-arrow:hover,
+.btn-arrow:active {
+  background-color: #006D75;
+}
+
+.btn-arrow:disabled,
+.btn-arrow[aria-disabled="true"] {
+  background-color: #A1A1A1;
+  cursor: not-allowed;
+}
+
+<!-- HTML -->
+<button class="btn-arrow">
+  Button
+  <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
+    <path d="M0.224 0.227C0.524 -0.076 1.009 -0.076 1.308 0.227L9 8
+             L1.308 15.773C1.009 16.076 0.524 16.076 0.224 15.773
+             C-0.075 15.471 -0.075 14.981 0.224 14.679L6.833 8
+             L0.224 1.322C-0.075 1.019 -0.075 0.529 0.224 0.227Z"
+          fill="#ffffff"/>
+  </svg>
+</button>`
+          }/>
+
         </div>
       );
     };
@@ -521,25 +933,26 @@
       const isActive  = condition==='Active';
       const isDone    = condition==='Done';
       const isError   = condition==='Error';
-      const hasValue  = isActive || isDone;
-      const border = isError ? '#C90000' : (hasValue ? '#009951' : '#DADADA');
+      const hasValue  = isDone;
+      const isFloating = isActive || isDone;
+      const border = isError ? '#C90000' : (isFloating ? '#009951' : '#DADADA');
       return (
         <div style={{display:'flex',flexDirection:'column',gap:8,position:'relative',width:w}}>
           <div style={{position:'relative',width:'100%',height:50,borderRadius:4,border:`1px solid ${border}`,background:'#fff',display:'flex',alignItems:'center',padding:'13px 15px',boxSizing:'border-box',gap:3}}>
             {/* Floating label — shown when Active or Done */}
-            {(hasValue) && (
+            {isFloating && (
               <div style={{position:'absolute',top:-7,left:11,background:'#fff',padding:'0 5px',lineHeight:'14px'}}>
                 <span style={{fontFamily:font,fontSize:12,color:'#000',whiteSpace:'nowrap'}}>Name</span>
               </div>
             )}
+            {/* Cursor indicator for Active — left side, before text */}
+            {isActive && (
+              <div style={{width:1,height:19,background:'#000',flexShrink:0}}/>
+            )}
             {/* Input text or placeholder */}
             <span style={{fontFamily:font,fontSize:16,lineHeight:'24px',color:hasValue?'#000':'#A1A1A1',flex:1,whiteSpace:'nowrap'}}>
-              {hasValue ? 'Vossberg' : 'Name'}
+              {isDone ? 'Vossberg' : (isActive ? '' : 'Name')}
             </span>
-            {/* Cursor indicator for Active */}
-            {isActive && (
-              <div style={{width:1,height:19,background:'#000',flexShrink:0,marginLeft:1}}/>
-            )}
           </div>
           {/* Error message — bottom right */}
           {isError && (
@@ -553,27 +966,160 @@
 
     // ── FORM ELEMENTS SECTION ──
     const FormElementsSection = () => {
+      // Shared helpers (same as ButtonsSection pattern)
+      const BH = ({children}) => (
+        <h2 style={{fontSize:20,fontWeight:700,color:'#000',fontFamily:font,marginTop:40,marginBottom:6}}>{children}</h2>
+      );
+      const BD = ({children}) => (
+        <p style={{fontSize:14,color:'#555',fontFamily:font,marginBottom:16,lineHeight:1.65,marginTop:0}}>{children}</p>
+      );
+      const Chip = ({children}) => (
+        <code style={{fontSize:12,background:'#F0F4F4',color:'#015253',borderRadius:3,padding:'1px 5px',fontFamily:'monospace'}}>{children}</code>
+      );
+      const SL = ({children}) => (
+        <span style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em',color:'#A1A1A1',fontFamily:font,fontWeight:600}}>{children}</span>
+      );
+
+      // Spec table row
+      const SpecRow = ({label, value}) => (
+        <div style={{display:'flex',gap:12,padding:'5px 0',borderBottom:'0.5px solid #F0F0F0',alignItems:'baseline'}}>
+          <div style={{minWidth:140,fontSize:12,fontWeight:600,color:'#000',fontFamily:font,flexShrink:0}}>{label}</div>
+          <div style={{fontSize:12,color:'#555',fontFamily:'monospace'}}>{value}</div>
+        </div>
+      );
+
       return (
         <div>
-          <CLbl>Textfield — Desktop</CLbl>
-          <div style={{display:'flex',flexDirection:'column',gap:32,marginBottom:32}}>
+          {/* ──────────── TEXTFIELD ──────────── */}
+          <BH>Textfield</BH>
+          <BD>
+            Single-line text input for forms — names, emails, addresses. Comes in four states:{' '}
+            <Chip>Default</Chip> (empty, waiting), <Chip>Active</Chip> (focused, cursor visible),{' '}
+            <Chip>Done</Chip> (value entered), <Chip>Error</Chip> (validation failed).
+            The label floats above the field when a value is present or the field is focused.
+          </BD>
+
+          {/* Spec table */}
+          <div style={{background:'#fff',border:'1px solid #E8E8E8',borderRadius:8,padding:'16px 20px',marginBottom:24}}>
+            <div style={{fontSize:11,fontWeight:600,textTransform:'uppercase',letterSpacing:'0.07em',color:'#A1A1A1',fontFamily:font,marginBottom:10}}>Specs — Desktop · Figma node 8321:138637</div>
+            <SpecRow label="Height"          value="50px" />
+            <SpecRow label="Width (desktop)" value="500px" />
+            <SpecRow label="Width (mobile)"  value="340px" />
+            <SpecRow label="Border radius"   value="4px  (corner-radius/m)" />
+            <SpecRow label="Padding"         value="13px 15px" />
+            <SpecRow label="Font"            value="Helvetica Neue Regular · 16px · lh 24px" />
+            <SpecRow label="Placeholder"     value="#A1A1A1  (color/gray/default)" />
+            <SpecRow label="Value text"      value="#000000  (color/base/black)" />
+            <SpecRow label="Border — Default"value="#DADADA  (color/gray/border)" />
+            <SpecRow label="Border — Active / Done" value="#009951  (color/green/select)" />
+            <SpecRow label="Border — Error"  value="#C90000  (color/red/error)" />
+            <SpecRow label="Floating label"  value="12px · #000 · appears at top-left when focused or filled" />
+            <SpecRow label="Error message"   value="10px · #C90000 · aligned bottom-right" />
+          </div>
+
+          <CLbl>Desktop — 500 × 50 px</CLbl>
+          <div style={{display:'flex',flexDirection:'column',gap:32,marginBottom:24}}>
             {['Default','Active','Done','Error'].map(cond=>(
               <div key={cond} style={{display:'flex',flexDirection:'column',gap:10}}>
                 <Textfield condition={cond} device="Desktop" />
-                <span style={{fontSize:12,color:'#A1A1A1',fontFamily:font}}>Condition={cond}</span>
+                <SL>Condition = {cond}</SL>
               </div>
             ))}
           </div>
-          <CLbl>Textfield — Mobile</CLbl>
-          <div style={{display:'flex',flexDirection:'column',gap:32,marginBottom:32}}>
-            {['Default','Active','Done','Error'].map(cond=>(
-              <div key={cond} style={{display:'flex',flexDirection:'column',gap:10}}>
-                <Textfield condition={cond} device="Mobile" />
-                <span style={{fontSize:12,color:'#A1A1A1',fontFamily:font}}>Condition={cond} · Mobile</span>
-              </div>
-            ))}
-          </div>
-          <CLbl>Checkbox</CLbl>
+          <CodeBlock code={
+`/* ── Textfield ── Figma node 8321:138637 ──────────────────── */
+/* height: 50px · border-radius: 4px · font: 16px Regular      */
+
+.textfield-wrapper {
+  position: relative;
+  width: 500px;
+}
+
+.textfield {
+  width: 100%;
+  height: 50px;
+  padding: 13px 15px;
+  border: 1px solid #DADADA;        /* color/gray/border */
+  border-radius: 4px;               /* corner-radius/m */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;                   /* color/base/black */
+  background: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.textfield::placeholder {
+  color: #A1A1A1;                   /* color/gray/default */
+}
+
+.textfield:focus {
+  border-color: #009951;            /* color/green/select */
+}
+
+.textfield.is-done {
+  border-color: #009951;
+}
+
+.textfield.is-error {
+  border-color: #C90000;            /* color/red/error */
+}
+
+/* Floating label — appears when focused or filled */
+.textfield-label {
+  position: absolute;
+  top: -7px;
+  left: 11px;
+  background: #ffffff;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #000000;
+  pointer-events: none;
+}
+
+/* Error message */
+.textfield-error {
+  position: absolute;
+  bottom: -18px;
+  right: 0;
+  font-size: 10px;
+  color: #C90000;
+}
+
+<!-- HTML -->
+<!-- Default -->
+<div class="textfield-wrapper">
+  <input class="textfield" type="text" placeholder="Name" />
+</div>
+
+<!-- Active (focused, empty) -->
+<div class="textfield-wrapper">
+  <label class="textfield-label">Name</label>
+  <input class="textfield" type="text" autofocus />
+</div>
+
+<!-- Done (value entered) -->
+<div class="textfield-wrapper">
+  <label class="textfield-label">Name</label>
+  <input class="textfield is-done" type="text" value="Vossberg" />
+</div>
+
+<!-- Error -->
+<div class="textfield-wrapper">
+  <input class="textfield is-error" type="text" placeholder="Name" />
+  <span class="textfield-error">Fill out this field</span>
+</div>`
+          }/>
+
+          {/* ──────────── CHECKBOX ──────────── */}
+          <BH>Checkbox</BH>
+          <BD>
+            Two checked variants depending on context: <Chip>Filter</Chip> (teal <Chip>#015253</Chip>) for
+            filter panels and navigation, and <Chip>Configurator</Chip> (green <Chip>#009951</Chip>) for
+            product configurators and selection lists. Unchecked state is always a plain white box with
+            a <Chip>#DADADA</Chip> border.
+          </BD>
           <ShowRow>
             <div style={{display:'flex',flexDirection:'column',gap:20}}>
               <div>
@@ -590,7 +1136,81 @@
               </div>
             </div>
           </ShowRow>
-          <CLbl>Radio Button</CLbl>
+          <CodeBlock code={
+`/* ── Checkbox ────────────────────────────────────────────── */
+/* 20×20px · border-radius: 4px · two colour variants         */
+
+.checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000000;
+  user-select: none;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1.5px solid #DADADA;      /* color/gray/border */
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Filter variant — checked (teal) */
+.checkbox.checked-filter {
+  background: #015253;              /* color/primary/default */
+  border-color: #015253;
+}
+
+/* Configurator variant — checked (green) */
+.checkbox.checked-config {
+  background: #009951;              /* color/green/select */
+  border-color: #009951;
+}
+
+<!-- HTML -->
+<!-- Unchecked -->
+<label class="checkbox-wrapper">
+  <span class="checkbox"></span>
+  Unchecked
+</label>
+
+<!-- Checked — Filter (Teal) -->
+<label class="checkbox-wrapper">
+  <span class="checkbox checked-filter">
+    <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+      <path d="M1 4L4.5 7.5L11 1" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </span>
+  Checked
+</label>
+
+<!-- Checked — Configurator (Green) -->
+<label class="checkbox-wrapper">
+  <span class="checkbox checked-config">
+    <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+      <path d="M1 4L4.5 7.5L11 1" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </span>
+  Checked
+</label>`
+          }/>
+
+          {/* ──────────── RADIO BUTTON ──────────── */}
+          <BH>Radio Button</BH>
+          <BD>
+            Circular single-select control. Active state fills the circle with green
+            <Chip>#009951</Chip> and shows a white dot inside. Error state uses a
+            <Chip>#C90000</Chip> border. Disabled reduces opacity to 50% and blocks interaction.
+          </BD>
           <ShowRow>
             <div style={{display:'flex',flexDirection:'column',gap:20}}>
               {['Default','Active','Disabled','Error'].map(s=>(
@@ -601,26 +1221,224 @@
               ))}
             </div>
           </ShowRow>
+          <CodeBlock code={
+`/* ── Radio Button ──────────────────────────────────────────── */
+/* 20×20px circle · green active dot · error & disabled states */
+
+.radio-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000000;
+  user-select: none;
+}
+
+.radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #DADADA;      /* color/gray/border */
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Active / selected */
+.radio.active {
+  border-color: #009951;            /* color/green/select */
+  background: #009951;
+}
+
+.radio.active::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* Error */
+.radio.error {
+  border-color: #C90000;            /* color/red/error */
+}
+
+/* Disabled */
+.radio-wrapper.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+<!-- HTML -->
+<!-- Default (Unselected) -->
+<label class="radio-wrapper">
+  <span class="radio"></span>
+  Unselected
+</label>
+
+<!-- Active (Selected) -->
+<label class="radio-wrapper">
+  <span class="radio active"></span>
+  Selected
+</label>
+
+<!-- Disabled -->
+<label class="radio-wrapper disabled">
+  <span class="radio"></span>
+  Disabled option
+</label>
+
+<!-- Error -->
+<label class="radio-wrapper">
+  <span class="radio error"></span>
+  Error state
+</label>`
+          }/>
         </div>
       );
     };
 
-    // ── ICONS SECTION ──
+    // ── ICONS SECTION — exact Figma node 6047:121808 ──
     const IconsSection = () => {
-      const icons = ['search','close','check','info','plus','minus','star','menu'];
+      const [selected, setSelected] = useState(null);
+      const [svgCopied, setSvgCopied] = useState(false);
+
+      // SVG data URIs with #015253 teal — permanent, no expiry
+      const ic = {
+        menu:        "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2021%2016.8%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cg%20id%3D%22Vector%22%3E%0A%3Cpath%20d%3D%22M0%200.8C0%200.358172%200.358172%200%200.8%200H20.2C20.6418%200%2021%200.358172%2021%200.8C21%201.24183%2020.6418%201.6%2020.2%201.6H0.799999C0.358171%201.6%200%201.24183%200%200.8Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M0%208.4C0%207.95817%200.358172%207.6%200.8%207.6H14.2C14.6418%207.6%2015%207.95817%2015%208.4C15%208.84183%2014.6418%209.2%2014.2%209.2H0.8C0.358172%209.2%200%208.84183%200%208.4Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M0%2016C0%2015.5582%200.358172%2015.2%200.8%2015.2H20.2C20.6418%2015.2%2021%2015.5582%2021%2016C21%2016.4418%2020.6418%2016.8%2020.2%2016.8H0.799999C0.358171%2016.8%200%2016.4418%200%2016Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/g%3E%0A%3C/svg%3E%0A",
+        search:      "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2018.7497%2019.8473%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cg%20id%3D%22Vector%22%3E%0A%3Cpath%20d%3D%22M16.5%208.86618C16.4997%204.81893%2013.1632%201.49999%209%201.49999C4.83683%201.49999%201.50025%204.81893%201.5%208.86618C1.5%2012.9136%204.83668%2016.2333%209%2016.2333V17.7333L8.53711%2017.7216C3.78167%2017.4843%200%2013.6101%200%208.86618C0.000250582%203.96948%204.02959%200%209%200C13.9704%200%2017.9997%203.96948%2018%208.86618C18%2013.7631%2013.9706%2017.7333%209%2017.7333V16.2333C13.1633%2016.2333%2016.5%2012.9136%2016.5%208.86618Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M18.534%2019.6237C18.2433%2019.9188%2017.7685%2019.9222%2017.4734%2019.6316L13.3191%2015.5398L14.3719%2014.4704L18.5261%2018.5632C18.8212%2018.8539%2018.8246%2019.3287%2018.534%2019.6237Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/g%3E%0A%3C/svg%3E%0A",
+        magnify:     "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2018.7497%2019.8473%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cg%20id%3D%22Vector%22%3E%0A%3Cpath%20d%3D%22M16.5%208.86618C16.4997%204.81893%2013.1632%201.49999%209%201.49999C4.83683%201.49999%201.50025%204.81893%201.5%208.86618C1.5%2012.9136%204.83668%2016.2333%209%2016.2333V17.7333L8.53711%2017.7216C3.78167%2017.4843%200%2013.6101%200%208.86618C0.000250582%203.96948%204.02959%200%209%200C13.9704%200%2017.9997%203.96948%2018%208.86618C18%2013.7631%2013.9706%2017.7333%209%2017.7333V16.2333C13.1633%2016.2333%2016.5%2012.9136%2016.5%208.86618Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M18.534%2019.6237C18.2433%2019.9188%2017.7685%2019.9222%2017.4734%2019.6316L13.3191%2015.5398L14.3719%2014.4704L18.5261%2018.5632C18.8212%2018.8539%2018.8246%2019.3287%2018.534%2019.6237Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M9.5%204.5V8H13V9H9.5V12.5H8.5V9H5V8H8.5V4.5H9.5Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/g%3E%0A%3C/svg%3E%0A",
+        filter:      "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2016%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cg%20id%3D%22Filter%22%3E%0A%3Cpath%20d%3D%22M9.52344%201.67978V2.79969L1.24889e-08%202.79969L1.124e-07%201.67978L9.52344%201.67978Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M16%201.67987V2.79978L12.1908%202.79978V1.67987L16%201.67987Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M12%202.33279C11.9998%201.6629%2011.4448%201.11991%2010.7612%201.11991C10.0777%201.12011%209.52364%201.66302%209.52344%202.33279C9.52344%203.00272%2010.0776%203.54656%2010.7612%203.54675V4.66667L10.5179%204.65464C9.31734%204.53507%208.38058%203.54075%208.38058%202.33279C8.38078%201.04451%209.44649%200.000196931%2010.7612%200C12.076%200%2013.1427%201.04439%2013.1429%202.33279L13.1306%202.57121C13.0089%203.74797%2011.9941%204.66667%2010.7612%204.66667V3.54675C11.4449%203.54675%2012%203.00284%2012%202.33279Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M6.47656%206.34645V7.46636L16%207.46636V6.34644L6.47656%206.34645Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M1.24889e-08%206.34654L-8.74224e-08%207.46645H3.80915V6.34654H1.24889e-08Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M4%206.99945C4.0002%206.32957%204.55518%205.78658%205.23884%205.78658C5.92233%205.78678%206.47636%206.32969%206.47656%206.99945C6.47656%207.66938%205.92245%208.21322%205.23884%208.21342V9.33333L5.48214%209.3213C6.68266%209.20173%207.61942%208.20742%207.61942%206.99945C7.61922%205.71118%206.55351%204.66686%205.23884%204.66667C3.924%204.66667%202.85734%205.71106%202.85714%206.99945L2.86942%207.23787C2.9911%208.41463%204.00588%209.33333%205.23884%209.33333V8.21342C4.55506%208.21342%204%207.66951%204%206.99945Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M9.52344%2011.0131V12.133L1.24889e-08%2012.133L1.124e-07%2011.0131L9.52344%2011.0131Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M16%2011.0132V12.1331H12.1908V11.0132H16Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M12%2011.6661C11.9998%2010.9962%2011.4448%2010.4532%2010.7612%2010.4532C10.0777%2010.4534%209.52364%2010.9964%209.52344%2011.6661C9.52344%2012.3361%2010.0776%2012.8799%2010.7612%2012.8801V14L10.5179%2013.988C9.31734%2013.8684%208.38058%2012.8741%208.38058%2011.6661C8.38078%2010.3778%209.44649%209.33353%2010.7612%209.33333C12.076%209.33333%2013.1427%2010.3777%2013.1429%2011.6661L13.1306%2011.9045C13.0089%2013.0813%2011.9941%2014%2010.7612%2014V12.8801C11.4449%2012.8801%2012%2012.3362%2012%2011.6661Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/g%3E%0A%3C/svg%3E%0A",
+        user:        "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2020.6027%2019.7998%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cg%20id%3D%22Vector%22%3E%0A%3Cpath%20d%3D%22M12.1406%2014.034C15.1074%2014.034%2017.9142%2015.3782%2019.7744%2017.6892L20.4258%2018.4988C20.7027%2018.8429%2020.6486%2019.3458%2020.3047%2019.6228C19.9605%2019.8999%2019.4568%2019.8459%2019.1797%2019.5017L18.5283%2018.6922C16.9718%2016.7584%2014.623%2015.6336%2012.1406%2015.6336H8.46194C5.97967%2015.6337%203.6307%2016.7585%202.07424%2018.6922L1.42287%2019.5017C1.14581%2019.8458%200.642009%2019.8998%200.297874%2019.6228C-0.0459054%2019.3458%20-0.0999881%2018.8429%200.17678%2018.4988L0.828147%2017.6892C2.68833%2015.3782%205.4953%2014.0341%208.46194%2014.034H12.1406Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M15.1491%206.3125C15.1491%203.74209%2013.0109%201.59971%2010.3004%201.59961C7.58993%201.59961%205.45083%203.74203%205.45083%206.3125C5.45088%208.88293%207.58997%2011.0244%2010.3004%2011.0244V12.625L9.96841%2012.6162C6.67101%2012.4526%204.0274%209.86518%203.86001%206.6377L3.85122%206.3125C3.85122%202.82625%206.73875%200%2010.3004%200L10.6325%200.0078125C14.0398%200.177047%2016.7497%202.93531%2016.7497%206.3125L16.7409%206.6377C16.5679%209.97271%2013.7506%2012.6249%2010.3004%2012.625V11.0244C13.0108%2011.0243%2015.149%208.88287%2015.1491%206.3125Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/g%3E%0A%3C/svg%3E%0A",
+        basket:      "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2021.2978%2019.4121%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cg%20id%3D%22Vector%22%3E%0A%3Cpath%20d%3D%22M18.4629%200C19.4111%200.000230863%2020.1968%200.736351%2020.2588%201.68262L21.2939%2017.4951C21.3617%2018.5331%2020.5383%2019.4121%2019.498%2019.4121H1.7998C0.759662%2019.412%20-0.0638237%2018.533%200.0038973%2017.4951L1.04003%201.68262C1.10202%200.736203%201.88749%200%202.83593%200H18.4629ZM2.83593%201.59961C2.73055%201.59961%202.64262%201.68195%202.63573%201.78711L1.60058%2017.5996C1.59325%2017.7147%201.68444%2017.8124%201.7998%2017.8125H19.498C19.6135%2017.8125%2019.7046%2017.7148%2019.6973%2017.5996L18.6621%201.78711C18.6552%201.6821%2018.5681%201.59984%2018.4629%201.59961H2.83593Z%22%20fill%3D%22%23015253%22/%3E%0A%3Cpath%20d%3D%22M14.0325%205.54965V6.11215C14.0325%207.3823%2013.0028%208.41178%2011.7327%208.41195H9.56575C8.29549%208.41195%207.26594%207.3824%207.26594%206.11215V5.54965C7.26594%205.16305%206.95235%204.84945%206.56575%204.84945C6.17915%204.84945%205.86555%205.16305%205.86555%205.54965V6.11215C5.86555%208.1556%207.52229%209.81235%209.56575%209.81235H11.7327C13.776%209.81217%2015.432%208.1555%2015.432%206.11215V5.54965C15.432%205.16316%2015.1192%204.84963%2014.7327%204.84945C14.3461%204.84945%2014.0325%205.16305%2014.0325%205.54965Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/g%3E%0A%3C/svg%3E%0A",
+        bin:         "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2017.5%2019.5645%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%22%20d%3D%22M6.68548%209.00806V14.9435M10.8145%209.00806V14.9435M0.75%204.87903H16.75M2.81452%204.87903C5.13247%204.87903%206.43205%204.87903%208.75%204.87903H14.6855V15.8283C14.6855%2017.4776%2013.3568%2018.8145%2011.7177%2018.8145H5.78226C4.14322%2018.8145%202.81452%2017.4776%202.81452%2015.8283V4.87903ZM5.65323%202.81452C5.65323%201.67431%206.57754%200.75%207.71774%200.75H9.78226C10.9225%200.75%2011.8468%201.67431%2011.8468%202.81452V4.87903H5.65323V2.81452Z%22%20stroke%3D%22%23015253%22%20stroke-width%3D%221.222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%0A%3C/svg%3E%0A",
+        edit:        "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2018%2018%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%22%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M16.3147%200.72227C15.3517%20-0.240755%2013.7903%20-0.240758%2012.8273%200.72227L1.18979%2012.3598C0.845539%2012.704%200.610884%2013.1425%200.515409%2013.6198L0.0328392%2016.0327C-0.197228%2017.183%200.816983%2018.1972%201.96732%2017.9672L4.38016%2017.4846C4.85755%2017.3891%205.296%2017.1545%205.64025%2016.8102L17.2777%205.17272C18.2408%204.2097%2018.2408%202.64833%2017.2777%201.68529L16.3147%200.72227ZM13.9897%201.88474C14.3108%201.56374%2014.8312%201.56374%2015.1523%201.88474L16.1152%202.84778C16.4363%203.16878%2016.4363%203.68924%2016.1152%204.01025L13.9192%206.20628L11.7938%204.08078L13.9897%201.88474ZM10.6312%205.24326L2.35227%2013.5222C2.23752%2013.637%202.1593%2013.7831%202.12748%2013.9423L1.64491%2016.3551L4.05775%2015.8725C4.21688%2015.8407%204.36303%2015.7625%204.47778%2015.6477L12.7567%207.36876L10.6312%205.24326Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/svg%3E%0A",
+        close:       "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2016.5%2016.5%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%22%20d%3D%22M0.75%200.75L8.25%208.25M8.25%208.25L15.75%2015.75M8.25%208.25L0.75%2015.75M8.25%208.25L15.75%200.75%22%20stroke%3D%22%23015253%22%20stroke-width%3D%221.031%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E%0A",
+        share:       "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2017.4543%2017.3%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%2031%22%20d%3D%22M4.9578%206.61965H3.88085C2.8039%206.61965%200.65%207.29496%200.65%209.99619C0.65%2012.6974%200.65%2012.7107%200.65%2014.399C0.65%2014.399%201.29617%2016.65%203.88085%2016.65C6.46554%2016.65%2010.7015%2016.65%2014.1119%2016.65C15.0093%2016.4624%2016.8043%2015.637%2016.8043%2013.8362C16.8043%2012.0354%2016.8043%2012.2472%2016.8043%209.99619C16.8043%208.87068%2016.1581%206.61965%2013.5734%206.61965C10.9887%206.61965%2012.1375%206.61965%2011.958%206.61965M8.72713%2010.6804V8.24722V1.77551M6.03476%203.46378L8.72713%200.65L11.4195%203.46378%22%20stroke%3D%22%23015253%22%20stroke-width%3D%221.091%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%0A%3C/svg%3E%0A",
+        plus:        "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2014.2277%2014.2277%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%22%20d%3D%22M0.75%200.75L7.11385%207.11385M7.11385%207.11385L13.4777%2013.4777M7.11385%207.11385L0.75%2013.4777M7.11385%207.11385L13.4777%200.75%22%20stroke%3D%22%23015253%22%20stroke-width%3D%220.889%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E%0A",
+        minus:       "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2014.2277%2014.2277%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%22%20d%3D%22M0.75%200.75L7.11385%207.11385L13.4777%2013.4777%22%20stroke%3D%22%23015253%22%20stroke-width%3D%220.889%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E%0A",
+        'arrow-right': "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Arrow%20right%22%20d%3D%22M0.224395%200.226758C0.523588%20-0.0755859%201.00856%20-0.0755859%201.30775%200.226758L9%208L1.30775%2015.7732C1.00856%2016.0756%200.523588%2016.0756%200.224395%2015.7732C-0.0747983%2015.4709%20-0.0747983%2014.9808%200.224395%2014.6785L6.83328%208L0.224395%201.32152C-0.0747983%201.01918%20-0.0747983%200.529101%200.224395%200.226758Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/svg%3E%0A",
+        'arrow-left':  "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Arrow%20left%22%20d%3D%22M7.69225%200.226758C7.99144%20-0.0755859%208.47641%20-0.0755859%208.77561%200.226758C9.0748%200.529101%209.0748%201.01918%208.77561%201.32152L2.16672%208L8.77561%2014.6785C9.0748%2014.9808%209.0748%2015.4709%208.77561%2015.7732C8.47641%2016.0756%207.99144%2016.0756%207.69225%2015.7732L0%208L7.69225%200.226758Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/svg%3E%0A",
+        'arrow-down':  "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20d%3D%22M7.69225%200.226758C7.99144%20-0.0755859%208.47641%20-0.0755859%208.77561%200.226758C9.0748%200.529101%209.0748%201.01918%208.77561%201.32152L2.16672%208L8.77561%2014.6785C9.0748%2014.9808%209.0748%2015.4709%208.77561%2015.7732C8.47641%2016.0756%207.99144%2016.0756%207.69225%2015.7732L0%208L7.69225%200.226758Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/svg%3E%0A",
+        'arrow-up':    "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20d%3D%22M7.69225%200.226758C7.99144%20-0.0755859%208.47641%20-0.0755859%208.77561%200.226758C9.0748%200.529101%209.0748%201.01918%208.77561%201.32152L2.16672%208L8.77561%2014.6785C9.0748%2014.9808%209.0748%2015.4709%208.77561%2015.7732C8.47641%2016.0756%207.99144%2016.0756%207.69225%2015.7732L0%208L7.69225%200.226758Z%22%20fill%3D%22%23015253%22/%3E%0A%3C/svg%3E%0A",
+        '3d':          "data:image/svg+xml,%3Csvg%20preserveAspectRatio%3D%22none%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20overflow%3D%22visible%22%20style%3D%22display%3A%20block%3B%22%20viewBox%3D%220%200%2014.492%2017.1682%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%3Cpath%20id%3D%22Vector%22%20d%3D%22M0.5%2012.5075V4.66329M0.5%204.66329L7.40286%200.584326L13.992%204.66329M0.5%204.66329L7.40286%208.42849L13.992%204.66329M13.992%204.66329V12.5075M1.44037%2013.135L7.40194%2016.5865L13.0497%2013.135M13.0497%2013.135H11.4805M13.0497%2013.135L12.4217%2014.39M7.40366%209.68355V16.5858M6.46044%2011.2522L7.40165%209.68355L8.34286%2011.2522M3.01145%2013.135H1.44277L2.07024%2014.39%22%20stroke%3D%22%23015253%22%20stroke-width%3D%221.073%22%20stroke-linecap%3D%22round%22/%3E%0A%3C/svg%3E%0A",
+      };
+
+      // Icon display config: name, key, transform
+      const icons = [
+        {key:'menu',        label:'Menu'},
+        {key:'search',      label:'Search'},
+        {key:'magnify',     label:'Magnify'},
+        {key:'filter',      label:'Filter'},
+        {key:'user',        label:'User profile'},
+        {key:'basket',      label:'Basket'},
+        {key:'bin',         label:'Bin'},
+        {key:'edit',        label:'Edit'},
+        {key:'close',       label:'Close'},
+        {key:'share',       label:'Share'},
+        {key:'plus',        label:'Plus',        transform:'rotate(-45deg)'},
+        {key:'minus',       label:'Minus',       transform:'rotate(-45deg)'},
+        {key:'arrow-right', label:'Arrow right'},
+        {key:'arrow-left',  label:'Arrow left'},
+        {key:'arrow-down',  label:'Arrow down',  transform:'rotate(-90deg)'},
+        {key:'arrow-up',    label:'Arrow up',    transform:'rotate(90deg)'},
+        {key:'3d',          label:'3D'},
+      ];
+
+      // Decode data URI → raw SVG string
+      const getSvgCode = (key) => {
+        try { return decodeURIComponent(ic[key].replace('data:image/svg+xml,','')); }
+        catch(e) { return ''; }
+      };
+
+      const handleCopy = () => {
+        navigator.clipboard?.writeText(getSvgCode(selected.key)).catch(()=>{});
+        setSvgCopied(true);
+        setTimeout(()=>setSvgCopied(false),1500);
+      };
+
+      const handleDownload = () => {
+        const blob = new Blob([getSvgCode(selected.key)],{type:'image/svg+xml'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download=`${selected.key}.svg`; a.click();
+        URL.revokeObjectURL(url);
+      };
+
       return (
-        <div>
-          <ShowRow>
-            {icons.map(i=>(
-              <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:f(8)}}>
-                <div style={{width:48,height:48,borderRadius:8,background:'#F5F6FA',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                  <Icon name={i} size={24} />
+        <>
+          {/* ── Icon popup modal ── */}
+          {selected && (
+            <div
+              onClick={()=>{setSelected(null);setSvgCopied(false);}}
+              style={{position:'fixed',inset:0,zIndex:1000,background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}
+            >
+              <div
+                onClick={e=>e.stopPropagation()}
+                style={{background:'#fff',borderRadius:12,width:340,maxWidth:'100%',padding:24,boxShadow:'0 24px 64px rgba(0,0,0,0.22)',position:'relative'}}
+              >
+                {/* Header */}
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+                  <span style={{fontFamily:font,fontSize:15,fontWeight:600,color:'#000'}}>{selected.label}</span>
+                  <button
+                    onClick={()=>{setSelected(null);setSvgCopied(false);}}
+                    style={{background:'none',border:'none',cursor:'pointer',padding:'2px 6px',color:'#999',fontSize:16,lineHeight:1,borderRadius:4}}
+                  >✕</button>
                 </div>
-                <span style={{fontSize:f(11),fontFamily:font,color:'#666'}}>{i}</span>
+
+                {/* Large preview */}
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'28px 0',background:'#F8F9FA',borderRadius:8,marginBottom:16}}>
+                  <img src={ic[selected.key]} alt={selected.label}
+                    style={{width:48,height:48,objectFit:'contain',transform:selected.transform||'none'}}/>
+                </div>
+
+                {/* Size variants S / M / L */}
+                <div style={{display:'flex',gap:0,justifyContent:'center',marginBottom:16,border:'1px solid #E8E8E8',borderRadius:8,overflow:'hidden'}}>
+                  {[{s:16,l:'S'},{s:24,l:'M'},{s:32,l:'L'}].map(({s,l},i)=>(
+                    <div key={l} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:8,padding:'12px 0',borderLeft:i?'1px solid #E8E8E8':'none'}}>
+                      <img src={ic[selected.key]} alt={l}
+                        style={{width:s,height:s,objectFit:'contain',transform:selected.transform||'none'}}/>
+                      <span style={{fontSize:10,color:'#A1A1A1',fontFamily:font,fontWeight:500}}>{l} · {s}px</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Actions */}
+                <div style={{display:'flex',gap:10}}>
+                  <button onClick={handleCopy} style={{flex:1,height:40,border:'none',borderRadius:6,background:svgCopied?'#009900':'#015253',color:'#fff',fontFamily:font,fontSize:13,fontWeight:500,cursor:'pointer',transition:'background 0.2s'}}>
+                    {svgCopied?'✓ Copied!':'Copy SVG'}
+                  </button>
+                  <button onClick={handleDownload} style={{flex:1,height:40,border:'1.5px solid #015253',borderRadius:6,background:'transparent',color:'#015253',fontFamily:font,fontSize:13,fontWeight:500,cursor:'pointer'}}>
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Icon grid ── */}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))',gap:16}}>
+            {icons.map(({key,label,transform})=>(
+              <div
+                key={key}
+                onClick={()=>{setSelected({key,label,transform});setSvgCopied(false);}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor='#015253';e.currentTarget.style.boxShadow='0 2px 10px rgba(1,82,83,0.12)';}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor='#E8E8E8';e.currentTarget.style.boxShadow='none';}}
+                style={{display:'flex',flexDirection:'column',alignItems:'center',gap:10,padding:'20px 12px',border:'1px solid #E8E8E8',borderRadius:8,background:'#fff',cursor:'pointer',transition:'border-color 0.15s,box-shadow 0.15s'}}
+              >
+                <div style={{width:40,height:40,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  <img src={ic[key]} alt={label} style={{width:24,height:24,objectFit:'contain',transform:transform||'none'}}/>
+                </div>
+                <span style={{fontSize:11,fontFamily:font,color:'#666',textAlign:'center',lineHeight:1.3}}>{label}</span>
               </div>
             ))}
-          </ShowRow>
-        </div>
+          </div>
+        </>
       );
     };
 
@@ -673,31 +1491,305 @@
       );
     };
 
-    // ── PRODUCT CARDS SECTION ──
+    // ── PRODUCT CARDS SECTION — Figma node 7305-208819 ──
     const ProductCardsSection = () => {
-      const ProductCard = ({title,price,salePrice}) => (
-        <div style={{width:200,borderRadius:12,border:'1px solid #E8E8E8',background:'#fff',overflow:'hidden'}}>
-          <div style={{width:'100%',height:200,background:'#F5F6FA',display:'flex',alignItems:'center',justifyContent:'center',fontSize:f(12),color:'#999'}}>Product Image</div>
-          <div style={{padding:f(16)}}>
-            <div style={{fontSize:f(13),fontWeight:700,color:'#000000',fontFamily:font,marginBottom:f(8)}}>{title}</div>
-            <div style={{display:'flex',alignItems:'center',gap:f(8),marginBottom:f(8)}}>
-              {salePrice?<>
-                <span style={{fontSize:f(14),fontWeight:700,color:'#C90000',fontFamily:font}}>${salePrice}</span>
-                <span style={{fontSize:f(12),color:'#999',textDecoration:'line-through',fontFamily:font}}>${price}</span>
-              </>:<span style={{fontSize:f(14),fontWeight:700,color:'#000000',fontFamily:font}}>${price}</span>}
+
+      // ── Star icon (filled gold) ──
+      const StarIcon = () => (
+        <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
+          <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill="#F5A623" stroke="#F5A623" strokeWidth="0.5" strokeLinejoin="round"/>
+        </svg>
+      );
+
+      // ── Placeholder product image (doorbell silhouette) ──
+      const ProductPhoto = () => (
+        <div style={{width:'100%',aspectRatio:'321/300',background:'#F5F6FA',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',borderRadius:4}}>
+          <svg width="120" height="180" viewBox="0 0 120 180" fill="none">
+            {/* Panel body */}
+            <rect x="20" y="10" width="80" height="160" rx="6" fill="#3a4a5a"/>
+            {/* Camera lens */}
+            <circle cx="60" cy="55" r="20" fill="#222" stroke="#444" strokeWidth="2"/>
+            <circle cx="60" cy="55" r="13" fill="#111"/>
+            <circle cx="55" cy="50" r="4" fill="rgba(255,255,255,0.15)"/>
+            {/* Name badge area */}
+            <rect x="35" y="90" width="50" height="16" rx="2" fill="rgba(255,255,255,0.08)"/>
+            <rect x="39" y="95" width="30" height="4" rx="1" fill="rgba(255,255,255,0.3)"/>
+            {/* Button 1 */}
+            <circle cx="60" cy="125" r="10" fill="#2a3a4a" stroke="#4a5a6a" strokeWidth="1.5"/>
+            <circle cx="60" cy="125" r="6" fill="#1a2a3a"/>
+            {/* Button 2 */}
+            <circle cx="60" cy="150" r="10" fill="#2a3a4a" stroke="#4a5a6a" strokeWidth="1.5"/>
+            <circle cx="60" cy="150" r="6" fill="#1a2a3a"/>
+            {/* Bottom logo area */}
+            <rect x="45" y="170" width="30" height="4" rx="1" fill="rgba(255,255,255,0.2)"/>
+          </svg>
+        </div>
+      );
+
+      // ── The card component — exact Figma specs ──
+      const ProductCard = ({badge='IP-System', brand='Metzler', rating=5, reviewCount=300,
+        title='Video-Türsprechanlage mit Paketbox | Anthrazit RAL 7016 | personalisiert mit Gravur | Edelstahl-Namensschild',
+        priceFrom=true, price='49,99 €', originalPrice='1.289,99 €', discount='-10%',
+        colors=['#505f70','rgba(0,0,0,0.75)','#b02828'], moreColors='+ 5 weitere',
+        hover=false
+      }) => (
+        <div style={{
+          width:340, borderRadius:8, border:'1px solid #DADADA',
+          background:'#fff', overflow:'hidden',
+          display:'flex', flexDirection:'column', gap:15,
+          padding:20, boxSizing:'border-box', position:'relative',
+          boxShadow: hover ? '0 4px 20px rgba(0,0,0,0.12)' : 'none',
+          transition:'box-shadow 0.2s',
+        }}>
+          {/* ── Image area + badge ── */}
+          <div style={{position:'relative',width:'100%',flexShrink:0}}>
+            <ProductPhoto/>
+            {/* Badge — top-left of image */}
+            <div style={{
+              position:'absolute', top:5, left:5,
+              background:'#015253', borderRadius:2,
+              padding:'3px 6px', display:'inline-flex', alignItems:'center',
+            }}>
+              <span style={{fontFamily:font, fontSize:14, fontWeight:500, color:'#fff', lineHeight:'16px', whiteSpace:'nowrap'}}>{badge}</span>
             </div>
-            <button style={{width:'100%',padding:f(10),borderRadius:8,background:'#015253',color:'#fff',border:'none',fontFamily:font,fontSize:f(12),fontWeight:600,cursor:'pointer'}}>Add to Cart</button>
+          </div>
+
+          {/* ── Card content ── */}
+          <div style={{display:'flex',flexDirection:'column',gap:15,width:'100%'}}>
+
+            {/* Brand + rating row */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',width:'100%'}}>
+              <span style={{fontFamily:font,fontSize:14,fontWeight:500,color:'#015253',lineHeight:'16px'}}>{brand}</span>
+              <div style={{display:'flex',alignItems:'center',gap:5}}>
+                <div style={{display:'flex'}}>
+                  {Array.from({length:rating}).map((_,i)=><StarIcon key={i}/>)}
+                </div>
+                <span style={{fontFamily:'Inter, sans-serif',fontSize:11,fontWeight:500,color:'#000',whiteSpace:'nowrap'}}>({reviewCount})</span>
+              </div>
+            </div>
+
+            {/* Product title — 3-line clamp */}
+            <div style={{
+              fontFamily:font, fontSize:16, fontWeight:500, color:'#000',
+              lineHeight:'22px', overflow:'hidden',
+              display:'-webkit-box', WebkitLineClamp:3, WebkitBoxOrient:'vertical',
+              height:66,
+            }}>{title}</div>
+
+            {/* Price row */}
+            <div style={{display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
+              {priceFrom && <span style={{fontFamily:font,fontSize:16,fontWeight:400,color:'#000',lineHeight:'22px'}}>ab</span>}
+              <span style={{fontFamily:font,fontSize:20,fontWeight:700,color:'#C90000',lineHeight:'normal',whiteSpace:'nowrap'}}>{price}</span>
+              {originalPrice && (
+                <span style={{fontFamily:font,fontSize:14,fontWeight:400,color:'#000',textDecoration:'line-through',lineHeight:'16px',padding:'0 4px',whiteSpace:'nowrap'}}>{originalPrice}</span>
+              )}
+              {discount && (
+                <div style={{
+                  background:'#C90000', borderRadius:4,
+                  height:21, padding:'0 6px',
+                  display:'inline-flex', alignItems:'center', justifyContent:'center',
+                  flexShrink:0,
+                }}>
+                  <span style={{fontFamily:'Montserrat, sans-serif',fontSize:12,fontWeight:800,color:'#fff',whiteSpace:'nowrap'}}>{discount}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Color swatches */}
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <div style={{display:'flex',gap:10}}>
+                {colors.map((c,i)=>(
+                  <div key={i} style={{
+                    width:28, height:28, borderRadius:4,
+                    background:c, border:'1px solid #DADADA',
+                    flexShrink:0, cursor:'pointer',
+                  }}/>
+                ))}
+              </div>
+              <a href="#" style={{fontFamily:font,fontSize:16,fontWeight:400,color:'#000',textDecoration:'underline',whiteSpace:'nowrap',lineHeight:'22px'}}>{moreColors}</a>
+            </div>
+
           </div>
         </div>
       );
+
+      // Helpers for the section
+      const BH = ({children}) => (
+        <h2 style={{fontSize:20,fontWeight:700,color:'#000',fontFamily:font,marginTop:40,marginBottom:6}}>{children}</h2>
+      );
+      const BD = ({children}) => (
+        <p style={{fontSize:14,color:'#555',fontFamily:font,marginBottom:16,lineHeight:1.65,marginTop:0}}>{children}</p>
+      );
+      const Chip = ({children}) => (
+        <code style={{fontSize:12,background:'#F0F4F4',color:'#015253',borderRadius:3,padding:'1px 5px',fontFamily:'monospace'}}>{children}</code>
+      );
+
       return (
-        <Preview>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:f(20)}}>
-            <ProductCard title="Product One" price="99.99" />
-            <ProductCard title="Product Sale" price="99.99" salePrice="79.99" />
-            <ProductCard title="Product Three" price="149.99" />
-          </div>
-        </Preview>
+        <div>
+          <BH>Product Card</BH>
+          <BD>
+            Catalog page card — Figma node 7305-208819. Width <Chip>340px</Chip>, border-radius <Chip>8px</Chip>,
+            padding <Chip>20px</Chip>, border <Chip>1px solid #DADADA</Chip>. Contains: product image with
+            badge overlay, brand + star rating, title (3-line clamp), price with sale tag, and color swatches.
+          </BD>
+          <Preview>
+            <div style={{display:'flex',gap:24,flexWrap:'wrap',alignItems:'flex-start'}}>
+              {/* Default state */}
+              <div style={{display:'flex',flexDirection:'column',gap:10,alignItems:'flex-start'}}>
+                <ProductCard/>
+                <span style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em',color:'#A1A1A1',fontFamily:font,fontWeight:600}}>Default</span>
+              </div>
+              {/* Hover state */}
+              <div style={{display:'flex',flexDirection:'column',gap:10,alignItems:'flex-start'}}>
+                <ProductCard hover={true}/>
+                <span style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em',color:'#A1A1A1',fontFamily:font,fontWeight:600}}>Hover</span>
+              </div>
+            </div>
+          </Preview>
+          <CodeBlock code={
+`/* ── Product Card ── Figma node 7305-208819 ────────────────────── */
+/* Catalog page · Desktop · 340px wide · border-radius 8px (xl)    */
+
+.product-card {
+  width: 340px;
+  border-radius: 8px;                   /* corner-radius/l */
+  border: 1px solid #DADADA;            /* color/gray/border */
+  background: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-sizing: border-box;
+  position: relative;
+  transition: box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Image area */
+.product-card__image {
+  width: 100%;
+  aspect-ratio: 321 / 300;
+  background: #F5F6FA;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* IP-System badge */
+.product-card__badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: #015253;                  /* color/primary/default */
+  border-radius: 2px;                   /* corner-radius/s */
+  padding: 3px 6px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+/* Brand name */
+.product-card__brand {
+  font-size: 14px;
+  font-weight: 500;                     /* Body/14 Medium */
+  color: #015253;
+  line-height: 16px;
+}
+
+/* Star rating */
+.product-card__stars { display: flex; gap: 0; }
+.product-card__review-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: #000;
+}
+
+/* Product title */
+.product-card__title {
+  font-size: 16px;
+  font-weight: 500;                     /* Body/16 Medium */
+  color: #000;
+  line-height: 22px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 66px;
+}
+
+/* Price area */
+.product-card__price-from {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+}
+.product-card__price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #C90000;                       /* color/red/default */
+}
+.product-card__original-price {
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  text-decoration: line-through;
+}
+.product-card__discount {
+  background: #C90000;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* Color swatches */
+.product-card__swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #DADADA;
+  cursor: pointer;
+}
+.product-card__more-colors {
+  font-size: 16px;
+  color: #000;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+<!-- HTML -->
+<div class="product-card">
+  <div class="product-card__image">
+    <img src="product.jpg" alt="Product name" />
+    <span class="product-card__badge">IP-System</span>
+  </div>
+  <div class="product-card__brand">Metzler</div>
+  <div class="product-card__title">
+    Video-Türsprechanlage mit Paketbox | Anthrazit RAL 7016 …
+  </div>
+  <div style="display:flex; align-items:center; gap:4px;">
+    <span class="product-card__price-from">ab</span>
+    <span class="product-card__price">49,99 €</span>
+    <span class="product-card__original-price">1.289,99 €</span>
+    <span class="product-card__discount">-10%</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <div class="product-card__swatch" style="background:#505f70;"></div>
+    <div class="product-card__swatch" style="background:rgba(0,0,0,0.75);"></div>
+    <div class="product-card__swatch" style="background:#b02828;"></div>
+    <a class="product-card__more-colors">+ 5 weitere</a>
+  </div>
+</div>`
+          }/>
+        </div>
       );
     };
 
@@ -878,21 +1970,24 @@
                 {
                   label: 'Headings — page & section structure',
                   rows: [
-                    {name:'H1',  rem:'1.5rem',   px:'24px', weight:700, lh:'1.25', token:'--text-h1', preview:'Aa — Helvetica Neue', use:'Page title'},
-                    {name:'H2',  rem:'1.375rem', px:'22px', weight:700, lh:'1.3',  token:'--text-h2', preview:'Aa — Helvetica Neue', use:'Section heading'},
-                    {name:'H3',  rem:'1.125rem', px:'18px', weight:700, lh:'1.375',token:'--text-h3', preview:'Aa — Helvetica Neue', use:'Card & drawer titles'},
-                    {name:'H4',  rem:'1rem',     px:'16px', weight:700, lh:'1.375',token:'--text-h4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
+                    {name:'H1',  rem:'1.875rem', px:'30px', weight:700, lh:'1.25', token:'--text-h1', preview:'Aa — Helvetica Neue', use:'Page title'},
+                    {name:'H2',  rem:'1.5rem',   px:'24px', weight:700, lh:'1.3',  token:'--text-h2', preview:'Aa — Helvetica Neue', use:'Section heading'},
+                    {name:'H3',  rem:'1.25rem',  px:'20px', weight:700, lh:'1.35', token:'--text-h3', preview:'Aa — Helvetica Neue', use:'Card & drawer titles'},
+                    {name:'H4',  rem:'1.125rem', px:'18px', weight:700, lh:'1.375',token:'--text-h4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
                   ]
                 },
                 {
                   label: 'Body — reading & content',
                   rows: [
-                    {name:'Body Regular',    rem:'1rem',     px:'16px', weight:400, lh:'1.5',  token:'--text-body',        preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
-                    {name:'Body Bold',       rem:'1rem',     px:'16px', weight:700, lh:'1.375',token:'--text-body-bold',    preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, labels'},
-                    {name:'Body SM Regular', rem:'0.875rem', px:'14px', weight:400, lh:'1.5',  token:'--text-body-sm',      preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
-                    {name:'Body SM Bold',    rem:'0.875rem', px:'14px', weight:700, lh:'1.375',token:'--text-body-sm-bold', preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
-                    {name:'Caption Regular', rem:'0.75rem',  px:'12px', weight:400, lh:'1.4',  token:'--text-caption',      preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
-                    {name:'Caption Bold',    rem:'0.75rem',  px:'12px', weight:700, lh:'1.4',  token:'--text-caption-bold', preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
+                    {name:'Body Regular',    rem:'1rem',     px:'16px', weight:400, lh:'1.5',  token:'--text-body',             preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
+                    {name:'Body Medium',     rem:'1rem',     px:'16px', weight:500, lh:'1.5',  token:'--text-body-medium',      preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, UI text'},
+                    {name:'Body Bold',       rem:'1rem',     px:'16px', weight:700, lh:'1.375',token:'--text-body-bold',        preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis'},
+                    {name:'Body SM Regular', rem:'0.875rem', px:'14px', weight:400, lh:'1.5',  token:'--text-body-sm',          preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
+                    {name:'Body SM Medium',  rem:'0.875rem', px:'14px', weight:500, lh:'1.5',  token:'--text-body-sm-medium',   preview:'The quick brown fox jumps over the lazy dog', use:'Labels, nav items'},
+                    {name:'Body SM Bold',    rem:'0.875rem', px:'14px', weight:700, lh:'1.375',token:'--text-body-sm-bold',     preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
+                    {name:'Caption Regular', rem:'0.75rem',  px:'12px', weight:400, lh:'1.4',  token:'--text-caption',          preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
+                    {name:'Caption Medium',  rem:'0.75rem',  px:'12px', weight:500, lh:'1.4',  token:'--text-caption-medium',   preview:'Helper text · metadata · timestamps · footnotes', use:'Tags, badges'},
+                    {name:'Caption Bold',    rem:'0.75rem',  px:'12px', weight:700, lh:'1.4',  token:'--text-caption-bold',     preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
                   ]
                 },
               ];
@@ -904,11 +1999,11 @@
                       <div style={{fontSize:10,fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#A1A1A1',fontFamily:font,marginBottom:4,paddingBottom:6,borderBottom:'1px solid #E8E8E8'}}>{g.label}</div>
                       {/* Rows */}
                       {g.rows.map((row,i)=>(
-                        <div key={row.token} style={{display:'flex',alignItems:'baseline',gap:20,padding:'10px 0',borderBottom:'0.5px solid #F0F0F0'}}>
+                        <div key={row.token} style={{display:'flex',alignItems:'center',gap:20,padding:'10px 0',borderBottom:'0.5px solid #F0F0F0'}}>
                           {/* Meta: name + specs */}
                           <div style={{minWidth:210,flexShrink:0}}>
                             <div style={{fontSize:13,fontWeight:600,color:'#000',fontFamily:font,marginBottom:2}}>{row.name}</div>
-                            <div style={{fontSize:11,color:'#A1A1A1',fontFamily:'monospace'}}>{row.rem} / {row.weight} / lh {row.lh}</div>
+                            <div style={{fontSize:11,color:'#A1A1A1',fontFamily:'monospace'}}>{row.rem} · {row.px} / {row.weight} / lh {row.lh}</div>
                             <div style={{fontSize:11,color:'#015253',fontFamily:'monospace',marginTop:1}}>{row.token}</div>
                           </div>
                           {/* Preview */}
@@ -920,26 +2015,67 @@
                     </div>
                   ))}
 
-                  {/* CSS variables code block */}
-                  <div style={{background:'#01292A',borderRadius:8,padding:'16px 20px',fontFamily:'monospace',fontSize:12,lineHeight:1.85,color:'#5CDBD3',position:'relative',marginTop:8}}>
-                    <div style={{position:'absolute',top:10,right:12,fontSize:10,color:'rgba(255,255,255,0.3)',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.08em'}}>CSS Variables</div>
-                    <span style={{color:'rgba(255,255,255,0.35)'}}>/* Typography tokens — paste in :root &#123;&#125; */</span>{'\n'}
-                    <span style={{color:'rgba(255,255,255,0.35)'}}>/* Base: 1rem = 16px (browser default) */</span>{'\n\n'}
-                    <span style={{color:'rgba(255,255,255,0.5)'}}>/* Display */</span>{'\n'}
-                    {'--text-display:      2.875rem; /* 46px, weight 700 */'}{'\n\n'}
-                    <span style={{color:'rgba(255,255,255,0.5)'}}>/* Headings */</span>{'\n'}
-                    {'--text-h1:           1.5rem;   /* 24px, weight 700 */'}{'\n'}
-                    {'--text-h2:           1.375rem; /* 22px, weight 700 */'}{'\n'}
-                    {'--text-h3:           1.125rem; /* 18px, weight 700 */'}{'\n'}
-                    {'--text-h4:           1rem;     /* 16px, weight 700 */'}{'\n\n'}
-                    <span style={{color:'rgba(255,255,255,0.5)'}}>/* Body */</span>{'\n'}
-                    {'--text-body:         1rem;     /* 16px, weight 400 */'}{'\n'}
-                    {'--text-body-bold:    1rem;     /* 16px, weight 700 */'}{'\n'}
-                    {'--text-body-sm:      0.875rem; /* 14px, weight 400 */'}{'\n'}
-                    {'--text-body-sm-bold: 0.875rem; /* 14px, weight 700 */'}{'\n'}
-                    {'--text-caption:      0.75rem;  /* 12px, weight 400 */'}{'\n'}
-                    {'--text-caption-bold: 0.75rem;  /* 12px, weight 700 */'}
-                  </div>
+                  {/* CSS variables code block — structured rows */}
+                  {(()=>{
+                    const bg      = '#01292A';
+                    const cProp   = '#5CDBD3';   // teal — property name
+                    const cVal    = '#A8F0E8';   // light teal — value
+                    const cCmt    = 'rgba(255,255,255,0.32)'; // muted — comment
+                    const cSemi   = 'rgba(255,255,255,0.5)';  // semicolon
+                    const cGroup  = 'rgba(255,255,255,0.22)'; // group comment
+
+                    // A single variable row
+                    const Var = ({name, val, px, w}) => (
+                      <div style={{display:'flex',alignItems:'baseline',gap:0,lineHeight:'26px'}}>
+                        <span style={{color:cProp, minWidth:220}}>{name}</span>
+                        <span style={{color:cSemi}}>: </span>
+                        <span style={{color:cVal, minWidth:80}}>{val}</span>
+                        <span style={{color:cSemi}}>;</span>
+                        <span style={{color:cCmt, marginLeft:16}}>{'/* '}{px}{' · weight '}{w}{' */'}</span>
+                      </div>
+                    );
+                    // A group separator comment
+                    const Group = ({label}) => (
+                      <div style={{color:cGroup, lineHeight:'26px', marginTop:16, marginBottom:2, borderTop:'1px solid rgba(255,255,255,0.06)', paddingTop:12}}>
+                        {'/* ── '}{label}{' ── */'}
+                      </div>
+                    );
+
+                    return (
+                      <div style={{background:bg, borderRadius:8, padding:'20px 24px', fontFamily:'monospace', fontSize:12.5, position:'relative', marginTop:8, overflowX:'auto'}}>
+                        {/* Header label */}
+                        <div style={{position:'absolute',top:12,right:16,fontSize:10,color:'rgba(255,255,255,0.25)',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.1em'}}>CSS Variables</div>
+
+                        {/* Preamble */}
+                        <div style={{color:cGroup, lineHeight:'26px', marginBottom:12}}>{'/* Typography tokens — paste in :root { } */'}</div>
+                        <div style={{color:cGroup, lineHeight:'26px', marginBottom:4}}>{'/* Base: 1rem = 16px (browser default)   */'}</div>
+
+                        <Group label="Display"/>
+                        <Var name="--text-display"        val="2.875rem" px="46px" w="700"/>
+
+                        <Group label="Headings"/>
+                        <Var name="--text-h1"             val="1.875rem" px="30px" w="700"/>
+                        <Var name="--text-h2"             val="1.5rem"   px="24px" w="700"/>
+                        <Var name="--text-h3"             val="1.25rem"  px="20px" w="700"/>
+                        <Var name="--text-h4"             val="1.125rem" px="18px" w="700"/>
+
+                        <Group label="Body 16px"/>
+                        <Var name="--text-body"           val="1rem"     px="16px" w="400"/>
+                        <Var name="--text-body-medium"    val="1rem"     px="16px" w="500"/>
+                        <Var name="--text-body-bold"      val="1rem"     px="16px" w="700"/>
+
+                        <Group label="Body SM 14px"/>
+                        <Var name="--text-body-sm"        val="0.875rem" px="14px" w="400"/>
+                        <Var name="--text-body-sm-medium" val="0.875rem" px="14px" w="500"/>
+                        <Var name="--text-body-sm-bold"   val="0.875rem" px="14px" w="700"/>
+
+                        <Group label="Caption 12px"/>
+                        <Var name="--text-caption"        val="0.75rem"  px="12px" w="400"/>
+                        <Var name="--text-caption-medium" val="0.75rem"  px="12px" w="500"/>
+                        <Var name="--text-caption-bold"   val="0.75rem"  px="12px" w="700"/>
+                      </div>
+                    );
+                  })()}
                 </div>
               );
             })()}
@@ -982,46 +2118,17 @@
 
             {/* ICONS */}
             <SH1 id="icons">Icons</SH1>
-            <Lead>Minimal icon set used throughout Metzler products. All icons are 24px × 24px at base size.</Lead>
-            <Preview><IconsSection/></Preview>
+            <Lead>17 icons from Figma node 6047:121808. All icons are SVG-based and available in 3 sizes (S / M / L).</Lead>
+            <div style={{marginBottom:32}}><IconsSection/></div>
 
             {/* BUTTONS */}
             <SH1 id="buttons">Buttons</SH1>
-            <Lead>Primary and secondary button variants with hover and disabled states.</Lead>
-            <Preview><ButtonsSection/></Preview>
-            <CodeBlock code={`/* Primary Button — Figma: cornerRadius/m=4, padding 10px 15px, bg Primary/Default */
-<button style={{
-  padding: '10px 15px',
-  borderRadius: 4,        /* corner-radius/m */
-  background: '#015253',  /* Primary/Default */
-  color: '#ffffff',       /* Base/White */
-  border: 'none',
-  fontSize: 14,
-  fontWeight: 500,
-  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-  cursor: 'pointer',
-}}>
-  Button label
-</button>
-
-/* Hover state */
-button:hover { background: '#006D75'; }  /* Primary/Hover */
-
-/* Outlined / Secondary */
-<button style={{
-  padding: '10px 15px',
-  borderRadius: 4,
-  background: '#ffffff',
-  color: '#000000',
-  border: '1px solid #DADADA',  /* Gray/Border */
-  cursor: 'pointer',
-}}>
-  Button label
-</button>`} />
+            <Lead>Three desktop button variants from Figma node 5582-13047 — Primary (filled teal), Secondary (outlined), and Arrow (primary with icon). Each shown in Default, Hover/Active, and Disabled states with exact tokens and ready-to-copy HTML + CSS.</Lead>
+            <ButtonsSection/>
 
             {/* FORM ELEMENTS */}
             <SH1 id="form-elements">Form Elements</SH1>
-            <Lead>Text inputs, checkboxes, and radio buttons with validation states.</Lead>
+            <Lead>Input components — Textfield, Checkbox, and Radio Button — with all validation states. Each entry includes exact dimensions, color tokens, font specs, and when to use it.</Lead>
             <Preview><FormElementsSection/></Preview>
             <CodeBlock code={`/* Textfield — Figma node 8321:138637
    Desktop: 500×50px · Mobile: 340×50px
@@ -1171,7 +2278,7 @@ const tabs = ['Overview', 'Specifications', 'Reviews'];
 
             {/* PRODUCT CARDS */}
             <SH1 id="product-cards">Product Cards</SH1>
-            <Lead>Reusable card component for displaying products with images, pricing, and actions.</Lead>
+            <Lead>Catalog page card — 340px wide, Default and Hover states. Includes product image with badge, brand, star rating, 3-line title, sale price with discount tag, and colour swatches. Figma node 7305-208819.</Lead>
             <ProductCardsSection />
 
             {/* HEADER */}
