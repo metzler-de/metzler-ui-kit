@@ -60,30 +60,37 @@
     ];
     const allNavItems = navItems.filter(n=>n.type==="item");
 
-    // ── COLOR GROUPS ── (exact values from Figma Variables: "Metzler colors")
-    const colorGroups = [
-      { id:"colors", group:"Colors", desc:"All color tokens used in the Metzler design system.", tokens:[
-        {value:"#015253", label:"Primary / Default",  rgb:"rgb(1, 82, 83)",        usage:"Main CTA buttons, active nav links, focus rings, primary section backgrounds"},
-        {value:"#01292A", label:"Primary / Dark",      rgb:"rgb(1, 41, 42)",        usage:"Footer background, dark overlays, deep emphasis elements"},
-        {value:"#006D75", label:"Primary / Hover",     rgb:"rgb(0, 109, 117)",      usage:"Hover state on all filled primary buttons and teal interactive elements"},
-        {value:"rgba(1,82,83,0.1)",  label:"Primary / 10%", rgb:"rgba(1,82,83,0.10)", usage:"Light teal backgrounds on hover states, selected filter chips, subtle highlights"},
-        {value:"rgba(1,82,83,0.05)", label:"Primary / 5%",  rgb:"rgba(1,82,83,0.05)", usage:"Very subtle page section tints, info box backgrounds, alternating row fills"},
-        {value:"#009951", label:"Green / Select",      rgb:"rgb(0, 153, 81)",       usage:"Success notifications, in-stock badges, checked checkboxes, selected radio buttons"},
-        {value:"rgba(0,153,81,0.5)",label:"Green / Inactive 50%",rgb:"rgba(0,153,81,0.50)",usage:"Muted success states, disabled selected items, greyed-out availability indicators"},
-        {value:"#C90000", label:"Red / Default",       rgb:"rgb(201, 0, 0)",        usage:"Sale prices, destructive action labels, critical error messages, sale percentage badges"},
-        {value:"#FF4D4F", label:"Red / Error",         rgb:"rgb(255, 77, 79)",      usage:"Form validation errors, invalid field borders, error toast notifications"},
-        {value:"#000000", label:"Base / Black",        rgb:"rgb(0, 0, 0)",          usage:"Primary body text, headings, icon fill — main text color across all UI"},
-        {value:"rgba(0,0,0,0.8)",   label:"Base / Black 80%",rgb:"rgba(0,0,0,0.80)",usage:"Overlays, scrim backgrounds, semi-transparent dark layers"},
-        {value:"#FFFFFF", label:"Base / White",        rgb:"rgb(255, 255, 255)",    usage:"Card backgrounds, modal surfaces, text on dark backgrounds, icon fill on teal"},
-        {value:"rgba(255,255,255,0.5)",label:"Base / White 50%",rgb:"rgba(255,255,255,0.50)",usage:"Subtle light overlay on images, ghost state on dark backgrounds"},
-        {value:"#A1A1A1", label:"Gray / Default",      rgb:"rgb(161, 161, 161)",    usage:"Placeholder text, disabled labels, inactive icons, secondary metadata"},
-        {value:"#DADADA", label:"Gray / Border",       rgb:"rgb(218, 218, 218)",    usage:"Dividers, card borders, input field outlines, separator lines"},
-        {value:"#F0F0F0", label:"Gray / Medium",       rgb:"rgb(240, 240, 240)",    usage:"Hover backgrounds, inactive tabs, skeleton shimmer base"},
-        {value:"#F5F6FA", label:"Gray / Light",        rgb:"rgb(245, 246, 250)",    usage:"Page backgrounds, sidebar fills, alternating table rows, input default background"},
-        {value:"#5CDBD3", label:"Other / Links",       rgb:"rgb(92, 219, 211)",     usage:"Hyperlinks on dark backgrounds (footer), hover color for footer links, teal accent highlights"},
-        {value:"#3B9ADB", label:"Other / Blue",        rgb:"rgb(59, 154, 219)",     usage:"Info notification icons, informational badges, tooltip accents, help indicators"},
-        {value:"#FFC628", label:"Other / Gold",        rgb:"rgb(255, 198, 40)",     usage:"Star ratings, premium badges, promotional highlights, award indicators"},
-      ]},
+    // ── COLOR TOKENS (Metzler Extended Color System) ──
+    const colorTokens = [
+      // ── PRIMARY TEAL ──
+      {value:"#015253", label:"Metzler Teal",       subtitle:"Primary · CTAs + brand surfaces",      role:"All CTA buttons, top bar, active nav, pagination, search bar, focus rings, header background", hex:"#015253", rgb:"1 · 82 · 83",       grp:"Primary Teal"},
+      {value:"#01292A", label:"Primary Dark",        subtitle:"Deep teal · Footer",                   role:"Footer background, footer accordion, dark overlays, deep teal section backgrounds",             hex:"#01292A", rgb:"1 · 41 · 42",       grp:"Primary Teal"},
+      {value:"#006D75", label:"Primary Hover",       subtitle:"Mid teal · Hover state",               role:"Hover on all filled teal buttons — the only hover colour for the Primary CTA",                  hex:"#006D75", rgb:"0 · 109 · 117",     grp:"Primary Teal"},
+      {value:"rgba(1,82,83,0.1)",  label:"Primary 10%",  subtitle:"Teal tint · Hover fills",         role:"Arrow/pagination button hover fill, secondary button hover tint, filter chip ring",             hex:"—",       rgb:"—",                 grp:"Primary Teal"},
+      {value:"rgba(1,82,83,0.05)", label:"Primary 5%",   subtitle:"Subtle teal tint",                role:"Section tints, info box backgrounds, alternating row fills",                                    hex:"—",       rgb:"—",                 grp:"Primary Teal"},
+      // ── BRAND ──
+      {value:"#D42924", label:"Metzler Rot",         subtitle:"Signal color · Logo M-square only",    role:"Logo M-square, discount badge (–10%) on product cards. Never for CTAs, body text, or large fills", hex:"#D42924", rgb:"212 · 41 · 36",  grp:"Brand"},
+      {value:"#1A171B", label:"Digital Schwarz",     subtitle:"Brand black · Headlines + wordmark",   role:'Product titles, page headings, "METZLER" wordmark, table rules, icon fills across print and web',  hex:"#1A171B", rgb:"26 · 23 · 27",   grp:"Brand"},
+      // ── GREEN ──
+      {value:"#009951", label:"Green / Select",      subtitle:"Success · Availability · Selection",   role:"In-stock badge, success alert/toast, checkbox (Configurator), radio, textfield active/done border", hex:"#009951", rgb:"0 · 153 · 81",   grp:"Green"},
+      {value:"rgba(0,153,81,0.5)", label:"Green 50%",subtitle:"Muted green · Inactive states",       role:"Muted in-stock, disabled selected checkboxes, greyed-out availability indicators",                hex:"—",       rgb:"—",                 grp:"Green"},
+      // ── RED ──
+      {value:"#C90000", label:"Red / Default",       subtitle:"Error · Sale pricing",                 role:"Sale price text on product cards, error alert/toast border, textfield error border. Not buttons", hex:"#C90000", rgb:"201 · 0 · 0",     grp:"Red"},
+      {value:"#FF4D4F", label:"Red / Error",         subtitle:"Form validation",                      role:"Field error borders, inline validation messages, error notification dot",                         hex:"#FF4D4F", rgb:"255 · 77 · 79",    grp:"Red"},
+      // ── BLACK ──
+      {value:"#000000", label:"Base / Black",        subtitle:"Text black · UI labels",               role:"Body text, nav menu labels, category nav items, tab labels, price text, form input text",         hex:"#000000", rgb:"0 · 0 · 0",        grp:"Black & White"},
+      {value:"rgba(0,0,0,0.8)",   label:"Black 80%", subtitle:"Overlay dark",                        role:"Modal backdrop scrim, dark overlay on hero images, semi-transparent dark layers",                 hex:"—",       rgb:"—",                 grp:"Black & White"},
+      {value:"#FFFFFF", label:"Base / White",        subtitle:"Pure white · Surfaces",                role:"Card backgrounds, modal surfaces, search bar fill, button label on teal/dark, icon fill on teal", hex:"#FFFFFF", rgb:"255 · 255 · 255",  grp:"Black & White"},
+      {value:"rgba(255,255,255,0.5)", label:"White 50%", subtitle:"Ghost text · Dark backgrounds",   role:"Footer accordion labels, footer nav text, top-bar secondary text on teal",                        hex:"—",       rgb:"—",                 grp:"Black & White"},
+      // ── GRAY ──
+      {value:"#A1A1A1", label:"Graphite 500",        subtitle:"Mid gray · Placeholders",              role:"Placeholder text, disabled labels, inactive icons, secondary metadata, arrow button disabled",    hex:"#A1A1A1", rgb:"161 · 161 · 161",  grp:"Grays"},
+      {value:"#DADADA", label:"Graphite 300",        subtitle:"Light gray · Borders + inputs",        role:"All input borders (default), card outlines, category nav rule, swatch borders, dividers",         hex:"#DADADA", rgb:"218 · 218 · 218",  grp:"Grays"},
+      {value:"#F0F0F0", label:"Graphite 100",        subtitle:"Off-white · Row dividers",             role:"Product list dividers, inactive tab background, skeleton shimmer base, out-of-stock badge",       hex:"#F0F0F0", rgb:"240 · 240 · 240",  grp:"Grays"},
+      {value:"#F5F6FA", label:"Paper White",         subtitle:"Near-white · Page backgrounds",        role:"Page background, sidebar fill, search bar pill fill, email meta backgrounds, alternating rows",   hex:"#F5F6FA", rgb:"245 · 246 · 250",  grp:"Grays"},
+      // ── ACCENT ──
+      {value:"#5CDBD3", label:"Teal Mint",           subtitle:"Footer links · Dark bg hyperlinks",    role:"Hyperlinks on dark/teal backgrounds, hover colour for footer nav links",                          hex:"#5CDBD3", rgb:"92 · 219 · 211",   grp:"Accent"},
+      {value:"#3B9ADB", label:"Info Blue",           subtitle:"Info state · Badges",                  role:"Info alert/toast border and dot, informational badge background, help icon tint",                 hex:"#3B9ADB", rgb:"59 · 154 · 219",   grp:"Accent"},
+      {value:"#FFC041", label:"Star Fill",           subtitle:"Star rating colour",                   role:"Star rating filled colour on product cards, review components, and the Ratings section",          hex:"#FFC041", rgb:"255 · 192 · 65",   grp:"Accent"},
     ];
 
     // ── LOGO ──
@@ -176,6 +183,65 @@
       return <span style={{display:"inline-block",padding:"4px 10px",borderRadius:4,background:b[color],color:t[color],fontSize:f(12),fontWeight:500,fontFamily:font}}>{children}</span>;
     };
     const SaleBadge = ({ pct=10 }) => <div style={{background:"#C90000",borderRadius:4,padding:"2px 8px",display:"inline-flex",alignItems:"center"}}><span style={{fontWeight:800,fontSize:f(16),color:"#fff"}}>-{pct}%</span></div>;
+
+    // ── COLOR PALETTE TABLE ──
+    const ColorPalette = () => {
+      const [copiedHex, setCopiedHex] = useState(null);
+      const copy = (hex, id) => {
+        navigator.clipboard?.writeText(hex).catch(()=>{});
+        setCopiedHex(id);
+        setTimeout(()=>setCopiedHex(null), 1500);
+      };
+      const groups = [
+        {id:'Primary Teal', label:'PRIMARY TEAL',    desc:'Brand foundation — all CTAs, headers, interactive UI'},
+        {id:'Brand',        label:'BRAND',           desc:'Logo marks and brand identity'},
+        {id:'Green',        label:'GREEN · SUCCESS', desc:'In-stock, availability, checkboxes, success states'},
+        {id:'Red',          label:'RED · ERROR',     desc:'Sale prices, form errors, validation messages'},
+        {id:'Black & White',label:'BLACK & WHITE',   desc:'Text, overlays, surfaces, card backgrounds'},
+        {id:'Grays',        label:'GRAYS',           desc:'Borders, placeholders, dividers, page backgrounds'},
+        {id:'Accent',       label:'ACCENT',          desc:'Highlights, info states, star ratings, trust bar'},
+      ];
+      return (
+        <div style={{marginBottom:32}}>
+          {groups.map(grp => {
+            const tokens = colorTokens.filter(t=>t.grp===grp.id);
+            return (
+              <div key={grp.id} style={{marginBottom:24,border:'1px solid #E8E8E8',borderRadius:10,overflow:'hidden',fontFamily:font}}>
+                <div style={{padding:'12px 16px',background:'#fff',borderBottom:'1px solid #E8E8E8',display:'flex',alignItems:'baseline',gap:12}}>
+                  <span style={{fontSize:11,fontWeight:800,letterSpacing:'0.12em',color:'#015253',textTransform:'uppercase'}}>{grp.label}</span>
+                  <span style={{fontSize:11,color:'#A1A1A1'}}>{grp.desc}</span>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'56px 1fr 2fr 100px 120px',padding:'7px 16px',background:'#F5F6FA',borderBottom:'1px solid #DADADA'}}>
+                  {['','Name','Usage','HEX','RGB'].map(h=>(
+                    <div key={h} style={{fontSize:9,fontWeight:700,color:'#AAA',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.08em'}}>{h}</div>
+                  ))}
+                </div>
+                {tokens.map((t, i)=>{
+                  const isLast = i === tokens.length-1;
+                  const isLight = ['#FFFFFF','#F5F6FA','#F0F0F0'].includes(t.hex) || t.value.includes('0.05') || t.value.includes('0.1');
+                  const uid = t.hex + t.label;
+                  const copied = copiedHex === uid;
+                  return (
+                    <div key={uid} style={{display:'grid',gridTemplateColumns:'56px 1fr 2fr 100px 120px',alignItems:'center',padding:'0 16px',minHeight:58,background:'#fff',borderBottom:isLast?'none':'1px solid #F0F0F0'}}>
+                      <div onClick={()=>t.hex!=='—'&&copy(t.hex,uid)} title={copied?'Copied!':'Click to copy'} style={{width:38,height:34,borderRadius:6,background:t.value,border:isLight?'1px solid #E8E8E8':'none',cursor:t.hex!=='—'?'pointer':'default',position:'relative',overflow:'hidden',boxShadow:copied?'0 0 0 2px #015253':'none'}}>
+                        {copied&&<div style={{position:'absolute',inset:0,background:'rgba(0,0,0,0.45)',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{color:'#fff',fontSize:8,fontWeight:700}}>✓</span></div>}
+                      </div>
+                      <div style={{paddingRight:8}}>
+                        <div style={{fontSize:13,fontWeight:700,color:'#000',lineHeight:1.25}}>{t.label}</div>
+                        <div style={{fontSize:10,color:'#A1A1A1',marginTop:1,lineHeight:1.4}}>{t.subtitle}</div>
+                      </div>
+                      <div style={{fontSize:14,color:'#444',lineHeight:1.55,paddingRight:16}}>{t.role}</div>
+                      <div>{t.hex!=='—'?<span onClick={()=>copy(t.hex,uid)} style={{fontFamily:'monospace',fontSize:11,fontWeight:700,color:'#015253',background:'rgba(1,82,83,0.07)',padding:'3px 6px',borderRadius:4,cursor:'pointer',whiteSpace:'nowrap'}}>{t.hex}</span>:<span style={{fontSize:11,color:'#CCC',fontStyle:'italic'}}>alpha</span>}</div>
+                      <div style={{fontFamily:'monospace',fontSize:11,color:'#888'}}>{t.rgb}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
 
     // ── COLOR CARD ──
     const ColorCard = ({ value, label, rgb, usage }) => {
@@ -1018,6 +1084,47 @@
           </div>
 
           <CLbl>Desktop — 500 × 50 px</CLbl>
+
+          {/* Specs table */}
+          {(()=>{
+            const th = {fontSize:10,fontWeight:700,color:'#A1A1A1',fontFamily:font,textTransform:'uppercase',letterSpacing:'0.08em',padding:'8px 12px',background:'#F5F6FA',borderBottom:'1px solid #E8E8E8'};
+            const td = {fontSize:12,fontFamily:font,padding:'9px 12px',borderBottom:'1px solid #F0F0F0',verticalAlign:'top'};
+            const mono = {fontFamily:'monospace',fontSize:11,color:'#015253',background:'rgba(1,82,83,0.07)',padding:'1px 5px',borderRadius:3};
+            const rows = [
+              ['Width',        '500 px',          'Desktop — full form column'],
+              ['Height',       '50 px',           'Fixed, all states'],
+              ['Border radius','4 px',            'corner-radius/m'],
+              ['Border',       '1px solid',       'Default #DADADA · Active/Done #009951 · Error #C90000'],
+              ['Padding',      '13px 15px',       'Vertical · Horizontal'],
+              ['Font family',  'Helvetica Neue',  'Regular 400'],
+              ['Font size',    '16 px / 1rem',    'Body regular'],
+              ['Line height',  '24 px / 1.5',     '–'],
+              ['Placeholder',  '#A1A1A1',         'color/gray/default'],
+              ['Text color',   '#000000',         'color/base/black'],
+              ['Label size',   '12 px / 500',     'Floats above on focus or value'],
+              ['Label color',  '#015253',         'color/primary (active) · #A1A1A1 (inactive)'],
+              ['Error text',   '12 px / 400',     'color/red/default #C90000 · appears below field'],
+            ];
+            return (
+              <div style={{border:'1px solid #E8E8E8',borderRadius:8,overflow:'hidden',marginBottom:24}}>
+                <div style={{padding:'10px 12px',background:'#fff',borderBottom:'1px solid #E8E8E8',display:'flex',alignItems:'center',gap:8}}>
+                  <span style={{fontSize:10,fontWeight:800,letterSpacing:'0.1em',color:'#015253',textTransform:'uppercase',fontFamily:font}}>Specs — Desktop</span>
+                  <span style={{fontSize:10,color:'#C8C8C8',fontFamily:'monospace'}}>· Figma node 8321:138637</span>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'140px 130px 1fr',background:'#F5F6FA',borderBottom:'1px solid #E8E8E8'}}>
+                  {['Property','Value','Notes'].map(h=><div key={h} style={th}>{h}</div>)}
+                </div>
+                {rows.map(([prop,val,note],i)=>(
+                  <div key={prop} style={{display:'grid',gridTemplateColumns:'140px 130px 1fr',background:i%2===0?'#fff':'#FAFAFA'}}>
+                    <div style={{...td,fontWeight:600,color:'#000'}}>{prop}</div>
+                    <div style={td}><span style={mono}>{val}</span></div>
+                    <div style={{...td,color:'#666'}}>{note}</div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+
           <div style={{display:'flex',flexDirection:'column',gap:32,marginBottom:24}}>
             {['Default','Active','Done','Error'].map(cond=>(
               <div key={cond} style={{display:'flex',flexDirection:'column',gap:10}}>
@@ -1552,6 +1659,17 @@
             }}>
               <span style={{fontFamily:font, fontSize:14, fontWeight:500, color:'#fff', lineHeight:'16px', whiteSpace:'nowrap'}}>{badge}</span>
             </div>
+            {/* Discount badge — left side, vertically centred on image */}
+            {discount && (
+              <div style={{
+                position:'absolute', left:0, top:'50%', transform:'translateY(-50%)',
+                background:'#C90000', borderRadius:'0 4px 4px 0',
+                padding:'10px 14px',
+                display:'inline-flex', alignItems:'center', justifyContent:'center',
+              }}>
+                <span style={{fontFamily:'Montserrat, sans-serif', fontSize:16, fontWeight:800, color:'#fff', whiteSpace:'nowrap'}}>{discount}</span>
+              </div>
+            )}
           </div>
 
           {/* ── Card content ── */}
@@ -1574,6 +1692,8 @@
               lineHeight:'22px', overflow:'hidden',
               display:'-webkit-box', WebkitLineClamp:3, WebkitBoxOrient:'vertical',
               height:66,
+              textDecoration: hover ? 'underline' : 'none',
+              textUnderlineOffset: '3px',
             }}>{title}</div>
 
             {/* Price row */}
@@ -1582,16 +1702,6 @@
               <span style={{fontFamily:font,fontSize:20,fontWeight:700,color:'#C90000',lineHeight:'normal',whiteSpace:'nowrap'}}>{price}</span>
               {originalPrice && (
                 <span style={{fontFamily:font,fontSize:14,fontWeight:400,color:'#000',textDecoration:'line-through',lineHeight:'16px',padding:'0 4px',whiteSpace:'nowrap'}}>{originalPrice}</span>
-              )}
-              {discount && (
-                <div style={{
-                  background:'#C90000', borderRadius:4,
-                  height:21, padding:'0 6px',
-                  display:'inline-flex', alignItems:'center', justifyContent:'center',
-                  flexShrink:0,
-                }}>
-                  <span style={{fontFamily:'Montserrat, sans-serif',fontSize:12,fontWeight:800,color:'#fff',whiteSpace:'nowrap'}}>{discount}</span>
-                </div>
               )}
             </div>
 
@@ -1949,14 +2059,101 @@
 
             {/* COLORS */}
             <SH1 id="colors">Colors</SH1>
-            <Lead>All color tokens used across Metzler products. Click any swatch to copy the hex value.</Lead>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))',gap:f(16),marginBottom:f(32)}}>
-              {colorGroups[0].tokens.map(t=><ColorCard key={t.value} {...t} />)}
+            <Lead>Full Metzler palette — web, print, and brand. All colors follow the Extended Color System from the Metzler brand guidelines.</Lead>
+
+            {/* 60/30/10 rule block */}
+            <div style={{display:'flex',gap:12,marginBottom:32,flexWrap:'wrap'}}>
+              {[
+                {pct:'60%', label:'Primary Teal',  desc:'Brand dominance — backgrounds, CTAs, top bar, pagination', color:'#015253', textColor:'#fff'},
+                {pct:'30%', label:'Neutrals',       desc:'Grays, black, white — text, borders, surfaces, cards',     color:'#1A171B', textColor:'#fff'},
+                {pct:'10%', label:'Signals',        desc:'Red, green, gold, blue — alerts, badges, ratings, info',   color:'#D42924', textColor:'#fff'},
+              ].map(b=>(
+                <div key={b.pct} style={{flex:'1 1 200px',borderRadius:8,overflow:'hidden',border:'1px solid #E8E8E8',fontFamily:font}}>
+                  <div style={{background:b.color,padding:'18px 20px'}}>
+                    <div style={{fontSize:32,fontWeight:800,color:b.textColor,lineHeight:1}}>{b.pct}</div>
+                  </div>
+                  <div style={{padding:'12px 16px',background:'#fff'}}>
+                    <div style={{fontSize:13,fontWeight:700,color:'#000',marginBottom:4}}>{b.label}</div>
+                    <div style={{fontSize:11,color:'#888',lineHeight:1.5}}>{b.desc}</div>
+                  </div>
+                </div>
+              ))}
             </div>
+
+            {/* Grouped color tables */}
+            <ColorPalette />
 
             {/* TYPOGRAPHY */}
             <SH1 id="typography">Typography</SH1>
             <Lead>Font family: Helvetica Neue. Sizes in <code style={{fontFamily:'monospace',fontSize:14,background:'#F5F6FA',padding:'1px 5px',borderRadius:3}}>rem</code> — base is 16px = 1rem.</Lead>
+
+            {/* Typeface showcase banner */}
+            <div style={{
+              background:'linear-gradient(135deg, #014647 0%, #015253 50%, #016B6C 100%)',
+              borderRadius:16, marginBottom:32, overflow:'hidden', position:'relative',
+            }}>
+              {/* Subtle dot grid */}
+              <div style={{position:'absolute',inset:0,opacity:0.07,backgroundImage:'radial-gradient(circle, #fff 1px, transparent 1px)',backgroundSize:'32px 32px'}}/>
+              {/* Glow accent */}
+              <div style={{position:'absolute',top:-60,right:-60,width:320,height:320,borderRadius:'50%',background:'rgba(255,255,255,0.04)',pointerEvents:'none'}}/>
+
+              {/* Header row */}
+              <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',padding:'40px 48px 0',position:'relative'}}>
+                <div>
+                  <div style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:'clamp(52px,6vw,88px)',fontWeight:700,color:'#fff',lineHeight:1,letterSpacing:'-0.03em',marginBottom:10}}>Helvetica</div>
+                  <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+                    {['Neue','Primary Typeface','Metzler Design System'].map((tag,i)=>(
+                      <span key={i} style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:10,fontWeight:600,color:'rgba(255,255,255,0.5)',textTransform:'uppercase',letterSpacing:'0.1em',background:'rgba(255,255,255,0.08)',padding:'3px 8px',borderRadius:4}}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+                {/* Weight stack */}
+                <div style={{textAlign:'right',flexShrink:0,paddingTop:6}}>
+                  <div style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:9,fontWeight:700,color:'rgba(255,255,255,0.35)',textTransform:'uppercase',letterSpacing:'0.14em',marginBottom:8}}>Weights</div>
+                  {[['400','Regular'],['500','Medium'],['700','Bold'],['900','Black']].map(([w,n])=>(
+                    <div key={w} style={{display:'flex',gap:16,alignItems:'center',justifyContent:'flex-end',marginBottom:2}}>
+                      <span style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:'clamp(12px,1.1vw,15px)',color:'rgba(255,255,255,0.88)',fontWeight:Number(w),letterSpacing:'-0.01em'}}>{n}</span>
+                      <span style={{fontFamily:'monospace',fontSize:9,color:'rgba(255,255,255,0.28)',minWidth:28,textAlign:'right'}}>{w}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div style={{margin:'24px 48px 0',height:'1px',background:'rgba(255,255,255,0.12)'}}/>
+
+              {/* Weight specimen rows */}
+              <div style={{padding:'20px 48px 0'}}>
+                {[
+                  {w:400, label:'Regular', opacity:0.55},
+                  {w:700, label:'Bold',    opacity:0.92},
+                ].map(({w,label,opacity})=>(
+                  <div key={w} style={{display:'flex',alignItems:'baseline',gap:16,marginBottom:12}}>
+                    <span style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:9,fontWeight:600,color:'rgba(255,255,255,0.3)',textTransform:'uppercase',letterSpacing:'0.1em',minWidth:44,flexShrink:0}}>{label}</span>
+                    <div style={{
+                      fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",
+                      fontWeight:w,
+                      color:`rgba(255,255,255,${opacity})`,
+                      fontSize:'clamp(13px,1.9vw,26px)',
+                      letterSpacing:'0.015em',
+                      lineHeight:1.2,
+                      flex:1,
+                      overflow:'hidden',
+                      whiteSpace:'nowrap',
+                    }}>
+                      {'abcdefghijklmnopqrstuvwxyz\u00a0\u00a0ABCDEFGHIJKLMNOPQRSTUVWXYZ\u00a0\u00a01234567890'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom accent bar */}
+              <div style={{display:'flex',margin:'20px 0 0',height:4}}>
+                {['#D42924','#009951','#FFC041','#3B9ADB','rgba(255,255,255,0.15)'].map((c,i)=>(
+                  <div key={i} style={{flex: i===4?1:0, flexBasis: i===4?'auto':60, background:c}}/>
+                ))}
+              </div>
+            </div>
 
             {/* Typography scale — row-based, grouped */}
             {(() => {
