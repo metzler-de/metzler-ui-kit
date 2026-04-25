@@ -1982,29 +1982,231 @@
       );
     };
 
-    // ── FOOTER SECTION ──
+    // ── FOOTER SECTION ── (matches Figma node 12630-185893)
     const FooterSection = () => {
+      const ff = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+
+      // ── Figma asset URLs (7-day CDN cache from fetch date) ──
+      const aDpd        = "https://www.figma.com/api/mcp/asset/8c24dbee-39f0-41a9-b533-530af8f9b1fa";
+      const aDhl        = "https://www.figma.com/api/mcp/asset/877328f1-8476-4113-b196-d98c53ae7064";
+      const aGoGreen    = "https://www.figma.com/api/mcp/asset/71cb4dbc-7963-426b-aa10-724999f3fe60";
+      const aSepa       = "https://www.figma.com/api/mcp/asset/b1d9cd1b-661b-4593-aad2-a8fd443626ba";
+      const aAmex       = "https://www.figma.com/api/mcp/asset/c57df2b0-9c33-483f-9141-de409f34836f";
+      const aVisa       = "https://www.figma.com/api/mcp/asset/99f1e87d-cfbf-4d25-a810-ac8b60019e4a";
+      const aAmazonPay  = "https://www.figma.com/api/mcp/asset/1744a244-f006-4c5c-85c0-5d0a91bad28c";
+      const aKlarna     = "https://www.figma.com/api/mcp/asset/4c669b6e-eddc-4faa-a5ab-12e605c8c848";
+      const aPayPal     = "https://www.figma.com/api/mcp/asset/52143f23-9931-4a39-8702-fce1363dba78";
+      const aMastercard = "https://www.figma.com/api/mcp/asset/b3d8f71c-76bf-414c-ad7c-f563e022cb2e";
+      const aApplePay   = "https://www.figma.com/api/mcp/asset/e144e573-20e7-4fe4-9b3f-532d6e8566cf";
+      const aGooglePay  = "https://www.figma.com/api/mcp/asset/38339be9-2287-467c-99bb-57348146d30d";
+      const aVerkasse   = "https://www.figma.com/api/mcp/asset/c8fc90fe-37d0-4062-8e9c-ee719dc64147";
+      const aBadge1     = "https://www.figma.com/api/mcp/asset/30296bc3-353f-456c-b69f-a411ea158161";
+      const aBadge2     = "https://www.figma.com/api/mcp/asset/555e15ef-bbc5-45b3-9e90-8ffebd8d7977";
+      const aBadge3     = "https://www.figma.com/api/mcp/asset/8f8c6665-35d6-4d72-acd2-5a386d427d8b";
+      const aBadge4     = "https://www.figma.com/api/mcp/asset/a282a940-4a69-4507-ab9d-210b22000bda";
+      const aSocPin     = "https://www.figma.com/api/mcp/asset/b2720d3e-eed5-4926-a6d1-9d70cda95c6d";
+      const aSocFb      = "https://www.figma.com/api/mcp/asset/0d558676-f739-4ff3-9499-755f18b1e562";
+      const aSocIg      = "https://www.figma.com/api/mcp/asset/03f89ff7-5407-48f8-819e-cd3bd14d5f8a";
+      const aSocYt      = "https://www.figma.com/api/mcp/asset/e66df1fb-fc7b-4e6f-8254-a4c5daf8a0a5";
+      const aSocX       = "https://www.figma.com/api/mcp/asset/e454042f-2328-4857-9dda-9ae8f43f8222";
+      const aTrusted    = "https://www.figma.com/api/mcp/asset/158e2c4e-f610-4e5f-b84b-547dab5d224f";
+      const aStar       = "https://www.figma.com/api/mcp/asset/2eaae51f-6aff-4ae4-87a2-7257027438b2";
+
+      // Sub-components
+      const FootLink = ({children}) => (
+        <div style={{fontSize:16,color:'#fff',lineHeight:'24px',cursor:'pointer',fontFamily:ff,fontWeight:400}}>{children}</div>
+      );
+      const ColHead = ({children}) => (
+        <span style={{fontSize:18,fontWeight:700,color:'#fff',lineHeight:'1',fontFamily:ff}}>{children}</span>
+      );
+      const PayBadge = ({src, bg='#fff', badgeBg, maxH=20, px=9, cover=false}) => (
+        <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:badgeBg||bg,
+          display:'flex',alignItems:'center',justifyContent:'center',
+          padding:`0 ${px}px`,boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+          <img src={src} alt="" style={{maxWidth:'100%',maxHeight:cover?'100%':maxH,
+            objectFit:cover?'cover':'contain',display:'block'}} />
+        </div>
+      );
+      const SocialBtn = ({src, w, h}) => (
+        <div style={{width:35,height:35,borderRadius:'50%',background:'rgba(255,255,255,0.1)',
+          display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
+          <img src={src} alt="" style={{width:w,height:h,objectFit:'contain'}} />
+        </div>
+      );
+
+      const infoLinks    = ['Auszeichnungen','Fotowettbewerb','Kundenbilder','Stellenangebote','News','Zahlung und Versand'];
+      const serviceLinks = ['Begriffserklärung','FAQ','Geschäftskunden','Newsletter','VDM10 FAQ'];
+      const legalLinks   = ['Geprüfte Kundenbewertungen','Metzler Garantieerklärung','Datenschutz','AGB','Sitemap',
+                            'Impressum','Batterieentsorgungsgesetz','Widerrufsrecht',
+                            'Hinweise zur Elektroaltgeräteentsorgung','Cookie-Einstellungen'];
+
       return (
-        <Preview>
-          <div style={{background:"#01292A",color:'#fff',padding:f(40),borderRadius:8}}>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:f(32),marginBottom:f(32)}}>
-              {[
-                {title:'Company',links:['About','Careers','Blog']},
-                {title:'Products',links:['Klingeln','Boxen','Leuchten']},
-                {title:'Support',links:['Help','Contact','FAQ']},
-                {title:'Legal',links:['Privacy','Terms','Cookies']},
-              ].map(col=>(
-                <div key={col.title}>
-                  <div style={{fontSize:f(13),fontWeight:700,fontFamily:font,marginBottom:f(12)}}>{col.title}</div>
-                  {col.links.map(l=><div key={l} style={{fontSize:f(12),color:'#5CDBD3',fontFamily:font,marginBottom:6,cursor:'pointer'}}>{l}</div>)}
+        <div style={{background:'#01292A',borderRadius:8,overflow:'hidden',marginBottom:20,fontFamily:ff}}>
+          <div style={{padding:'20px 24px'}}>
+
+            {/* ══ Row 1: Logo · Contacts · Info · Service · Social + Qualität ══ */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',
+              paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)',paddingTop:10,gap:20}}>
+
+              {/* Logo + tagline */}
+              <div style={{width:280,display:'flex',flexDirection:'column',gap:25,flexShrink:0}}>
+                <Logo height={40} color="light" />
+                <p style={{fontSize:16,color:'#fff',lineHeight:'22px',margin:0,fontWeight:400}}>
+                  Edelstahl-Tuerklingel.de ist ein Unternehmen der{' '}
+                  <span style={{color:'#5CDBD3'}}>Metzler Gruppe</span>
+                </p>
+                <p style={{fontSize:18,color:'#fff',fontWeight:700,margin:0,lineHeight:'1.2'}}>
+                  Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
+                </p>
+              </div>
+
+              {/* Contacts */}
+              <div style={{width:210,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>Allgemeine Hotline:</ColHead>
+                  <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>+49 (0) 7121 / 317 7310</span>
+                  <span style={{fontSize:14,color:'#fff',lineHeight:'16px',fontFamily:ff}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
                 </div>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>Sprechanlagen Hotline:</ColHead>
+                  <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>+49 (0) 7121 / 317 7333</span>
+                  <span style={{fontSize:14,color:'#fff',lineHeight:'16px',fontFamily:ff}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>E-Mail Support:</ColHead>
+                  <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>service@metzlergmbh.de</span>
+                </div>
+              </div>
+
+              {/* Informationen */}
+              <div style={{width:180,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+                <ColHead>Informationen</ColHead>
+                <div style={{display:'flex',flexDirection:'column',gap:20}}>
+                  {infoLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                </div>
+              </div>
+
+              {/* Service */}
+              <div style={{width:160,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+                <ColHead>Service</ColHead>
+                <div style={{display:'flex',flexDirection:'column',gap:20}}>
+                  {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                </div>
+              </div>
+
+              {/* Follow us + Qualität */}
+              <div style={{display:'flex',flexDirection:'column',gap:40,flexShrink:0}}>
+                {/* Follow us */}
+                <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                  <ColHead>Follow us</ColHead>
+                  <div style={{display:'flex',gap:10,alignItems:'center'}}>
+                    <SocialBtn src={aSocPin} w={17} h={22} />
+                    <SocialBtn src={aSocFb}  w={11} h={20} />
+                    <SocialBtn src={aSocIg}  w={22} h={21} />
+                    <SocialBtn src={aSocYt}  w={25} h={18} />
+                    <SocialBtn src={aSocX}   w={19} h={19} />
+                  </div>
+                </div>
+                {/* Qualität */}
+                <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                  <ColHead>Qualität</ColHead>
+                  <div style={{display:'flex',gap:10,alignItems:'flex-end'}}>
+                    <img src={aBadge1} alt="TopShop"      style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={aBadge2} alt="TopShop"      style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={aBadge3} alt="TopShop"      style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={aBadge4} alt="TopShop 3 J." style={{width:44,height:72,objectFit:'contain'}} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ══ Row 2: Versandpartners · Payment logos · Trusted Shops rating ══ */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',
+              padding:'20px 0',gap:20,flexWrap:'wrap'}}>
+
+              {/* Versandpartners */}
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                <span style={{fontSize:14,color:'#fff',fontFamily:ff}}>Unsere Versandpartners:</span>
+                <div style={{display:'flex',gap:15,alignItems:'center'}}>
+                  <PayBadge src={aDpd} maxH={22} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,
+                    background:'#F7CE46',display:'flex',alignItems:'center',justifyContent:'center',
+                    padding:'0 2px',boxSizing:'border-box',flexShrink:0}}>
+                    <img src={aDhl} alt="DHL" style={{maxWidth:'100%',maxHeight:11,objectFit:'contain'}} />
+                  </div>
+                  <PayBadge src={aGoGreen} cover maxH={undefined} px={0} />
+                </div>
+              </div>
+
+              {/* Einfach bezahlen */}
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                <span style={{fontSize:14,color:'#fff',fontFamily:ff}}>Einfach bezahlen:</span>
+                <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap',maxWidth:660}}>
+                  <PayBadge src={aSepa}      maxH={18} px={6} />
+                  <PayBadge src={aAmex}      cover  px={0} />
+                  <PayBadge src={aVisa}      maxH={20} />
+                  <PayBadge src={aAmazonPay} maxH={27} px={6} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,
+                    background:'#EA88B2',display:'flex',alignItems:'center',justifyContent:'center',
+                    padding:'0 6px',boxSizing:'border-box',flexShrink:0}}>
+                    <img src={aKlarna} alt="Klarna" style={{maxWidth:'100%',maxHeight:14,objectFit:'contain'}} />
+                  </div>
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,
+                    background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
+                    padding:'0 3px',boxSizing:'border-box',flexShrink:0}}>
+                    <img src={aPayPal} alt="PayPal" style={{maxWidth:'100%',maxHeight:17,objectFit:'contain'}} />
+                  </div>
+                  <PayBadge src={aMastercard} cover px={0} />
+                  <PayBadge src={aApplePay}  maxH={16} px={9} />
+                  <PayBadge src={aGooglePay} maxH={31} px={9} />
+                  <PayBadge src={aVerkasse}  cover px={0} />
+                </div>
+              </div>
+
+              {/* Trusted Shops rating */}
+              <div style={{display:'flex',gap:10,alignItems:'center',flexShrink:0}}>
+                <img src={aTrusted} alt="Trusted Shops"
+                  style={{width:36,height:36,objectFit:'contain',filter:'drop-shadow(0 0 5px rgba(0,0,0,0.25))'}} />
+                <div style={{display:'flex',flexDirection:'column',gap:2}}>
+                  <div style={{display:'flex',alignItems:'center',gap:10}}>
+                    <div style={{display:'flex'}}>
+                      {[0,1,2,3,4].map(i=>(
+                        <img key={i} src={aStar} alt="★" style={{width:19,height:19,objectFit:'contain'}} />
+                      ))}
+                    </div>
+                    <span style={{fontSize:16,color:'#fff',fontFamily:ff,whiteSpace:'nowrap'}}>
+                      <strong>4,72</strong>{' '}Sehr gut{' '}
+                      <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>
+                        23.207 Bewertungen
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ══ Row 3: Legal submenu ══ */}
+            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',
+              borderBottom:'1px solid rgba(255,255,255,0.1)',
+              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'7px 12px',
+              justifyContent:'space-between',alignItems:'center'}}>
+              {legalLinks.map(l => (
+                <span key={l} style={{fontSize:14,color:'rgba(255,255,255,0.5)',lineHeight:'16px',
+                  cursor:'pointer',fontFamily:ff,whiteSpace:'nowrap'}}>{l}</span>
               ))}
             </div>
-            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',paddingTop:f(16),fontSize:f(11),color:'#999',fontFamily:font}}>
-              © 2024 Metzler. All rights reserved.
+
+            {/* ══ Row 4: Copyright ══ */}
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',padding:'16px 0'}}>
+              <span style={{fontSize:14,color:'#fff',lineHeight:'16px',fontFamily:ff}}>
+                Alle Preise inkl. gesetzliche MwSt., zzgl.{' '}
+                <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>Versand</span>
+                {'      '}© 2013 - 2024 | Metzler GmbH
+              </span>
             </div>
+
           </div>
-        </Preview>
+        </div>
       );
     };
 
