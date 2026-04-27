@@ -55,6 +55,7 @@
       { type:"item",  label:"Notifications",     id:"notifications" },
       { type:"item",  label:"Ratings",           id:"ratings-badges" },
       { type:"item",  label:"Product Cards",     id:"product-cards" },
+      { type:"item",  label:"Breadcrumbs",        id:"breadcrumbs" },
       { type:"item",  label:"Header",            id:"header" },
       { type:"item",  label:"Footer",            id:"footer" },
     ];
@@ -1904,6 +1905,73 @@
     };
 
     // ── HEADER SECTION ──
+    // ── BREADCRUMBS ──────────────────────────────────────────────────────────
+    const BreadcrumbsSection = () => {
+      const ff = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+      const chevron = "https://www.figma.com/api/mcp/asset/d7f71323-4337-4cc1-beb5-c29e4478d17e";
+
+      const Crumb = ({ children, active }) => (
+        <span style={{
+          fontFamily: ff,
+          fontSize: 14,
+          fontWeight: 400,
+          lineHeight: '16px',
+          color: active ? '#000' : '#005253',
+          textDecoration: active ? 'none' : 'underline',
+          whiteSpace: 'nowrap',
+          cursor: active ? 'default' : 'pointer',
+        }}>
+          {children}
+        </span>
+      );
+
+      const Sep = () => (
+        <div style={{width:4, height:8, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center'}}>
+          <img src={chevron} alt=">" style={{width:4, height:8, display:'block'}} />
+        </div>
+      );
+
+      const examples = [
+        // 2-level
+        [
+          {label:'Home'}, null,
+          {label:'Briefkästen', active:true}
+        ],
+        // 3-level
+        [
+          {label:'Home'}, null,
+          {label:'Briefkästen'}, null,
+          {label:'Briefkästen aus hochwertigem Stahl', active:true}
+        ],
+        // 4-level
+        [
+          {label:'Home'}, null,
+          {label:'Briefkästen'}, null,
+          {label:'Edelstahl Briefkästen'}, null,
+          {label:'Metzler Briefkasten Typ 200', active:true}
+        ],
+      ];
+
+      return (
+        <div style={{display:'flex',flexDirection:'column',gap:20}}>
+          {examples.map((crumbs, ei) => (
+            <div key={ei} style={{
+              display:'flex', alignItems:'center', gap:10,
+              padding:'12px 16px',
+              background:'#F5F6FA',
+              borderRadius:8,
+            }}>
+              {crumbs.map((c, i) =>
+                c === null
+                  ? <Sep key={i} />
+                  : <Crumb key={i} active={c.active}>{c.label}</Crumb>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    };
+
     const HeaderSection = () => {
       const categories = ['Briefkästen','Paketboxen','Mülltonnenboxen','Sprechanlagen','Überwachungskameras','Türklingeln','Hausnummern & Schriftzüge','Außenleuchten','Garten','Zubehör'];
       const hFont = "'Helvetica Neue', Helvetica, Arial, sans-serif";
@@ -2741,6 +2809,11 @@ const tabs = ['Overview', 'Specifications', 'Reviews'];
             <SH1 id="product-cards">Product Cards</SH1>
             <Lead>Catalog page card — 340px wide, Default and Hover states. Includes product image with badge, brand, star rating, 3-line title, sale price with discount tag, and colour swatches. Figma node 7305-208819.</Lead>
             <ProductCardsSection />
+
+            {/* BREADCRUMBS */}
+            <SH1 id="breadcrumbs">Breadcrumbs</SH1>
+            <Lead>Hierarchical navigation trail showing the user's location within the site. Active page shown in black, parent links in teal (#005253) with underline. Figma node 7244-194226.</Lead>
+            <BreadcrumbsSection />
 
             {/* HEADER */}
             <SH1 id="header">Header</SH1>
