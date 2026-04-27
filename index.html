@@ -1613,17 +1613,17 @@
       const SuccessNotif = () => (
         <div style={{
           width:360, height:50, borderRadius:4, background:'#E7FBE8',
-          display:'flex', alignItems:'center', gap:0, flexShrink:0, overflow:'hidden',
+          display:'flex', alignItems:'center', flexShrink:0,
         }}>
-          {/* Green circle with checkmark */}
-          <div style={{width:53, height:50, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
-            <svg width="21.5" height="21.5" viewBox="0 0 21.5 21.5" fill="none">
+          {/* Green circle with checkmark — 16px gap each side */}
+          <div style={{width:53, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
+            <svg width="22" height="22" viewBox="-1 -1 23.5 23.5" fill="none">
               <circle cx="10.75" cy="10.75" r="10.75" fill="#009951" stroke="#009951" strokeWidth="1.5"/>
               <path d="M5.383 8.961L9.676 13.05L16.116 6.916" stroke="white" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
-          {/* Text */}
-          <span style={{fontFamily:ff2, fontSize:14, fontWeight:400, color:'#000', lineHeight:'20px'}}>
+          {/* Text — vertically centred by parent alignItems:center */}
+          <span style={{fontFamily:ff2, fontSize:14, fontWeight:400, color:'#000'}}>
             Zum Warenkorb hinzugefügt
           </span>
         </div>
