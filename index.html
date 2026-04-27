@@ -45,11 +45,9 @@
       { type:"group", label:"Components" },
       { type:"item",  label:"Buttons",           id:"buttons" },
       { type:"item",  label:"Form Elements",     id:"form-elements" },
-      { type:"item",  label:"Dropdown",          id:"dropdown" },
       { type:"item",  label:"Tooltip",           id:"tooltip" },
       { type:"item",  label:"Alert",             id:"alert" },
       { type:"item",  label:"Badge",             id:"badge" },
-      { type:"item",  label:"Toast",             id:"toast" },
       { type:"item",  label:"Tabs",              id:"tabs" },
       { type:"group", label:"Patterns" },
       { type:"item",  label:"Notifications",     id:"notifications" },
@@ -661,9 +659,9 @@
               {label:'Error',    bg:'#C90000',color:'#fff'},
               {label:'Neutral',  bg:'#F0F0F0',color:'#444444'},
             ].map(b=>(
-              <span key={b.label} style={{display:'inline-block',padding:'3px 10px',borderRadius:999,background:b.bg,color:b.color,fontSize:f(11),fontWeight:500,fontFamily:font}}>{b.label}</span>
+              <span key={b.label} style={{display:'inline-block',padding:'3px 10px',borderRadius:2,background:b.bg,color:b.color,fontSize:f(11),fontWeight:500,fontFamily:font}}>{b.label}</span>
             ))}
-            <span style={{display:'inline-block',padding:'3px 10px',borderRadius:999,background:'#fff',color:'#015253',border:'1px solid #015253',fontSize:f(11),fontWeight:500,fontFamily:font}}>Outlined</span>
+            <span style={{display:'inline-block',padding:'3px 10px',borderRadius:2,background:'#fff',color:'#015253',border:'1px solid #015253',fontSize:f(11),fontWeight:500,fontFamily:font}}>Outlined</span>
           </ShowRow>
           <CLbl>Product Badges</CLbl>
           <ShowRow label="Sale · In stock · New · Out of stock">
@@ -1609,28 +1607,55 @@
 
     // ── NOTIFICATIONS SECTION ──
     const NotificationsSection = () => {
-      const NotifItem = ({type,title,msg}) => {
-        const cfg={error:{bg:"#FFF1F0",border:"#C90000",dot:"#C90000",icon:"info"},success:{bg:"#E8F5E9",border:"#009900",dot:"#009900",icon:"check"},info:{bg:"#EBF2FF",border:"#1A53A4",dot:"#1A53A4",icon:"info"}};
-        const c=cfg[type]||cfg.error;
-        return (
-          <div style={{display:"flex",alignItems:"flex-start",gap:f(12),padding:`${f(12)}px ${f(16)}px`,borderRadius:8,background:c.bg,border:`1.5px solid ${c.border}`}}>
-            <div style={{width:10,height:10,borderRadius:'50%',background:c.dot,flexShrink:0,marginTop:4}}/>
-            <div style={{flex:1}}>
-              <div style={{fontSize:f(13),fontWeight:700,color:"#000000",fontFamily:font,marginBottom:2}}>{title}</div>
-              <div style={{fontSize:f(12),color:"#555",fontFamily:font}}>{msg}</div>
-            </div>
-            <Icon name="close" size={16} color="#999" style={{cursor:'pointer'}}/>
+      const ff2 = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+
+      // Exact "Zum Warenkorb hinzugefügt" success notification from Figma
+      const SuccessNotif = () => (
+        <div style={{
+          width:360, height:50, borderRadius:4, background:'#E7FBE8',
+          display:'flex', alignItems:'center', gap:0, flexShrink:0, overflow:'hidden',
+        }}>
+          {/* Green circle with checkmark */}
+          <div style={{width:53, height:50, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0}}>
+            <svg width="21.5" height="21.5" viewBox="0 0 21.5 21.5" fill="none">
+              <circle cx="10.75" cy="10.75" r="10.75" fill="#009951" stroke="#009951" strokeWidth="1.5"/>
+              <path d="M5.383 8.961L9.676 13.05L16.116 6.916" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
           </div>
-        );
-      };
+          {/* Text */}
+          <span style={{fontFamily:ff2, fontSize:14, fontWeight:400, color:'#000', lineHeight:'20px'}}>
+            Zum Warenkorb hinzugefügt
+          </span>
+        </div>
+      );
+
+      // Generic notification row
+      const NotifRow = ({bg, border, dot, title, msg}) => (
+        <div style={{
+          display:'flex', alignItems:'flex-start', gap:12,
+          padding:'12px 16px', borderRadius:4,
+          background:bg, border:`1.5px solid ${border}`,
+          width:360,
+        }}>
+          <div style={{width:10,height:10,borderRadius:'50%',background:dot,flexShrink:0,marginTop:4}}/>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:700,color:'#000',fontFamily:ff2,marginBottom:2}}>{title}</div>
+            <div style={{fontSize:12,color:'#555',fontFamily:ff2}}>{msg}</div>
+          </div>
+          <span style={{fontSize:14,color:'#999',cursor:'pointer',lineHeight:1}}>×</span>
+        </div>
+      );
+
       return (
-        <Preview>
-          <div style={{display:'flex',flexDirection:'column',gap:f(12)}}>
-            <NotifItem type="success" title="Success" msg="Your order has been placed successfully." />
-            <NotifItem type="error" title="Error" msg="There was an issue processing your request." />
-            <NotifItem type="info" title="Info" msg="This is an informational notification." />
-          </div>
-        </Preview>
+        <div style={{display:'flex',flexDirection:'column',gap:12,marginBottom:24}}>
+          <SuccessNotif />
+          <NotifRow bg="#FFF1F0" border="#C90000" dot="#C90000"
+            title="Fehler" msg="Beim Verarbeiten Ihrer Anfrage ist ein Problem aufgetreten." />
+          <NotifRow bg="#EBF2FF" border="#1A53A4" dot="#1A53A4"
+            title="Hinweis" msg="Dies ist eine informative Benachrichtigung." />
+          <NotifRow bg="#FFF8E1" border="#E67E00" dot="#E67E00"
+            title="Warnung" msg="Bitte überprüfen Sie Ihre Eingaben." />
+        </div>
       );
     };
 
@@ -2109,53 +2134,60 @@
 
     // ── FOOTER SECTION ── (matches Figma node 12630-185893)
     const FooterSection = () => {
-      const ff = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+      const ff  = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+      const fi  = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
-      // ── Figma asset URLs (7-day CDN cache from fetch date) ──
-      const aDpd        = "https://www.figma.com/api/mcp/asset/8c24dbee-39f0-41a9-b533-530af8f9b1fa";
-      const aDhl        = "https://www.figma.com/api/mcp/asset/877328f1-8476-4113-b196-d98c53ae7064";
-      const aGoGreen    = "https://www.figma.com/api/mcp/asset/71cb4dbc-7963-426b-aa10-724999f3fe60";
-      const aSepa       = "https://www.figma.com/api/mcp/asset/b1d9cd1b-661b-4593-aad2-a8fd443626ba";
-      const aAmex       = "https://www.figma.com/api/mcp/asset/c57df2b0-9c33-483f-9141-de409f34836f";
-      const aVisa       = "https://www.figma.com/api/mcp/asset/99f1e87d-cfbf-4d25-a810-ac8b60019e4a";
-      const aAmazonPay  = "https://www.figma.com/api/mcp/asset/1744a244-f006-4c5c-85c0-5d0a91bad28c";
-      const aKlarna     = "https://www.figma.com/api/mcp/asset/4c669b6e-eddc-4faa-a5ab-12e605c8c848";
-      const aPayPal     = "https://www.figma.com/api/mcp/asset/52143f23-9931-4a39-8702-fce1363dba78";
-      const aMastercard = "https://www.figma.com/api/mcp/asset/b3d8f71c-76bf-414c-ad7c-f563e022cb2e";
-      const aApplePay   = "https://www.figma.com/api/mcp/asset/e144e573-20e7-4fe4-9b3f-532d6e8566cf";
-      const aGooglePay  = "https://www.figma.com/api/mcp/asset/38339be9-2287-467c-99bb-57348146d30d";
-      const aVerkasse   = "https://www.figma.com/api/mcp/asset/c8fc90fe-37d0-4062-8e9c-ee719dc64147";
-      const aBadge1     = "https://www.figma.com/api/mcp/asset/30296bc3-353f-456c-b69f-a411ea158161";
-      const aBadge2     = "https://www.figma.com/api/mcp/asset/555e15ef-bbc5-45b3-9e90-8ffebd8d7977";
-      const aBadge3     = "https://www.figma.com/api/mcp/asset/8f8c6665-35d6-4d72-acd2-5a386d427d8b";
-      const aBadge4     = "https://www.figma.com/api/mcp/asset/a282a940-4a69-4507-ab9d-210b22000bda";
-      const aSocPin     = "https://www.figma.com/api/mcp/asset/b2720d3e-eed5-4926-a6d1-9d70cda95c6d";
-      const aSocFb      = "https://www.figma.com/api/mcp/asset/0d558676-f739-4ff3-9499-755f18b1e562";
-      const aSocIg      = "https://www.figma.com/api/mcp/asset/03f89ff7-5407-48f8-819e-cd3bd14d5f8a";
-      const aSocYt      = "https://www.figma.com/api/mcp/asset/e66df1fb-fc7b-4e6f-8254-a4c5daf8a0a5";
-      const aSocX       = "https://www.figma.com/api/mcp/asset/e454042f-2328-4857-9dda-9ae8f43f8222";
-      const aTrusted    = "https://www.figma.com/api/mcp/asset/158e2c4e-f610-4e5f-b84b-547dab5d224f";
-      const aStar       = "https://www.figma.com/api/mcp/asset/2eaae51f-6aff-4ae4-87a2-7257027438b2";
+      // ── Fresh Figma asset URLs (fetched 2026-04-27) ──
+      // Shipping partners
+      const imgDpd        = "https://www.figma.com/api/mcp/asset/6a5c904e-a4d8-4710-a732-b0035a7ee8c4";
+      const imgDhlVector  = "https://www.figma.com/api/mcp/asset/74d237b2-f66b-476d-8da6-93a378f0a9f9";
+      const imgGoGreen    = "https://www.figma.com/api/mcp/asset/52095590-1167-4af0-b687-31257b7130e0";
+      // Payment row 1: SEPA · AMEX · Visa · Amazon · Klarna · PayPal
+      const imgSepa       = "https://www.figma.com/api/mcp/asset/e552bee4-96d3-49e9-88de-a29480beb036";
+      const imgAmex       = "https://www.figma.com/api/mcp/asset/0abf4040-1634-4f23-8696-ed6f01a314dd";
+      const imgVisa       = "https://www.figma.com/api/mcp/asset/88c54fac-68a7-49bf-9adf-357fcb9f13e3";
+      const imgAmazonPay  = "https://www.figma.com/api/mcp/asset/f6d3b98c-d9a1-469b-aa34-6d8b540cbaf7";
+      const imgKlarna     = "https://www.figma.com/api/mcp/asset/0cb229e5-60c6-43e2-804e-2e04b043f99c";
+      const imgPayPal     = "https://www.figma.com/api/mcp/asset/7782c068-791b-4979-a3da-1c4e03b41486";
+      // Payment row 2: Mastercard · Apple Pay · Google Pay · Vorkasse
+      const imgMastercard = "https://www.figma.com/api/mcp/asset/466ef104-74af-4864-a2e5-b5d533b4ffee";
+      const imgApplePay   = "https://www.figma.com/api/mcp/asset/55e033b2-8e12-4908-b48f-e00e9313437e";
+      const imgGooglePay  = "https://www.figma.com/api/mcp/asset/332c22d2-7d9f-45e9-ad1a-744802a8ddc1";
+      const imgVorkasse   = "https://www.figma.com/api/mcp/asset/8d550a58-58a8-4dfc-984a-7492761762fa";
+      // Social icons
+      const imgSocPin     = "https://www.figma.com/api/mcp/asset/9b870c3b-6c1c-4a0a-9dab-d95584f9019d";
+      const imgSocFb      = "https://www.figma.com/api/mcp/asset/cbd7bfe9-53cd-423f-8e5b-b7dffb270d10";
+      const imgSocIg      = "https://www.figma.com/api/mcp/asset/ca911ffe-bb7a-45af-889f-8f180efc6e3d";
+      const imgSocYt      = "https://www.figma.com/api/mcp/asset/056cb7c2-a796-41f3-8208-a35753da67a9";
+      const imgSocX       = "https://www.figma.com/api/mcp/asset/e73f5329-9e37-49b2-bd78-97007c4f4768";
+      // Trusted Shops + stars
+      const imgTrusted    = "https://www.figma.com/api/mcp/asset/57723d4b-702c-4e37-98c2-a75c87608cb3";
+      const imgStar       = "https://www.figma.com/api/mcp/asset/a2b15887-0f61-4817-802a-0676d2e9cb58";
+      // Award badges (Qualität column) — 4 ComputerBild TopShop awards
+      const imgBadge1     = "https://www.figma.com/api/mcp/asset/30296bc3-353f-456c-b69f-a411ea158161";
+      const imgBadge2     = "https://www.figma.com/api/mcp/asset/555e15ef-bbc5-45b3-9e90-8ffebd8d7977";
+      const imgBadge3     = "https://www.figma.com/api/mcp/asset/8f8c6665-35d6-4d72-acd2-5a386d427d8b";
+      const imgBadge4     = "https://www.figma.com/api/mcp/asset/1b87351d-1b83-4570-a8da-e1c7c670722e";
 
-      // Sub-components
-      const FootLink = ({children}) => (
-        <div style={{fontSize:16,color:'#fff',lineHeight:'24px',cursor:'pointer',fontFamily:ff,fontWeight:400}}>{children}</div>
-      );
+      // ── Sub-components ──────────────────────────────────────────────────
       const ColHead = ({children}) => (
-        <span style={{fontSize:18,fontWeight:700,color:'#fff',lineHeight:'1',fontFamily:ff}}>{children}</span>
+        <p style={{fontFamily:ff,fontSize:18,fontWeight:700,color:'#fff',lineHeight:'normal',margin:0,whiteSpace:'nowrap'}}>{children}</p>
       );
-      const PayBadge = ({src, bg='#fff', badgeBg, maxH=20, px=9, cover=false}) => (
-        <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:badgeBg||bg,
+      const FootLink = ({children}) => (
+        <div style={{fontFamily:ff,fontSize:16,fontWeight:400,color:'#fff',lineHeight:'18px',cursor:'pointer'}}>{children}</div>
+      );
+      // 53×30 payment badge
+      const PayBadge = ({src, bg='#fff', px=9, imgH=20, cover=false, imgStyle={}}) => (
+        <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:bg,
           display:'flex',alignItems:'center',justifyContent:'center',
           padding:`0 ${px}px`,boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
-          <img src={src} alt="" style={{maxWidth:'100%',maxHeight:cover?'100%':maxH,
-            objectFit:cover?'cover':'contain',display:'block'}} />
+          <img src={src} alt="" style={{maxWidth:'100%',maxHeight:cover?'100%':imgH,objectFit:cover?'cover':'contain',display:'block',...imgStyle}} />
         </div>
       );
-      const SocialBtn = ({src, w, h}) => (
-        <div style={{width:35,height:35,borderRadius:'50%',background:'rgba(255,255,255,0.1)',
+      const SocialBtn = ({src, iw, ih}) => (
+        <div style={{width:35,height:35,borderRadius:70,background:'rgba(255,255,255,0.1)',
           display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
-          <img src={src} alt="" style={{width:w,height:h,objectFit:'contain'}} />
+          <img src={src} alt="" style={{width:iw,height:ih,objectFit:'contain'}} />
         </div>
       );
 
@@ -2167,43 +2199,44 @@
 
       return (
         <div style={{background:'#01292A',borderRadius:8,overflow:'hidden',marginBottom:20,fontFamily:ff}}>
-          <div style={{padding:'20px 82px'}}>
+          {/* ─── outer padding matches Figma px-[81px] pt-[20px] ─── */}
+          <div style={{padding:'20px 82px 0'}}>
 
-            {/* ══ Row 1: Logo · Contacts · Info · Service · Social + Qualität ══ */}
+            {/* ══ ROW 1: 5 columns, justify-between, w-[1436px] ══ */}
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',
-              paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)',paddingTop:10,gap:20}}>
+              paddingTop:10,paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
 
-              {/* Logo + tagline */}
+              {/* Col 1 — Logo + tagline · w-[280px] gap-[25px] */}
               <div style={{width:280,display:'flex',flexDirection:'column',gap:25,flexShrink:0}}>
                 <Logo height={40} color="light" />
-                <p style={{fontSize:16,color:'#fff',lineHeight:'22px',margin:0,fontWeight:400}}>
-                  Edelstahl-Tuerklingel.de ist ein Unternehmen der{' '}
+                <p style={{fontFamily:ff,fontSize:16,fontWeight:400,color:'#fff',lineHeight:'22px',margin:0}}>
+                  {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
                   <span style={{color:'#5CDBD3'}}>Metzler Gruppe</span>
                 </p>
-                <p style={{fontSize:18,color:'#fff',fontWeight:700,margin:0,lineHeight:'1.2'}}>
+                <p style={{fontFamily:ff,fontSize:18,fontWeight:700,color:'#fff',lineHeight:'normal',margin:0}}>
                   Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
                 </p>
               </div>
 
-              {/* Contacts */}
+              {/* Col 2 — Contacts · w-[192px] gap-[30px] */}
               <div style={{width:192,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Allgemeine Hotline:</ColHead>
-                  <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>+49 (0) 7121 / 317 7310</span>
-                  <span style={{fontSize:14,color:'#fff',lineHeight:'16px',fontFamily:ff}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#5CDBD3',lineHeight:'24px'}}>+49 (0) 7121 / 317 7310</span>
+                  <span style={{fontFamily:ff,fontSize:14,color:'#fff',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Sprechanlagen Hotline:</ColHead>
-                  <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>+49 (0) 7121 / 317 7333</span>
-                  <span style={{fontSize:14,color:'#fff',lineHeight:'16px',fontFamily:ff}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#5CDBD3',lineHeight:'24px'}}>+49 (0) 7121 / 317 7333</span>
+                  <span style={{fontFamily:ff,fontSize:14,color:'#fff',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>E-Mail Support:</ColHead>
-                  <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>service@metzlergmbh.de</span>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#5CDBD3',lineHeight:'24px'}}>service@metzlergmbh.de</span>
                 </div>
               </div>
 
-              {/* Informationen */}
+              {/* Col 3 — Informationen · w-[180px] gap-[30px] */}
               <div style={{width:180,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
                 <ColHead>Informationen</ColHead>
                 <div style={{display:'flex',flexDirection:'column',gap:20}}>
@@ -2211,7 +2244,7 @@
                 </div>
               </div>
 
-              {/* Service */}
+              {/* Col 4 — Service · w-[162px] gap-[30px] */}
               <div style={{width:162,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
                 <ColHead>Service</ColHead>
                 <div style={{display:'flex',flexDirection:'column',gap:20}}>
@@ -2219,114 +2252,110 @@
                 </div>
               </div>
 
-              {/* Follow us + Qualität */}
+              {/* Col 5 — Follow us + Qualität · gap-[40px] */}
               <div style={{display:'flex',flexDirection:'column',gap:40,flexShrink:0}}>
                 {/* Follow us */}
                 <div style={{display:'flex',flexDirection:'column',gap:30}}>
                   <ColHead>Follow us</ColHead>
                   <div style={{display:'flex',gap:10,alignItems:'center'}}>
-                    <SocialBtn src={aSocPin} w={17} h={22} />
-                    <SocialBtn src={aSocFb}  w={11} h={20} />
-                    <SocialBtn src={aSocIg}  w={22} h={21} />
-                    <SocialBtn src={aSocYt}  w={25} h={18} />
-                    <SocialBtn src={aSocX}   w={19} h={19} />
+                    <SocialBtn src={imgSocPin} iw={17} ih={22} />
+                    <SocialBtn src={imgSocFb}  iw={11} ih={20} />
+                    <SocialBtn src={imgSocIg}  iw={22} ih={21} />
+                    <SocialBtn src={imgSocYt}  iw={25} ih={18} />
+                    <SocialBtn src={imgSocX}   iw={19} ih={19} />
                   </div>
                 </div>
                 {/* Qualität */}
                 <div style={{display:'flex',flexDirection:'column',gap:30}}>
                   <ColHead>Qualität</ColHead>
                   <div style={{display:'flex',gap:10,alignItems:'flex-end'}}>
-                    <img src={aBadge1} alt="TopShop"      style={{width:48,height:72,objectFit:'contain'}} />
-                    <img src={aBadge2} alt="TopShop"      style={{width:48,height:72,objectFit:'contain'}} />
-                    <img src={aBadge3} alt="TopShop"      style={{width:48,height:72,objectFit:'contain'}} />
-                    <img src={aBadge4} alt="TopShop 3 J." style={{width:44,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge1} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge2} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge3} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge4} alt="TopShop 3J" style={{width:44,height:72,objectFit:'contain'}} />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ══ Row 2: Versandpartners · Payment logos · Trusted Shops rating ══ */}
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',
-              padding:'20px 0',gap:20,flexWrap:'wrap'}}>
+            {/* ══ ROW 2: Versandpartners · Einfach bezahlen · Trusted Shops ══ */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',padding:'20px 0',gap:20}}>
 
               {/* Versandpartners */}
-              <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                <span style={{fontSize:14,color:'#fff',fontFamily:ff}}>Unsere Versandpartners:</span>
+              <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                <span style={{fontFamily:fi,fontSize:14,fontWeight:400,color:'#fff',lineHeight:'20px'}}>Unsere Versandpartners:</span>
                 <div style={{display:'flex',gap:15,alignItems:'center'}}>
-                  <PayBadge src={aDpd} maxH={22} />
-                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,
-                    background:'#F7CE46',display:'flex',alignItems:'center',justifyContent:'center',
-                    padding:'0 2px',boxSizing:'border-box',flexShrink:0}}>
-                    <img src={aDhl} alt="DHL" style={{maxWidth:'100%',maxHeight:11,objectFit:'contain'}} />
+                  <PayBadge src={imgDpd}       imgH={22} px={5} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#F7CE46',
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 2px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgDhlVector} alt="DHL" style={{width:'100%',height:11,objectFit:'contain'}} />
                   </div>
-                  <PayBadge src={aGoGreen} cover maxH={undefined} px={0} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#fff',
+                    display:'flex',alignItems:'center',justifyContent:'center',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgGoGreen} alt="GoGreen" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                  </div>
                 </div>
               </div>
 
-              {/* Einfach bezahlen */}
-              <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                <span style={{fontSize:14,color:'#fff',fontFamily:ff}}>Einfach bezahlen:</span>
-                <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap',maxWidth:650}}>
-                  <PayBadge src={aSepa}      maxH={18} px={6} />
-                  <PayBadge src={aAmex}      cover  px={0} />
-                  <PayBadge src={aVisa}      maxH={20} />
-                  <PayBadge src={aAmazonPay} maxH={27} px={6} />
-                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,
-                    background:'#EA88B2',display:'flex',alignItems:'center',justifyContent:'center',
-                    padding:'0 6px',boxSizing:'border-box',flexShrink:0}}>
-                    <img src={aKlarna} alt="Klarna" style={{maxWidth:'100%',maxHeight:14,objectFit:'contain'}} />
+              {/* Einfach bezahlen — 2 rows of badges, w-[650px] */}
+              <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                <span style={{fontFamily:fi,fontSize:14,fontWeight:400,color:'#fff',lineHeight:'20px'}}>Einfach bezahlen:</span>
+                {/* Row 1: SEPA · AMEX · Visa · Amazon · Klarna · PayPal */}
+                <div style={{display:'flex',gap:15,alignItems:'center',width:650}}>
+                  <PayBadge src={imgSepa}      px={6}  imgH={18} />
+                  <PayBadge src={imgAmex}      cover px={0} />
+                  <PayBadge src={imgVisa}      px={5}  imgH={20} />
+                  <PayBadge src={imgAmazonPay} px={6}  imgH={27} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#EA88B2',
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 6px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgKlarna} alt="Klarna" style={{maxWidth:'100%',maxHeight:14,objectFit:'contain'}} />
                   </div>
-                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,
-                    background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
-                    padding:'0 3px',boxSizing:'border-box',flexShrink:0}}>
-                    <img src={aPayPal} alt="PayPal" style={{maxWidth:'100%',maxHeight:17,objectFit:'contain'}} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#fff',
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgPayPal} alt="PayPal" style={{maxWidth:'100%',maxHeight:17,objectFit:'contain'}} />
                   </div>
-                  <PayBadge src={aMastercard} cover px={0} />
-                  <PayBadge src={aApplePay}  maxH={16} px={9} />
-                  <PayBadge src={aGooglePay} maxH={31} px={9} />
-                  <PayBadge src={aVerkasse}  cover px={0} />
+                </div>
+                {/* Row 2: Mastercard · Apple Pay · Google Pay · Vorkasse */}
+                <div style={{display:'flex',gap:15,alignItems:'center'}}>
+                  <PayBadge src={imgMastercard} cover px={0} />
+                  <PayBadge src={imgApplePay}   px={9} imgH={16} />
+                  <PayBadge src={imgGooglePay}  px={9} imgH={31} />
+                  <PayBadge src={imgVorkasse}   cover px={0} />
                 </div>
               </div>
 
               {/* Trusted Shops rating */}
               <div style={{display:'flex',gap:10,alignItems:'center',flexShrink:0}}>
-                <img src={aTrusted} alt="Trusted Shops"
-                  style={{width:36,height:36,objectFit:'contain',filter:'drop-shadow(0 0 5px rgba(0,0,0,0.25))'}} />
+                <img src={imgTrusted} alt="Trusted Shops" style={{width:36,height:36,objectFit:'contain'}} />
                 <div style={{display:'flex',flexDirection:'column',gap:2}}>
-                  <div style={{display:'flex',alignItems:'center',gap:10}}>
-                    <div style={{display:'flex'}}>
-                      {[0,1,2,3,4].map(i=>(
-                        <img key={i} src={aStar} alt="★" style={{width:19,height:19,objectFit:'contain'}} />
-                      ))}
-                    </div>
-                    <span style={{fontSize:16,color:'#fff',fontFamily:ff,whiteSpace:'nowrap'}}>
-                      <strong>4,72</strong>{' '}Sehr gut{' '}
-                      <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>
-                        23.207 Bewertungen
-                      </span>
-                    </span>
+                  <div style={{display:'flex',gap:2}}>
+                    {[0,1,2,3,4].map(i=>(
+                      <img key={i} src={imgStar} alt="★" style={{width:19,height:19,objectFit:'contain'}} />
+                    ))}
                   </div>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#fff',whiteSpace:'nowrap'}}>
+                    <strong>4,72</strong>{' '}Sehr gut{' '}
+                    <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>23.207 Bewertungen</span>
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* ══ Row 3: Legal submenu ══ */}
-            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',
-              borderBottom:'1px solid rgba(255,255,255,0.1)',
-              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'7px 12px',
-              justifyContent:'space-between',alignItems:'center'}}>
+            {/* ══ ROW 3: Legal links ══ */}
+            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',borderBottom:'1px solid rgba(255,255,255,0.1)',
+              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'8px 20px',alignItems:'center'}}>
               {legalLinks.map(l => (
-                <span key={l} style={{fontSize:14,color:'rgba(255,255,255,0.5)',lineHeight:'16px',
-                  cursor:'pointer',fontFamily:ff,whiteSpace:'nowrap'}}>{l}</span>
+                <span key={l} style={{fontFamily:ff,fontSize:14,color:'rgba(255,255,255,0.5)',lineHeight:'16px',
+                  cursor:'pointer',whiteSpace:'nowrap'}}>{l}</span>
               ))}
             </div>
 
-            {/* ══ Row 4: Copyright ══ */}
+            {/* ══ ROW 4: Copyright ══ */}
             <div style={{display:'flex',justifyContent:'center',alignItems:'center',padding:'16px 0'}}>
-              <span style={{fontSize:14,color:'#fff',lineHeight:'16px',fontFamily:ff}}>
+              <span style={{fontFamily:ff,fontSize:14,color:'#fff',lineHeight:'16px'}}>
                 Alle Preise inkl. gesetzliche MwSt., zzgl.{' '}
                 <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>Versand</span>
-                {'      '}© 2013 - 2024 | Metzler GmbH
+                {'   '}© 2013 - 2024 | Metzler GmbH
               </span>
             </div>
 
@@ -2335,7 +2364,8 @@
       );
     };
 
-    // ── TOP NAVBAR — full width, inner content capped at 1400px centered ──
+
+        // ── TOP NAVBAR — full width, inner content capped at 1400px centered ──
     const TopNav = () => (
       <header style={{position:'fixed',top:0,left:0,right:0,height:57,background:'#015253',borderBottom:'1px solid #014748',zIndex:1000,display:'flex',alignItems:'center'}}>
         <div style={{maxWidth:1400,width:'100%',margin:'0 auto',padding:'0 32px',display:'flex',alignItems:'center',gap:32}}>
@@ -2750,24 +2780,6 @@
   </div>
 </div>`} />
 
-            {/* DROPDOWN */}
-            <SH1 id="dropdown">Dropdown</SH1>
-            <Lead>Select input matching Textfield style with default, active, and error states.</Lead>
-            <DropdownSection />
-            <CodeBlock code={`const [open, setOpen] = useState(false);
-const [selected, setSelected] = useState('');
-
-<div style={{position:'relative',width:200}}>
-  <button onClick={()=>setOpen(!open)}>
-    {selected || 'Select option'}
-  </button>
-  {open && (
-    <div style={{position:'absolute',top:'100%'}}>
-      {/* dropdown items */}
-    </div>
-  )}
-</div>`} />
-
             {/* TOOLTIP */}
             <SH1 id="tooltip">Tooltip</SH1>
             <Lead>Short contextual labels appearing on hover. Dark variant is default for Metzler.</Lead>
@@ -2801,7 +2813,7 @@ const [selected, setSelected] = useState('');
             <CodeBlock code={`<span style={{
   display: 'inline-block',
   padding: '3px 10px',
-  borderRadius: 999,
+  borderRadius: 2,
   background: '#E6F9F0',
   color: '#009951',
   fontSize: 11,
@@ -2809,26 +2821,6 @@ const [selected, setSelected] = useState('');
 }}>
   In stock
 </span>`} />
-
-            {/* TOAST */}
-            <SH1 id="toast">Toast</SH1>
-            <Lead>Temporary notifications auto-dismissing after 4 seconds. Maximum 3 simultaneous.</Lead>
-            <ToastSection />
-            <CodeBlock code={`<div style={{
-  display: 'flex',
-  alignItems: 'center',
-  gap: 10,
-  padding: '14px 16px',
-  borderRadius: 8,
-  background: '#fff',
-  border: '1px solid #009900',
-  boxShadow: '0 4px 12px rgba(0,0,0,0.10)'
-}}>
-  <div style={{width:8,height:8,
-    borderRadius:'50%',background:'#009900'}}/>
-  <span>Action completed successfully</span>
-  <span style={{cursor:'pointer'}}>×</span>
-</div>`} />
 
             {/* TABS */}
             <SH1 id="tabs">Tabs</SH1>
