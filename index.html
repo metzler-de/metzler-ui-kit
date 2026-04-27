@@ -477,7 +477,7 @@
               background:'#F5F6FA', border:'1px solid #E8E8E8',
               borderRadius:6, padding:'6px 14px',
               fontSize:f(13), fontFamily:font, fontWeight:500, color:'#015253',
-              cursor:'pointer', marginBottom:24,
+              cursor:'pointer', marginTop:20, marginBottom:24,
               transition:'background 0.15s',
             }}
             onMouseEnter={e=>e.currentTarget.style.background='#E8EEF0'}
@@ -2173,9 +2173,17 @@
       const ColHead = ({children}) => (
         <p style={{fontFamily:ff,fontSize:18,fontWeight:700,color:'#fff',lineHeight:'normal',margin:0,whiteSpace:'nowrap'}}>{children}</p>
       );
-      const FootLink = ({children}) => (
-        <div style={{fontFamily:ff,fontSize:16,fontWeight:400,color:'#fff',lineHeight:'18px',cursor:'pointer'}}>{children}</div>
-      );
+      const FootLink = ({children}) => {
+        const [hov,setHov] = useState(false);
+        return (
+          <div
+            style={{fontFamily:ff,fontSize:16,fontWeight:400,lineHeight:'18px',cursor:'pointer',
+              color: hov ? '#5CDBD3' : '#fff', transition:'color 0.15s'}}
+            onMouseEnter={()=>setHov(true)}
+            onMouseLeave={()=>setHov(false)}
+          >{children}</div>
+        );
+      };
       // 53×30 payment badge
       const PayBadge = ({src, bg='#fff', px=9, imgH=20, cover=false, imgStyle={}}) => (
         <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:bg,
@@ -2200,7 +2208,7 @@
       return (
         <div style={{background:'#01292A',borderRadius:8,overflow:'hidden',marginBottom:20,fontFamily:ff}}>
           {/* ─── outer padding matches Figma px-[81px] pt-[20px] ─── */}
-          <div style={{padding:'20px 82px 0'}}>
+          <div style={{padding:'20px 82px 0 0'}}>
 
             {/* ══ ROW 1: 5 columns, justify-between, w-[1436px] ══ */}
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',
@@ -2297,11 +2305,10 @@
                 </div>
               </div>
 
-              {/* Einfach bezahlen — 2 rows of badges, w-[650px] */}
+              {/* Einfach bezahlen — single row */}
               <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
                 <span style={{fontFamily:fi,fontSize:14,fontWeight:400,color:'#fff',lineHeight:'20px'}}>Einfach bezahlen:</span>
-                {/* Row 1: SEPA · AMEX · Visa · Amazon · Klarna · PayPal */}
-                <div style={{display:'flex',gap:15,alignItems:'center',width:650}}>
+                <div style={{display:'flex',gap:8,alignItems:'center'}}>
                   <PayBadge src={imgSepa}      px={6}  imgH={18} />
                   <PayBadge src={imgAmex}      cover px={0} />
                   <PayBadge src={imgVisa}      px={5}  imgH={20} />
@@ -2314,9 +2321,6 @@
                     display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
                     <img src={imgPayPal} alt="PayPal" style={{maxWidth:'100%',maxHeight:17,objectFit:'contain'}} />
                   </div>
-                </div>
-                {/* Row 2: Mastercard · Apple Pay · Google Pay · Vorkasse */}
-                <div style={{display:'flex',gap:15,alignItems:'center'}}>
                   <PayBadge src={imgMastercard} cover px={0} />
                   <PayBadge src={imgApplePay}   px={9} imgH={16} />
                   <PayBadge src={imgGooglePay}  px={9} imgH={31} />
@@ -2343,10 +2347,13 @@
 
             {/* ══ ROW 3: Legal links ══ */}
             <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',borderBottom:'1px solid rgba(255,255,255,0.1)',
-              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'8px 20px',alignItems:'center'}}>
+              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'8px 20px',alignItems:'center',justifyContent:'center'}}>
               {legalLinks.map(l => (
-                <span key={l} style={{fontFamily:ff,fontSize:14,color:'rgba(255,255,255,0.5)',lineHeight:'16px',
-                  cursor:'pointer',whiteSpace:'nowrap'}}>{l}</span>
+                <span key={l}
+                  style={{fontFamily:ff,fontSize:14,color:'rgba(255,255,255,0.5)',lineHeight:'16px',cursor:'pointer',whiteSpace:'nowrap'}}
+                  onMouseEnter={e=>e.currentTarget.style.color='rgba(255,255,255,0.9)'}
+                  onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.5)'}
+                >{l}</span>
               ))}
             </div>
 
