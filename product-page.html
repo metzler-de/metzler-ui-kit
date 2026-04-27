@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metzler Video Türsprechanlage SDM10X — Produktseite</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 184.3 184.3'%3E%3Crect width='184.3' height='184.3' rx='5.75' fill='%23cc322b'/%3E%3Cpath fill='%23fff' d='M70.19,34.81l19.04,32.98-9.58,16.57-28.59-49.55h19.13ZM70.28,108.58h0l-23.45-40.64v85.89h-16.57V34.81h16.57l33.02,57.21L123.92,15.65h19.13l-63.22,109.52-9.58-16.57.02-.02ZM153.14,153.83h-16.57v-85.87l-33,57.14h-19.13l52.11-90.28h16.57v119.02l.02-.02Z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background:#F5F6FA; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color:#1A171B; }
+    a { color:#015253; }
+    img { display:block; max-width:100%; }
+
+    /* ── Container shell that mirrors brandbook width ── */
+    .page-shell { max-width: 1400px; margin: 0 auto; }
+
+    /* ── Tabs bar ── */
+    .pdp-tabs {
+      position: sticky; top:0; z-index: 30;
+      background:#fff; border-bottom: 1px solid #DADADA;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .pdp-tabs-inner { max-width:1400px; margin:0 auto; display:flex; gap:0; padding:0 24px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .pdp-tab {
+      flex-shrink:0; padding:18px 28px; background:none; border:none;
+      font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; font-weight:500;
+      color:#A1A1A1; cursor:pointer; white-space:nowrap; position:relative;
+      transition: color .15s;
+    }
+    .pdp-tab:hover { color:#1A171B; }
+    .pdp-tab.active { color:#015253; font-weight:700; }
+    .pdp-tab.active::after {
+      content:''; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:#015253;
+    }
+
+    /* ── Breadcrumbs ── */
+    .pdp-crumbs {
+      max-width:1400px; margin:0 auto; padding:14px 24px;
+      font-size:13px; color:#A1A1A1;
+      display:flex; flex-wrap:wrap; gap:6px; align-items:center;
+    }
+    .pdp-crumbs a { color:#A1A1A1; text-decoration:none; transition:color .15s; }
+    .pdp-crumbs a:hover { color:#015253; }
+    .pdp-crumbs .sep { color:#DADADA; }
+    .pdp-crumbs .current { color:#1A171B; font-weight:500; }
+
+    /* ── iframe that hosts brandbook sections ── */
+    .brand-frame-wrap {
+      max-width:1400px; margin: 0 auto; padding: 0 0 40px;
+      background:#F5F6FA;
+    }
+    iframe.brand-frame {
+      display:block; width:100%; min-height: 1200px; border:0;
+      background:#F5F6FA;
+    }
+
+    /* ── Loading state ── */
+    .pdp-loading {
+      display:flex; align-items:center; justify-content:center;
+      height: 360px; color:#A1A1A1; font-size:14px;
+    }
+    .pdp-loading::before {
+      content:''; width:18px; height:18px; border:2px solid #DADADA; border-top-color:#015253;
+      border-radius:50%; margin-right:10px; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* React mount points */
+    #header-root, #footer-root { background:#fff; }
+    #footer-root { background:transparent; }
+  </style>
+</head>
+<body>
+
+  <!-- ─────────── HEADER (React, taken directly from Metzler Design System) ─────────── -->
+  <div id="header-root"></div>
+
+  <!-- ─────────── BREADCRUMBS ─────────── -->
+  <div class="page-shell">
+    <nav class="pdp-crumbs" aria-label="Breadcrumb">
+      <a href="#">Startseite</a><span class="sep">/</span>
+      <a href="#">Sprechanlagen</a><span class="sep">/</span>
+      <a href="#">Video Türsprechanlagen</a><span class="sep">/</span>
+      <span class="current">Metzler SDM10X — Video Türsprechanlage mit Gesichtserkennung</span>
+    </nav>
+  </div>
+
+  <!-- ─────────── TABS ─────────── -->
+  <div class="pdp-tabs">
+    <div class="pdp-tabs-inner" role="tablist">
+      <button class="pdp-tab active" data-tab="beschreibung" role="tab" aria-selected="true">Beschreibung</button>
+      <button class="pdp-tab"        data-tab="tech"         role="tab" aria-selected="false">Technische Details</button>
+      <button class="pdp-tab"        data-tab="support"      role="tab" aria-selected="false">Frage zum Artikel</button>
+      <button class="pdp-tab"        data-tab="downloads"    role="tab" aria-selected="false">Downloads</button>
+    </div>
+  </div>
+
+  <!-- ─────────── BRANDBOOK SECTIONS (live, via iframe) ─────────── -->
+  <main class="brand-frame-wrap">
+    <div id="frame-loading" class="pdp-loading">Lade Inhalte aus dem Brandbook…</div>
+    <iframe id="brand-frame" class="brand-frame" src="brandbook.html" title="Produktinhalte" style="visibility:hidden"></iframe>
+  </main>
+
+  <!-- ─────────── FOOTER (React) ─────────── -->
+  <div id="footer-root"></div>
+
+  <!-- ─────────── Tab logic for brandbook iframe ─────────── -->
+  <script>
+    // Sets of brandbook page IDs to show per tab. Everything else is hidden.
+    const TAB_SECTIONS = {
+      beschreibung: [
+        'product-hero',
+        'product-highlights',
+        'product-new-features',
+        'product-integration',
+        'product-access-methods',
+        'product-feature-grid',
+        'product-design-variations',
+        'product-face-recognition',
+        'product-security-faq',
+        'product-camera-tech',
+        'product-metzler-talk',
+      ],
+      tech:      ['product-tech-details'],
+      support:   ['product-support'],
+      downloads: ['product-downloads'],
+    };
+
+    const frame = document.getElementById('brand-frame');
+    const loading = document.getElementById('frame-loading');
+    let currentTab = 'beschreibung';
+
+    function applyTab(tabKey) {
+      const doc = frame.contentDocument;
+      if (!doc || !doc.body) return;
+
+      const ids = TAB_SECTIONS[tabKey] || [];
+
+      // Inject (or update) a style tag that controls section visibility
+      let style = doc.getElementById('pdp-tab-style');
+      if (!style) {
+        style = doc.createElement('style');
+        style.id = 'pdp-tab-style';
+        doc.head.appendChild(style);
+      }
+
+      // Hide every .page by default, then re-show only the ones we want.
+      // Keep the page container's internal scroll disabled so content flows naturally.
+      const showSelector = ids.map(id => '.page#' + id).join(',\n');
+      style.textContent = `
+        body { background:#F5F6FA !important; }
+        .page { display: none !important; }
+        ${showSelector} {
+          display: flex !important;
+          aspect-ratio: auto !important;
+          min-height: 0 !important;
+          overflow: visible !important;
+          margin: 32px auto !important;
+        }
+        ${ids.map(id => `.page#${id} > *:not(.brand-strip):not(.palette-header):not(.page-title):not(.page-title-row):not(.section-intro):not(.page-footer):not(style):not(script)`).join(',\n')} {
+          overflow: visible !important;
+          min-height: 0 !important;
+          flex: 0 0 auto !important;
+        }
+      `;
+
+      // Resize the iframe to its content height
+      requestAnimationFrame(() => {
+        const h = doc.documentElement.scrollHeight;
+        frame.style.height = (h + 40) + 'px';
+        frame.style.visibility = 'visible';
+        loading.style.display = 'none';
+        // Scroll the iframe to top so the user sees the first selected section
+        try { doc.documentElement.scrollTop = 0; } catch (e) {}
+        // Scroll our parent page so the tabs stay in view
+        document.querySelector('.pdp-tabs').scrollIntoView({behavior: 'smooth', block: 'start'});
+      });
+    }
+
+    function onFrameLoad() {
+      // The brandbook's own scrolling is replaced by the parent doc's scroll
+      const doc = frame.contentDocument;
+      if (doc) {
+        doc.documentElement.style.overflow = 'visible';
+        doc.body.style.overflow = 'visible';
+      }
+      applyTab(currentTab);
+      // Recompute height after fonts/images load
+      window.setTimeout(() => {
+        const h = doc?.documentElement?.scrollHeight;
+        if (h) frame.style.height = (h + 40) + 'px';
+      }, 800);
+    }
+
+    frame.addEventListener('load', onFrameLoad);
+
+    // Tab clicks
+    document.querySelectorAll('.pdp-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pdp-tab').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected','false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected','true');
+        currentTab = btn.dataset.tab;
+        applyTab(currentTab);
+      });
+    });
+
+    // Recompute height when window resizes (iframe content reflows)
+    let rsTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(rsTimer);
+      rsTimer = setTimeout(() => {
+        const doc = frame.contentDocument;
+        if (doc) frame.style.height = (doc.documentElement.scrollHeight + 40) + 'px';
+      }, 150);
+    });
+  </script>
+
+  <!-- ─────────── React: Logo + Header + Footer (verbatim from index.html) ─────────── -->
+  <script type="text/babel">
+    const { useState, useRef, useEffect } = React;
+    const font = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+
+    // ── LOGO (verbatim from index.html) ──
+    const Logo = ({ height=28, color="dark" }) => {
+      const tf = color==="light" ? "#fff" : "#1a171a";
+      return (
+        <svg viewBox="0 0 1095.83 184.29" style={{height,width:"auto",display:"block"}} xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <rect x="0" y="0" width="184.3" height="184.3" rx="5.75" fill="#fff"/>
+            <path fill="#cc322b" d="M178.55,0H5.75C2.58,0,0,2.58,0,5.75v172.8c0,3.16,2.58,5.75,5.75,5.75h172.8c3.16,0,5.75-2.58,5.75-5.75V5.75c0-3.16-2.58-5.75-5.75-5.75ZM70.19,34.81l19.04,32.98-9.58,16.57-28.59-49.55h19.13ZM70.28,108.58h0l-23.45-40.64v85.89h-16.57V34.81h16.57l33.02,57.21L123.92,15.65h19.13l-63.22,109.52-9.58-16.57.02-.02ZM153.14,153.83h-16.57v-85.87l-33,57.14h-19.13l52.11-90.28h16.57v119.02l.02-.02Z"/>
+            <g>
+              <path fill={tf} d="M338.52,153.83l-.33-63.09-30.6,51.35h-14.96l-30.44-49.66v61.39h-31.11V34.81h27.72l41.82,68.7,40.82-68.70h27.72l.33,119.02h-30.98Z"/>
+              <path fill={tf} d="M489.31,127.82v26.01h-95.55V34.81h95.58v26.01h-62.24v20.06h52.89v25.16h-52.89v21.76h62.24Z"/>
+              <path fill={tf} d="M965.1,127.82v26.01h-95.55V34.81h95.58v26.01h-62.24v20.06h52.89v25.16h-52.89v21.76h62.24Z"/>
+              <path fill={tf} d="M544.54,61.5h-36.56v-26.7h106.62v26.7h-36.39v92.32h-33.67V61.5Z"/>
+              <path fill={tf} d="M737.47,127.13v26.72H633.33v-21.09l60.01-71.24h-60.12v-26.72h104.14v21.09l-60.01,71.24h60.12Z"/>
+              <path fill={tf} d="M758.29,34.79h33.67v92.35h56.78v26.7h-90.45V34.79Z"/>
+              <path fill={tf} d="M1038.2,122.21h-18.37v31.62h-33.67V34.81h54.4c10.78,0,20.13,1.78,28.06,5.34,7.93,3.56,14.05,8.66,18.37,15.3,4.30,6.64,6.46,14.43,6.46,23.38s-2,16.12-6.03,22.54c-4.03,6.41-9.78,11.42-17.26,15.05l25.68,37.41h-36.05l-21.6-31.62ZM1054.19,65.94c-3.52-3.05-8.73-4.59-15.65-4.59h-18.71v34.85h18.71c6.90,0,12.14-1.49,15.65-4.50,3.52-3.01,5.28-7.28,5.28-12.83s-1.76-9.86-5.28-12.92Z"/>
+            </g>
+          </g>
+        </svg>
+      );
+    };
+
+    // ── HEADER SECTION (verbatim from index.html) ──
+    const HeaderSection = () => {
+      const categories = ['Briefkästen','Paketboxen','Mülltonnenboxen','Sprechanlagen','Überwachungskameras','Türklingeln','Hausnummern & Schriftzüge','Außenleuchten','Garten','Zubehör'];
+      const hFont = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+
+      const SearchIco = () => (
+        <svg width="19" height="20" viewBox="0 0 18.75 19.85" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.5 8.866C16.5 4.819 13.163 1.5 9 1.5C4.837 1.5 1.5 4.819 1.5 8.866C1.5 12.914 4.837 16.233 9 16.233V17.733C4.027 17.733 0 13.763 0 8.866C0 3.969 4.03 0 9 0C13.97 0 18 3.969 18 8.866C18 13.763 13.97 17.733 9 17.733V16.233C13.163 16.233 16.5 12.914 16.5 8.866Z" fill="#015253"/>
+          <path d="M18.534 19.624C18.243 19.919 17.769 19.922 17.473 19.632L13.319 15.54L14.372 14.47L18.526 18.563C18.821 18.854 18.825 19.329 18.534 19.624Z" fill="#015253"/>
+        </svg>
+      );
+      const UserIco = () => (
+        <svg width="21" height="20" viewBox="0 0 20.6 19.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.14 14.034C15.107 14.034 17.914 15.378 19.774 17.689L20.426 18.499C20.703 18.843 20.649 19.346 20.305 19.623C19.961 19.9 19.457 19.846 19.18 19.502L18.528 18.692C16.972 16.758 14.623 15.634 12.14 15.634H8.462C5.98 15.634 3.631 16.758 2.074 18.692L1.423 19.502C1.146 19.846 0.642 19.9 0.298 19.623C-0.046 19.346 -0.1 18.843 0.177 18.499L0.828 17.689C2.688 15.378 5.495 14.034 8.462 14.034H12.14Z" fill="#015253"/>
+          <path d="M15.149 6.313C15.149 3.742 13.011 1.6 10.3 1.6C7.59 1.6 5.451 3.742 5.451 6.313C5.451 8.883 7.59 11.024 10.3 11.024V12.625C6.671 12.625 3.851 9.865 3.851 6.313C3.851 2.826 6.739 0 10.3 0C13.862 0 16.75 2.826 16.75 6.313C16.75 9.865 13.864 12.625 10.3 12.625V11.024C13.011 11.024 15.149 8.883 15.149 6.313Z" fill="#015253"/>
+        </svg>
+      );
+      const BasketIco = () => (
+        <svg width="22" height="20" viewBox="0 0 21.3 19.41" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.463 0C19.411 0 20.197 0.736 20.259 1.683L21.294 17.495C21.362 18.533 20.538 19.412 19.498 19.412H1.8C0.76 19.412 -0.064 18.533 0.004 17.495L1.04 1.683C1.102 0.736 1.888 0 2.836 0H18.463ZM2.836 1.6C2.731 1.6 2.643 1.682 2.636 1.787L1.6 17.6C1.593 17.715 1.684 17.813 1.8 17.813H19.498C19.613 17.813 19.705 17.715 19.697 17.6L18.662 1.787C18.655 1.682 18.568 1.6 18.463 1.6H2.836Z" fill="#015253"/>
+          <path d="M14.033 5.55V6.112C14.033 7.382 13.003 8.412 11.733 8.412H9.566C8.295 8.412 7.266 7.382 7.266 6.112V5.55C7.266 5.163 6.952 4.849 6.566 4.849C6.179 4.849 5.866 5.163 5.866 5.55V6.112C5.866 8.156 7.522 9.813 9.566 9.813H11.733C13.776 9.813 15.432 8.156 15.432 6.112V5.55C15.432 5.163 15.119 4.849 14.733 4.849C14.346 4.849 14.033 5.163 14.033 5.55Z" fill="#015253"/>
+        </svg>
+      );
+
+      const [cartCount, setCartCount] = useState(0);
+      // Expose a tiny add-to-cart hook so future content can wire the basket
+      useEffect(() => {
+        window.MetzlerCart = {
+          add: (n=1) => setCartCount(c => c + n),
+          set: (n)   => setCartCount(n),
+          get: () => cartCount,
+        };
+      }, [cartCount]);
+
+      return (
+        <div style={{borderBottom:'1px solid #E8E8E8',background:'#fff',fontFamily:hFont}}>
+
+          {/* ── Row 1: Top info bar ── */}
+          <div style={{background:'#015253',padding:'4px 0'}}>
+            <div style={{maxWidth:1400,margin:'0 auto',display:'flex',justifyContent:'space-between',alignItems:'center',padding:'0 24px',gap:8,flexWrap:'wrap'}}>
+              <span style={{fontSize:14,fontWeight:700,color:'#FFC628',whiteSpace:'nowrap'}}>Original Metzler Qualität seit 2013</span>
+              <span style={{fontSize:14,color:'rgba(255,255,255,0.9)',whiteSpace:'nowrap'}}>über <strong style={{color:'#fff'}}>1.5 Mio.</strong> zufriedene Kunden</span>
+              <span style={{fontSize:14,color:'rgba(255,255,255,0.9)',whiteSpace:'nowrap'}}><strong style={{color:'#fff'}}>10 Jahre</strong> Ersatzteilversorgung</span>
+              <span style={{fontSize:14,color:'rgba(255,255,255,0.9)',whiteSpace:'nowrap'}}><strong style={{color:'#fff'}}>Trusted Shops</strong> Käuferschutz</span>
+              <span style={{fontSize:14,color:'rgba(255,255,255,0.9)',whiteSpace:'nowrap'}}>Kauf auf <strong style={{color:'#fff'}}>Rechnung</strong></span>
+            </div>
+          </div>
+
+          {/* ── Row 2: Logo / Search / Nav links / Icons ── */}
+          <div style={{background:'#fff',padding:'15px 24px',display:'flex',alignItems:'center',gap:50,maxWidth:1400,margin:'0 auto'}}>
+            <div style={{flexShrink:0}}>
+              <Logo height={34} color="dark" />
+            </div>
+            <div style={{flex:1,background:'#F5F6FA',borderRadius:9999,height:40,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 15px 0 20px',cursor:'text',minWidth:0}}>
+              <span style={{fontSize:16,color:'#A1A1A1',lineHeight:'22px',fontWeight:400}}>Suchen</span>
+              <SearchIco />
+            </div>
+            <div style={{display:'flex',gap:4,flexShrink:0}}>
+              <div style={{height:26,display:'flex',alignItems:'center',padding:'0 15px',fontSize:14,color:'#000',cursor:'pointer',borderRadius:20,whiteSpace:'nowrap'}}>Kontaktiere uns</div>
+              <div style={{height:26,display:'flex',alignItems:'center',padding:'0 15px',fontSize:14,color:'#000',cursor:'pointer',borderRadius:20,whiteSpace:'nowrap'}}>Zahlung & Versand</div>
+            </div>
+            <div style={{display:'flex',gap:40,flexShrink:0,alignItems:'center'}}>
+              <div style={{width:24,height:24,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><UserIco /></div>
+              <div
+                style={{width:24,height:24,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',position:'relative'}}
+                onClick={() => alert(`Warenkorb (${cartCount} Artikel)`)}
+                title="Warenkorb"
+              >
+                <BasketIco />
+                {cartCount > 0 && (
+                  <span style={{
+                    position:'absolute',top:-6,right:-8,minWidth:18,height:18,borderRadius:9,
+                    background:'#C90000',color:'#fff',fontSize:10,fontWeight:700,
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 5px',
+                    fontFamily:hFont
+                  }}>{cartCount}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Row 3: Category nav ── */}
+          <div style={{background:'#fff',borderTop:'1px solid #DADADA'}}>
+            <div style={{maxWidth:1400,margin:'0 auto',display:'flex',justifyContent:'space-between',alignItems:'center',padding:'0 24px'}}>
+              {categories.map(item => {
+                const [catHov, setCatHov] = useState(false);
+                return (
+                  <div key={item}
+                    onMouseEnter={()=>setCatHov(true)}
+                    onMouseLeave={()=>setCatHov(false)}
+                    style={{height:40,display:'flex',alignItems:'center',padding:'0 8px',
+                      fontSize:16,fontWeight:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,
+                      color: catHov ? '#015253' : '#000',
+                      borderBottom: catHov ? '2px solid #015253' : '2px solid transparent',
+                      boxSizing:'border-box',
+                      transition:'color 0.15s,border-color 0.15s'
+                    }}>
+                    {item}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      );
+    };
+
+    // ── FOOTER SECTION (verbatim from index.html) ──
+    const FooterSection = () => {
+      const ff  = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+      const fi  = "'Inter', 'Helvetica Neue', Arial, sans-serif";
+      const imgDpd        = "https://www.figma.com/api/mcp/asset/6a5c904e-a4d8-4710-a732-b0035a7ee8c4";
+      const imgDhlVector  = "https://www.figma.com/api/mcp/asset/74d237b2-f66b-476d-8da6-93a378f0a9f9";
+      const imgGoGreen    = "https://www.figma.com/api/mcp/asset/52095590-1167-4af0-b687-31257b7130e0";
+      const imgSepa       = "https://www.figma.com/api/mcp/asset/e552bee4-96d3-49e9-88de-a29480beb036";
+      const imgAmex       = "https://www.figma.com/api/mcp/asset/0abf4040-1634-4f23-8696-ed6f01a314dd";
+      const imgVisa       = "https://www.figma.com/api/mcp/asset/88c54fac-68a7-49bf-9adf-357fcb9f13e3";
+      const imgAmazonPay  = "https://www.figma.com/api/mcp/asset/f6d3b98c-d9a1-469b-aa34-6d8b540cbaf7";
+      const imgKlarna     = "https://www.figma.com/api/mcp/asset/0cb229e5-60c6-43e2-804e-2e04b043f99c";
+      const imgPayPal     = "https://www.figma.com/api/mcp/asset/7782c068-791b-4979-a3da-1c4e03b41486";
+      const imgMastercard = "https://www.figma.com/api/mcp/asset/466ef104-74af-4864-a2e5-b5d533b4ffee";
+      const imgApplePay   = "https://www.figma.com/api/mcp/asset/55e033b2-8e12-4908-b48f-e00e9313437e";
+      const imgGooglePay  = "https://www.figma.com/api/mcp/asset/332c22d2-7d9f-45e9-ad1a-744802a8ddc1";
+      const imgVorkasse   = "https://www.figma.com/api/mcp/asset/8d550a58-58a8-4dfc-984a-7492761762fa";
+      const imgSocPin     = "https://www.figma.com/api/mcp/asset/9b870c3b-6c1c-4a0a-9dab-d95584f9019d";
+      const imgSocFb      = "https://www.figma.com/api/mcp/asset/cbd7bfe9-53cd-423f-8e5b-b7dffb270d10";
+      const imgSocIg      = "https://www.figma.com/api/mcp/asset/ca911ffe-bb7a-45af-889f-8f180efc6e3d";
+      const imgSocYt      = "https://www.figma.com/api/mcp/asset/056cb7c2-a796-41f3-8208-a35753da67a9";
+      const imgSocX       = "https://www.figma.com/api/mcp/asset/e73f5329-9e37-49b2-bd78-97007c4f4768";
+      const imgTrusted    = "https://www.figma.com/api/mcp/asset/57723d4b-702c-4e37-98c2-a75c87608cb3";
+      const imgStar       = "https://www.figma.com/api/mcp/asset/a2b15887-0f61-4817-802a-0676d2e9cb58";
+      const imgBadge1     = "https://www.figma.com/api/mcp/asset/30296bc3-353f-456c-b69f-a411ea158161";
+      const imgBadge2     = "https://www.figma.com/api/mcp/asset/555e15ef-bbc5-45b3-9e90-8ffebd8d7977";
+      const imgBadge3     = "https://www.figma.com/api/mcp/asset/8f8c6665-35d6-4d72-acd2-5a386d427d8b";
+      const imgBadge4     = "https://www.figma.com/api/mcp/asset/1b87351d-1b83-4570-a8da-e1c7c670722e";
+
+      const ColHead = ({children}) => (
+        <p style={{fontFamily:ff,fontSize:18,fontWeight:700,color:'#fff',lineHeight:'normal',margin:0,whiteSpace:'nowrap'}}>{children}</p>
+      );
+      const FootLink = ({children}) => {
+        const [hov,setHov] = useState(false);
+        return (
+          <div
+            style={{fontFamily:ff,fontSize:16,fontWeight:400,lineHeight:'18px',cursor:'pointer',
+              color: hov ? '#5CDBD3' : '#fff', transition:'color 0.15s'}}
+            onMouseEnter={()=>setHov(true)}
+            onMouseLeave={()=>setHov(false)}
+          >{children}</div>
+        );
+      };
+      const PayBadge = ({src, bg='#fff', px=9, imgH=20, cover=false, imgStyle={}}) => (
+        <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:bg,
+          display:'flex',alignItems:'center',justifyContent:'center',
+          padding:`0 ${px}px`,boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+          <img src={src} alt="" style={{maxWidth:'100%',maxHeight:cover?'100%':imgH,objectFit:cover?'cover':'contain',display:'block',...imgStyle}} />
+        </div>
+      );
+      const SocialBtn = ({src, iw, ih}) => (
+        <div style={{width:35,height:35,borderRadius:70,background:'rgba(255,255,255,0.1)',
+          display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
+          <img src={src} alt="" style={{width:iw,height:ih,objectFit:'contain'}} />
+        </div>
+      );
+
+      const infoLinks    = ['Auszeichnungen','Fotowettbewerb','Kundenbilder','Stellenangebote','News','Zahlung und Versand'];
+      const serviceLinks = ['Begriffserklärung','FAQ','Geschäftskunden','Newsletter','VDM10 FAQ'];
+      const legalLinks   = ['Geprüfte Kundenbewertungen','Metzler Garantieerklärung','Datenschutz','AGB','Sitemap',
+                            'Impressum','Batterieentsorgungsgesetz','Widerrufsrecht',
+                            'Hinweise zur Elektroaltgeräteentsorgung','Cookie-Einstellungen'];
+
+      return (
+        <div style={{background:'#01292A',fontFamily:ff}}>
+          <div style={{maxWidth:1400,margin:'0 auto',padding:'20px 30px 0 30px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',
+              paddingTop:10,paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)',flexWrap:'wrap',gap:24}}>
+
+              <div style={{width:280,display:'flex',flexDirection:'column',gap:25,flexShrink:0,alignItems:'flex-start'}}>
+                <Logo height={40} color="light" />
+                <p style={{fontFamily:ff,fontSize:16,fontWeight:400,color:'#fff',lineHeight:'22px',margin:0}}>
+                  {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
+                  <span style={{color:'#5CDBD3'}}>Metzler Gruppe</span>
+                </p>
+                <p style={{fontFamily:ff,fontSize:18,fontWeight:700,color:'#fff',lineHeight:'normal',margin:0}}>
+                  Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
+                </p>
+              </div>
+
+              <div style={{width:192,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>Allgemeine Hotline:</ColHead>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#5CDBD3',lineHeight:'24px'}}>+49 (0) 7121 / 317 7310</span>
+                  <span style={{fontFamily:ff,fontSize:14,color:'#fff',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>Sprechanlagen Hotline:</ColHead>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#5CDBD3',lineHeight:'24px'}}>+49 (0) 7121 / 317 7333</span>
+                  <span style={{fontFamily:ff,fontSize:14,color:'#fff',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>E-Mail Support:</ColHead>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#5CDBD3',lineHeight:'24px'}}>service@metzlergmbh.de</span>
+                </div>
+              </div>
+
+              <div style={{width:180,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+                <ColHead>Informationen</ColHead>
+                <div style={{display:'flex',flexDirection:'column',gap:20}}>
+                  {infoLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                </div>
+              </div>
+
+              <div style={{width:162,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+                <ColHead>Service</ColHead>
+                <div style={{display:'flex',flexDirection:'column',gap:20}}>
+                  {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                </div>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:40,flexShrink:0}}>
+                <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                  <ColHead>Follow us</ColHead>
+                  <div style={{display:'flex',gap:10,alignItems:'center'}}>
+                    <SocialBtn src={imgSocPin} iw={17} ih={22} />
+                    <SocialBtn src={imgSocFb}  iw={11} ih={20} />
+                    <SocialBtn src={imgSocIg}  iw={22} ih={21} />
+                    <SocialBtn src={imgSocYt}  iw={25} ih={18} />
+                    <SocialBtn src={imgSocX}   iw={19} ih={19} />
+                  </div>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                  <ColHead>Qualität</ColHead>
+                  <div style={{display:'flex',gap:10,alignItems:'flex-end'}}>
+                    <img src={imgBadge1} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge2} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge3} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
+                    <img src={imgBadge4} alt="TopShop 3J" style={{width:44,height:72,objectFit:'contain'}} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',padding:'20px 0',gap:20,flexWrap:'wrap'}}>
+              <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                <span style={{fontFamily:fi,fontSize:14,fontWeight:400,color:'#fff',lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                <div style={{display:'flex',gap:15,alignItems:'center'}}>
+                  <PayBadge src={imgDpd} imgH={22} px={5} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#F7CE46',
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 2px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgDhlVector} alt="DHL" style={{width:'100%',height:11,objectFit:'contain'}} />
+                  </div>
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#fff',
+                    display:'flex',alignItems:'center',justifyContent:'center',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgGoGreen} alt="GoGreen" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                  </div>
+                </div>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                <span style={{fontFamily:fi,fontSize:14,fontWeight:400,color:'#fff',lineHeight:'20px'}}>Einfach bezahlen:</span>
+                <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+                  <PayBadge src={imgSepa}      px={6}  imgH={18} />
+                  <PayBadge src={imgAmex}      cover px={0} />
+                  <PayBadge src={imgVisa}      px={5}  imgH={20} />
+                  <PayBadge src={imgAmazonPay} px={6}  imgH={27} />
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#EA88B2',
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 6px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgKlarna} alt="Klarna" style={{maxWidth:'100%',maxHeight:14,objectFit:'contain'}} />
+                  </div>
+                  <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:4,background:'#fff',
+                    display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px',boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
+                    <img src={imgPayPal} alt="PayPal" style={{maxWidth:'100%',maxHeight:17,objectFit:'contain'}} />
+                  </div>
+                  <PayBadge src={imgMastercard} cover px={0} />
+                  <PayBadge src={imgApplePay}   px={9} imgH={16} />
+                  <PayBadge src={imgGooglePay}  px={9} imgH={31} />
+                  <PayBadge src={imgVorkasse}   cover px={0} />
+                </div>
+              </div>
+
+              <div style={{display:'flex',gap:10,alignItems:'center',flexShrink:0}}>
+                <img src={imgTrusted} alt="Trusted Shops" style={{width:36,height:36,objectFit:'contain'}} />
+                <div style={{display:'flex',flexDirection:'column',gap:2}}>
+                  <div style={{display:'flex',gap:2}}>
+                    {[0,1,2,3,4].map(i=>(
+                      <img key={i} src={imgStar} alt="★" style={{width:19,height:19,objectFit:'contain'}} />
+                    ))}
+                  </div>
+                  <span style={{fontFamily:ff,fontSize:16,color:'#fff',whiteSpace:'nowrap'}}>
+                    <strong>4,72</strong>{' '}Sehr gut{' '}
+                    <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>23.207 Bewertungen</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',borderBottom:'1px solid rgba(255,255,255,0.1)',
+              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'8px 20px',alignItems:'center',justifyContent:'center'}}>
+              {legalLinks.map(l => (
+                <span key={l}
+                  style={{fontFamily:ff,fontSize:14,color:'rgba(255,255,255,0.5)',lineHeight:'16px',cursor:'pointer',whiteSpace:'nowrap'}}
+                  onMouseEnter={e=>e.currentTarget.style.color='rgba(255,255,255,0.9)'}
+                  onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.5)'}
+                >{l}</span>
+              ))}
+            </div>
+
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',padding:'16px 0'}}>
+              <span style={{fontFamily:ff,fontSize:14,color:'#fff',lineHeight:'16px'}}>
+                Alle Preise inkl. gesetzliche MwSt., zzgl.{' '}
+                <span style={{color:'#5CDBD3',textDecoration:'underline',cursor:'pointer'}}>Versand</span>
+                {'   '}© 2013 - 2024 | Metzler GmbH
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('header-root')).render(<HeaderSection />);
+    ReactDOM.createRoot(document.getElementById('footer-root')).render(<FooterSection />);
+  </script>
+
+</body>
+</html>
