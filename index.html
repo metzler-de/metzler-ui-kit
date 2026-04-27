@@ -467,17 +467,74 @@
       };
 
       const lines = code.split('\n');
+      const [open, setOpen] = useState(false);
 
       return (
-        <div style={{position:'relative',marginTop:8,marginBottom:16}}>
-          <button onClick={()=>{navigator.clipboard?.writeText(code).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),1500);}}
-            style={{position:'absolute',top:8,right:8,background:copied?'#009900':'#015253',color:'#fff',border:'none',borderRadius:4,padding:'4px 10px',fontSize:f(11),fontFamily:font,cursor:'pointer',zIndex:1,transition:'background 0.2s'}}>
-            {copied?'Copied!':'Copy'}
+        <>
+          {/* "View Code" trigger button */}
+          <button
+            onClick={() => setOpen(true)}
+            style={{
+              display:'inline-flex', alignItems:'center', gap:6,
+              background:'#F5F6FA', border:'1px solid #E8E8E8',
+              borderRadius:6, padding:'6px 14px',
+              fontSize:f(13), fontFamily:font, fontWeight:500, color:'#015253',
+              cursor:'pointer', marginBottom:24,
+              transition:'background 0.15s',
+            }}
+            onMouseEnter={e=>e.currentTarget.style.background='#E8EEF0'}
+            onMouseLeave={e=>e.currentTarget.style.background='#F5F6FA'}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#015253" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+            View Code
           </button>
-          <div style={{background:'#01292A',padding:`${f(14)}px ${f(16)}px`,borderRadius:8,fontSize:f(12),fontFamily:'monospace',overflowX:'auto',lineHeight:1.65,margin:0,whiteSpace:'pre'}}>
-            {lines.map((line,i) => highlightLine(line,i))}
-          </div>
-        </div>
+
+          {/* Modal overlay */}
+          {open && (
+            <div
+              onClick={e=>{if(e.target===e.currentTarget)setOpen(false);}}
+              style={{
+                position:'fixed', inset:0, background:'rgba(0,0,0,0.55)',
+                zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center',
+                padding:32,
+              }}
+            >
+              <div style={{
+                background:'#01292A', borderRadius:12, width:'100%', maxWidth:860,
+                maxHeight:'80vh', display:'flex', flexDirection:'column',
+                boxShadow:'0 24px 60px rgba(0,0,0,0.45)',
+                overflow:'hidden',
+              }}>
+                {/* Modal header */}
+                <div style={{
+                  display:'flex', alignItems:'center', justifyContent:'space-between',
+                  padding:'12px 16px', borderBottom:'1px solid rgba(255,255,255,0.1)',
+                  flexShrink:0,
+                }}>
+                  <span style={{fontSize:13,color:'rgba(255,255,255,0.6)',fontFamily:'monospace'}}>Code snippet</span>
+                  <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                    <button
+                      onClick={()=>{navigator.clipboard?.writeText(code).catch(()=>{});setCopied(true);setTimeout(()=>setCopied(false),1500);}}
+                      style={{background:copied?'#009900':'rgba(255,255,255,0.12)',color:'#fff',border:'none',borderRadius:4,padding:'4px 12px',fontSize:f(11),fontFamily:font,cursor:'pointer',transition:'background 0.2s'}}>
+                      {copied?'Copied!':'Copy'}
+                    </button>
+                    <button
+                      onClick={()=>setOpen(false)}
+                      style={{background:'rgba(255,255,255,0.08)',color:'rgba(255,255,255,0.7)',border:'none',borderRadius:4,width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:16}}>
+                      ✕
+                    </button>
+                  </div>
+                </div>
+                {/* Code body */}
+                <div style={{overflowY:'auto', padding:`${f(14)}px ${f(16)}px`, fontSize:f(12), fontFamily:'monospace', lineHeight:1.65, whiteSpace:'pre'}}>
+                  {lines.map((line,i) => highlightLine(line,i))}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       );
     };
 
@@ -2110,7 +2167,7 @@
 
       return (
         <div style={{background:'#01292A',borderRadius:8,overflow:'hidden',marginBottom:20,fontFamily:ff}}>
-          <div style={{padding:'20px 24px'}}>
+          <div style={{padding:'20px 82px'}}>
 
             {/* ══ Row 1: Logo · Contacts · Info · Service · Social + Qualität ══ */}
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',
@@ -2129,7 +2186,7 @@
               </div>
 
               {/* Contacts */}
-              <div style={{width:210,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+              <div style={{width:192,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Allgemeine Hotline:</ColHead>
                   <span style={{fontSize:16,color:'#5CDBD3',lineHeight:'24px',fontFamily:ff}}>+49 (0) 7121 / 317 7310</span>
@@ -2155,7 +2212,7 @@
               </div>
 
               {/* Service */}
-              <div style={{width:160,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+              <div style={{width:162,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
                 <ColHead>Service</ColHead>
                 <div style={{display:'flex',flexDirection:'column',gap:20}}>
                   {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
@@ -2209,7 +2266,7 @@
               {/* Einfach bezahlen */}
               <div style={{display:'flex',flexDirection:'column',gap:10}}>
                 <span style={{fontSize:14,color:'#fff',fontFamily:ff}}>Einfach bezahlen:</span>
-                <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap',maxWidth:660}}>
+                <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap',maxWidth:650}}>
                   <PayBadge src={aSepa}      maxH={18} px={6} />
                   <PayBadge src={aAmex}      cover  px={0} />
                   <PayBadge src={aVisa}      maxH={20} />
@@ -2814,24 +2871,103 @@ const tabs = ['Overview', 'Specifications', 'Reviews'];
             <SH1 id="breadcrumbs">Breadcrumbs</SH1>
             <Lead>Hierarchical navigation trail showing the user's location within the site. Active page shown in black, parent links in teal (#005253) with underline. Figma node 7244-194226.</Lead>
             <BreadcrumbsSection />
+            <CodeBlock code={`// Breadcrumb — Figma node 7244-194226
+// Colors: link #005253 underlined · active page black · chevron asset
+const Crumb = ({ children, active }) => (
+  <span style={{
+    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+    fontSize: 14,
+    color: active ? '#000' : '#005253',
+    textDecoration: active ? 'none' : 'underline',
+    cursor: active ? 'default' : 'pointer',
+  }}>
+    {children}
+  </span>
+);
+
+// Usage: 3-level example
+<div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+  <Crumb>Home</Crumb>
+  <img src={chevronAsset} style={{ width: 4, height: 8 }} />
+  <Crumb>Briefkästen</Crumb>
+  <img src={chevronAsset} style={{ width: 4, height: 8 }} />
+  <Crumb active>Briefkästen aus hochwertigem Stahl</Crumb>
+</div>`} />
 
             {/* HEADER */}
             <SH1 id="header">Header</SH1>
-            <Lead>Navigation header with logo, menu, and user account access.</Lead>
+            <Lead>Navigation header with logo, menu, and user account access. Figma node 5281-55977.</Lead>
             <div style={{overflowX:'auto',borderRadius:8}}>
-              <div style={{minWidth:1200}}>
+              <div style={{minWidth:1440}}>
                 <HeaderSection />
               </div>
             </div>
+            <CodeBlock code={`// Header — Figma node 5281-55977
+// 3 rows: teal info bar · logo+search+icons · category nav
+
+{/* Row 1 — Teal top bar #015253 */}
+<div style={{ background: '#015253', padding: '4px 0' }}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 24px' }}>
+    <span style={{ color: '#FFC628', fontWeight: 700 }}>Original Metzler Qualität seit 2013</span>
+    <span style={{ color: '#fff' }}>über <strong>1.5 Mio.</strong> zufriedene Kunden</span>
+    {/* ... more trust items */}
+  </div>
+</div>
+
+{/* Row 2 — Logo + Search pill + Icons */}
+<div style={{ background: '#fff', padding: '15px 24px', display: 'flex', alignItems: 'center', gap: 50 }}>
+  <Logo height={34} color="dark" />
+  <div style={{ flex: 1, background: '#F5F6FA', borderRadius: 9999, height: 40,
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 15px 0 20px' }}>
+    <span style={{ color: '#A1A1A1' }}>Suchen</span>
+    <SearchIcon />
+  </div>
+  <UserIcon />
+  <BasketIcon />
+</div>
+
+{/* Row 3 — Category nav · borderTop #DADADA */}
+<div style={{ background: '#fff', borderTop: '1px solid #DADADA' }}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 24px' }}>
+    {categories.map(item => (
+      <div key={item} style={{ height: 40, display: 'flex', alignItems: 'center',
+        padding: '0 8px', fontSize: 16, fontWeight: 500, cursor: 'pointer' }}>
+        {item}
+      </div>
+    ))}
+  </div>
+</div>`} />
 
             {/* FOOTER */}
             <SH1 id="footer">Footer</SH1>
-            <Lead>Site footer with links, social icons, and legal information.</Lead>
+            <Lead>Site footer with links, social icons, and legal information. Figma node 12630-185893 · 1440px layout.</Lead>
             <div style={{overflowX:'auto',borderRadius:8}}>
-              <div style={{minWidth:1200}}>
+              <div style={{minWidth:1440}}>
                 <FooterSection />
               </div>
             </div>
+            <CodeBlock code={`// Footer — Figma node 12630-185893
+// Background: #01292A · Side padding: 82px · Content width: 1436px
+
+{/* Row 1 — 5 columns: justify-between */}
+// Logo (280px) · Contacts (192px) · Informationen (180px) · Service (162px) · Follow us + Qualität
+
+{/* Row 2 — Shipping + Payments + Trusted Shops */}
+// Badge size: 53×30px · border: 1px solid #006D75 · radius: 4px
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+  {/* Versandpartners: DPD · DHL (#F7CE46 bg) · GoGreen */}
+  {/* Einfach bezahlen: SEPA · AMEX · Visa · Amazon · Klarna (#EA88B2 bg) · PayPal · MC · Apple · Google · Vorkasse */}
+  {/* Trusted Shops: logo + 5 stars + "4,72 Sehr gut 23.207 Bewertungen" */}
+</div>
+
+{/* Row 3 — Legal links, rgba(255,255,255,0.5) */}
+{/* Row 4 — Copyright centered */}
+
+// Key colors:
+// Background:     #01292A
+// Links:          #5CDBD3 (Teal Mint)
+// Dividers:       rgba(255,255,255,0.1)
+// Payment border: #006D75`} />
 
             <div style={{marginTop:60,paddingTop:40,borderTop:'1px solid #E8E8E8'}}>
               <div style={{fontSize:12,color:'#999',fontFamily:font}}>
