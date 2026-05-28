@@ -39,6 +39,46 @@
     const f = n => Math.round(n * S);
     const font = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 
+    // ── CHANGELOG — update this on every push ──
+    const CHANGELOG = {
+      version: '1.3',
+      date: '2026-05-28',
+      entries: [
+        {
+          type: 'new',
+          text: 'Introduction section added — hero banner, overview cards, how-to guide, quick reference table'
+        },
+        {
+          type: 'new',
+          text: 'Download .md button in header — fetches and auto-saves metzler-design-system.md from GitHub'
+        },
+        {
+          type: 'new',
+          text: 'What\'s New popup — version changelog visible directly in the design system'
+        },
+        {
+          type: 'improved',
+          text: 'Nav section group labels — darker color (#54545C), top border divider, more visible hierarchy'
+        },
+        {
+          type: 'improved',
+          text: 'Sidebar nav click — instant jump (no smooth scroll animation)'
+        },
+        {
+          type: 'improved',
+          text: 'Nav restructured into 6 groups: Foundations / Navigation / Forms / Components / Product / Layout'
+        },
+        {
+          type: 'fix',
+          text: 'Form input padding updated to 0.7rem 0.9375rem across all states and size variants'
+        },
+        {
+          type: 'fix',
+          text: 'Quick Reference table — removed inaccurate Grid gutter entry; split border-radius into cards (8px) and controls (4px)'
+        },
+      ]
+    };
+
     // ── NAV ITEMS ──
     const navItems = [
       { type:"item",  label:"Introduction",      id:"introduction" },
@@ -6737,7 +6777,14 @@ a {
     const TopNav = ({activeId, onNavClick, onMenuClick, mob, onOpenIcons, iconsActive}) => {
       const [query, setQuery] = useState('');
       const [open,  setOpen]  = useState(false);
+      const [whatsNew, setWhatsNew] = useState(false);
       const inputRef = useRef(null);
+
+      const typeStyle = {
+        new:      { bg:'#F0FDF4', color:'#15803D', label:'New' },
+        improved: { bg:'#EFF6FF', color:'#1D4ED8', label:'Improved' },
+        fix:      { bg:'#FFF7ED', color:'#C2410C', label:'Fix' },
+      };
 
       const results = query.trim().length > 0
         ? allNavItems.filter(n => n.label.toLowerCase().includes(query.toLowerCase()))
@@ -6797,7 +6844,126 @@ a {
             )}
 
             {/* Search zone — hidden on mobile, pinned to right */}
-            {!mob && <div style={{marginLeft:'auto',display:'flex',alignItems:'center',paddingRight:32}}>
+            {!mob && <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:8,paddingRight:32}}>
+
+            {/* What's New button */}
+            <button onClick={()=>setWhatsNew(true)}
+              style={{display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer',
+                background:'rgba(255,255,255,0.12)',border:'0.0625rem solid rgba(255,255,255,0.25)',
+                borderRadius:'0.25rem',padding:'0.4375rem 1rem',
+                fontFamily:font,fontSize:'0.8125rem',fontWeight:600,color:'#fff',
+                flexShrink:0,whiteSpace:'nowrap',transition:'background 0.15s,border-color 0.15s',
+                marginRight:'0.25rem'}}
+              onMouseEnter={e=>{e.currentTarget.style.background='rgba(255,255,255,0.2)';e.currentTarget.style.borderColor='rgba(255,255,255,0.45)';}}
+              onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,0.12)';e.currentTarget.style.borderColor='rgba(255,255,255,0.25)';}}>
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="6" stroke="#fff" strokeWidth="1.6"/>
+                <path d="M7 4v3.5M7 9.5v.5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round"/>
+              </svg>
+              What's new v{CHANGELOG.version}
+            </button>
+
+            {/* What's New Modal */}
+            {whatsNew && (
+              <>
+                <div onClick={()=>setWhatsNew(false)}
+                  style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:3000,
+                    animation:'fadeIn 0.15s ease'}}/>
+                <div style={{position:'fixed',top:'50%',left:'50%',
+                  transform:'translate(-50%,-50%)',zIndex:3001,
+                  background:'#fff',borderRadius:'0.75rem',width:'min(36rem,90vw)',
+                  boxShadow:'0 1.25rem 3rem rgba(0,0,0,0.2)',overflow:'hidden',
+                  animation:'tslidein 0.2s ease'}}>
+                  {/* Header */}
+                  <div style={{padding:'1.25rem 1.5rem',borderBottom:'0.0625rem solid #F0F0F0',
+                    display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                    <div>
+                      <div style={{fontSize:'1.125rem',fontWeight:700,color:'#000',fontFamily:font}}>
+                        What's new in v{CHANGELOG.version}
+                      </div>
+                      <div style={{fontSize:'0.75rem',color:'#A1A1A1',fontFamily:font,marginTop:'0.125rem'}}>
+                        Released {CHANGELOG.date}
+                      </div>
+                    </div>
+                    <button onClick={()=>setWhatsNew(false)}
+                      style={{background:'none',border:'none',cursor:'pointer',padding:'0.25rem',
+                        color:'#A1A1A1',fontSize:'1.25rem',lineHeight:1,borderRadius:'0.25rem'}}
+                      onMouseEnter={e=>e.currentTarget.style.color='#000'}
+                      onMouseLeave={e=>e.currentTarget.style.color='#A1A1A1'}>✕</button>
+                  </div>
+                  {/* Entries */}
+                  <div style={{padding:'1.25rem 1.5rem',display:'flex',flexDirection:'column',gap:'0.75rem',
+                    maxHeight:'60vh',overflowY:'auto'}}>
+                    {CHANGELOG.entries.map((e,i)=>{
+                      const s = typeStyle[e.type] || typeStyle.new;
+                      return (
+                        <div key={i} style={{display:'flex',gap:'0.75rem',alignItems:'flex-start'}}>
+                          <span style={{flexShrink:0,fontSize:'0.6875rem',fontWeight:700,
+                            background:s.bg,color:s.color,borderRadius:'624rem',
+                            padding:'0.1875rem 0.5rem',marginTop:'0.125rem',
+                            fontFamily:font,letterSpacing:'0.04em',textTransform:'uppercase'}}>
+                            {s.label}
+                          </span>
+                          <span style={{fontSize:'0.875rem',color:'#2E2E36',fontFamily:font,lineHeight:1.55}}>
+                            {e.text}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {/* Footer */}
+                  <div style={{padding:'1rem 1.5rem',borderTop:'0.0625rem solid #F0F0F0',
+                    display:'flex',justifyContent:'flex-end'}}>
+                    <button onClick={()=>setWhatsNew(false)}
+                      style={{background:'#015253',color:'#fff',border:'none',
+                        borderRadius:'0.25rem',padding:'0.5rem 1.25rem',
+                        fontFamily:font,fontSize:'0.875rem',fontWeight:600,cursor:'pointer'}}>
+                      Got it
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Download .md button — fetches and saves locally */}
+            {(()=>{
+              const [dlLabel, setDlLabel] = React.useState('Download .md');
+              const handleDownload = () => {
+                setDlLabel('Downloading…');
+                fetch('https://raw.githubusercontent.com/metzler-de/metzler-ui-kit/main/metzler-design-system.md')
+                  .then(r => r.blob())
+                  .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'metzler-design-system.md';
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    setDlLabel('Downloaded ✓');
+                    setTimeout(() => setDlLabel('Download .md'), 2500);
+                  })
+                  .catch(() => setDlLabel('Download .md'));
+              };
+              return (
+                <button onClick={handleDownload}
+                  style={{display:'inline-flex',alignItems:'center',gap:7,cursor:'pointer',
+                    background:'linear-gradient(135deg,#6B21A8 0%,#7C3AED 50%,#4C1D95 100%)',
+                    border:'none',borderRadius:'0.25rem',padding:'0.4375rem 1rem',
+                    fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:'0.8125rem',
+                    fontWeight:700,color:'#fff',flexShrink:0,
+                    boxShadow:'0 0.125rem 0.5rem rgba(124,58,237,0.4)',
+                    transition:'filter 0.15s,box-shadow 0.15s',whiteSpace:'nowrap',
+                    marginRight:'1rem'}}
+                  onMouseEnter={e=>{e.currentTarget.style.filter='brightness(1.15)';e.currentTarget.style.boxShadow='0 0.25rem 0.75rem rgba(124,58,237,0.55)';}}
+                  onMouseLeave={e=>{e.currentTarget.style.filter='brightness(1)';e.currentTarget.style.boxShadow='0 0.125rem 0.5rem rgba(124,58,237,0.4)';}}>
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 1v8M4 6l3 3 3-3" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2 11h10" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"/>
+                  </svg>
+                  {dlLabel}
+                </button>
+              );
+            })()}
 
             {/* Search — fixed width on the right */}
             <div style={{width:320,position:'relative'}}>
