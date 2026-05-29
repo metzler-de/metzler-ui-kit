@@ -41,40 +41,68 @@
 
     // ── CHANGELOG — update this on every push ──
     const CHANGELOG = {
-      version: '1.3',
-      date: '2026-05-28',
+      version: '1.4',
+      date: '2026-05-29',
       entries: [
         {
           type: 'new',
-          text: 'Introduction section added — hero banner, overview cards, how-to guide, quick reference table'
+          text: 'metzler-tokens.css — standalone CSS custom properties file for use in any project'
         },
         {
           type: 'new',
-          text: 'Download .md button in header — fetches and auto-saves metzler-design-system.md from GitHub'
+          text: 'FOR-CLAUDE.md — design system briefing file for Claude chat, includes all tokens, patterns and rules'
         },
         {
           type: 'new',
-          text: 'What\'s New popup — version changelog visible directly in the design system'
+          text: 'Cookie consent modal — Metzler-styled dialog with "Alle akzeptieren", "Ablehnen", "Konfigurieren" buttons; interactive with choice feedback'
+        },
+        {
+          type: 'new',
+          text: 'Typography OS detection banner — auto-detects macOS/Ubuntu (Helvetica Neue) vs Windows (Arial); shows active font stack'
         },
         {
           type: 'improved',
-          text: 'Nav section group labels — darker color (#54545C), top border divider, more visible hierarchy'
+          text: 'Red Tones — anchored to Metzler Rot (#D42924) as default; Red 50 / 600 / 900 derived from it'
         },
         {
           type: 'improved',
-          text: 'Sidebar nav click — instant jump (no smooth scroll animation)'
+          text: 'Typography: Windows uses Arial, "Helvetica Neue", Helvetica, sans-serif (Arial first by default) — same scale as macOS'
         },
         {
           type: 'improved',
-          text: 'Nav restructured into 6 groups: Foundations / Navigation / Forms / Components / Product / Layout'
+          text: 'Display typography — letter-spacing (-0.04em) removed from Display 1, 2 and 3'
+        },
+        {
+          type: 'improved',
+          text: 'Alert variants — left-accent border removed; border removed entirely; background fill only'
+        },
+        {
+          type: 'improved',
+          text: 'Modal static preview replaced with cookie consent dialog (centered title, no close button, stacked footer)'
+        },
+        {
+          type: 'improved',
+          text: 'Graphite scale — two new tokens added: Graphite 450 (#CCCCCC) and Graphite 850 (#333333)'
+        },
+        {
+          type: 'removed',
+          text: 'Color Utilities section removed (text-* / bg-* utility classes)'
+        },
+        {
+          type: 'removed',
+          text: 'Product Status Badges section removed'
+        },
+        {
+          type: 'removed',
+          text: 'Status column removed from data tables'
+        },
+        {
+          type: 'removed',
+          text: 'Review · Photo + Text modal removed'
         },
         {
           type: 'fix',
-          text: 'Form input padding updated to 0.7rem 0.9375rem across all states and size variants'
-        },
-        {
-          type: 'fix',
-          text: 'Quick Reference table — removed inaccurate Grid gutter entry; split border-radius into cards (8px) and controls (4px)'
+          text: 'Radio button selected dot — centered with absolute positioning (top/left 50% + translate)'
         },
       ]
     };
@@ -7134,6 +7162,7 @@ a {
         new:      { bg:'#F0FDF4', color:'#15803D', label:'New' },
         improved: { bg:'#EFF6FF', color:'#1D4ED8', label:'Improved' },
         fix:      { bg:'#FFF7ED', color:'#C2410C', label:'Fix' },
+        removed:  { bg:'#FFF0EF', color:'#B52320', label:'Removed' },
       };
 
       const results = query.trim().length > 0
