@@ -9,7 +9,10 @@ that matches the real design system — not a guess.
 ## Brand
 
 - **Company:** Metzler GmbH — sells outdoor hardware (mailboxes, doorbells, intercoms, house numbers, garden)
-- **Font:** `"Helvetica Neue", Helvetica, Arial, sans-serif` — macOS renders **Helvetica Neue**, Windows renders **Arial**. Same weights, sizes, and line-heights across both. No import needed.
+- **Font rule — same weights, sizes, and line-heights on all systems:**
+  - macOS / Ubuntu → `"Helvetica Neue", Helvetica, Arial, sans-serif` (Helvetica Neue first)
+  - Windows → `Arial, "Helvetica Neue", Helvetica, sans-serif` (Arial first = default)
+  - No import needed — both are system fonts.
 - **Language:** German (DE) by default
 - **Logo:** Red M-square (`#D42924`) on left, "METZLER" wordmark in `#1A171B` on right
 - **Base:** 16px = 1rem. All measurements in rem.

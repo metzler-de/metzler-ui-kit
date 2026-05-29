@@ -15,8 +15,15 @@
      TYPOGRAPHY
   ───────────────────────────────────────── */
 
-  /* macOS: resolves to Helvetica Neue · Windows: resolves to Arial — same scale, same weights */
-  --font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /*
+   * Font rule — same weights, sizes, and line-heights on all systems:
+   * macOS / Ubuntu  → "Helvetica Neue", Helvetica, Arial, sans-serif
+   * Windows         → Arial, "Helvetica Neue", Helvetica, sans-serif  (Arial first = default)
+   *
+   * Use the stack below as-is; the browser resolves to the correct typeface automatically.
+   */
+  --font-family:         "Helvetica Neue", Helvetica, Arial, sans-serif; /* macOS / Ubuntu */
+  --font-family-windows: Arial, "Helvetica Neue", Helvetica, sans-serif; /* Windows */
 
   /* Display — fluid / responsive */
   --display-1-size:   clamp(3rem, 9vw, 8rem);
