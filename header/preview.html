@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metzler Header Preview</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #f5f6fa;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; background: none; border: none; }
+
+    /* ==================== HEADER ROW 1 — GREEN TOP BAR ==================== */
+    .hdr-row1 {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 52;
+      background: #015253; color: #fff; font-size: 13px;
+      transition: opacity 0.3s;
+    }
+    .hdr-row1-inner {
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 24px; height: 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    @media(min-width:1024px){ .hdr-row1-inner { padding: 0 40px; } }
+    .hdr-badges {
+      display: none; align-items: center; gap: 24px;
+      overflow: hidden; min-width: 0; flex: 1;
+    }
+    @media(min-width:769px){ .hdr-badges { display: flex; } }
+    .hdr-badge { white-space: nowrap; opacity: 0.9; }
+    .hdr-badge.badge-hidden { display: none; }
+    .hdr-links {
+      display: none; align-items: center; gap: 20px; margin-left: auto;
+    }
+    @media(min-width:769px){ .hdr-links { display: flex; } }
+    .hdr-link {
+      color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s;
+      white-space: nowrap;
+    }
+    .hdr-link:hover { color: #fff; text-decoration: underline; }
+
+    /* ==================== HEADER ROW 2 — LOGO + SEARCH + ICONS ==================== */
+    .hdr-row2 {
+      position: fixed; top: 32px; left: 0; right: 0; z-index: 51;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      transition: opacity 0.3s;
+    }
+    .hdr-row2-inner {
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 24px; height: 72px;
+      display: flex; align-items: center; gap: 24px;
+    }
+    @media(min-width:1024px){ .hdr-row2-inner { padding: 0 40px; } }
+    .hdr-logo {
+      flex-shrink: 0; display: flex; align-items: center;
+    }
+    .hdr-logo img { height: 34px; width: auto; display: block; }
+    .hdr-searchbar {
+      flex: 1; height: 44px;
+      display: none; align-items: center; gap: 12px;
+      background: #F5F6FA; border-radius: 4px;
+      padding: 0 16px;
+      border: 1px solid #e0e0e0;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    @media(min-width:769px){ .hdr-searchbar { display: flex; } }
+    .hdr-searchbar:focus-within {
+      border-color: #015253; box-shadow: 0 0 0 3px rgba(1, 82, 83, 0.15);
+    }
+    .hdr-searchbar svg { width: 16px; height: 16px; color: #999; flex-shrink: 0; }
+    .hdr-searchbar input {
+      flex: 1; background: none; border: none; outline: none;
+      font-size: 15px; font-family: inherit; color: #0a0a0a;
+    }
+    .hdr-searchbar input::placeholder { color: #A1A1A1; }
+    .search-clear {
+      display: none; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #ccc; border: none; cursor: pointer;
+      flex-shrink: 0; padding: 0; transition: background 0.2s;
+    }
+    .search-clear:hover { background: #aaa; }
+    .search-clear svg { width: 12px; height: 12px; color: #fff; }
+    .search-clear.visible { display: flex; }
+    .hdr-icons { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .hdr-icon-btn {
+      width: 40px; height: 40px; display: flex; align-items: center;
+      justify-content: center; border-radius: 50%;
+      color: #333; transition: all 0.2s; position: relative;
+    }
+    .hdr-icon-btn:hover { color: #015253; background: #F5F6FA; }
+    .hdr-icon-btn svg { height: 22px; width: auto; }
+
+    /* ==================== HEADER ROW 3 — CATEGORY NAV ==================== */
+    .nav {
+      position: fixed; top: 104px; left: 0; right: 0; z-index: 50;
+      background: #fff;
+      border-bottom: 1px solid #DADADA;
+      transition: box-shadow 0.3s, opacity 0.3s;
+    }
+    .nav-inner {
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 24px; height: 54px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    @media(min-width:1024px){ .nav-inner { padding: 0 40px; } }
+    .nav-categories {
+      display: none; align-items: center; gap: 0; flex: 1;
+      justify-content: space-between; height: 100%;
+      min-width: 0; flex-wrap: nowrap;
+    }
+    .nav-categories.has-overflow { justify-content: space-between; }
+    @media(min-width:769px){ .nav-categories { display: flex; } }
+    .nav-cat {
+      position: relative; height: 100%;
+      display: flex; align-items: center;
+      padding: 0 8px; font-size: 16px; font-weight: 700;
+      color: #333; transition: color 0.2s;
+      white-space: nowrap; cursor: pointer;
+    }
+    .nav-cat:hover, .nav-cat.active { color: #015253; }
+    .nav-cat::after {
+      content: ''; position: absolute; bottom: 0; left: 8px; right: 8px;
+      height: 3px; background: #015253; transform: scaleX(0);
+      transition: transform 0.2s; transform-origin: center;
+    }
+    .nav-cat:hover::after, .nav-cat.active::after { transform: scaleX(1); }
+    .nav-cat.nav-hidden { display: none !important; }
+
+    /* Nav "Alle" overflow button */
+    .nav-alle-btn {
+      display: none; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: .5rem 1.2rem; border-radius: 0.25rem;
+      background: #015253; border: none; cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 1rem; font-weight: 500; color: #fff;
+      white-space: nowrap; line-height: 1.2; flex-shrink: 0;
+      margin-right: 24px; transition: background 0.15s ease;
+    }
+    .nav-alle-btn:hover { background: #014A4B; }
+    .nav-alle-btn svg { width: 18px; height: 18px; }
+    .nav-alle-btn.visible { display: flex; }
+
+    /* ==================== MOBILE HEADER ==================== */
+    .hdr-mobile {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 55;
+      flex-direction: column;
+      transition: opacity 0.3s;
+    }
+    @media(max-width:768px){ .hdr-mobile { display: flex; } }
+    .hdr-mobile-topbar {
+      background: #015253; height: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 15px; color: #fff; font-size: 12px;
+    }
+    .hdr-mobile-topbar strong { font-weight: 700; }
+    .hdr-mobile-bar {
+      height: 50px; background: #fff; border-bottom: 1px solid #DADADA;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 15px;
+    }
+    .hdr-mobile-left, .hdr-mobile-right {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .hdr-mobile-btn {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: #333; display: flex; align-items: center; justify-content: center;
+    }
+    .hdr-mobile-btn svg { height: 22px; width: auto; }
+    .hdr-mobile-logo { height: 22px; width: auto; }
+
+    /* Hide desktop header rows on mobile */
+    @media(max-width:768px){
+      .hdr-row1, .hdr-row2, .nav, .hdr-compact { display: none !important; }
+    }
+
+    /* ==================== COMPACT STICKY HEADER ==================== */
+    .hdr-compact {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    .hdr-compact.visible {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .hdr-compact-inner {
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    @media(min-width:1024px){ .hdr-compact-inner { padding: 0 40px; } }
+    .hdr-compact .hdr-logo img { height: 34px; }
+    .hdr-menu-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      height: 40px; padding: 0 1.2rem; border-radius: 0.25rem;
+      background: #015253; border: none; cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 1rem; font-weight: 500; color: #fff;
+      white-space: nowrap; line-height: 1.2;
+      transition: background 0.15s ease; flex-shrink: 0;
+    }
+    .hdr-menu-btn:hover { background: #014A4B; }
+    .hdr-menu-btn svg { width: 18px; height: 18px; }
+    .hdr-compact .hdr-searchbar {
+      height: 40px; border-radius: 4px;
+      display: flex; flex: 1; max-width: calc(100% - 480px);
+    }
+    .hdr-compact .hdr-icons { margin-left: auto; }
+    .hdr-compact .hdr-icon-btn { width: 40px; height: 40px; }
+    .hdr-compact .hdr-icon-btn svg { height: 22px; width: auto; }
+
+    /* ==================== SIDE MENU ==================== */
+    .side-overlay {
+      position: fixed; inset: 0; z-index: 70;
+      background: rgba(0,0,0,0.4);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .side-overlay.open { opacity: 1; visibility: visible; }
+    .side-menu {
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 71;
+      width: 360px; max-width: 85vw;
+      background: #fff;
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      box-shadow: none;
+    }
+    .side-menu.open { transform: translateX(0); }
+    .side-menu-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid #eee;
+    }
+    .side-menu-header img { height: 26px; }
+    .side-menu-close {
+      width: 36px; height: 36px; display: flex; align-items: center;
+      justify-content: center; border-radius: 50%;
+      background: none; border: none; cursor: pointer;
+      color: #333; transition: background 0.2s;
+    }
+    .side-menu-close:hover { background: #F5F6FA; }
+    .side-menu-close svg { width: 20px; height: 20px; }
+    .side-menu-list { padding: 12px 0; }
+    .side-menu-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 24px; font-size: 16px; font-weight: 600;
+      color: #333; transition: background 0.15s, color 0.15s;
+      cursor: pointer;
+    }
+    .side-menu-item:hover { background: #F5F6FA; color: #015253; }
+    .side-menu-item svg { width: 20px; height: 20px; color: #999; flex-shrink: 0; }
+
+    /* Mega menu */
+    .mega-menu {
+      position: fixed; top: 158px; left: 0; right: 0;
+      background: #fff;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 40px 0 24px;
+      opacity: 0; visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
+      z-index: 49;
+    }
+    .mega-menu.open {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    .mega-menu-inner {
+      max-width: 1600px; margin: 0 auto; padding: 0 40px;
+    }
+    .mega-menu-grid {
+      display: flex; flex-wrap: wrap; gap: 20px 36px;
+      justify-content: center;
+    }
+    .mega-item {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 10px; padding: 4px 4px 16px;
+      border-radius: 8px; transition: background 0.2s;
+      width: 170px;
+    }
+    .mega-item:hover { background: none; }
+    .mega-item-img {
+      width: 130px; height: 130px; object-fit: contain;
+      border-radius: 0;
+      transition: transform 0.3s;
+    }
+    .mega-item:hover .mega-item-img { transform: translateY(-4px); }
+    .mega-item-label {
+      font-size: 14px; font-weight: 500;
+      color: #555; line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .mega-item:hover .mega-item-label { color: #015253; }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER ROW 1 — GREEN TOP BAR ==================== -->
+  <div class="hdr-row1">
+    <div class="hdr-row1-inner">
+      <div class="hdr-badges">
+        <span class="hdr-badge">Original Metzler Qualität seit 2013</span>
+        <span class="hdr-badge">über 1.8 Mio. zufriedene Kunden</span>
+        <span class="hdr-badge">10 Jahre Metzler Garantie</span>
+        <span class="hdr-badge">TrustedShops Käuferschutz</span>
+        <span class="hdr-badge">Kauf auf Rechnung</span>
+      </div>
+      <div class="hdr-links">
+        <a href="#" class="hdr-link">Kontakt</a>
+        <a href="#" class="hdr-link">Zahlung und Versand</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ROW 2 — LOGO + SEARCH + ICONS ==================== -->
+  <div class="hdr-row2">
+    <div class="hdr-row2-inner">
+      <a href="#" class="hdr-logo"><img src="../logo.svg" alt="Metzler" /></a>
+      <div class="hdr-searchbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5l4 4" stroke-linecap="round"/></svg>
+        <input type="text" placeholder="Suchen — Türklingel, Briefkasten, Sprechanlage..." />
+        <button class="search-clear" aria-label="Suche löschen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="hdr-icons">
+        <a href="#" class="hdr-icon-btn" aria-label="Konto">
+          <svg viewBox="0 0 20.6 19.8" fill="none"><path d="M12.14 14.034C15.107 14.034 17.914 15.378 19.774 17.689L20.426 18.499C20.703 18.843 20.649 19.346 20.305 19.623C19.961 19.9 19.457 19.846 19.18 19.502L18.528 18.692C16.972 16.758 14.623 15.634 12.14 15.634H8.462C5.98 15.634 3.631 16.758 2.074 18.692L1.423 19.502C1.146 19.846 0.642 19.9 0.298 19.623C-0.046 19.346 -0.1 18.843 0.177 18.499L0.828 17.689C2.688 15.378 5.495 14.034 8.462 14.034H12.14Z" fill="currentColor"/><path d="M15.149 6.313C15.149 3.742 13.011 1.6 10.3 1.6C7.59 1.6 5.451 3.742 5.451 6.313C5.451 8.883 7.59 11.024 10.3 11.024V12.625C6.671 12.625 3.851 9.865 3.851 6.313C3.851 2.826 6.739 0 10.3 0C13.862 0 16.75 2.826 16.75 6.313C16.75 9.865 13.864 12.625 10.3 12.625V11.024C13.011 11.024 15.149 8.883 15.149 6.313Z" fill="currentColor"/></svg>
+        </a>
+        <a href="#" class="hdr-icon-btn" aria-label="Warenkorb">
+          <svg viewBox="0 0 21.3 19.41" fill="none"><path d="M18.463 0C19.411 0 20.197 0.736 20.259 1.683L21.294 17.495C21.362 18.533 20.538 19.412 19.498 19.412H1.8C0.76 19.412 -0.064 18.533 0.004 17.495L1.04 1.683C1.102 0.736 1.888 0 2.836 0H18.463ZM2.836 1.6C2.731 1.6 2.643 1.682 2.636 1.787L1.6 17.6C1.593 17.715 1.684 17.813 1.8 17.813H19.498C19.613 17.813 19.705 17.715 19.697 17.6L18.662 1.787C18.655 1.682 18.568 1.6 18.463 1.6H2.836Z" fill="currentColor"/><path d="M14.033 5.55V6.112C14.033 7.382 13.003 8.412 11.733 8.412H9.566C8.295 8.412 7.266 7.382 7.266 6.112V5.55C7.266 5.163 6.952 4.849 6.566 4.849C6.179 4.849 5.866 5.163 5.866 5.55V6.112C5.866 8.156 7.522 9.813 9.566 9.813H11.733C13.776 9.813 15.432 8.156 15.432 6.112V5.55C15.432 5.163 15.119 4.849 14.733 4.849C14.346 4.849 14.033 5.163 14.033 5.55Z" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ROW 3 — CATEGORY NAV ==================== -->
+  <header class="nav" id="mainNav">
+    <div class="nav-inner">
+      <button class="nav-alle-btn" id="navAlleBtn" aria-label="Alle Kategorien">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h18"/></svg>
+        Alle
+      </button>
+      <div class="nav-categories" id="navCategories">
+        <a href="#" class="nav-cat" data-menu="briefkasten">Briefkästen</a>
+        <a href="#" class="nav-cat" data-menu="paketboxen">Paketboxen</a>
+        <a href="#" class="nav-cat" data-menu="muelltonnen">Mülltonnenboxen</a>
+        <a href="#" class="nav-cat" data-menu="sprechanlagen">Sprechanlagen</a>
+        <a href="#" class="nav-cat" data-menu="sicherheit">Sicherheitstechnik</a>
+        <a href="#" class="nav-cat" data-menu="tuerklingeln">Türklingeln</a>
+        <a href="#" class="nav-cat" data-menu="hausnummern">Hausnummern</a>
+        <a href="#" class="nav-cat" data-menu="leuchten">Außenleuchten</a>
+        <a href="#" class="nav-cat" data-menu="garten">Garten</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== COMPACT STICKY HEADER ==================== -->
+  <div class="hdr-compact" id="hdrCompact">
+    <div class="hdr-compact-inner">
+      <a href="#" class="hdr-logo"><img src="../logo.svg" alt="Metzler" /></a>
+      <button class="hdr-menu-btn" id="menuBtn" aria-label="Kategorien">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h18"/></svg>
+        Alle Kategorien
+      </button>
+      <div class="hdr-searchbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5l4 4" stroke-linecap="round"/></svg>
+        <input type="text" placeholder="Suchen — Türklingel, Briefkasten, Sprechanlage..." />
+        <button class="search-clear" aria-label="Suche löschen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="hdr-icons">
+        <a href="#" class="hdr-icon-btn" aria-label="Konto">
+          <svg viewBox="0 0 20.6 19.8" fill="none"><path d="M12.14 14.034C15.107 14.034 17.914 15.378 19.774 17.689L20.426 18.499C20.703 18.843 20.649 19.346 20.305 19.623C19.961 19.9 19.457 19.846 19.18 19.502L18.528 18.692C16.972 16.758 14.623 15.634 12.14 15.634H8.462C5.98 15.634 3.631 16.758 2.074 18.692L1.423 19.502C1.146 19.846 0.642 19.9 0.298 19.623C-0.046 19.346 -0.1 18.843 0.177 18.499L0.828 17.689C2.688 15.378 5.495 14.034 8.462 14.034H12.14Z" fill="currentColor"/><path d="M15.149 6.313C15.149 3.742 13.011 1.6 10.3 1.6C7.59 1.6 5.451 3.742 5.451 6.313C5.451 8.883 7.59 11.024 10.3 11.024V12.625C6.671 12.625 3.851 9.865 3.851 6.313C3.851 2.826 6.739 0 10.3 0C13.862 0 16.75 2.826 16.75 6.313C16.75 9.865 13.864 12.625 10.3 12.625V11.024C13.011 11.024 15.149 8.883 15.149 6.313Z" fill="currentColor"/></svg>
+        </a>
+        <a href="#" class="hdr-icon-btn" aria-label="Warenkorb">
+          <svg viewBox="0 0 21.3 19.41" fill="none"><path d="M18.463 0C19.411 0 20.197 0.736 20.259 1.683L21.294 17.495C21.362 18.533 20.538 19.412 19.498 19.412H1.8C0.76 19.412 -0.064 18.533 0.004 17.495L1.04 1.683C1.102 0.736 1.888 0 2.836 0H18.463ZM2.836 1.6C2.731 1.6 2.643 1.682 2.636 1.787L1.6 17.6C1.593 17.715 1.684 17.813 1.8 17.813H19.498C19.613 17.813 19.705 17.715 19.697 17.6L18.662 1.787C18.655 1.682 18.568 1.6 18.463 1.6H2.836Z" fill="currentColor"/><path d="M14.033 5.55V6.112C14.033 7.382 13.003 8.412 11.733 8.412H9.566C8.295 8.412 7.266 7.382 7.266 6.112V5.55C7.266 5.163 6.952 4.849 6.566 4.849C6.179 4.849 5.866 5.163 5.866 5.55V6.112C5.866 8.156 7.522 9.813 9.566 9.813H11.733C13.776 9.813 15.432 8.156 15.432 6.112V5.55C15.432 5.163 15.119 4.849 14.733 4.849C14.346 4.849 14.033 5.163 14.033 5.55Z" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MOBILE HEADER ==================== -->
+  <div class="hdr-mobile" id="hdrMobile">
+    <div class="hdr-mobile-topbar">
+      <span><strong>1.5 Mio.</strong> Kunden</span>
+      <span><strong>10 Jahre</strong> Metzler Garantie</span>
+    </div>
+    <div class="hdr-mobile-bar">
+      <div class="hdr-mobile-left">
+        <button class="hdr-mobile-btn" id="mobileMenuBtn" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h12M3 18h18" stroke="#333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="hdr-mobile-btn" aria-label="Suchen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5l4 4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <a href="/" class="hdr-mobile-logo-link">
+        <img src="../logo.svg" alt="Metzler" class="hdr-mobile-logo" />
+      </a>
+      <div class="hdr-mobile-right">
+        <a href="#" class="hdr-mobile-btn" aria-label="Konto">
+          <svg viewBox="0 0 20.6 19.8" fill="none"><path d="M12.14 14.034C15.107 14.034 17.914 15.378 19.774 17.689L20.426 18.499C20.703 18.843 20.649 19.346 20.305 19.623C19.961 19.9 19.457 19.846 19.18 19.502L18.528 18.692C16.972 16.758 14.623 15.634 12.14 15.634H8.462C5.98 15.634 3.631 16.758 2.074 18.692L1.423 19.502C1.146 19.846 0.642 19.9 0.298 19.623C-0.046 19.346 -0.1 18.843 0.177 18.499L0.828 17.689C2.688 15.378 5.495 14.034 8.462 14.034H12.14Z" fill="currentColor"/><path d="M15.149 6.313C15.149 3.742 13.011 1.6 10.3 1.6C7.59 1.6 5.451 3.742 5.451 6.313C5.451 8.883 7.59 11.024 10.3 11.024V12.625C6.671 12.625 3.851 9.865 3.851 6.313C3.851 2.826 6.739 0 10.3 0C13.862 0 16.75 2.826 16.75 6.313C16.75 9.865 13.864 12.625 10.3 12.625V11.024C13.011 11.024 15.149 8.883 15.149 6.313Z" fill="currentColor"/></svg>
+        </a>
+        <a href="#" class="hdr-mobile-btn" aria-label="Warenkorb">
+          <svg viewBox="0 0 21.3 19.41" fill="none"><path d="M18.463 0C19.411 0 20.197 0.736 20.259 1.683L21.294 17.495C21.362 18.533 20.538 19.412 19.498 19.412H1.8C0.76 19.412 -0.064 18.533 0.004 17.495L1.04 1.683C1.102 0.736 1.888 0 2.836 0H18.463ZM2.836 1.6C2.731 1.6 2.643 1.682 2.636 1.787L1.6 17.6C1.593 17.715 1.684 17.813 1.8 17.813H19.498C19.613 17.813 19.705 17.715 19.697 17.6L18.662 1.787C18.655 1.682 18.568 1.6 18.463 1.6H2.836Z" fill="currentColor"/><path d="M14.033 5.55V6.112C14.033 7.382 13.003 8.412 11.733 8.412H9.566C8.295 8.412 7.266 7.382 7.266 6.112V5.55C7.266 5.163 6.952 4.849 6.566 4.849C6.179 4.849 5.866 5.163 5.866 5.55V6.112C5.866 8.156 7.522 9.813 9.566 9.813H11.733C13.776 9.813 15.432 8.156 15.432 6.112V5.55C15.432 5.163 15.119 4.849 14.733 4.849C14.346 4.849 14.033 5.163 14.033 5.55Z" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SIDE MENU ==================== -->
+  <div class="side-overlay" id="sideOverlay"></div>
+  <nav class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <img src="../logo.svg" alt="Metzler" />
+      <button class="side-menu-close" id="sideClose" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="side-menu-list">
+      <a href="#" class="side-menu-item" data-menu="briefkasten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>Briefkästen</a>
+      <a href="#" class="side-menu-item" data-menu="paketboxen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>Paketboxen</a>
+      <a href="#" class="side-menu-item" data-menu="muelltonnen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Mülltonnenboxen</a>
+      <a href="#" class="side-menu-item" data-menu="sprechanlagen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><circle cx="12" cy="9" r="3"/><path d="M9 16h6"/></svg>Sprechanlagen</a>
+      <a href="#" class="side-menu-item" data-menu="sicherheit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8 4 4 4 4 4v8c0 5 8 10 8 10s8-5 8-10V4s-4 0-8-2z"/></svg>Sicherheitstechnik</a>
+      <a href="#" class="side-menu-item" data-menu="tuerklingeln"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Türklingeln</a>
+      <a href="#" class="side-menu-item" data-menu="hausnummern"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 8v8M12 8v8M15 8v8"/></svg>Hausnummern</a>
+      <a href="#" class="side-menu-item" data-menu="leuchten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M12 2v1M4.22 4.22l.7.7M1 12h1M4.22 19.78l.7-.7M12 21v1M19.78 19.78l-.7-.7M23 12h-1M19.78 4.22l-.7.7"/><circle cx="12" cy="12" r="5"/></svg>Außenleuchten</a>
+      <a href="#" class="side-menu-item" data-menu="garten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22V8M5 12c0-4 3-8 7-10 4 2 7 6 7 10s-3 6-7 8c-4-2-7-4-7-8z"/></svg>Garten</a>
+    </div>
+  </nav>
+
+  <!-- Mega menus -->
+  <div class="mega-menu" id="mega-briefkasten">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/einfamilien_briefkasten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Einfamilien Briefkasten</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkasten_ohne_gravur.png" alt="" class="mega-item-img"/><span class="mega-item-label">Briefkasten ohne Gravur</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/standbriefkästen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Standbriefkästen</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkasten_mit_klingel.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mit Klingel & Sprechanlage</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/mehrfamilien_briefkästen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mehrfamilien Briefkästen</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/unterputz_briefkästen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Unterputz Briefkästen</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/Briefkastenanlage_configurator.png" alt="" class="mega-item-img"/><span class="mega-item-label">Konfigurator</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkastenschilder.png" alt="" class="mega-item-img"/><span class="mega-item-label">Briefkastenschilder</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkastenständer.png" alt="" class="mega-item-img"/><span class="mega-item-label">Briefkastenständer</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/ersatzteile.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-paketboxen">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Paketboxen mit Gravur</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen_beleuchtet.png" alt="" class="mega-item-img"/><span class="mega-item-label">Paketboxen beleuchtet</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen_mit_klingel.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mit Klingel & Sprechanlage</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen_ohne_gravur.png" alt="" class="mega-item-img"/><span class="mega-item-label">Paketboxen ohne Gravur</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/ersatzteile.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-sprechanlagen">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/video_sprechanlagen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Video Sprechanlagen</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/sprechanlagen_sets.png" alt="" class="mega-item-img"/><span class="mega-item-label">Sprechanlagen Sets</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/audio_sprechanlagen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Audio Sprechanlagen</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/video_sprechanlagen_mit_briefkasten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mit Briefkasten/Paketbox</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/innenstationen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Innenstationen</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/ersatz_namensschilder.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatz Namensschilder</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/erweiterungen_zubehör.png" alt="" class="mega-item-img"/><span class="mega-item-label">Erweiterungen & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-sicherheit">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="pictures/nav/alarmanlagen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Alarmanlagen</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/ip-kamera-sets.png" alt="" class="mega-item-img"/><span class="mega-item-label">IP Kamera Sets</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/ip-kameras.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">IP Kameras</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/easylink.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">EasyLink WLAN Sets</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/dual-objektiv-kameras.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Dual-Objektiv Kameras</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/wlan-kameras.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">WLAN Kameras</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/videorekorder.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Videorekorder</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/anschlussdosen-zubehoer.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Anschlussdosen & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-tuerklingeln">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/funkklingeln.png" alt="" class="mega-item-img"/><span class="mega-item-label">Funkklingeln</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/aufputz_türklingeln.png" alt="" class="mega-item-img"/><span class="mega-item-label">Aufputz Türklingeln</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/unterputz_türklingeln.png" alt="" class="mega-item-img"/><span class="mega-item-label">Unterputz Türklingeln</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/mehrfamilien_klingel.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mehrfamilien Klingel</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/türgongs .png" alt="" class="mega-item-img"/><span class="mega-item-label">Türgongs</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/türklingel_weiterleitung.png" alt="" class="mega-item-img"/><span class="mega-item-label">Türklingel Weiterleitung</span></a>
+      <a href="#" class="mega-item"><img src="../subcategory_photos/türklingeln/ersatzteile_zubehör.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-hausnummern">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="pictures/nav/hausnummern-einzelne-ziffern.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Einzelne Ziffern & Buchstaben</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/beleuchtete-hausnummern.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Beleuchtete Hausnummern</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/hausnummernschilder.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Hausnummernschilder</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/schriftzuege.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Schriftzüge</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/namensschilder.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Namens- & Hinweisschilder</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/hausnummer-zubehoer.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-leuchten">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="pictures/nav/wand-deckenleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Wand- & Deckenleuchten</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/hausnummernleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Hausnummernleuchten</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/strahler-spots-wegeleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Strahler, Spots & Wege</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/akku-solar-kameraleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Akku, Solar & Kamera</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/plug-shine.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Plug & Shine</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/metzler-24v-lichtsystem.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">24V Garten-Lichtsystem</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/sensoren-zubehoer.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Sensoren & Zubehör</span></a>
+    </div></div>
+  </div>
+  <div class="mega-menu" id="mega-garten">
+    <div class="mega-menu-inner"><div class="mega-menu-grid">
+      <a href="#" class="mega-item"><img src="pictures/nav/hochbeet.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Hochbeete</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/aufbewahrungen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Aufbewahrungen</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/maehrobotergaragen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Mährobotergaragen</span></a>
+      <a href="#" class="mega-item"><img src="pictures/nav/steckdosensaeulen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Steckdosensäulen</span></a>
+    </div></div>
+  </div>
+
+<script>
+    // ==================== HEADER: SCROLL STATE ====================
+    const mainNav = document.getElementById("mainNav");
+    const hdrCompact = document.getElementById("hdrCompact");
+    const hdrRow1 = document.querySelector(".hdr-row1");
+    const hdrRow2 = document.querySelector(".hdr-row2");
+    const scrollThreshold = 150;
+
+    const hdrMobile = document.getElementById("hdrMobile");
+    const mobileTopbar = hdrMobile ? hdrMobile.querySelector(".hdr-mobile-topbar") : null;
+
+    function updateNavScroll() {
+      const scrolled = window.scrollY > scrollThreshold;
+      hdrCompact.classList.toggle("visible", scrolled);
+      hdrRow1.style.opacity = scrolled ? "0" : "1";
+      hdrRow1.style.pointerEvents = scrolled ? "none" : "";
+      hdrRow2.style.opacity = scrolled ? "0" : "1";
+      hdrRow2.style.pointerEvents = scrolled ? "none" : "";
+      mainNav.style.opacity = scrolled ? "0" : "1";
+      mainNav.style.pointerEvents = scrolled ? "none" : "";
+      if (mobileTopbar) {
+        mobileTopbar.style.display = scrolled ? "none" : "";
+      }
+    }
+    window.addEventListener("scroll", updateNavScroll, { passive: true });
+    updateNavScroll();
+
+    // ==================== SIDE MENU ====================
+    const menuBtn = document.getElementById("menuBtn");
+    const sideMenu = document.getElementById("sideMenu");
+    const sideOverlay = document.getElementById("sideOverlay");
+    const sideClose = document.getElementById("sideClose");
+
+    function openSideMenu() {
+      sideMenu.classList.add("open");
+      sideOverlay.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeSideMenu() {
+      sideMenu.classList.remove("open");
+      sideOverlay.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    sideClose.addEventListener("click", closeSideMenu);
+    sideOverlay.addEventListener("click", closeSideMenu);
+
+    document.querySelectorAll(".side-menu-item").forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeSideMenu();
+        const menuId = item.dataset.menu;
+        if (menuId) openMenu(menuId);
+      });
+    });
+
+    // ==================== NAV: OVERFLOW "ALLE" BUTTON ====================
+    const navAlleBtn = document.getElementById("navAlleBtn");
+    const navCategoriesEl = document.getElementById("navCategories");
+    const navCatItems = Array.from(navCategoriesEl.querySelectorAll(".nav-cat"));
+
+    function checkNavOverflow() {
+      navCatItems.forEach(c => c.classList.remove("nav-hidden"));
+      navAlleBtn.classList.remove("visible");
+      navCategoriesEl.classList.remove("has-overflow");
+      const itemWidths = navCatItems.map(c => c.offsetWidth);
+      const totalItemsWidth = itemWidths.reduce((a, b) => a + b, 0);
+      const containerWidth = navCategoriesEl.clientWidth;
+      const minGap = 18;
+      if (totalItemsWidth + (navCatItems.length - 1) * minGap <= containerWidth) return;
+      navAlleBtn.classList.add("visible");
+      navCategoriesEl.classList.add("has-overflow");
+      const availableForItems = containerWidth;
+      for (let i = navCatItems.length - 1; i >= 0; i--) {
+        navCatItems[i].classList.add("nav-hidden");
+        let visibleWidth = 0, visibleCount = 0;
+        navCatItems.forEach((c, idx) => {
+          if (!c.classList.contains("nav-hidden")) {
+            visibleWidth += itemWidths[idx];
+            visibleCount++;
+          }
+        });
+        if (visibleCount === 0) break;
+        if (visibleWidth + (visibleCount - 1) * minGap <= availableForItems) break;
+      }
+    }
+    window.addEventListener("resize", checkNavOverflow);
+    checkNavOverflow();
+
+    // ==================== GREEN BAR BADGE OVERFLOW ====================
+    const badgeItems = Array.from(document.querySelectorAll(".hdr-badge")).reverse();
+    const badgesContainer = document.querySelector(".hdr-badges");
+    const hdrLinks = document.querySelector(".hdr-links");
+
+    function checkBadgeOverflow() {
+      badgeItems.forEach(b => b.classList.remove("badge-hidden"));
+      if (!badgesContainer) return;
+      const gap = 24;
+      const minGapToLinks = 24;
+      const linksW = hdrLinks ? hdrLinks.offsetWidth + minGapToLinks : 0;
+      const parent = badgesContainer.parentElement;
+      const parentStyle = getComputedStyle(parent);
+      const parentW = parent.clientWidth - parseFloat(parentStyle.paddingLeft) - parseFloat(parentStyle.paddingRight);
+      const maxBadgesWidth = parentW - linksW;
+      for (let i = 0; i < badgeItems.length; i++) {
+        let w = 0, count = 0;
+        badgeItems.forEach(b => {
+          if (!b.classList.contains("badge-hidden")) { w += b.offsetWidth; count++; }
+        });
+        const totalNeeded = w + Math.max(0, count - 1) * gap;
+        if (totalNeeded <= maxBadgesWidth) break;
+        badgeItems[i].classList.add("badge-hidden");
+      }
+    }
+    window.addEventListener("resize", checkBadgeOverflow);
+    checkBadgeOverflow();
+
+    // ==================== SEARCH CLEAR BUTTONS ====================
+    document.querySelectorAll(".hdr-searchbar").forEach(bar => {
+      const input = bar.querySelector("input");
+      const clearBtn = bar.querySelector(".search-clear");
+      if (!input || !clearBtn) return;
+      input.addEventListener("input", () => {
+        clearBtn.classList.toggle("visible", input.value.length > 0);
+      });
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        clearBtn.classList.remove("visible");
+        input.focus();
+      });
+    });
+
+    // ==================== NAV: MEGA MENU ====================
+    const navCats = document.querySelectorAll(".nav-cat");
+    const megaMenus = document.querySelectorAll(".mega-menu");
+    let activeMenu = null;
+    let closeTimeout = null;
+
+    function openMenu(menuId) {
+      clearTimeout(closeTimeout);
+      if (activeMenu && activeMenu.id !== "mega-" + menuId) {
+        activeMenu.classList.remove("open");
+      }
+      const menu = document.getElementById("mega-" + menuId);
+      if (menu) {
+        menu.classList.add("open");
+        activeMenu = menu;
+      }
+      navCats.forEach(c => c.classList.toggle("active", c.dataset.menu === menuId));
+    }
+
+    function scheduleClose() {
+      clearTimeout(closeTimeout);
+      closeTimeout = setTimeout(() => {
+        if (activeMenu) { activeMenu.classList.remove("open"); activeMenu = null; }
+        navCats.forEach(c => c.classList.remove("active"));
+      }, 120);
+    }
+
+    navCats.forEach(cat => {
+      cat.addEventListener("mouseenter", () => openMenu(cat.dataset.menu));
+      cat.addEventListener("mouseleave", scheduleClose);
+    });
+    megaMenus.forEach(menu => {
+      menu.addEventListener("mouseenter", () => clearTimeout(closeTimeout));
+      menu.addEventListener("mouseleave", scheduleClose);
+    });
+  </script>
+</body>
+</html>
