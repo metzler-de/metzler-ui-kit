@@ -59,7 +59,7 @@
     const T = {
       // Teal
       teal50:'#F2F6F6', teal75:'#E3F2F0', teal100:'#E6EEEE',
-      teal:'#015253', teal600:'#014A4B', teal700:'#013E3E', teal900:'#001D1D',
+      teal:'#015253', teal600:'#014A4B', teal700:'#01292A', teal900:'#001D1D',
       // Brand
       dBlack:'#1A171B',
       // Green
@@ -291,6 +291,7 @@
 
       { type:"group", label:"Content" },
       { type:"item",  label:"Tabs",              id:"tabs" },
+      { type:"item",  label:"Stepper",           id:"stepper" },
       { type:"item",  label:"Lists",             id:"lists" },
       { type:"item",  label:"Table",             id:"table" },
       { type:"item",  label:"Links",             id:"links-comp" },
@@ -318,8 +319,8 @@
       {value:"#E6EEEE", label:"Teal 100", subtitle:"Info surfaces · Selected states",     role:"Info box fills, selected filter chip, tooltip backgrounds",                                                 hex:"#E6EEEE", rgb:"230 · 238 · 238", grp:"Teal Tones"},
       {value:"#015253", label:"Teal 500", subtitle:"The brand",                           role:"CTAs, nav, active states, focus rings, links — the single brand anchor",                                   hex:"#015253", rgb:"1 · 82 · 83",     grp:"Teal Tones", isDefault:true},
       {value:"#014A4B", label:"Teal 600", subtitle:"Hover · Pressed",                    role:"Hover/pressed state for any teal interactive element",                                                      hex:"#014A4B", rgb:"1 · 74 · 75",     grp:"Teal Tones"},
-      {value:"#013E3E", label:"Teal 700", subtitle:"High-contrast · Accessible text",    role:"High-contrast icons, focus rings on light bg, accessible text on Teal 50/100",                             hex:"#013E3E", rgb:"1 · 62 · 62",     grp:"Teal Tones"},
-      {value:"#001D1D", label:"Teal 900", subtitle:"Footer · Max-contrast",              role:"Footer background (dark footer), maximum-contrast text on teal surfaces",                                   hex:"#001D1D", rgb:"0 · 29 · 29",     grp:"Teal Tones"},
+      {value:"#01292A", label:"Teal 700", subtitle:"Footer · High-contrast",              role:"Footer background, high-contrast icons, accessible text on Teal 50/100",                                hex:"#01292A", rgb:"1 · 41 · 42",     grp:"Teal Tones"},
+      {value:"#001D1D", label:"Teal 900", subtitle:"Max-contrast",                       role:"Maximum-contrast text on teal surfaces",                                                                     hex:"#001D1D", rgb:"0 · 29 · 29",     grp:"Teal Tones"},
       // ── BRAND ──
       {value:"#D42924", label:"Metzler Rot",         subtitle:"Signal color · Logo M-square only",    role:"Logo M-square, discount badge (–10%) on product cards. Never for CTAs, body text, or large fills", hex:"#D42924", rgb:"212 · 41 · 36",  grp:"Brand"},
       {value:"#1A171B", label:"Digital Schwarz",     subtitle:"Brand black · Headlines + wordmark",   role:'Product titles, page headings, "METZLER" wordmark, table rules, icon fills across print and web',  hex:"#1A171B", rgb:"26 · 23 · 27",   grp:"Brand"},
@@ -1352,9 +1353,9 @@
               {label:'-15%',     bg:T.red,color:T.white},
               {label:'Neutral',  bg:T.g100,color:T.g700},
             ].map(b=>(
-              <span key={b.label} style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'5px 12px',borderRadius:T.rSm,background:b.bg,color:b.color,fontSize:f(12),fontWeight:500,fontFamily:font,lineHeight:1}}>{b.label}</span>
+              <span key={b.label} style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'0.25rem 0.5rem',borderRadius:T.rSm,background:b.bg,color:b.color,fontSize:'0.75rem',fontWeight:500,fontFamily:font,lineHeight:1}}>{b.label}</span>
             ))}
-            <span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'5px 12px',borderRadius:T.rSm,background:T.white,color:T.teal,border:`1px solid ${T.teal}`,fontSize:f(12),fontWeight:500,fontFamily:font,lineHeight:1}}>Outlined</span>
+            <span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'0.25rem 0.5rem',borderRadius:T.rSm,background:T.white,color:T.teal,border:`0.0625rem solid ${T.teal}`,fontSize:'0.75rem',fontWeight:500,fontFamily:font,lineHeight:1}}>Outlined</span>
           </ShowRow>
           <CLbl>Discount Label</CLbl>
           <ShowRow label="Red border · compact">
@@ -3941,6 +3942,86 @@ a {
       );
     };
 
+    // Stepper Section
+    const StepperSection = () => {
+      const [activeStep, setActiveStep] = useState(1);
+      const steps = [
+        { num: 1, label: 'Anschluss' },
+        { num: 2, label: 'Modul' },
+        { num: 3, label: 'Farbe' },
+        { num: 4, label: 'Zubehör' },
+        { num: 5, label: 'Zusammenfassung' },
+      ];
+
+      // Reusable bar — pass active step number and optional click handler
+      const StepperBar = ({active, onStep, h='3.5rem', fz}) => {
+        fz = fz || T.fBody;
+        return (
+          <div style={{display:'flex', alignItems:'stretch', background:T.teal,
+            borderRadius:'0.5rem', overflow:'hidden', height:h}}>
+            {steps.map((step, idx) => {
+              const isActive    = step.num === active;
+              const isCompleted = step.num < active;
+              const isLast      = idx === steps.length - 1;
+              // Only non-last active steps get the right-pointing chevron
+              const clip = (isActive && !isLast)
+                ? 'polygon(0 0, calc(100% - 0.75rem) 0, 100% 50%, calc(100% - 0.75rem) 100%, 0 100%)'
+                : 'none';
+              return (
+                <button key={step.num}
+                  onClick={()=> onStep && onStep(step.num)}
+                  style={{
+                    flex:'1 1 0', display:'flex', alignItems:'center', justifyContent:'center',
+                    gap:'0.375rem',
+                    padding: (isActive && !isLast) ? '0 calc(1.25rem + 0.75rem) 0 1.25rem' : '0 1.25rem',
+                    background: isActive ? T.teal700 : 'transparent',
+                    color: isActive ? T.white : isCompleted ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.45)',
+                    border:'none', cursor: onStep ? 'pointer' : 'default',
+                    fontFamily:font, fontSize:fz,
+                    clipPath:clip, zIndex: isActive ? 2 : 1, position:'relative',
+                    transition:'color 0.15s, background 0.2s',
+                  }}>
+                  <span style={{fontWeight:700}}>{step.num}.</span>
+                  {isActive && <span style={{fontWeight:400, marginLeft:'0.125rem'}}>{step.label}</span>}
+                </button>
+              );
+            })}
+          </div>
+        );
+      };
+
+      return (
+        <div style={{display:'flex', flexDirection:'column', gap:'2rem', fontFamily:font}}>
+
+          {/* ── Live interactive demo ── */}
+          <div>
+            <div style={{fontSize:T.fXs, fontWeight:700, color:T.g500, letterSpacing:'0.06em',
+              textTransform:'uppercase', marginBottom:'0.75rem'}}>Interactive · Click any step</div>
+            <StepperBar active={activeStep} onStep={setActiveStep} />
+          </div>
+
+          {/* ── State showcase ── */}
+          <div>
+            <div style={{fontSize:T.fXs, fontWeight:700, color:T.g500, letterSpacing:'0.06em',
+              textTransform:'uppercase', marginBottom:'0.75rem'}}>States — Default / Active / Completed</div>
+            <div style={{display:'flex', flexDirection:'column', gap:'0.75rem'}}>
+              {[
+                {label:'Step 1 active (start)', active:1},
+                {label:'Step 3 active (mid)',   active:3},
+                {label:'Step 5 active (end)',   active:5},
+              ].map(({label, active}) => (
+                <div key={label}>
+                  <div style={{fontSize:T.fXs, color:T.g500, fontFamily:font, marginBottom:'0.375rem'}}>{label}</div>
+                  <StepperBar active={active} h="3rem" fz={T.fSm} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      );
+    };
+
     // Dropdown Section
     const DropdownItem = ({label,last,onSelect}) => {
       const [hov,setHov]=useState(false);
@@ -6098,6 +6179,1876 @@ cursor: pointer;
       );
     };
 
+    // ── SECTIONS PAGE — reusable page-level sections ──
+    const SectionsPage = ({onBackToMain}) => {
+      const { mob } = useContext(MobCtx);
+      const [activeId, setActiveId] = useState('sec-support');
+      const [faqOpen, setFaqOpen] = useState(null);
+
+      const sectionsNav = [
+        { type:'group', label:'Product Pages' },
+        { type:'item',  id:'sec-support',  label:'Support & Kontakt' },
+        { type:'item',  id:'sec-features', label:'Neue Features' },
+        { type:'item',  id:'sec-access',   label:'Türöffnungsmöglichkeiten' },
+        { type:'item',  id:'sec-faq',      label:'FAQ' },
+        { type:'item',  id:'sec-steps',    label:'Gesichtserkennung' },
+        { type:'item',  id:'sec-qa',       label:'Editorial Q&A' },
+        { type:'item',  id:'sec-hero',          label:'Product Hero' },
+        { type:'item',  id:'sec-feature-detail', label:'Feature Detail' },
+        { type:'item',  id:'sec-feature-duo',    label:'Feature Duo' },
+      ];
+
+      const scrollTo = (id) => {
+        setActiveId(id);
+        document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+      };
+
+      const accessTrackRef = useRef(null);
+      const scrollAccess = (dir) => {
+        accessTrackRef.current?.scrollBy({ left: dir * 332, behavior: 'smooth' });
+      };
+
+      /* arrow button — square with T.r radius, NOT circle */
+      const ArrowBtn = ({primary, hovered}) => {
+        const bg = primary
+          ? (hovered ? T.white : 'rgba(255,255,255,0.14)')
+          : (hovered ? T.teal : T.paper);
+        const col = primary
+          ? (hovered ? T.teal : T.white)
+          : (hovered ? T.white : T.dBlack);
+        return (
+          <span style={{
+            width:36,height:36,borderRadius:T.r,
+            background:bg,color:col,
+            display:'flex',alignItems:'center',justifyContent:'center',
+            flexShrink:0,transition:'background 0.14s,color 0.14s',
+          }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </span>
+        );
+      };
+
+      const SupportCard = ({primary, title, desc, cta, meta, icon}) => {
+        const [hov, setHov] = useState(false);
+        return (
+          <a href="#"
+            onMouseEnter={()=>setHov(true)}
+            onMouseLeave={()=>setHov(false)}
+            className={`sxn-card${primary ? ' sxn-card--primary' : ''}`}
+            style={{
+              display:'flex',flexDirection:'column',gap:8,
+              padding:'1.125rem 1.25rem 1rem 1.25rem',
+              background: primary
+                ? `radial-gradient(ellipse 70% 80% at 15% 30%,#01696A 0%,transparent 55%),
+                   linear-gradient(135deg,${T.teal} 0%,${T.teal700} 60%,${T.dBlack} 100%)`
+                : T.white,
+              border:`0.0625rem solid ${hov&&!primary ? T.dBlack : primary&&hov ? T.white : primary ? T.teal700 : T.g200}`,
+              borderRadius:T.rLg,textDecoration:'none',
+              color: primary ? T.white : T.dBlack,
+              position:'relative',overflow:'hidden',
+              transition:'border-color 0.14s',
+            }}>
+            {/* hatching overlay for primary */}
+            {primary && (
+              <span style={{position:'absolute',inset:0,pointerEvents:'none',
+                backgroundImage:'repeating-linear-gradient(135deg,rgba(255,255,255,0.035) 0 1px,transparent 1px 64px)'}}/>
+            )}
+            {/* icon badge */}
+            <span style={{
+              position:'relative',zIndex:1,
+              width:40,height:40,borderRadius:10,
+              background: primary ? 'rgba(92,219,211,0.12)' : 'rgba(1,82,83,0.08)',
+              border: primary ? `0.0625rem solid rgba(92,219,211,0.24)` : 'none',
+              color: primary ? T.mint : T.teal,
+              display:'flex',alignItems:'center',justifyContent:'center',marginBottom:4,
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                {icon}
+              </svg>
+            </span>
+            <span style={{position:'relative',zIndex:1,fontSize:T.fH3,fontWeight:700,
+              lineHeight:1.3,color: primary ? T.white : T.teal,fontFamily:font,letterSpacing:'-0.005em'}}>
+              {title}
+            </span>
+            <p style={{position:'relative',zIndex:1,fontSize:T.fBody,margin:0,
+              color: primary ? 'rgba(255,255,255,0.82)' : T.dBlack,
+              lineHeight:1.5,fontFamily:font,
+              maxWidth: primary ? '42ch' : '32ch'}}>
+              {desc}
+            </p>
+            <div style={{position:'relative',zIndex:1,
+              display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
+              {meta
+                ? <span style={{fontSize:T.fBody,fontWeight:600,letterSpacing:'0.02em',
+                    color: primary ? 'rgba(255,255,255,0.7)' : T.g600,fontFamily:font}}>{meta}</span>
+                : <span style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                    textTransform:'uppercase',
+                    color: primary ? T.mint : T.teal,fontFamily:font}}>{cta}</span>
+              }
+              <ArrowBtn primary={primary} hovered={hov}/>
+            </div>
+          </a>
+        );
+      };
+
+      return (
+        <div style={{paddingTop:57,minHeight:'100vh',background:T.white,fontFamily:font}}>
+          <style>{`
+            .sxn-sidebar {
+              width: 260px; flex-shrink: 0; position: fixed;
+              top: 57px; left: max(0px, calc((100vw - 1900px) / 2));
+              height: calc(100vh - 57px); z-index: 999;
+              border-right: 0.0625rem solid ${T.g200};
+              background: ${T.white}; overflow-y: auto;
+            }
+            .sxn-layout {
+              margin-left: calc(260px + max(0px, (100vw - 1900px) / 2));
+              max-width: 1640px;
+              min-height: 100vh;
+            }
+            .sxn-content { padding: 2.5rem 3rem 5rem; }
+            .sxn-grid {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 0.875rem;
+            }
+            .sxn-card { grid-column: span 1; }
+            .sxn-card--primary { grid-column: span 2; }
+            .sxn-intro-row {
+              display: grid;
+              grid-template-columns: 1fr auto;
+              align-items: end;
+              gap: 1.5rem;
+              margin-bottom: 1.375rem;
+            }
+            @media (max-width: 68.75rem) {
+              .sxn-grid { grid-template-columns: repeat(2, 1fr); }
+              .sxn-card--primary { grid-column: span 2; }
+            }
+            @media (max-width: 48rem) {
+              .sxn-sidebar { display: none; }
+              .sxn-layout { margin-left: 0; }
+              .sxn-content { padding: 1.5rem 1rem 3.75rem; }
+              .sxn-grid { grid-template-columns: 1fr; }
+              .sxn-card--primary { grid-column: span 1; }
+              .sxn-intro-row { grid-template-columns: 1fr; }
+              .sxn-online-badge { display: none; }
+            }
+            @keyframes sp-pulse {
+              0%, 100% { box-shadow: 0 0 0 2px rgba(0,153,81,0.18); }
+              50%       { box-shadow: 0 0 0 6px rgba(0,153,81,0); }
+            }
+            /* ── NEUE FEATURES ── */
+            .nf-bdg {
+              display: inline-flex; align-items: center; gap: 0.5rem;
+              padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
+              background: ${T.teal50}; color: ${T.teal};
+              border-radius: 624.94rem;
+              font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em;
+              text-transform: uppercase; line-height: 1; font-family: ${font};
+            }
+            .nf-bdg::before {
+              content: ""; width: 0.375rem; height: 0.375rem;
+              border-radius: 50%; background: ${T.teal}; display: inline-block;
+            }
+            .nfs-grid {
+              width: 100%; display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 0.0625rem; background: ${T.g200};
+              border: 0.0625rem solid ${T.g200};
+              border-radius: ${T.rLg}; overflow: hidden;
+            }
+            .nfs-card {
+              background: ${T.white}; padding: 1.5rem;
+              display: flex; flex-direction: column; align-items: flex-start;
+              gap: 0.375rem; cursor: default; overflow: hidden;
+              transition: background 220ms ease; font-family: ${font};
+            }
+            .nfs-card-num {
+              font-size: ${T.fXxs}; font-weight: 600; letter-spacing: 0.04em;
+              color: ${T.g400}; font-variant-numeric: tabular-nums;
+              margin-bottom: 0.125rem; transition: color 220ms ease;
+            }
+            .nfs-card-icon {
+              width: 2.25rem; height: 2.25rem; border-radius: ${T.rLg};
+              background: ${T.paper}; color: ${T.teal};
+              display: inline-flex; align-items: center; justify-content: center;
+              margin-bottom: 0.25rem;
+              transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+            }
+            .nfs-card-icon svg {
+              width: 1.125rem; height: 1.125rem; fill: none;
+              stroke: currentColor; stroke-width: 1.6;
+              stroke-linecap: round; stroke-linejoin: round;
+            }
+            .nfs-card-title {
+              font-size: ${T.fBody}; font-weight: 700; line-height: 1.3;
+              color: ${T.dBlack}; margin: 0 0 0.25rem;
+              transition: color 220ms ease;
+            }
+            .nfs-card-desc {
+              font-size: ${T.fBody}; line-height: 1.4; color: ${T.g600};
+              margin: 0; display: -webkit-box; -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical; overflow: hidden;
+              transition: color 220ms ease;
+            }
+            .nfs-card:hover { background: ${T.teal50}; }
+            .nfs-card:hover .nfs-card-icon { background: ${T.teal}; color: ${T.white}; transform: translateY(-1px); }
+            .nfs-card:hover .nfs-card-num  { color: ${T.teal}; }
+            .nfs-card:hover .nfs-card-title { color: ${T.teal}; }
+            @media (max-width: 56.25rem) {
+              .nfs-grid { grid-template-columns: repeat(2, 1fr); }
+              .nfs-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+            }
+            @media (max-width: 35rem)    { .nfs-grid { grid-template-columns: 1fr; } }
+
+            /* ── ACCESS SLIDER ── */
+            .acc-stage {
+              background: ${T.dBlack}; color: ${T.white};
+              border-radius: ${T.rLg}; overflow: hidden;
+              padding: 2.25rem 0 2.5rem;
+            }
+            .acc-header {
+              display: flex; justify-content: space-between; align-items: center;
+              padding: 0 2.25rem; margin-bottom: 1.25rem; gap: 1.5rem;
+            }
+            .acc-title {
+              font-size: 2rem; font-weight: 700; line-height: 1.1;
+              letter-spacing: -0.01em; color: ${T.white};
+              font-family: ${font}; margin: 0;
+            }
+            .acc-nav { display: flex; align-items: center; gap: 0.625rem; }
+            .acc-arrow {
+              width: 2.125rem; height: 2.125rem; border-radius: ${T.r};
+              border: 0.0625rem solid ${T.white}; background: transparent;
+              color: ${T.white}; cursor: pointer; flex-shrink: 0;
+              display: inline-flex; align-items: center; justify-content: center;
+              transition: background 150ms ease, color 150ms ease;
+            }
+            .acc-arrow:hover { background: ${T.white}; color: ${T.dBlack}; }
+            .acc-arrow svg { width: 0.875rem; height: 0.875rem; pointer-events: none; }
+            .acc-track {
+              display: flex; gap: 2rem;
+              padding: 0.25rem 2.25rem 0.5rem;
+              overflow-x: auto; scroll-behavior: smooth;
+              scrollbar-width: none;
+            }
+            .acc-track::-webkit-scrollbar { display: none; }
+            .acc-card { flex: 0 0 auto; width: 18.75rem; display: flex; flex-direction: column; }
+            .acc-visual {
+              width: 18.75rem; height: 25rem; border-radius: ${T.rLg};
+              background: #141416; overflow: hidden; position: relative;
+            }
+            .acc-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+            .acc-visual-placeholder {
+              position: absolute; inset: 0; display: flex; align-items: center;
+              justify-content: center; padding: 1rem; text-align: center;
+              font-size: ${T.fXxs}; letter-spacing: 0.14em; text-transform: uppercase;
+              color: rgba(255,255,255,0.35); line-height: 1.5; font-family: ${font};
+            }
+            .acc-card-text {
+              margin: 0.75rem 0.125rem 0; font-size: ${T.fBody};
+              line-height: 1.5; color: rgba(255,255,255,0.72); font-family: ${font};
+            }
+            .acc-card-text strong { display: block; margin-bottom: 0.375rem; color: ${T.white}; font-weight: 700; }
+            @media (max-width: 48rem) {
+              .acc-title { font-size: 1.5rem; }
+              .acc-header { padding: 0 1.25rem; }
+              .acc-track { padding: 0.25rem 1.25rem 0.5rem; gap: 1rem; scroll-snap-type: x mandatory; }
+              .acc-card { width: 78vw; max-width: 20rem; scroll-snap-align: start; }
+              .acc-visual { width: 100%; height: auto; aspect-ratio: 3/4; }
+            }
+
+            /* ── FAQ SECTION ── */
+            .faq-stage {
+              border-top: 0.0625rem solid ${T.g200};
+              padding-top: 2.5rem; padding-bottom: 3rem;
+            }
+            .faq-split {
+              display: grid; grid-template-columns: 2fr 3fr;
+              gap: 4rem; align-items: start;
+            }
+            .faq-label {
+              font-size: ${T.fXxs}; font-weight: 700; letter-spacing: 0.08em;
+              text-transform: uppercase; color: ${T.g500};
+              margin: 0 0 0.75rem; font-family: ${font};
+            }
+            .faq-heading {
+              font-size: ${T.fD4}; font-weight: 800; line-height: 1.08;
+              color: ${T.dBlack}; letter-spacing: -0.02em;
+              max-width: 12ch; margin: 0; font-family: ${font};
+            }
+            .faq-list { list-style: none !important; margin: 0; padding: 0; }
+            .faq-item { border-top: 0.0625rem solid ${T.g200}; }
+            .faq-item:last-child { border-bottom: 0.0625rem solid ${T.g200}; }
+            .faq-btn {
+              width: 100%; display: grid;
+              grid-template-columns: 2rem 1fr 1.5rem;
+              align-items: center; gap: 1rem;
+              padding: 1.25rem 0; background: none; border: none;
+              cursor: pointer; text-align: left;
+            }
+            .faq-btn:hover .faq-q { color: ${T.teal}; }
+            .faq-num {
+              font-size: ${T.fXxs}; font-weight: 600; letter-spacing: 0.04em;
+              color: ${T.g400}; font-variant-numeric: tabular-nums;
+              font-family: ${font}; line-height: 1;
+            }
+            .faq-q {
+              font-size: ${T.fH3}; font-weight: 700;
+              color: ${T.dBlack}; line-height: 1.25;
+              transition: color 150ms ease; font-family: ${font}; margin: 0;
+            }
+            .faq-icon {
+              width: 1.25rem; height: 1.25rem;
+              display: flex; align-items: center; justify-content: center;
+              color: ${T.teal}; flex-shrink: 0;
+            }
+            .faq-body {
+              display: grid; grid-template-rows: 0fr;
+              transition: grid-template-rows 300ms ease;
+            }
+            .faq-body.is-open { grid-template-rows: 1fr; }
+            .faq-body-inner { overflow: hidden; min-height: 0; }
+            .faq-answer {
+              font-size: ${T.fBody}; line-height: 1.65;
+              color: ${T.g600}; font-family: ${font};
+              padding: 0.125rem 2rem 1.375rem 3rem; margin: 0;
+            }
+            @media (max-width: 62.5rem) {
+              .faq-split { grid-template-columns: 1fr; gap: 2rem; }
+              .faq-heading { font-size: ${T.fH1}; max-width: none; }
+            }
+            @media (max-width: 35rem) {
+              .faq-heading { font-size: ${T.fH2}; }
+              .faq-btn { grid-template-columns: 1.5rem 1fr 1.25rem; gap: 0.625rem; }
+              .faq-answer { padding-left: 2.125rem; }
+            }
+
+            /* ── FACE RECOGNITION PROCESS STEPS ── */
+            .face-eyebrow {
+              font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+              text-transform: uppercase; color: ${T.g500};
+              margin: 0 0 0.75rem; font-family: ${font};
+            }
+            .face-title {
+              font-size: 2.875rem; font-weight: 700; line-height: 0.94;
+              letter-spacing: -0.01em; color: ${T.dBlack};
+              margin: 0 0 1.125rem; font-family: ${font};
+            }
+            .face-lede {
+              font-size: 1rem; line-height: 1.6; color: ${T.black};
+              margin: 0 0 2.75rem; font-family: ${font}; max-width: 80ch;
+            }
+            .face-lede strong { color: ${T.dBlack}; font-weight: 800; }
+            .face-steps {
+              display: grid; grid-template-columns: repeat(4, 1fr);
+              gap: 1.25rem; margin: 0;
+            }
+            .face-step { display: flex; flex-direction: column; padding-top: 0.125rem; }
+            .face-step-head {
+              display: flex; align-items: center; gap: 0.75rem;
+              margin-bottom: 0.875rem;
+            }
+            .face-step-num {
+              display: inline-flex; align-items: center; justify-content: center;
+              width: 2.125rem; height: 2.125rem; border-radius: 50%;
+              border: 0.125rem solid ${T.teal};
+              background: ${T.white}; color: ${T.teal};
+              font-size: 0.9375rem; font-weight: 800; line-height: 1;
+              flex-shrink: 0; font-family: ${font};
+            }
+            .face-step-rule {
+              flex: 1; height: 0.09375rem;
+              background: ${T.teal}; opacity: 0.35; border-radius: 0.0625rem;
+            }
+            .face-step:last-child .face-step-rule { display: none; }
+            .face-step-body {
+              font-size: 1rem; line-height: 1.55;
+              color: ${T.black}; margin: 0; font-family: ${font};
+            }
+            @media (max-width: 56.25rem) {
+              .face-steps { grid-template-columns: repeat(2, 1fr); }
+              .face-title { font-size: 2rem; }
+            }
+            @media (max-width: 30rem) {
+              .face-steps { grid-template-columns: 1fr; }
+              .face-step-rule { display: none; }
+              .face-title { font-size: 1.75rem; line-height: 1.05; }
+            }
+
+            /* ── EDITORIAL Q&A ── */
+            .qa-stage { padding: 2.5rem 0 3rem; }
+            .qa-split {
+              display: grid; grid-template-columns: 1fr 1fr;
+              gap: 3.5rem; align-items: flex-start;
+            }
+            .qa-question {
+              font-size: ${T.fD4}; font-weight: 700; line-height: 1.06;
+              letter-spacing: -0.01em; color: ${T.dBlack};
+              margin: 0; font-family: ${font};
+            }
+            .qa-body { display: flex; flex-direction: column; gap: 0; }
+            .qa-answer {
+              font-size: ${T.fBody}; line-height: 1.7;
+              color: ${T.g850}; margin: 0 0 1rem; font-family: ${font};
+            }
+            .qa-answer:last-child { margin-bottom: 0; }
+            .qa-emph {
+              color: ${T.dBlack}; font-weight: 700;
+              text-decoration: underline;
+              text-decoration-thickness: 0.0625rem;
+              text-underline-offset: 0.1875rem;
+            }
+            @media (max-width: 68.75rem) {
+              .qa-question { font-size: ${T.fH1}; line-height: 1.1; }
+              .qa-split { gap: 2rem; }
+            }
+            @media (max-width: 40rem) {
+              .qa-split { grid-template-columns: 1fr; gap: 1.5rem; }
+              .qa-question { font-size: ${T.fH2}; line-height: 1.15; }
+            }
+
+            /* ── PRODUCT HERO ── */
+            .ph-stage {
+              display: grid; grid-template-columns: 1fr 1fr;
+              gap: 3.5rem; align-items: stretch; margin: 1.5rem 0 2.5rem;
+            }
+            .ph-visual {
+              background: ${T.g900}; border-radius: ${T.rLg};
+              overflow: hidden; min-height: 22.5rem; position: relative;
+            }
+            .ph-visual img {
+              width: 100%; height: 100%; object-fit: cover; display: block;
+            }
+            .ph-info { display: flex; flex-direction: column; justify-content: center; gap: 0; }
+            .ph-eyebrow {
+              font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+              text-transform: uppercase; color: ${T.g600}; margin: 0 0 0.875rem;
+              font-family: inherit;
+            }
+            .ph-title {
+              font-size: 2.875rem; font-weight: 700; line-height: 1.0;
+              letter-spacing: -0.01em; color: ${T.dBlack}; margin: 0 0 1.125rem;
+              max-width: 18ch;
+            }
+            .ph-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+            .ph-badge {
+              display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem;
+              font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em;
+              text-transform: uppercase; padding: 0.25rem 0.5rem; border-radius: ${T.rSm};
+            }
+            .ph-badge--primary { background: ${T.teal}; color: ${T.white}; }
+            .ph-badge--neutral {
+              background: ${T.paper}; color: ${T.dBlack};
+              border: 0.0625rem solid ${T.g200};
+            }
+            .ph-flag-strip {
+              display: inline-flex; width: 0.875rem; height: 0.5625rem;
+              border: 0.0625rem solid rgba(0,0,0,0.12); border-radius: 0.0625rem;
+              overflow: hidden; margin-left: 0.125rem;
+            }
+            .ph-flag-strip i { flex: 1; display: block; }
+            .ph-lede {
+              font-size: ${T.fBody}; line-height: 1.6; color: ${T.g850};
+              margin: 0 0 1.125rem;
+            }
+            .ph-lede strong { color: ${T.dBlack}; font-weight: 800; }
+            .ph-features { display: flex; flex-wrap: wrap; gap: 0.375rem 0.5rem; margin-bottom: 1.375rem; }
+            .ph-feature {
+              display: inline-flex; align-items: center; gap: 0.5rem;
+              font-size: ${T.fSm}; font-weight: 600; color: ${T.dBlack};
+              background: ${T.white}; border: 0.0625rem solid ${T.g200};
+              padding: 0.4375rem 0.875rem; border-radius: ${T.rSm};
+            }
+            .ph-feature svg { width: 1rem; height: 1rem; color: ${T.teal}; flex-shrink: 0; }
+            .ph-quote {
+              font-style: italic; font-size: ${T.fBody}; line-height: 1.55;
+              color: ${T.g700}; margin: 0 0 1.125rem;
+              padding-left: 0.875rem;
+              border-left: 0.125rem solid ${T.teal};
+            }
+            .ph-compat {
+              display: flex; align-items: center; flex-wrap: wrap; gap: 0.625rem;
+              font-size: ${T.fSm}; color: ${T.g600};
+              padding-top: 0.875rem; border-top: 0.0625rem solid ${T.g200};
+            }
+            .ph-compat-icon { display: inline-flex; width: 1.25rem; height: 1.25rem; color: ${T.teal}; flex-shrink: 0; }
+            .ph-compat-label {
+              font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.14em;
+              text-transform: uppercase; color: ${T.g600};
+            }
+            .ph-compat-models { display: flex; gap: 0; }
+            .ph-compat-models span { color: ${T.dBlack}; font-weight: 700; font-size: ${T.fSm}; }
+            .ph-compat-models span + span::before { content: "·"; margin: 0 0.375rem; color: ${T.g400}; font-weight: 400; }
+            @media (max-width: 56.25rem) {
+              .ph-stage { grid-template-columns: 1fr; gap: 1.5rem; }
+              .ph-title { font-size: 2.25rem; }
+              .ph-visual { min-height: 18rem; }
+            }
+            @media (max-width: 40rem) {
+              .ph-title { font-size: 1.875rem; }
+              .ph-quote { max-width: none; }
+            }
+
+            /* ── FEATURE DETAIL (text + image) ── */
+            .fd-stage {
+              display: grid; grid-template-columns: 1fr 1fr;
+              gap: 3.5rem; align-items: stretch; margin: 1.5rem 0 2.5rem;
+            }
+            .fd-info { display: flex; flex-direction: column; justify-content: center; gap: 0; }
+            .fd-label {
+              font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+              text-transform: uppercase; color: ${T.teal}; margin: 0 0 1rem;
+            }
+            .fd-title {
+              font-size: ${T.fD4}; font-weight: 700; line-height: 1.08;
+              letter-spacing: -0.01em; color: ${T.dBlack}; margin: 0 0 1.5rem;
+            }
+            .fd-body {
+              font-size: ${T.fBody}; line-height: 1.65; color: ${T.g700};
+              margin: 0 0 1.75rem;
+            }
+            .fd-sub {
+              font-size: ${T.fSm}; font-weight: 700; color: ${T.dBlack};
+              margin: 0 0 1rem; text-transform: uppercase;
+              letter-spacing: 0.04em;
+            }
+            .fd-swatches {
+              display: grid; grid-template-columns: repeat(2, 1fr);
+              gap: 0 1.5rem; margin: 0;
+            }
+            .fd-swatch {
+              display: flex; align-items: center; gap: 0.625rem;
+              font-size: ${T.fSm}; color: ${T.g850}; font-weight: 500;
+              padding: 0.75rem 0; border-bottom: 0.0625rem solid ${T.g200};
+            }
+            .fd-swatch-dot {
+              width: 0.875rem; height: 0.875rem; border-radius: 50%;
+              flex-shrink: 0; border: 0.0625rem solid rgba(0,0,0,0.1);
+            }
+            .fd-visual {
+              background: ${T.g900}; border-radius: ${T.rLg};
+              overflow: hidden; min-height: 22.5rem; position: relative;
+            }
+            .fd-visual img, .fd-visual video { width: 100%; height: 100%; object-fit: cover; display: block; }
+            @media (max-width: 56.25rem) {
+              .fd-stage { grid-template-columns: 1fr; gap: 1.5rem; }
+              .fd-visual { min-height: 16rem; }
+              .fd-title { font-size: ${T.fH1}; }
+            }
+            @media (max-width: 40rem) {
+              .fd-title { font-size: ${T.fH2}; }
+            }
+
+            /* ── FEATURE DUO (2-card grid, photo top) ── */
+            .fdu-grid {
+              display: grid; grid-template-columns: 1fr 1fr;
+              gap: 3.5rem; margin: 1.5rem 0 2.5rem;
+            }
+            .fdu-card {
+              display: flex; flex-direction: column;
+            }
+            .fdu-photo {
+              width: 100%; border-radius: ${T.rLg}; overflow: hidden;
+              background: ${T.g900}; flex-shrink: 0;
+            }
+            .fdu-photo img {
+              width: 100%; height: auto; display: block;
+            }
+            .fdu-body { padding: 1.25rem 0 0; display: flex; flex-direction: column; gap: 0.75rem; }
+            .fdu-label {
+              font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+              text-transform: uppercase; color: ${T.teal}; margin: 0;
+            }
+            .fdu-title {
+              font-size: ${T.fH2}; font-weight: 700; line-height: 1.18;
+              letter-spacing: -0.01em; color: ${T.dBlack}; margin: 0;
+            }
+            .fdu-text {
+              font-size: ${T.fBody}; line-height: 1.65; color: ${T.g700}; margin: 0;
+            }
+            .fdu-list {
+              list-style: none; padding: 0; margin: 0;
+              display: flex; flex-direction: column; gap: 0.5rem;
+            }
+            .fdu-list li {
+              display: flex; align-items: flex-start; gap: 0.625rem;
+              font-size: ${T.fBody}; line-height: 1.5; color: ${T.g700};
+            }
+            .fdu-list li::before {
+              content: ''; display: block; width: 0.375rem; height: 0.375rem;
+              border-radius: 50%; background: ${T.teal};
+              flex-shrink: 0; margin-top: 0.5rem;
+            }
+            .fdu-list strong { color: ${T.dBlack}; font-weight: 700; }
+            @media (max-width: 48rem) {
+              .fdu-grid { grid-template-columns: 1fr; }
+              .fdu-title { font-size: ${T.fH3}; }
+            }
+          `}</style>
+
+          {/* Fixed left sidebar — same style as SiteNav */}
+          <nav className="sxn-sidebar">
+            <div style={{padding:'0.75rem 0 2.5rem'}}>
+              {sectionsNav.map((item,i) => item.type==='group'
+                ? <div key={i} style={{fontSize:'0.625rem',fontWeight:700,color:T.g700,
+                    textTransform:'uppercase',letterSpacing:'0.12em',
+                    padding:'1.25rem 1.375rem 0.25rem',fontFamily:font,
+                    borderTop:i>0?`0.0625rem solid ${T.g200}`:'none',marginTop:i>0?'0.25rem':0}}>
+                    {item.label}
+                  </div>
+                : <button key={item.id} onClick={()=>scrollTo(item.id)}
+                    onMouseEnter={e=>{if(activeId!==item.id)e.currentTarget.querySelector('div').style.background='rgba(1,82,83,0.05)';}}
+                    onMouseLeave={e=>{if(activeId!==item.id)e.currentTarget.querySelector('div').style.background='transparent';}}
+                    style={{width:'100%',background:'none',border:'none',textAlign:'left',cursor:'pointer',padding:'0.0625rem 0.625rem'}}>
+                    <div style={{padding:'0.375rem 0.75rem',borderRadius:6,
+                      background: activeId===item.id ? T.teal : 'transparent',
+                      color: activeId===item.id ? T.white : T.g700,
+                      fontFamily:font,fontSize:T.fSm,
+                      fontWeight: activeId===item.id ? 600 : 400,
+                      transition:'background 0.12s,color 0.12s'}}>
+                      {item.label}
+                    </div>
+                  </button>
+              )}
+            </div>
+          </nav>
+
+          {/* Main content — offset right of sidebar */}
+          <div className="sxn-layout">
+
+            {/* Back bar */}
+            <div style={{background:T.white,borderBottom:`0.0625rem solid ${T.g200}`,
+              padding:'0.75rem 3rem',display:'flex',alignItems:'center',gap:12}}>
+              <button onClick={onBackToMain}
+                style={{display:'inline-flex',alignItems:'center',gap:6,
+                  background:'none',border:'none',cursor:'pointer',
+                  fontSize:T.f13,color:T.teal,fontFamily:font,fontWeight:600,padding:0}}
+                onMouseEnter={e=>e.currentTarget.style.opacity='0.7'}
+                onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Back to Design System
+              </button>
+              <span style={{color:T.g200,fontFamily:font}}>|</span>
+              <span style={{fontSize:T.f13,fontWeight:700,color:T.dBlack,fontFamily:font}}>Sections</span>
+            </div>
+
+            <div className="sxn-content">
+
+              {/* ── SUPPORT / CONTACT SECTION ── */}
+              <div id="sec-support" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+                <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                  color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                  Section 01
+                </div>
+                <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                  margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>
+                  Support &amp; Kontakt
+                </h2>
+                <p style={{fontSize:T.fBody,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.6}}>
+                  Five-card support grid — primary card spans two columns. Used on product detail pages and the service landing page.
+                </p>
+
+                {/* preview card */}
+                <div style={{background:T.white,border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,
+                  overflow:'hidden'}}>
+                  <div style={{padding:'2rem 2.5rem',background:T.white,borderBottom:`0.0625rem solid ${T.g200}`}}>
+
+                    {/* intro row */}
+                    <div className="sxn-intro-row">
+                      <div>
+                        <h2 style={{fontSize:'1.375rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                          margin:'0 0 0.375rem',lineHeight:1.15,letterSpacing:'-0.005em'}}>
+                          Wie können wir Ihnen weiterhelfen?
+                        </h2>
+                        <p style={{fontSize:T.fBody,color:T.g600,fontFamily:font,margin:0,
+                          lineHeight:1.55,maxWidth:'58ch'}}>
+                          Wählen Sie den für Ihr Anliegen passenden Kanal — unser Team in Deutschland
+                          antwortet werktags innerhalb von zwei&nbsp;Stunden.
+                        </p>
+                      </div>
+                      <div className="sxn-online-badge" style={{textAlign:'right',fontSize:T.fBody,
+                        color:T.g600,fontFamily:font,lineHeight:1.5}}>
+                        <div style={{display:'inline-flex',alignItems:'center',gap:6,
+                          fontWeight:800,color:T.green,letterSpacing:'0.08em',
+                          textTransform:'uppercase',fontSize:T.fBody}}>
+                          <span style={{
+                            width:7,height:7,borderRadius:'50%',
+                            background:T.green,
+                            boxShadow:`0 0 0 2px rgba(0,153,81,0.18)`,
+                            display:'inline-block',
+                            animation:'sp-pulse 1.8s ease-in-out infinite',
+                          }}/>
+                          Support online
+                        </div>
+                        <div>Mo – Fr · 08:00 – 17:00 Uhr · MEZ</div>
+                      </div>
+                    </div>
+
+                    {/* 3-column grid */}
+                    <div className="sxn-grid">
+                      <SupportCard primary title="Produktberatung &amp; Bestellung"
+                        desc="Individuelle Beratung zur passenden Konfiguration, zum Lieferumfang sowie zur Bestellabwicklung — direkt mit einem Metzler-Spezialisten."
+                        meta="+49 (0) 7181 / 4999 110"
+                        icon={<><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="2" y="14" width="5" height="6" rx="1.5"/><rect x="17" y="14" width="5" height="6" rx="1.5"/><path d="M21 18v1a3 3 0 0 1-3 3h-3"/></>}
+                      />
+                      <SupportCard title="Technischer Support"
+                        desc="Installation, Inbetriebnahme und Fehlerdiagnose — Remote-Support durch unsere zertifizierten Techniker."
+                        cta="Support öffnen"
+                        icon={<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>}
+                      />
+                      <SupportCard title="Info- &amp; Hilfecenter"
+                        desc="Anleitungen, Videos und Antworten auf die häufigsten Fragen rund um alle Metzler Produkte."
+                        cta="Wissensbasis"
+                        icon={<><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/><line x1="4" y1="8" x2="8" y2="8"/><line x1="4" y1="11.5" x2="8" y2="11.5"/><line x1="16" y1="8" x2="20" y2="8"/><line x1="16" y1="11.5" x2="20" y2="11.5"/></>}
+                      />
+                      <SupportCard title="Metzler Partnerbetriebe"
+                        desc="Finden Sie einen zertifizierten Installateur und Fachhandelspartner in Ihrer Region — über 400 Partner deutschlandweit."
+                        cta="Händler finden"
+                        icon={<><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20v-1a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1"/><path d="M14 15h2a4 4 0 0 1 4 4v1"/></>}
+                      />
+                      <SupportCard title="Frage stellen"
+                        desc="Direkt per Formular an einen Mitarbeiter — mit optionalem Foto oder Video zu Ihrem Anliegen."
+                        cta="Nachricht senden"
+                        icon={<><path d="M21 12a9 9 0 0 1-13 8L3 21l1-5A9 9 0 1 1 21 12z"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-1 0.5-1.5 1-1.5 2"/><line x1="11.5" y1="16.5" x2="11.5" y2="16.51"/></>}
+                      />
+                    </div>
+                  </div>
+
+                  {/* HTML code block */}
+                  <CodeBlock inline lang="HTML" code={`<div class="support-grid">
+
+  <!-- Primary card (spans 2 columns) -->
+  <a class="support-card is-primary" href="#">
+    <div class="support-card-icon"><!-- SVG icon --></div>
+    <div class="support-card-title">Produktberatung &amp; Bestellung</div>
+    <p class="support-card-desc">Individuelle Beratung zur passenden Konfiguration…</p>
+    <div class="support-card-foot">
+      <span>+49 (0) 7181 / 4999 110</span>
+      <span class="support-card-arrow"><!-- arrow svg --></span>
+    </div>
+  </a>
+
+  <!-- Standard card -->
+  <a class="support-card" href="#">
+    <div class="support-card-icon"><!-- SVG icon --></div>
+    <div class="support-card-title">Technischer Support</div>
+    <p class="support-card-desc">Installation, Inbetriebnahme, Fehlerdiagnose…</p>
+    <div class="support-card-foot">
+      <span class="support-card-cta">Support öffnen</span>
+      <span class="support-card-arrow"><!-- arrow svg --></span>
+    </div>
+  </a>
+
+  <!-- Repeat <a class="support-card"> for each additional card -->
+</div>`}/>
+
+                  {/* CSS code block */}
+                  <CodeBlock inline lang="CSS" code={`.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+}
+.support-card {
+  grid-column: span 1;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  padding: 1.125rem 1.25rem 1rem;
+  background: var(--color-white);
+  border: 0.0625rem solid var(--color-g200);
+  border-radius: var(--radius-lg);
+  text-decoration: none; color: var(--color-black);
+  position: relative; overflow: hidden;
+  transition: border-color 0.14s;
+}
+.support-card.is-primary {
+  grid-column: span 2;
+  background: radial-gradient(ellipse 70% 80% at 15% 30%, #01696A 0%, transparent 55%),
+              linear-gradient(135deg, var(--color-teal) 0%, #012628 60%, var(--color-black) 100%);
+  border-color: #012628; color: var(--color-white);
+}
+.support-card:hover { border-color: var(--color-black); }
+.support-card.is-primary:hover { border-color: var(--color-white); }
+
+.support-card-icon {
+  width: 2.5rem; height: 2.5rem; border-radius: 0.625rem;
+  background: rgba(1,82,83,0.08); color: var(--color-teal);
+  display: flex; align-items: center; justify-content: center;
+}
+.support-card.is-primary .support-card-icon {
+  background: rgba(92,219,211,0.12);
+  border: 0.0625rem solid rgba(92,219,211,0.24); color: #5CDBD3;
+}
+.support-card-title { font-size: 0.875rem; font-weight: 700; color: var(--color-teal); }
+.support-card.is-primary .support-card-title { color: var(--color-white); }
+.support-card-desc { font-size: 1rem; color: var(--color-g600); line-height: 1.45; margin: 0; }
+.support-card.is-primary .support-card-desc { color: rgba(255,255,255,0.82); }
+
+.support-card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.25rem; }
+.support-card-cta { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-teal); }
+.support-card.is-primary .support-card-cta { color: #5CDBD3; }
+
+/* Arrow — square with 4px radius, NOT circular */
+.support-card-arrow {
+  width: 2.25rem; height: 2.25rem;
+  border-radius: var(--radius);
+  background: var(--color-paper); color: var(--color-black);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.14s, color 0.14s; flex-shrink: 0;
+}
+.support-card.is-primary .support-card-arrow { background: rgba(255,255,255,0.14); color: var(--color-white); }
+.support-card:hover .support-card-arrow { background: var(--color-teal); color: var(--color-white); }
+.support-card.is-primary:hover .support-card-arrow { background: var(--color-white); color: var(--color-teal); }`}/>
+                </div>
+              </div>
+
+            {/* ── NEUE FEATURES SECTION ── */}
+            <div id="sec-features" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 02
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>
+                Neue Features
+              </h2>
+              <p style={{fontSize:T.fBody,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.6}}>
+                Nine-feature grid with version badge. Used on product detail pages to highlight new version capabilities.
+              </p>
+
+              {/* preview */}
+              <div style={{background:T.white,border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <div style={{padding:'2rem 2.5rem',background:T.white,borderBottom:`0.0625rem solid ${T.g200}`}}>
+
+                  {/* Badge + heading */}
+                  <div style={{display:'flex',flexDirection:'column',alignItems:'center',
+                    marginBottom:'1.75rem',gap:'0.625rem'}}>
+                    <span className="nf-bdg">Version 2.0</span>
+                    <h2 style={{fontSize:'2.875rem',fontWeight:700,letterSpacing:'-0.01em',
+                      color:T.dBlack,fontFamily:font,margin:0,textAlign:'center',lineHeight:1.1}}>
+                      Neue <span style={{color:T.teal}}>Features</span>
+                    </h2>
+                  </div>
+
+                  {/* 3-col grid */}
+                  <div className="nfs-grid">
+                    {[
+                      { num:'01', title:'SIP & FRITZ! Integration',
+                        desc:'Überträgt Bild & Ton auf kompatiblem FRITZ!Fon und SIP Endgerät und macht diese zu Türöffnern.',
+                        icon:<><path d="M5 3.5h2.6l1.8 4.4-2.2 1.3a11 11 0 0 0 5.6 5.6l1.3-2.2 4.4 1.8v2.6a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2z"/><path d="M16 4a4 4 0 0 1 4 4"/><path d="M17 7a1.5 1.5 0 0 1 1.5 1.5"/></> },
+                      { num:'02', title:'Easy UI 2.0 – Einrichtung ohne PC',
+                        desc:'Konfigurieren Sie die komplette Anlage in wenigen Minuten mit Easy UI 2.0 direkt über die Innenstation.',
+                        icon:<><rect x="3" y="4" width="18" height="13" rx="1.6"/><line x1="9" y1="20.5" x2="15" y2="20.5"/><line x1="12" y1="17" x2="12" y2="20.5"/><circle cx="12" cy="10.5" r="1.4" fill="currentColor" stroke="none"/></> },
+                      { num:'03', title:'Innenstationen kabellos verbinden',
+                        desc:'Verbinden Sie alle Innenstation(en) per WIFI / WLAN (Stromversorgung notwendig) mit der Außenstation.',
+                        icon:<><path d="M3 9a15 15 0 0 1 18 0"/><path d="M6 12.5a10 10 0 0 1 12 0"/><path d="M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1.2" fill="currentColor" stroke="none"/></> },
+                      { num:'04', title:'PC + Mac als Innenstation',
+                        desc:'Nehmen Sie Klingelanrufe zeitplangesteuert an Ihrem PC / Notebook inkl. Gegensprechen & Türöffnen an.',
+                        icon:<><rect x="3" y="4" width="18" height="13" rx="1.6"/><line x1="9" y1="20.5" x2="15" y2="20.5"/><line x1="12" y1="17" x2="12" y2="20.5"/><polyline points="9 11.5 12 14 15 11.5"/></> },
+                      { num:'05', title:'Integrierte Türöffner Stromversorgung',
+                        desc:'Verbinden Sie Ihre Türöffner ohne zusätzlichen Transformator (12VDC max. 500mA, nur PoE).',
+                        icon:<polygon points="13.5 3 5 14 11 14 10.5 21 19 10 13 10 13.5 3"/> },
+                      { num:'06', title:'Privacy by Design',
+                        desc:'Bestimmen Sie einfach und intuitiv welche Bereiche des Sichtfelds eingeschränkt werden sollen.',
+                        icon:<path d="M12 3 4 6v5c0 5 3.4 9.2 8 10 4.6-.8 8-5 8-10V6l-8-3z"/> },
+                      { num:'07', title:'Verbessertes Kamerabild / Sichtfeld',
+                        desc:'Sichtfeld jetzt 146° Horizontal & 82° Vertikal mit dynamischer Entzerrung und natürlicheren Farben.',
+                        icon:<><path d="M5 8h2.6l1.2-1.8a1.3 1.3 0 0 1 1.1-.6h4.2a1.3 1.3 0 0 1 1.1.6L16.4 8H19a1.6 1.6 0 0 1 1.6 1.6V17a1.6 1.6 0 0 1-1.6 1.6H5A1.6 1.6 0 0 1 3.4 17V9.6A1.6 1.6 0 0 1 5 8z"/><circle cx="12" cy="13.3" r="3.2"/></> },
+                      { num:'08', title:'Neuer SOC Prozessor',
+                        desc:'Noch schnellere Bildübertragung des Livestreams sowie generelle Optimierung der Reaktionszeiten.',
+                        icon:<><rect x="5.5" y="5.5" width="13" height="13" rx="1.6"/><rect x="9" y="9" width="6" height="6" rx="0.6"/><line x1="9.5" y1="2.5" x2="9.5" y2="5.5"/><line x1="14.5" y1="2.5" x2="14.5" y2="5.5"/><line x1="9.5" y1="18.5" x2="9.5" y2="21.5"/><line x1="14.5" y1="18.5" x2="14.5" y2="21.5"/><line x1="2.5" y1="9.5" x2="5.5" y2="9.5"/><line x1="2.5" y1="14.5" x2="5.5" y2="14.5"/><line x1="18.5" y1="9.5" x2="21.5" y2="9.5"/><line x1="18.5" y1="14.5" x2="21.5" y2="14.5"/></> },
+                      { num:'09', title:'Flacher Kameradom & verbesserter Bildsensor',
+                        desc:'Der Kameralinse fügt sich so noch besser in die Sprechanlage ein.',
+                        icon:<><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></> },
+                    ].map(f => (
+                      <div key={f.num} className="nfs-card">
+                        <span className="nfs-card-num">{f.num}</span>
+                        <span className="nfs-card-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24">{f.icon}</svg>
+                        </span>
+                        <h3 className="nfs-card-title">{f.title}</h3>
+                        <p className="nfs-card-desc">{f.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* HTML code block */}
+                <CodeBlock inline lang="HTML" code={`<div class="nf-intro-row">
+  <span class="nf-badge">Neue Features</span>
+  <h2 class="nf-title">Smarter. <span class="nf-accent">Schneller.</span> Sicherer.</h2>
+</div>
+
+<div class="nf-grid">
+
+  <!-- Feature card -->
+  <div class="nf-card">
+    <span class="nf-card-num">01</span>
+    <span class="nf-card-icon"><!-- SVG icon --></span>
+    <h3 class="nf-card-title">Feature title</h3>
+    <p class="nf-card-desc">Short description of the feature, up to 3 lines.</p>
+  </div>
+
+  <!-- Repeat <div class="nf-card"> × 9 -->
+</div>`}/>
+
+                {/* CSS code block */}
+                <CodeBlock inline lang="CSS" code={`.nf-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
+  background: var(--color-teal-50); color: var(--color-teal);
+  border-radius: var(--radius-pill);
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.nf-badge::before {
+  content: ""; width: 0.375rem; height: 0.375rem;
+  border-radius: 50%; background: var(--color-teal); display: inline-block;
+}
+.nf-title {
+  font-size: 2.875rem; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--color-dblack); text-align: center; margin: 0;
+}
+.nf-title .nf-accent { color: var(--color-teal); }
+
+.nf-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0.0625rem; background: var(--color-g200);
+  border: 0.0625rem solid var(--color-g200);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+@media (max-width: 56.25rem) { .nf-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 35rem)    { .nf-grid { grid-template-columns: 1fr; } }
+
+.nf-card {
+  background: var(--color-white); padding: 1.5rem;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 0.375rem; transition: background 220ms ease;
+}
+.nf-card:hover { background: var(--color-teal-50); }
+
+.nf-card-num {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--color-g400); transition: color 220ms ease;
+}
+.nf-card:hover .nf-card-num { color: var(--color-teal); }
+
+.nf-card-icon {
+  width: 2.25rem; height: 2.25rem; border-radius: var(--radius-lg);
+  background: var(--color-paper); color: var(--color-teal);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+}
+.nf-card-icon svg {
+  width: 1.125rem; height: 1.125rem; fill: none;
+  stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.nf-card:hover .nf-card-icon { background: var(--color-teal); color: var(--color-white); transform: translateY(-1px); }
+
+.nf-card-title {
+  font-size: 1rem; font-weight: 700; line-height: 1.3;
+  color: var(--color-dblack); margin: 0; transition: color 220ms ease;
+}
+.nf-card:hover .nf-card-title { color: var(--color-teal); }
+
+.nf-card-desc { font-size: 1rem; line-height: 1.4; color: var(--color-g600); margin: 0; }`}/>
+              </div>
+            </div>
+
+          {/* ── ACCESS METHODS SLIDER SECTION ── */}
+            <div id="sec-access" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 03
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>
+                Türöffnungsmöglichkeiten
+              </h2>
+              <p style={{fontSize:T.fBody,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.6}}>
+                Dark-background horizontal scroll gallery with arrow navigation. Used on product detail pages to present access methods.
+              </p>
+
+              {/* live demo */}
+              <div className="acc-stage">
+                <div className="acc-header">
+                  <h2 className="acc-title">Türöffnungs&shy;möglichkeiten</h2>
+                  <div className="acc-nav">
+                    <button className="acc-arrow" aria-label="Vorherige" onClick={()=>scrollAccess(-1)}>
+                      <svg viewBox="0 0 13 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="11.5 22 1.5 12 11.5 2"/>
+                      </svg>
+                    </button>
+                    <button className="acc-arrow" aria-label="Nächste" onClick={()=>scrollAccess(1)}>
+                      <svg viewBox="0 0 13 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="1.5 2 11.5 12 1.5 22"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="acc-track" ref={accessTrackRef}>
+                  {[
+                    { label:'QR-Code',         title:'Zugang durch QR-Code.',       desc:'Öffnen Sie Ihre Tür bequem über einen verschlüsselten QR-Code auf dem Smartphone — ideal für temporäre Zutritte und Gäste.' },
+                    { label:'Gesichtserkennung', title:'Gesichtserkennung.',         desc:'Entsperren Sie Ihre Tür sicher und blitzschnell durch Gesichtserkennung, die in nur 200 ms eine präzise Identifikation ermöglicht.' },
+                    { label:'RFID',             title:'Zugang durch RFID.',          desc:'Öffnen Sie Ihre Tür bequem mit RFID und speichern Sie bis zu 100.000 RFID-Karten für einen schnellen und sicheren Zugang.' },
+                    { label:'PIN-Code',         title:'Zugang durch PIN-Code.',      desc:'Öffnen Sie Ihre Tür mit einem selbst gewählten Zugangscode für eine persönliche und sichere Zutrittskontrolle.' },
+                    { label:'Mobile App',       title:'Zugang per App.',             desc:'Öffnen Sie Ihre Tür aus der Ferne, verwalten Sie Nutzer und erhalten Sie Live-Benachrichtigungen direkt auf dem Smartphone.' },
+                    { label:'Fingerabdruck',    title:'Zugang per Fingerabdruck.',   desc:'Kontaktloser Zutritt mit einem kurzen Fingertipp — biometrisch, fälschungssicher und ohne Schlüssel.' },
+                    { label:'Bluetooth',        title:'Zugang per Bluetooth.',       desc:'Automatische Türöffnung beim Annähern — Ihr Smartphone bleibt in der Tasche, die Tür öffnet sich freihändig.' },
+                    { label:'NFC',              title:'Zugang per NFC.',             desc:'Halten Sie Ihr Smartphone oder eine NFC-Karte kurz an die Sprechanlage — sofortige Authentifizierung ohne App-Start.' },
+                    { label:'Sprachsteuerung',  title:'Zugang per Sprachsteuerung.', desc:'Öffnen Sie Ihre Tür komfortabel per Sprachbefehl über Alexa, Google Assistant oder Apple HomeKit.' },
+                  ].map((slide, i) => (
+                    <article key={i} className="acc-card">
+                      <div className="acc-visual">
+                        <img
+                          src="https://edelstahl-tuerklingel.de/media/image/storage/opc/02-24/SDM10X/neu/spa_sdm10x_ifg-rfid-a.jpg"
+                          alt={slide.label}
+                          onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
+                        />
+                        <div className="acc-visual-placeholder" style={{display:'none'}}>{slide.label}</div>
+                      </div>
+                      <p className="acc-card-text">
+                        <strong>{slide.title}</strong>{' '}{slide.desc}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              {/* HTML + CSS code blocks */}
+              <div style={{marginTop:'1.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <CodeBlock inline lang="HTML" code={`<div class="acc-stage">
+
+  <div class="acc-header">
+    <h2 class="acc-title">Türöffnungsmöglichkeiten</h2>
+    <div class="acc-nav">
+      <button class="acc-arrow" aria-label="Vorherige" onclick="scrollAccess(-1)">
+        <!-- left chevron svg -->
+      </button>
+      <button class="acc-arrow" aria-label="Nächste" onclick="scrollAccess(1)">
+        <!-- right chevron svg -->
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable track — use scrollBy({ left: ±332, behavior:'smooth' }) on arrow click -->
+  <div class="acc-track" id="acc-track">
+
+    <article class="acc-card">
+      <div class="acc-visual">
+        <img src="photo.jpg" alt="QR-Code" />
+        <div class="acc-visual-placeholder">QR-Code</div><!-- shown on img error -->
+      </div>
+      <p class="acc-card-text">
+        <strong>Zugang durch QR-Code.</strong>
+        Öffnen Sie Ihre Tür bequem über einen verschlüsselten QR-Code…
+      </p>
+    </article>
+
+    <!-- Repeat <article class="acc-card"> for each slide -->
+  </div>
+</div>
+
+<!-- JS: on arrow click → track.scrollBy({ left: ±332, behavior:'smooth' }) -->`}/>
+              </div>
+              <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <CodeBlock inline lang="CSS" code={`.acc-stage {
+  background: var(--color-dblack); color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 0 2.5rem;
+}
+.acc-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 2.25rem; margin-bottom: 1.25rem;
+}
+.acc-title {
+  font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; margin: 0;
+}
+/* Arrow — square 4px radius, NOT circular */
+.acc-arrow {
+  width: 2.125rem; height: 2.125rem; border-radius: var(--radius);
+  border: 0.0625rem solid var(--color-white);
+  background: transparent; color: var(--color-white); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 150ms ease, color 150ms ease;
+}
+.acc-arrow:hover { background: var(--color-white); color: var(--color-dblack); }
+
+.acc-track {
+  display: flex; gap: 2rem;
+  padding: 0.25rem 2.25rem 0.5rem;
+  overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none;
+}
+.acc-card { flex: 0 0 auto; width: 18.75rem; display: flex; flex-direction: column; }
+.acc-visual { width: 18.75rem; height: 25rem; border-radius: var(--radius-lg); background: #141416; overflow: hidden; }
+.acc-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.acc-card-text { margin: 0.75rem 0 0; font-size: 1rem; line-height: 1.5; color: rgba(255,255,255,0.72); }
+.acc-card-text strong { display: block; margin-bottom: 0.375rem; color: var(--color-white); font-weight: 700; }
+
+@media (max-width: 48rem) {
+  .acc-title { font-size: 1.5rem; }
+  .acc-track { padding: 0.25rem 1.25rem 0.5rem; gap: 1rem; scroll-snap-type: x mandatory; }
+  .acc-card { width: 78vw; scroll-snap-align: start; }
+  .acc-visual { width: 100%; height: auto; aspect-ratio: 3/4; }
+}`}/>
+              </div>
+            </div>
+
+            {/* ── FAQ SECTION ── */}
+            {(() => {
+              const faqs = [
+                { q:'Welche Zahlungsmethoden bietet Metzler an?',
+                  a:'Metzler akzeptiert alle gängigen Zahlungsmethoden: Kreditkarte (Visa, Mastercard), PayPal, Sofortüberweisung sowie Kauf auf Rechnung für Geschäftskunden mit geprüfter Bonität.' },
+                { q:'Wie lange dauert die Lieferung?',
+                  a:'Bestellungen werden in der Regel innerhalb von 1–2 Werktagen versandt. Die Lieferzeit beträgt typischerweise 2–4 Werktage, je nach Lieferadresse und Verfügbarkeit.' },
+                { q:'Kann ich mein bestehendes System auf Metzler aufrüsten?',
+                  a:'Ja. Mit der 2-Draht-Serie ersetzen Sie Ihre alte Gegensprechanlage problemlos. Vorhandene 2-Draht-Leitungen werden weiterverwendet — keine Neuverkabelung nötig.' },
+                { q:'Bietet Metzler individuelle Anpassungen an?',
+                  a:'Für Großprojekte und gewerbliche Kunden bieten wir individuelle Konfigurationen und Sonderanfertigungen an. Kontaktieren Sie unseren Vertrieb für ein maßgeschneidertes Angebot.' },
+                { q:'Wie funktioniert der Käuferschutz?',
+                  a:'Alle Bestellungen sind durch unsere Zufriedenheitsgarantie gedeckt. Bei Problemen mit der Lieferung oder dem Produkt stehen wir Ihnen binnen 24 Stunden zur Verfügung.' },
+                { q:'Welche Garantie gibt es auf Metzler-Produkte?',
+                  a:'Metzler-Produkte werden mit 2 Jahren Herstellergarantie geliefert. Registrierte Kunden erhalten eine verlängerte Garantie von 3 Jahren auf alle Sprechanlagen.' },
+              ];
+              return (
+                <div id="sec-faq" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+                  <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                    color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                    Section 04
+                  </div>
+                  <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                    margin:'0 0 1.75rem',letterSpacing:'-0.01em'}}>FAQ</h2>
+                  <div className="faq-stage">
+                    <div className="faq-split">
+                      {/* Left: heading */}
+                      <div>
+                        <p className="faq-label">FAQ</p>
+                        <h3 className="faq-heading">Alles, was Sie wissen müssen</h3>
+                      </div>
+                      {/* Right: accordion */}
+                      <ul className="faq-list">
+                        {faqs.map((item, i) => {
+                          const isOpen = faqOpen === i;
+                          const num = String(i+1).padStart(2,'0');
+                          return (
+                            <li key={i} className="faq-item">
+                              <button
+                                className="faq-btn"
+                                aria-expanded={isOpen}
+                                onClick={() => setFaqOpen(isOpen ? null : i)}
+                              >
+                                <span className="faq-num">{num}</span>
+                                <span className="faq-q">{item.q}</span>
+                                <span className="faq-icon" aria-hidden="true">
+                                  {isOpen
+                                    ? <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+                                      </svg>
+                                    : <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                        <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+                                      </svg>
+                                  }
+                                </span>
+                              </button>
+                              <div className={`faq-body${isOpen ? ' is-open' : ''}`}>
+                                <div className="faq-body-inner">
+                                  <p className="faq-answer">{item.a}</p>
+                                </div>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* FAQ code blocks */}
+            {(() => {
+              const faqHtml = `<div class="faq-stage">
+  <div class="faq-split">
+
+    <!-- Left: heading -->
+    <div>
+      <p class="faq-label">FAQ</p>
+      <h3 class="faq-heading">Alles, was Sie wissen müssen</h3>
+    </div>
+
+    <!-- Right: accordion list -->
+    <ul class="faq-list">
+
+      <li class="faq-item">
+        <button class="faq-btn" aria-expanded="false" onclick="toggleFaq(this)">
+          <span class="faq-num">01</span>
+          <span class="faq-q">Welche Zahlungsmethoden bietet Metzler an?</span>
+          <span class="faq-icon"><!-- + svg --></span>
+        </button>
+        <div class="faq-body">
+          <div class="faq-body-inner">
+            <p class="faq-answer">Answer text here.</p>
+          </div>
+        </div>
+      </li>
+
+      <!-- Repeat <li class="faq-item"> for each question -->
+    </ul>
+  </div>
+</div>
+
+<!-- JS: on button click → toggle aria-expanded + .faq-body.is-open class -->
+<!-- function toggleFaq(btn) { const open = btn.ariaExpanded==='true'; btn.ariaExpanded=!open; btn.closest('.faq-item').querySelector('.faq-body').classList.toggle('is-open',!open); } -->`;
+              const faqCss = `.faq-stage { border-top: 0.0625rem solid var(--color-g200); padding: 2.5rem 0 3rem; }
+.faq-split { display: grid; grid-template-columns: 2fr 3fr; gap: 4rem; align-items: start; }
+.faq-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-g500); margin: 0 0 0.75rem; }
+.faq-heading { font-size: 2.875rem; font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; color: var(--color-dblack); max-width: 12ch; margin: 0; }
+.faq-list { list-style: none; margin: 0; padding: 0; }
+.faq-item { border-top: 0.0625rem solid var(--color-g200); }
+.faq-item:last-child { border-bottom: 0.0625rem solid var(--color-g200); }
+.faq-btn { width: 100%; display: grid; grid-template-columns: 2rem 1fr 1.5rem; align-items: center; gap: 1rem; padding: 1.25rem 0; background: none; border: none; cursor: pointer; text-align: left; }
+.faq-num { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; color: var(--color-g400); }
+.faq-q { font-size: 1.25rem; font-weight: 700; color: var(--color-dblack); line-height: 1.25; margin: 0; }
+.faq-icon { width: 1.25rem; height: 1.25rem; display: flex; align-items: center; justify-content: center; color: var(--color-teal); }
+.faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 300ms ease; }
+.faq-body.is-open { grid-template-rows: 1fr; }
+.faq-body-inner { overflow: hidden; min-height: 0; }
+.faq-answer { font-size: 1rem; line-height: 1.65; color: var(--color-g600); padding: 0.125rem 2rem 1.375rem 3rem; margin: 0; }
+@media (max-width: 62.5rem) {
+  .faq-split { grid-template-columns: 1fr; gap: 2rem; }
+  .faq-heading { font-size: 1.875rem; max-width: none; }
+}`;
+              return (
+                <>
+                  <div style={{marginTop:'1.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                    <CodeBlock inline lang="HTML" code={faqHtml}/>
+                  </div>
+                  <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                    <CodeBlock inline lang="CSS" code={faqCss}/>
+                  </div>
+                </>
+              );
+            })()}
+
+            {/* ── GESICHTSERKENNUNG PROCESS SECTION ── */}
+            <div id="sec-steps" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 05
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 1.75rem',letterSpacing:'-0.01em'}}>
+                Gesichtserkennung Process
+              </h2>
+
+              <div style={{background:T.white,borderRadius:T.rLg,
+                border:`0.0625rem solid ${T.g200}`,padding:'3rem 3rem 3rem'}}>
+                <p className="face-eyebrow">Biometric Access · Gesichtserkennung</p>
+                <h3 className="face-title">Ablauf der<br/>Gesichtserkennung.</h3>
+                <p className="face-lede">
+                  <strong>Schneller Zutritt, sicher gelöst.</strong>{' '}
+                  Die Dual-Kamera erfasst ein dreidimensionales Gesichtsmodell in unter einer
+                  Sekunde und vergleicht die Merkmale mit lokal gespeicherten Profilen —
+                  zuverlässig bei jedem Lichtverhältnis.
+                </p>
+
+                <div className="face-steps">
+                  {[
+                    { n:'1', text:'Zwei Kameras erfassen das Gesicht dreidimensional und wandeln es in digitale Daten um.' },
+                    { n:'2', text:'Charakteristische Merkmale des Gesichts werden identifiziert und gespeichert.' },
+                    { n:'3', text:'Beim Scanvorgang werden die erfassten Merkmale mit existierenden Daten verglichen.' },
+                    { n:'4', text:'Ein Algorithmus überprüft, ob das gescannte Gesicht mit bereits gespeicherten Daten übereinstimmt.' },
+                  ].map((step, i) => (
+                    <div key={i} className="face-step">
+                      <div className="face-step-head">
+                        <span className="face-step-num">{step.n}</span>
+                        <span className="face-step-rule"/>
+                      </div>
+                      <p className="face-step-body">{step.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Steps HTML + CSS code blocks */}
+              <div style={{marginTop:'1.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <CodeBlock inline lang="HTML" code={`<p class="face-eyebrow">Biometric Access · Gesichtserkennung</p>
+<h2 class="face-title">Ablauf der<br>Gesichtserkennung.</h2>
+<p class="face-lede">
+  <strong>Schneller Zutritt, sicher gelöst.</strong>
+  Die Dual-Kamera erfasst ein dreidimensionales Gesichtsmodell in unter einer Sekunde…
+</p>
+
+<div class="face-steps">
+
+  <div class="face-step">
+    <div class="face-step-head">
+      <span class="face-step-num">1</span>
+      <span class="face-step-rule"></span><!-- hidden on last step via CSS -->
+    </div>
+    <p class="face-step-body">Zwei Kameras erfassen das Gesicht dreidimensional und wandeln es in digitale Daten um.</p>
+  </div>
+
+  <!-- Repeat <div class="face-step"> × 4 total -->
+</div>`}/>
+              </div>
+              <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <CodeBlock inline lang="CSS" code={`.face-eyebrow { font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-g500); margin: 0 0 0.75rem; }
+.face-title { font-size: 2.875rem; font-weight: 700; line-height: 0.94; letter-spacing: -0.01em; color: var(--color-dblack); margin: 0 0 1.125rem; }
+.face-lede { font-size: 1rem; line-height: 1.6; color: var(--color-black); margin: 0 0 2.75rem; }
+.face-lede strong { color: var(--color-dblack); font-weight: 800; }
+
+.face-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+.face-step { display: flex; flex-direction: column; }
+.face-step-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.875rem; }
+.face-step-num {
+  width: 2.125rem; height: 2.125rem; border-radius: 50%;
+  border: 0.125rem solid var(--color-teal);
+  background: var(--color-white); color: var(--color-teal);
+  font-size: 0.9375rem; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.face-step-rule { flex: 1; height: 0.09375rem; background: var(--color-teal); opacity: 0.35; }
+.face-step:last-child .face-step-rule { display: none; }
+.face-step-body { font-size: 1rem; line-height: 1.55; color: var(--color-black); margin: 0; }
+
+@media (max-width: 56.25rem) { .face-steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 30rem) { .face-steps { grid-template-columns: 1fr; } .face-step-rule { display: none; } }`}/>
+              </div>
+            </div>
+
+            {/* ── EDITORIAL Q&A SECTION ── */}
+            <div id="sec-qa" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 06
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 1.75rem',letterSpacing:'-0.01em'}}>
+                Editorial Q&amp;A
+              </h2>
+              <p style={{fontSize:T.fBody,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.6}}>
+                Two-column split: large question heading on the left (Display 4), one or more answer
+                paragraphs on the right (body). The opening word of a decisive answer renders
+                underlined for emphasis. No cards, no shadows — typographic hierarchy only.
+              </p>
+
+              {/* live demo */}
+              <div style={{padding:'3rem',background:T.white,borderRadius:T.rLg,
+                border:`0.0625rem solid ${T.g200}`}}>
+                <div className="qa-stage">
+                  <div className="qa-split">
+                    <h3 className="qa-question">
+                      Kann man mit einem Foto oder Video des Gesichts Zutritt zum Haus erlangen?
+                    </h3>
+                    <div className="qa-body">
+                      <p className="qa-answer">
+                        <span className="qa-emph">Nein.</span> Die SDM10X verhindert
+                        dies mit ihrer dualen Kameratechnologie und Anti-Spoofing-Funktion, die
+                        echte Gesichter von Abbildungen unterscheidet. Sie analysiert
+                        Gesichtsmerkmale wie Konturen und Züge präzise und nutzt ein neuronales
+                        Netzwerk für die sichere Identifizierung authentischer Personen.
+                      </p>
+                      <p className="qa-answer">
+                        Das Anti-Spoofing identifiziert Fälschungen, indem es spezifische
+                        Eigenschaften und Muster, die bei Fotos oder Videos auftreten, erfasst.
+                        Die Farb- und NIR-Kamera sorgt für höchste Sicherheit gegen
+                        Betrugsversuche, wodurch die SDM10X eine sichere Lösung für die
+                        Zugangskontrolle bietet.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* HTML code block */}
+              <div style={{marginTop:'1.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <CodeBlock inline lang="HTML" code={`<div class="qa-stage">
+  <div class="qa-split">
+
+    <h2 class="qa-question">
+      Kann man mit einem Foto oder Video des Gesichts Zutritt zum Haus erlangen?
+    </h2>
+
+    <div class="qa-body">
+      <p class="qa-answer">
+        <span class="qa-emph">Nein.</span> Die SDM10X verhindert dies mit ihrer
+        dualen Kameratechnologie und Anti-Spoofing-Funktion…
+      </p>
+      <p class="qa-answer">
+        Das Anti-Spoofing identifiziert Fälschungen…
+      </p>
+    </div>
+
+  </div>
+</div>`}/>
+              </div>
+
+              {/* CSS code block */}
+              <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                <CodeBlock inline lang="CSS" code={`.qa-stage { padding: 2.5rem 0 3rem; }
+.qa-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3.5rem; align-items: flex-start;
+}
+.qa-question {
+  font-size: 2.875rem; /* T.fD4 = Display 4 */
+  font-weight: 700; line-height: 1.06;
+  letter-spacing: -0.01em; color: var(--color-dblack); margin: 0;
+}
+.qa-answer {
+  font-size: 1rem; line-height: 1.7;
+  color: var(--color-g850); margin: 0 0 1rem;
+}
+.qa-answer:last-child { margin-bottom: 0; }
+.qa-emph {
+  color: var(--color-dblack); font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.1875rem;
+}
+@media (max-width: 68.75rem) {
+  .qa-question { font-size: 1.875rem; line-height: 1.1; }
+  .qa-split { gap: 2rem; }
+}
+@media (max-width: 40rem) {
+  .qa-split { grid-template-columns: 1fr; gap: 1.5rem; }
+  .qa-question { font-size: 1.5rem; line-height: 1.15; }
+}`}/>
+              </div>
+            </div>
+
+            {/* ── PRODUCT HERO SECTION ── */}
+            <div id="sec-hero" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 07
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>Product Hero</h2>
+              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>
+                Full-page product introduction — large image, eyebrow, title, badges, feature pills, quote and compatibility line.
+              </p>
+
+              {/* Live demo */}
+              <div style={{background:T.white,border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,padding:'2rem 2rem 1.5rem',marginBottom:'1.5rem'}}>
+                <div className="ph-stage">
+                  {/* Image column */}
+                  <div className="ph-visual">
+                    <img
+                      src="https://edelstahl-tuerklingel.de/media/image/opc/lg/07-24/sdm10-zoom.webp"
+                      alt="Metzler SDM10X video intercom"
+                    />
+                  </div>
+                  {/* Info column */}
+                  <div className="ph-info">
+                    <p className="ph-eyebrow" style={{fontFamily:font}}>Video-Türsprechanlage</p>
+                    <h2 className="ph-title" style={{fontFamily:font}}>
+                      Metzler Video Türsprechanlage mit Gesichtserkennung SDM10X
+                    </h2>
+                    <div className="ph-badges">
+                      <span className="ph-badge ph-badge--primary">Neue Hard- &amp; Softwareversion 2.0</span>
+                      <span className="ph-badge ph-badge--neutral">Powered by Hikvision</span>
+                      <span className="ph-badge ph-badge--neutral">
+                        Designed in Germany&nbsp;
+                        <span className="ph-flag-strip" aria-hidden="true">
+                          <i style={{background:'#000000'}}></i>
+                          <i style={{background:'#DD0000'}}></i>
+                          <i style={{background:'#FFCE00'}}></i>
+                        </span>
+                      </span>
+                    </div>
+                    <p className="ph-lede" style={{fontFamily:font}}>
+                      <strong>Intercom, neu definiert.</strong>{' '}
+                      Unsere beste Sprechanlage kombiniert Gesichtserkennung, Live-HD-Video und smarte Integrationen für das vernetzte Zuhause von morgen.
+                    </p>
+                    <div className="ph-features">
+                      {[
+                        {label:'Gesichtserkennung', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>},
+                        {label:'Touch-Display', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="14" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/></svg>},
+                        {label:'Live-HD-Video', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>},
+                        {label:'SIP', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.21 13.1 19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3"/></svg>},
+                        {label:'FRITZ!Box-Integration', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6"/></svg>},
+                        {label:'Smartphone-App', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>},
+                        {label:'2 Türöffner', svg:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>},
+                      ].map(f=>(
+                        <span key={f.label} className="ph-feature" style={{fontFamily:font}}>
+                          {f.svg}{f.label}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="ph-quote" style={{fontFamily:font}}>
+                      Hergestellt aus massivem Edelstahl und konzipiert für die Ewigkeit —
+                      ein wahres Meisterstück der Technik und Ästhetik.
+                    </p>
+                    <div className="ph-compat">
+                      <span className="ph-compat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 10.5L12 3l9 7.5"/>
+                          <path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/>
+                          <rect x="8.5" y="11.5" width="7" height="6.5" rx="0.8"/>
+                          <circle cx="12" cy="14" r="0.8" fill="currentColor" stroke="none"/>
+                          <path d="M10.5 16.5h3"/>
+                        </svg>
+                      </span>
+                      <span className="ph-compat-label" style={{fontFamily:font}}>Kombinierbar mit Innenstationen</span>
+                      <span className="ph-compat-models" style={{fontFamily:font}}>
+                        <span>VDM10</span><span>ADM10</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <CodeBlock inline lang="HTML" code={`<div class="ph-stage">
+  <div class="ph-visual">
+    <img src="sdm10x.webp" alt="Metzler SDM10X" />
+  </div>
+  <div class="ph-info">
+    <p class="ph-eyebrow">Video-Türsprechanlage</p>
+    <h2 class="ph-title">Metzler Video Türsprechanlage mit Gesichtserkennung SDM10X</h2>
+    <div class="ph-badges">
+      <span class="ph-badge ph-badge--primary">Neue Hard- &amp; Softwareversion 2.0</span>
+      <span class="ph-badge ph-badge--neutral">Powered by Hikvision</span>
+      <span class="ph-badge ph-badge--neutral">Designed in Germany</span>
+    </div>
+    <p class="ph-lede"><strong>Intercom, neu definiert.</strong> Unsere beste Sprechanlage...</p>
+    <div class="ph-features">
+      <span class="ph-feature">
+        <!-- icon svg here -->
+        Gesichtserkennung
+      </span>
+    </div>
+    <p class="ph-quote">Hergestellt aus massivem Edelstahl...</p>
+    <div class="ph-compat">
+      <span class="ph-compat-label">Kombinierbar mit Innenstationen</span>
+      <span class="ph-compat-models"><span>VDM10</span><span>ADM10</span></span>
+    </div>
+  </div>
+</div>`}/>
+              <CodeBlock inline lang="CSS" code={`.ph-stage {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3.5rem; align-items: stretch; margin: 1.5rem 0 2.5rem;
+}
+.ph-visual {
+  background: #1A1A1F; border-radius: 0.5rem;
+  overflow: hidden; min-height: 22.5rem;
+}
+.ph-visual img { width: 100%; height: 100%; object-fit: cover; }
+.ph-info { display: flex; flex-direction: column; justify-content: center; }
+.ph-eyebrow {
+  font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #7A7A82; margin: 0 0 0.875rem;
+}
+.ph-title {
+  font-size: 2.875rem; font-weight: 700; line-height: 1.0;
+  letter-spacing: -0.01em; color: #1A171B; margin: 0 0 1.125rem; max-width: 18ch;
+}
+.ph-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.ph-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.25rem 0.5rem; border-radius: 0.125rem;
+}
+.ph-badge--primary { background: #015253; color: #FFFFFF; }
+.ph-badge--neutral { background: #F5F6FA; color: #1A171B; border: 0.0625rem solid #E6E6E8; }
+.ph-lede { font-size: 1rem; line-height: 1.6; color: #333333; margin: 0 0 1.125rem; }
+.ph-features { display: flex; flex-wrap: wrap; gap: 0.375rem 0.5rem; margin-bottom: 1.375rem; }
+.ph-feature {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.875rem; font-weight: 600; color: #1A171B;
+  background: #FFFFFF; border: 0.0625rem solid #E6E6E8;
+  padding: 0.4375rem 0.875rem; border-radius: 0.125rem;
+}
+.ph-feature svg { width: 1rem; height: 1rem; color: #015253; }
+.ph-quote {
+  font-style: italic; font-size: 1rem; line-height: 1.55; color: #54545C;
+  margin: 0 0 1.125rem; padding-left: 0.875rem;
+  border-left: 0.125rem solid #015253;
+}
+.ph-compat {
+  display: flex; align-items: center; gap: 0.625rem; flex-wrap: wrap;
+  font-size: 0.875rem; color: #7A7A82;
+  padding-top: 0.875rem; border-top: 0.0625rem solid #E6E6E8;
+}
+.ph-compat-label {
+  font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #7A7A82;
+}
+.ph-compat-models span { color: #1A171B; font-weight: 700; font-size: 0.875rem; }
+.ph-compat-models span + span::before { content: "·"; margin: 0 0.375rem; color: #BFBFC2; }
+@media (max-width: 56.25rem) {
+  .ph-stage { grid-template-columns: 1fr; gap: 1.5rem; }
+  .ph-title { font-size: 2.25rem; }
+  .ph-visual { min-height: 18rem; }
+}
+@media (max-width: 40rem) {
+  .ph-title { font-size: 1.875rem; }
+}`}/>
+            </div>
+
+            {/* ── FEATURE DETAIL SECTION ── */}
+            <div id="sec-feature-detail" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 08
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>Feature Detail</h2>
+              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>
+                Split layout — product feature description left, large dark product photo right. Color swatch grid shows selectable options.
+              </p>
+
+              {/* Live demo */}
+              <div style={{background:T.white,border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,padding:'2rem 2rem 1.5rem',marginBottom:'1.5rem'}}>
+                <div className="fd-stage">
+                  {/* Info column */}
+                  <div className="fd-info">
+                    <p className="fd-label" style={{fontFamily:font}}>Produktmerkmal</p>
+                    <h3 className="fd-title" style={{fontFamily:font}}>
+                      Drucktaster mit einstellbarer LED-Farbe
+                    </h3>
+                    <p className="fd-body" style={{fontFamily:font}}>
+                      Damit die Beleuchtung Ihrer Video-Türsprechanlage ideal zu Ihnen und
+                      Ihrem Eingangsbereich passt, lässt sich die LED-Farbe jederzeit einstellen.
+                    </p>
+                    <p className="fd-sub" style={{fontFamily:font}}>Folgende Farben sind einstellbar:</p>
+                    <ul className="fd-swatches" style={{listStyle:'none',padding:0,margin:0}}>
+                      {[
+                        {label:'Weiß',     color:'#FFFFFF', border:true},
+                        {label:'Grün',     color:'#22C55E'},
+                        {label:'Rot',      color:'#EF4444'},
+                        {label:'Blau',     color:'#3B82F6'},
+                        {label:'Hellblau', color:'#38BDF8'},
+                        {label:'Lila',     color:'#A855F7'},
+                        {label:'Gelb',     color:'#EAB308'},
+                        {label:'Aus',      color:'#D1D5DB'},
+                      ].map(s=>(
+                        <li key={s.label} className="fd-swatch" style={{fontFamily:font}}>
+                          <span className="fd-swatch-dot" style={{background:s.color, border:s.border?`0.0625rem solid ${T.g400}`:undefined}}></span>
+                          {s.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {/* Video column */}
+                  <div className="fd-visual">
+                    <video
+                      src="media/rgb-taster-4zu3.mp4"
+                      autoPlay muted loop playsInline
+                      style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <CodeBlock inline lang="HTML" code={`<div class="fd-stage">
+  <div class="fd-info">
+    <p class="fd-label">Produktmerkmal</p>
+    <h3 class="fd-title">Drucktaster mit einstellbarer LED-Farbe</h3>
+    <p class="fd-body">
+      Damit die Beleuchtung Ihrer Video-Türsprechanlage ideal zu Ihnen und
+      Ihrem Eingangsbereich passt, lässt sich die LED-Farbe jederzeit einstellen.
+    </p>
+    <p class="fd-sub">Folgende Farben sind einstellbar:</p>
+    <ul class="fd-swatches">
+      <li class="fd-swatch">
+        <span class="fd-swatch-dot" style="background:#FFFFFF;"></span>
+        Weiß
+      </li>
+      <li class="fd-swatch">
+        <span class="fd-swatch-dot" style="background:#EF4444;"></span>
+        Rot
+      </li>
+      <!-- repeat for each colour -->
+    </ul>
+  </div>
+  <div class="fd-visual">
+    <video src="media/rgb-taster-4zu3.mp4" autoplay muted loop playsinline></video>
+  </div>
+</div>`}/>
+              <CodeBlock inline lang="CSS" code={`.fd-stage {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3.5rem; align-items: stretch; margin: 1.5rem 0 2.5rem;
+}
+.fd-info { display: flex; flex-direction: column; justify-content: center; }
+.fd-label {
+  font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #015253; margin: 0 0 0.75rem;
+}
+.fd-title {
+  font-size: 1.875rem; font-weight: 700; line-height: 1.15;
+  letter-spacing: -0.01em; color: #1A171B; margin: 0 0 1rem;
+}
+.fd-body { font-size: 1rem; line-height: 1.65; color: #54545C; margin: 0 0 1.25rem; }
+.fd-sub {
+  font-size: 0.875rem; font-weight: 700; color: #1A171B;
+  margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.fd-swatches {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1.5rem; list-style: none; padding: 0; margin: 0;
+}
+.fd-swatch {
+  display: flex; align-items: center; gap: 0.625rem;
+  font-size: 0.875rem; color: #333333; font-weight: 500;
+  padding: 0.4375rem 0; border-bottom: 0.0625rem solid #E6E6E8;
+}
+.fd-swatch-dot {
+  width: 0.875rem; height: 0.875rem; border-radius: 50%;
+  flex-shrink: 0; border: 0.0625rem solid rgba(0,0,0,0.1);
+}
+.fd-visual {
+  background: #1A1A1F; border-radius: 0.5rem;
+  overflow: hidden; min-height: 22.5rem;
+}
+.fd-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 56.25rem) {
+  .fd-stage { grid-template-columns: 1fr; gap: 1.5rem; }
+  .fd-visual { min-height: 16rem; }
+}
+@media (max-width: 40rem) {
+  .fd-title { font-size: 1.5rem; }
+}`}/>
+            </div>
+
+            {/* ── FEATURE DUO SECTION ── */}
+            <div id="sec-feature-duo" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                Section 09
+              </div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>Feature Duo</h2>
+              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>
+                Two-column product feature grid — photo on top, label, title and body below. Subtle hover zoom on image.
+              </p>
+
+              {/* Live demo */}
+              <div style={{marginBottom:'1.5rem'}}>
+                <div className="fdu-grid">
+
+                  {/* Card 1 — Gravur */}
+                  <article className="fdu-card">
+                    <div className="fdu-photo">
+                      <img src="media/ebenhard gravur.webp" alt="Individuelle Gravur — Metzler Briefkasten" />
+                    </div>
+                    <div className="fdu-body">
+                      <p className="fdu-label" style={{fontFamily:font}}>Personalisierung</p>
+                      <h3 className="fdu-title" style={{fontFamily:font}}>Individuelle Gravur</h3>
+                      <p className="fdu-text" style={{fontFamily:font}}>
+                        Durch die vollkommen individualisierbare Lasergravur erhalten Sie Ihr eigenes Unikat:
+                      </p>
+                      <ul className="fdu-list" style={{fontFamily:font}}>
+                        <li><strong>Verschiedene Schriftarten</strong> stehen zur Auswahl</li>
+                        <li>Beschriftung via <strong>Lasergravur</strong> — kein Verblassen oder Verwaschen</li>
+                        <li><strong>Ideale Lesbarkeit</strong> aus der Ferne</li>
+                      </ul>
+                    </div>
+                  </article>
+
+                  {/* Card 2 — Farben */}
+                  <article className="fdu-card">
+                    <div className="fdu-photo">
+                      <img src="media/ebenhard neue farben.png" alt="Verschiedene Farben — Metzler Briefkasten Farbvarianten" />
+                    </div>
+                    <div className="fdu-body">
+                      <p className="fdu-label" style={{fontFamily:font}}>Farbvarianten</p>
+                      <h3 className="fdu-title" style={{fontFamily:font}}>Verschiedene Farben</h3>
+                      <p className="fdu-text" style={{fontFamily:font}}>
+                        RAL 7016 Anthrazit, RAL 9005 Tiefschwarz, DB 703 Eisenglimmer, RAL 9007 Graualuminium,
+                        RAL 9016 Verkehrsweiß oder Edelstahl gebürstet — mit unserem vielseitigen Farbsortiment
+                        gibt es für jeden Eingangsbereich den passenden Briefkasten.
+                      </p>
+                    </div>
+                  </article>
+
+                </div>
+              </div>
+
+              <CodeBlock inline lang="HTML" code={`<div class="fdu-grid">
+  <article class="fdu-card">
+    <div class="fdu-photo">
+      <img src="media/ebenhard gravur.webp" alt="Individuelle Gravur" />
+    </div>
+    <div class="fdu-body">
+      <p class="fdu-label">Personalisierung</p>
+      <h3 class="fdu-title">Individuelle Gravur</h3>
+      <p class="fdu-text">Durch die vollkommen individualisierbare Lasergravur...</p>
+      <ul class="fdu-list">
+        <li><strong>Verschiedene Schriftarten</strong> stehen zur Auswahl</li>
+        <li>Beschriftung via <strong>Lasergravur</strong> — kein Verblassen</li>
+      </ul>
+    </div>
+  </article>
+  <article class="fdu-card">
+    <div class="fdu-photo">
+      <img src="media/ebenhard neue farben.png" alt="Verschiedene Farben" />
+    </div>
+    <div class="fdu-body">
+      <p class="fdu-label">Farbvarianten</p>
+      <h3 class="fdu-title">Verschiedene Farben</h3>
+      <p class="fdu-text">RAL 7016 Anthrazit, RAL 9005 Tiefschwarz...</p>
+    </div>
+  </article>
+</div>`}/>
+              <CodeBlock inline lang="CSS" code={`.fdu-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2rem; margin: 1.5rem 0 2.5rem;
+}
+.fdu-card { display: flex; flex-direction: column; }
+.fdu-photo {
+  width: 100%; aspect-ratio: 4/3; overflow: hidden;
+  background: #1A1A1F; border-radius: 0.5rem;
+}
+.fdu-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fdu-body {
+  padding: 1.25rem 0 0;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.fdu-label {
+  font-size: 0.625rem; font-weight: 800; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #015253; margin: 0;
+}
+.fdu-title {
+  font-size: 1.5rem; font-weight: 700; line-height: 1.18;
+  letter-spacing: -0.01em; color: #1A171B; margin: 0;
+}
+.fdu-text { font-size: 1rem; line-height: 1.65; color: #54545C; margin: 0; }
+.fdu-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.fdu-list li {
+  display: flex; align-items: flex-start; gap: 0.625rem;
+  font-size: 1rem; line-height: 1.5; color: #54545C;
+}
+.fdu-list li::before {
+  content: ''; display: block;
+  width: 0.375rem; height: 0.375rem;
+  border-radius: 50%; background: #015253;
+  flex-shrink: 0; margin-top: 0.5rem;
+}
+@media (max-width: 48rem) {
+  .fdu-grid { grid-template-columns: 1fr; }
+  .fdu-title { font-size: 1.25rem; }
+}`}/>
+            </div>
+
+          </div>
+          </div>{/* end main content */}
+        </div>
+      );
+    };
+
     // ── ICONS SECTION — inline SVGs, stroke-width 1.8 ──
     const IconsSection = () => {
       const [detail, setDetail] = useState(null);
@@ -6795,14 +8746,10 @@ cursor: pointer;
                     opacity:hov?1:0,transition:'opacity 0.3s ease'}}/>
               </div>
               {/* Badges — stacked top-left */}
-              <div style={{position:'absolute',top:5,left:5,display:'flex',flexDirection:'column',gap:4,alignItems:'flex-start'}}>
-                <div style={{background:T.teal,borderRadius:T.rSm,padding:'3px 6px',display:'inline-flex',alignItems:'center'}}>
-                  <span style={{fontFamily:font,fontSize:T.fSm,fontWeight:500,color:T.white,lineHeight:'16px',whiteSpace:'nowrap'}}>{badge}</span>
-                </div>
+              <div style={{position:'absolute',top:'0.3125rem',left:'0.3125rem',display:'flex',flexDirection:'column',gap:'0.25rem',alignItems:'flex-start'}}>
+                <span style={{background:T.teal,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>{badge}</span>
                 {discount && (
-                  <div style={{background:T.red,borderRadius:T.rSm,padding:'3px 6px',display:'inline-flex',alignItems:'center'}}>
-                    <span style={{fontFamily:font,fontSize:T.fSm,fontWeight:500,color:T.white,lineHeight:'16px',whiteSpace:'nowrap'}}>−15%</span>
-                  </div>
+                  <span style={{background:T.red,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>−15%</span>
                 )}
               </div>
             </div>
@@ -6884,16 +8831,12 @@ cursor: pointer;
                   style={{width:'100%',height:'100%',objectFit:'contain'}}/>
               </div>
               {(badge || discount) && (
-                <div style={{position:'absolute',top:4,left:4,display:'flex',flexDirection:'column',gap:3,alignItems:'flex-start'}}>
+                <div style={{position:'absolute',top:'0.25rem',left:'0.25rem',display:'flex',flexDirection:'column',gap:'0.25rem',alignItems:'flex-start'}}>
                   {badge && (
-                    <div style={{background:T.teal,borderRadius:T.rSm,padding:'0.125rem 0.3125rem',display:'inline-flex',alignItems:'center'}}>
-                      <span style={{fontFamily:font,fontSize:'0.625rem',fontWeight:500,color:T.white,lineHeight:'0.875rem',whiteSpace:'nowrap'}}>{badge}</span>
-                    </div>
+                    <span style={{background:T.teal,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>{badge}</span>
                   )}
                   {discount && (
-                    <div style={{background:T.red,borderRadius:T.rSm,padding:'0.125rem 0.3125rem',display:'inline-flex',alignItems:'center'}}>
-                      <span style={{fontFamily:font,fontSize:'0.625rem',fontWeight:500,color:T.white,lineHeight:'0.875rem',whiteSpace:'nowrap'}}>{discount}</span>
-                    </div>
+                    <span style={{background:T.red,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>{discount}</span>
                   )}
                 </div>
               )}
@@ -7513,7 +9456,7 @@ cursor: pointer;
                       onMouseLeave={(e)=>{e.currentTarget.style.background='transparent';e.currentTarget.style.borderColor='transparent';}}>
                       <div style={{position:'relative',width:'100%',aspectRatio:'16/10',background:T.white,overflow:'hidden',borderRadius:0,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:6}}>
                         <img src={sub.img} alt="" style={{width:'100%',height:'100%',maxWidth:'100%',maxHeight:'100%',objectFit:'contain',display:'block'}}/>
-                        {sub.badge && (<span style={{position:'absolute',left:8,bottom:8,background:T.teal,color:T.white,fontFamily:hFont,fontSize:T.fXxs,fontWeight:700,padding:'4px 8px',borderRadius:T.r}}>{sub.badge}</span>)}
+                        {sub.badge && (<span style={{position:'absolute',left:'0.5rem',bottom:'0.5rem',background:T.teal,color:T.white,fontFamily:hFont,fontSize:'0.75rem',fontWeight:500,padding:'0.25rem 0.5rem',borderRadius:T.rSm}}>{sub.badge}</span>)}
                       </div>
                       <div style={{fontFamily:hFont,fontSize:T.fSm,fontWeight:700,color:T.black,textAlign:'center'}}>{sub.name}</div>
                     </a>
@@ -7872,26 +9815,41 @@ cursor: pointer;
 
     // ── Trusted Shops slide data (shared between desktop + mobile footer) ──
     const tsSlides = [
-      { stars:5, score:'4,72', label:'Sehr gut', sub:'32.780 Bewertungen' },
-      { stars:5, score:null,   label:'"Sehr schnelle Lieferung und super Qualität!"', sub:'Maria K.' },
-      { stars:5, score:null,   label:'"Toller Service, faire Preise – sehr empfehlenswert!"', sub:'Thomas M.' },
-      { stars:5, score:null,   label:'"Alles perfekt – Bestellung, Lieferung, Produkt."', sub:'Sabine H.' },
-      { stars:4, score:null,   label:'"Sehr gutes Produkt, schnelle Lieferung."', sub:'Klaus W.' },
+      { stars:5, score:'4,72', label:'Sehr gut', sub:'32.780 Bewertungen', img:"./footer/Property 1=all.svg" },
+      { stars:5, score:'4,74', label:'Sehr gut', sub:'29.573 Bewertungen', img:"./footer/Property 1=e.svg"   },
+      { stars:5, score:'4,74', label:'Sehr gut', sub:'2.518 Bewertungen',  img:"./footer/Property 1=g.svg"   },
+      { stars:5, score:'4,74', label:'Sehr gut', sub:'689 Bewertungen',    img:"./footer/Property 1=t.svg"   },
     ];
 
     // ── Shared footer font and trusted image (used by FootLink and TrustedSlider) ──
     const footerFf = "'Helvetica Neue', Helvetica, Arial, sans-serif";
-    const footerImgTrusted = "https://www.figma.com/api/mcp/asset/0798d314-a9c1-4450-960d-d0dbd2c34b92";
+    const footerImgTrusted = "./footer/Property 1=all.svg";
 
     const FootLink = ({children}) => {
       const [hov,setHov] = useState(false);
       return (
         <div
           style={{fontFamily:footerFf,fontSize:T.fBody,fontWeight:400,lineHeight:'18px',cursor:'pointer',
-            color: hov ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.5)', transition:'color 0.15s'}}
+            color: hov ? T.white : 'rgba(255,255,255,0.5)', transition:'color 0.15s'}}
           onMouseEnter={()=>setHov(true)}
           onMouseLeave={()=>setHov(false)}
         >{children}</div>
+      );
+    };
+
+    // Shared mint-colored link with hover underline + slight brighten
+    const MintLink = ({href, fontSize, lineHeight, children}) => {
+      const [hov,setHov] = useState(false);
+      return (
+        <a href={href} target={href && href.startsWith('http') ? '_blank' : undefined}
+          rel="noopener noreferrer"
+          style={{fontFamily:footerFf, fontSize:fontSize||T.fBody, color:T.mint,
+            lineHeight:lineHeight||'24px', textDecoration: hov ? 'underline' : 'none',
+            opacity: hov ? 0.8 : 1, transition:'opacity 0.15s', cursor:'pointer'}}
+          onMouseEnter={()=>setHov(true)}
+          onMouseLeave={()=>setHov(false)}>
+          {children}
+        </a>
       );
     };
 
@@ -7929,11 +9887,11 @@ cursor: pointer;
         <div onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)}
           style={{display:'flex',alignItems:'center',justifyContent:'space-between',
             background:'rgba(255,255,255,0.08)',borderRadius:60,padding:'10px 15px',
-            width:300,flexShrink:0,gap:10}}>
+            width:360,flexShrink:0,gap:10}}>
           {/* Rate: logo + stars + text */}
           <div style={{display:'flex',gap:10,alignItems:'center',flex:1,minWidth:0,height:32}}>
-            {/* Logo 30×30 */}
-            <img src={footerImgTrusted} alt="Trusted Shops"
+            {/* Logo 30×30 — per-slide logo from footer folder */}
+            <img src={slide.img} alt="Trusted Shops"
               style={{width:30,height:30,objectFit:'contain',flexShrink:0,borderRadius:'50%'}} />
             {/* Stars + text column, gap 3px */}
             <div style={{display:'flex',flexDirection:'column',gap:3,minWidth:0,flex:1}}>
@@ -7971,200 +9929,304 @@ cursor: pointer;
       );
     };
 
-    // ── FOOTER SECTION ── (matches )
+    // ── FOOTER SECTION ── (desktop ≥1200px · tablet 768–1199px)
     const FooterSection = () => {
       const ff  = "'Helvetica Neue', Helvetica, Arial, sans-serif";
       const fi  = "'Inter', 'Helvetica Neue', Arial, sans-serif";
 
-      const imgSocPin     = "https://www.figma.com/api/mcp/asset/09bf4d96-7d7c-4ae4-9d02-2c7a777f0dec";
-      const imgSocFb      = "https://www.figma.com/api/mcp/asset/ed779df0-e2e2-4988-ba9e-625d156c0877";
-      const imgSocIg      = "https://www.figma.com/api/mcp/asset/f91f5930-aeb7-40ea-bacd-3927b3007738";
-      const imgSocYt      = "https://www.figma.com/api/mcp/asset/d5133acd-6d4f-4473-b53d-7db71da23016";
-      const imgSocX       = "https://www.figma.com/api/mcp/asset/4ca6ca3f-58d2-4486-bad1-cd581667a39e";
-      // Trusted Shops logo — Variant4 (30×30 green checkmark badge)
-      const imgTrusted    = "https://www.figma.com/api/mcp/asset/0798d314-a9c1-4450-960d-d0dbd2c34b92";
-      // Award badges — fresh flat screenshots (nodes 12630-185982 / 12630-186108 / 12630-186172)
-      const imgBadge1     = "https://www.figma.com/api/mcp/asset/6ed2a7ed-8336-49b6-89cf-f89117b3f49b"; // TopShop 2024
-      const imgBadge2     = "https://www.figma.com/api/mcp/asset/6ed2a7ed-8336-49b6-89cf-f89117b3f49b"; // TopShop 2024
-      const imgBadge3     = "https://www.figma.com/api/mcp/asset/7904c681-e8a8-43f9-8d2b-761a5d4b29d5"; // TopShop 2025
-      const imgBadge4     = "https://www.figma.com/api/mcp/asset/02ab0c53-83c7-4d0d-b4f0-2eda6923ca0a"; // 3 Jahre
-      const imgDpd        = "https://www.figma.com/api/mcp/asset/c3943e6c-7951-4442-988a-cda5f6ce4ac2"; // DPD vector 46.75×22
-      const imgDhlVector  = "https://www.figma.com/api/mcp/asset/7c1fe447-3510-4e12-a51a-29d20980ac8d"; // DHL text 62:11 ratio
-      const imgGoGreen    = "https://www.figma.com/api/mcp/asset/00729791-3227-47cc-86d4-8503f2e3a94b"; // GoGreen 735:184 cover
-      const imgSepa       = "https://www.figma.com/api/mcp/asset/13ad96ad-2d06-43e5-b37b-5000c28efba8"; // SEPA 41×17.7
-      const imgAmex       = "https://www.figma.com/api/mcp/asset/af3986ef-f1c0-4aeb-ba24-ef0a77ce008c"; // AMEX 70:45 cover
-      const imgVisa       = "https://www.figma.com/api/mcp/asset/d5993a87-a46b-4b1c-b330-75a19cf4c4ee"; // Visa 43×13.85
-      const imgAmazonPay  = "https://www.figma.com/api/mcp/asset/aff6e799-987b-42b6-95db-17acfe156962"; // Amazon Pay 48:27
-      const imgKlarna     = "https://www.figma.com/api/mcp/asset/df2a2e82-2e05-4a04-b3fa-75b300cd3407"; // Klarna 41×10
-      const imgPayPal     = "https://www.figma.com/api/mcp/asset/133e6ba8-4417-4a56-afea-42e6f068ae05"; // PayPal 64:17
-      const imgMastercard = "https://www.figma.com/api/mcp/asset/5d88c83a-dbbb-4d02-8103-ff140666187a"; // Mastercard 68:44 cover
-      const imgApplePay   = "https://www.figma.com/api/mcp/asset/8fbe73c5-c8cd-4aa7-8650-e5991169fa04"; // Apple Pay 38.97×16
-      const imgGooglePay  = "https://www.figma.com/api/mcp/asset/14dfabed-b15b-40ed-9321-b1511b503a36"; // Google Pay 35×13.9
-      const imgVorkasse   = "https://www.figma.com/api/mcp/asset/08a5cc06-10d0-4218-997a-35e6216cb681"; // Vorkasse 332:109 cover
+      // Use ResizeObserver on the component's own container so breakpoints respond
+      // to rendered width, not viewport width (important when used inside a sidebar layout).
+      const containerRef = React.useRef(null);
+      const [containerW, setContainerW] = useState(1600);
+      const narrow     = containerW < 1141;
+      const veryNarrow = containerW < 901;
+
+      useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const ro = new ResizeObserver(([entry]) => setContainerW(entry.contentRect.width));
+        ro.observe(el);
+        setContainerW(el.getBoundingClientRect().width);
+        return () => ro.disconnect();
+      }, []);
+
+      const imgSocPin     = "./footer/Icon=Pinterest.svg";
+      const imgSocFb      = "./footer/Icon=Facebook.svg";
+      const imgSocIg      = "./footer/Icon=VaInstagram.svg";
+      const imgSocYt      = "./footer/Icon=Youtube.svg";
+      const imgSocX       = "./footer/Icon=X.svg";
+      const imgBadge1     = "./footer/2023.png";
+      const imgBadge2     = "./footer/2024.png";
+      const imgBadge3     = "./footer/2025.png";
+      const imgBadge4     = "./footer/3jahre.png";
+      const imgDpd        = "./footer/Choice=dpd.svg";
+      const imgDhlVector  = "./footer/Choice=dhl.svg";
+      const imgGoGreen    = "./footer/Choice=gogreen.svg";
+      const imgSepa       = "./footer/Choice=sepa.svg";
+      const imgAmex       = "./footer/Choice=amex.svg";
+      const imgVisa       = "./footer/Choice=visa.svg";
+      const imgAmazonPay  = "./footer/Choice=pay.svg";
+      const imgKlarna     = "./footer/Choice=klarna.svg";
+      const imgPayPal     = "./footer/Choice=paypal.svg";
+      const imgMastercard = "./footer/Choice=mastercard.svg";
+      const imgApplePay   = "./footer/Choice=apple.svg";
+      const imgGooglePay  = "./footer/Choice=google.svg";
+      const imgVorkasse   = "./footer/Choice=vorkasse.svg";
 
       // ── Sub-components ──────────────────────────────────────────────────
       const ColHead = ({children}) => (
         <p style={{fontFamily:ff,fontSize:T.fBody,fontWeight:700,color:T.white,lineHeight:'normal',margin:0,whiteSpace:'nowrap'}}>{children}</p>
       );
-      // 53×30 payment badge
-      const PayBadge = ({src, bg=T.white, px=9, imgH=20, cover=false, imgStyle={}}) => (
-        <div style={{width:53,height:30,border:'1px solid #006D75',borderRadius:T.r,background:bg,
-          display:'flex',alignItems:'center',justifyContent:'center',
-          padding:`0 ${px}px`,boxSizing:'border-box',flexShrink:0,overflow:'hidden'}}>
-          <img src={src} alt="" style={{maxWidth:'100%',maxHeight:cover?'100%':imgH,objectFit:cover?'cover':'contain',display:'block',...imgStyle}} />
-        </div>
-      );
-      const SocialBtn = ({src, iw, ih}) => (
-        <div style={{width:35,height:35,borderRadius:70,background:'rgba(255,255,255,0.1)',
-          display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
-          <img src={src} alt="" style={{width:iw,height:ih,objectFit:'contain'}} />
-        </div>
-      );
+      const SocialBtn = ({src, iw, ih}) => {
+        const [hov, setHov] = useState(false);
+        return (
+          <div style={{width:35,height:35,borderRadius:70,
+            background: hov ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+            display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0,
+            transform: hov ? 'scale(1.1)' : 'scale(1)',
+            transition:'background 0.15s, transform 0.15s'}}
+            onMouseEnter={()=>setHov(true)}
+            onMouseLeave={()=>setHov(false)}>
+            <img src={src} alt="" style={{width:iw,height:ih,objectFit:'contain'}} />
+          </div>
+        );
+      };
 
       const infoLinks    = ['Auszeichnungen','Fotowettbewerb','Kundenbilder','Stellenangebote','News','Zahlung und Versand'];
       const serviceLinks = ['Begriffserklärung','FAQ','Geschäftskunden','Newsletter','VDM10 FAQ'];
-
       const legalLinks   = ['Geprüfte Kundenbewertungen','Metzler Garantieerklärung','Datenschutz','AGB','Sitemap',
                             'Impressum','Batterieentsorgungsgesetz','Widerrufsrecht',
                             'Hinweise zur Elektroaltgeräteentsorgung','Cookie-Einstellungen'];
 
+      // Shared Follow us + Qualität block (inlined to avoid hooks in dynamic components)
+      const socialRow = (
+        <div style={{display:'flex',gap:10,alignItems:'center'}}>
+          <SocialBtn src={imgSocPin} iw={17} ih={22} />
+          <SocialBtn src={imgSocFb}  iw={11} ih={20} />
+          <SocialBtn src={imgSocIg}  iw={22} ih={21} />
+          <SocialBtn src={imgSocYt}  iw={25} ih={18} />
+          <SocialBtn src={imgSocX}   iw={19} ih={19} />
+        </div>
+      );
+      const qualityRow = (
+        <div style={{display:'flex',gap:10,alignItems:'flex-end'}}>
+          <img src={imgBadge1} alt="TopShop 2023" style={{width:48,height:72,objectFit:'contain'}} />
+          <img src={imgBadge2} alt="TopShop 2024" style={{width:48,height:72,objectFit:'contain'}} />
+          <img src={imgBadge3} alt="TopShop 2025" style={{width:48,height:72,objectFit:'contain'}} />
+          <img src={imgBadge4} alt="TopShop 3J"   style={{width:44,height:72,objectFit:'contain'}} />
+        </div>
+      );
+
       return (
-        <div style={{background:T.teal900,marginBottom:20,fontFamily:ff,width:'100%',boxSizing:'border-box'}}>
-          {/* ─── centered content, max 1600px ─── */}
-          <div style={{maxWidth:1600,margin:'0 auto',padding:'1.25rem 4rem 0 4rem',boxSizing:'border-box'}}>
+        <div ref={containerRef} style={{background:T.teal700,marginBottom:20,fontFamily:ff,width:'100%',boxSizing:'border-box'}}>
+          {/* ─── centred content, max 1600px ─── */}
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'1.25rem 1.25rem 0 1.25rem',boxSizing:'border-box'}}>
 
-            {/* ══ ROW 1: 5 columns, justify-between, w-[1436px] ══ */}
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'20px 0',
-              paddingTop:10,paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
+            {/* ══ ROW 1: navigation columns ══
+                ≥1200px:   5 cols: Logo | Contact | Informationen | Service | Follow us+Qualität
+                900–1199px: 4 cols: Logo+Follow us+Qualität | Contact | Informationen | Service
+                768–899px:  3 cols: Logo+Follow us+Qualität | Contact | Informationen+Service */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'nowrap',
+              gap:narrow ? 16 : 20,paddingTop:10,paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
 
-              {/* Col 1 — Logo + tagline · w-[280px] gap-[25px] */}
-              <div style={{width:280,display:'flex',flexDirection:'column',gap:25,flexShrink:0,alignItems:'flex-start'}}>
-                <Logo height={40} color="light" />
-                <p style={{fontFamily:ff,fontSize:T.fBody,fontWeight:400,color:'rgba(255,255,255,0.5)',lineHeight:'22px',margin:0}}>
+              {/* ── Col 1: Logo + tagline [tablet: + Follow us + Qualität below] ── */}
+              <div style={{width: narrow ? 269 : 280, minWidth:200, display:'flex', flexDirection:'column',
+                gap:25, flexShrink:0, alignItems:'flex-start'}}>
+                <img src="./footer/Metzler_Logo_footer.svg" alt="Metzler"
+                  style={{height:40, width:'auto', objectFit:'contain'}} />
+                <p style={{fontFamily:ff,fontSize:T.fBody,fontWeight:400,color:'rgba(255,255,255,0.5)',
+                  lineHeight:'22px',margin:0}}>
                   {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
-                  <span style={{color:'rgba(255,255,255,0.5)'}}>Metzler Gruppe</span>
+                  <MintLink href="https://metzlergmbh.de" fontSize={T.fBody} lineHeight="22px">Metzler Gruppe</MintLink>
                 </p>
                 <p style={{fontFamily:ff,fontSize:T.fH4,fontWeight:700,color:T.white,lineHeight:'normal',margin:0}}>
                   Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
                 </p>
+                {/* Tablet only: Follow us + Qualität stacked under tagline in Col 1 */}
+                {narrow && <>
+                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                    <ColHead>Follow us</ColHead>
+                    {socialRow}
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                    <ColHead>Qualität</ColHead>
+                    {qualityRow}
+                  </div>
+                </>}
               </div>
 
-              {/* Col 2 — Contacts · w-[192px] gap-[30px] */}
-              <div style={{width:192,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
+              {/* ── Col 2: Contact ── */}
+              <div style={{width: narrow ? 232 : 192, minWidth:160, display:'flex',
+                flexDirection:'column', gap:30, flexShrink:0}}>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Allgemeine Hotline:</ColHead>
-                  <span style={{fontFamily:ff,fontSize:T.fBody,color:'rgba(255,255,255,0.5)',lineHeight:'24px'}}>+49 (0) 7121 / 317 7310</span>
+                  <MintLink href="tel:+4971213177310">+49 (0) 7121 / 317 7310</MintLink>
                   <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Sprechanlagen Hotline:</ColHead>
-                  <span style={{fontFamily:ff,fontSize:T.fBody,color:'rgba(255,255,255,0.5)',lineHeight:'24px'}}>+49 (0) 7121 / 317 7333</span>
+                  <MintLink href="tel:+4971213177333">+49 (0) 7121 / 317 7333</MintLink>
                   <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>E-Mail Support:</ColHead>
-                  <span style={{fontFamily:ff,fontSize:T.fBody,color:'rgba(255,255,255,0.5)',lineHeight:'24px'}}>service@metzlergmbh.de</span>
+                  <MintLink href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</MintLink>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                  <ColHead>Kontaktformular:</ColHead>
+                  <MintLink href="https://edelstahl-tuerklingel.de/Kontakt">Zum Kontaktformular</MintLink>
                 </div>
               </div>
 
-              {/* Col 3 — Informationen · w-[180px] gap-[30px] */}
-              <div style={{width:180,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
-                <ColHead>Informationen</ColHead>
-                <div style={{display:'flex',flexDirection:'column',gap:20}}>
-                  {infoLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
-                </div>
-              </div>
-
-              {/* Col 4 — Service · w-[162px] gap-[30px] */}
-              <div style={{width:162,display:'flex',flexDirection:'column',gap:30,flexShrink:0}}>
-                <ColHead>Service</ColHead>
-                <div style={{display:'flex',flexDirection:'column',gap:20}}>
-                  {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
-                </div>
-              </div>
-
-              {/* Col 5 — Follow us + Qualität · gap-[40px] */}
-              <div style={{display:'flex',flexDirection:'column',gap:40,flexShrink:0}}>
-                {/* Follow us */}
-                <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                  <ColHead>Follow us</ColHead>
-                  <div style={{display:'flex',gap:10,alignItems:'center'}}>
-                    <SocialBtn src={imgSocPin} iw={17} ih={22} />
-                    <SocialBtn src={imgSocFb}  iw={11} ih={20} />
-                    <SocialBtn src={imgSocIg}  iw={22} ih={21} />
-                    <SocialBtn src={imgSocYt}  iw={25} ih={18} />
-                    <SocialBtn src={imgSocX}   iw={19} ih={19} />
+              {/* ── Col 3 desktop: Informationen only
+                    D1200:   Informationen only (link gap 20, header→links gap 30)
+                    Tablet:  Informationen + Service combined (each gap 30 header→links, link gap 12, 10px between blocks) ── */}
+              <div style={{display:'flex', flexDirection:'column', gap: veryNarrow ? 10 : 30, flexShrink:0, minWidth:160}}>
+                <div style={{display:'flex',flexDirection:'column',gap: narrow ? 30 : 20}}>
+                  <ColHead>Informationen</ColHead>
+                  <div style={{display:'flex',flexDirection:'column',gap: veryNarrow ? 12 : 20}}>
+                    {infoLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
                   </div>
                 </div>
-                {/* Qualität */}
-                <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                  <ColHead>Qualität</ColHead>
-                  <div style={{display:'flex',gap:10,alignItems:'flex-end'}}>
-                    <img src={imgBadge1} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
-                    <img src={imgBadge2} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
-                    <img src={imgBadge3} alt="TopShop" style={{width:48,height:72,objectFit:'contain'}} />
-                    <img src={imgBadge4} alt="TopShop 3J" style={{width:44,height:72,objectFit:'contain'}} />
+                {/* Tablet only (768–899px): Service merged into Col 3 */}
+                {veryNarrow && (
+                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                    <ColHead>Service</ColHead>
+                    <div style={{display:'flex',flexDirection:'column',gap:12}}>
+                      {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* ── Col 4: Service only (≥900px — both desktop and D1200, gap:30 header→links, link gap:20) ── */}
+              {!veryNarrow && (
+                <div style={{display:'flex',flexDirection:'column',gap:30,flexShrink:0,minWidth:140}}>
+                  <ColHead>Service</ColHead>
+                  <div style={{display:'flex',flexDirection:'column',gap:20}}>
+                    {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
                   </div>
                 </div>
-              </div>
+              )}
+
+              {/* ── Col 5 desktop: Follow us + Qualität ── */}
+              {!narrow && (
+                <div style={{display:'flex',flexDirection:'column',gap:40,flexShrink:0}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                    <ColHead>Follow us</ColHead>
+                    {socialRow}
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
+                    <ColHead>Qualität</ColHead>
+                    {qualityRow}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* ══ ROW 2: Versandpartners · Einfach bezahlen · Trusted Shops ══ */}
-            {(() => {
-              // badge shell helper — all badges are 48×28, border #006D75, radius 4
-              const Badge = ({bg=T.white, px=7, py=6, cover=false, overflow=false, children}) => (
-                <div style={{
-                  width:48, height:28, flexShrink:0,
-                  border:'1px solid #006D75', borderRadius:T.r,
-                  background:bg,
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  padding:`${py}px ${px}px`,
-                  boxSizing:'border-box',
-                  overflow: (cover||overflow) ? 'hidden' : 'visible',
-                }}>{children}</div>
-              );
-              // logo image helper — exact  pixel sizes, never stretches
-              const L = ({src, alt, w, h}) => (
-                <img src={src} alt={alt} style={{width:w, height:h, display:'block', flexShrink:0, objectFit:'contain'}} />
-              );
-              // cover image (fills badge, cropped)
-              const C = ({src, alt}) => (
-                <img src={src} alt={alt} style={{width:'100%', height:'100%', display:'block', objectFit:'cover'}} />
-              );
-              return (
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',flexWrap:'nowrap',padding:'20px 0',gap:8}}>
-                  {/* Versandpartners — 3 badges, gap 8 */}
-                  <div style={{display:'flex',flexDirection:'column',gap:8,flexShrink:0}}>
-                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:'rgba(255,255,255,0.5)',lineHeight:'20px'}}>Unsere Versandpartners:</span>
-                    <div style={{display:'flex',gap:8,alignItems:'center'}}>
-                      <Badge px={5} py={5}><L src={imgDpd}       alt="DPD"     w={38} h={18}/></Badge>
-                      <Badge bg="#F7CE46" px={2} py={6}><L src={imgDhlVector} alt="DHL"     w={40} h={8}/></Badge>
-                      <Badge px={0} py={0} cover><C src={imgGoGreen} alt="GoGreen"/></Badge>
-                    </div>
+            {/* ══ ROW 2: badges + TrustedSlider ══
+                ≥1200px:   Versandpartners | divider | Bezahlen | → | TrustedSlider (one row)
+                900–1199px: Versandpartners + Bezahlen side-by-side (row), TrustedSlider below (col)
+                768–899px:  fully stacked: Versandpartners → Bezahlen → TrustedSlider */}
+            {!narrow ? (
+              /* ── Desktop ≥1141px: Versandpartners | Bezahlen (flexible) | TrustedSlider ── */
+              <div style={{display:'flex',alignItems:'flex-start',gap:20,
+                padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
+                {/* Versandpartners — fixed left */}
+                <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                  <div style={{display:'flex',gap:15,alignItems:'center'}}>
+                    <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgGoGreen}   alt="GoGreen" style={{width:53,height:30,flexShrink:0}} />
                   </div>
-
-                  {/* Einfach bezahlen — 10 badges, gap 8 */}
-                  <div style={{display:'flex',flexDirection:'column',gap:8,flexShrink:0}}>
-                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:'rgba(255,255,255,0.5)',lineHeight:'20px'}}>Einfach bezahlen:</span>
-                    <div style={{display:'flex',gap:8,alignItems:'center'}}>
-                      <Badge px={4} py={5}><L src={imgSepa}       alt="SEPA"       w={36} h={16}/></Badge>
-                      <Badge px={0} py={0} cover><C src={imgAmex}  alt="AMEX"/></Badge>
-                      <Badge px={4} py={6}><L src={imgVisa}       alt="Visa"       w={36} h={12}/></Badge>
-                      <Badge px={4} py={4}><L src={imgAmazonPay}  alt="Amazon Pay" w={36} h={16}/></Badge>
-                      <Badge bg="#EA88B2" px={4} py={6}><L src={imgKlarna} alt="Klarna"  w={36} h={9}/></Badge>
-                      <Badge px={2} py={2}><L src={imgPayPal}     alt="PayPal"     w={40} h={15}/></Badge>
-                      <Badge px={0} py={0} cover><C src={imgMastercard} alt="Mastercard"/></Badge>
-                      <Badge px={6} py={6}><L src={imgApplePay}   alt="Apple Pay"  w={30} h={14}/></Badge>
-                      <Badge px={6} py={6}><L src={imgGooglePay}  alt="Google Pay" w={30} h={12}/></Badge>
-                      <Badge px={1} py={6} overflow><L src={imgVorkasse}  alt="Vorkasse"   w={42} h={14}/></Badge>
-                    </div>
+                </div>
+                {/* Bezahlen — grows to fill available space so TrustedSlider always fits */}
+                <div style={{display:'flex',flexDirection:'column',gap:10,flex:'1 1 auto',minWidth:0}}>
+                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Einfach bezahlen:</span>
+                  <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
+                    <img src={imgSepa}       alt="SEPA"       style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgAmex}       alt="AMEX"       style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgVisa}       alt="Visa"       style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgAmazonPay}  alt="Amazon Pay" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgKlarna}     alt="Klarna"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgPayPal}     alt="PayPal"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgMastercard} alt="Mastercard" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgApplePay}   alt="Apple Pay"  style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgGooglePay}  alt="Google Pay" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgVorkasse}   alt="Vorkasse"   style={{width:53,height:30,flexShrink:0}} />
                   </div>
-
-                  {/* Trusted Shops slider */}
+                </div>
+                {/* TrustedSlider — fixed right */}
+                <div style={{flexShrink:0}}>
                   <TrustedSlider />
                 </div>
-              );
-            })()}
+              </div>
+            ) : !veryNarrow ? (
+              /* ── Desktop 1200 (900–1199px): V+B side-by-side (gap:30, no divider), TrustedSlider below ── */
+              <div style={{display:'flex',flexDirection:'column',gap:30,
+                padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
+                <div style={{display:'flex',alignItems:'flex-end',flexWrap:'nowrap',gap:30}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                    <div style={{display:'flex',gap:15,alignItems:'center'}}>
+                      <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgGoGreen}   alt="GoGreen" style={{width:53,height:30,flexShrink:0}} />
+                    </div>
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
+                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Einfach bezahlen:</span>
+                    <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
+                      <img src={imgSepa}       alt="SEPA"       style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgAmex}       alt="AMEX"       style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgVisa}       alt="Visa"       style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgAmazonPay}  alt="Amazon Pay" style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgKlarna}     alt="Klarna"     style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgPayPal}     alt="PayPal"     style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgMastercard} alt="Mastercard" style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgApplePay}   alt="Apple Pay"  style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgGooglePay}  alt="Google Pay" style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgVorkasse}   alt="Vorkasse"   style={{width:53,height:30,flexShrink:0}} />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <TrustedSlider />
+                </div>
+              </div>
+            ) : (
+              /* ── Tablet 768–899px: fully stacked (gap:30 between sections, badge gap:15) ── */
+              <div style={{display:'flex',flexDirection:'column',gap:30,
+                padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
+                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                  <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
+                    <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgGoGreen}   alt="GoGreen" style={{width:53,height:30,flexShrink:0}} />
+                  </div>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Einfach bezahlen:</span>
+                  <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
+                    <img src={imgSepa}       alt="SEPA"       style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgAmex}       alt="AMEX"       style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgVisa}       alt="Visa"       style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgAmazonPay}  alt="Amazon Pay" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgKlarna}     alt="Klarna"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgPayPal}     alt="PayPal"     style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgMastercard} alt="Mastercard" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgApplePay}   alt="Apple Pay"  style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgGooglePay}  alt="Google Pay" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgVorkasse}   alt="Vorkasse"   style={{width:53,height:30,flexShrink:0}} />
+                  </div>
+                </div>
+                <div>
+                  <TrustedSlider />
+                </div>
+              </div>
+            )}
 
             {/* ══ ROW 3: Legal links ══ */}
             <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',borderBottom:'1px solid rgba(255,255,255,0.1)',
@@ -8197,32 +10259,29 @@ cursor: pointer;
     const MobileFooterSection = () => {
       const ff = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 
-      const imgMobLogo    = "https://www.figma.com/api/mcp/asset/545484a0-eabb-4712-ac88-99551bd307b8";
-      const imgMobArrow   = "https://www.figma.com/api/mcp/asset/37fea04e-5311-4121-bcb0-95b1b35bf0d4";
-      const imgMobTrusted = "https://www.figma.com/api/mcp/asset/8b162b57-a136-44cd-bc7d-eaca9f80d99f";
-      const imgMobPrev    = "https://www.figma.com/api/mcp/asset/33385199-c983-4e63-8722-979c319b4add";
-      const imgMobNext    = "https://www.figma.com/api/mcp/asset/b9772c0f-bfec-4c81-b423-1485c56dc883";
-      // Social icons — flat white vectors (no circle bg)
-      const imgMobSocPin  = "https://www.figma.com/api/mcp/asset/bb74986c-3e75-46da-8f16-ecaed279079d";
-      const imgMobSocFb   = "https://www.figma.com/api/mcp/asset/51fe1d52-17c2-4126-9c0c-93414421a3be";
-      const imgMobSocIg   = "https://www.figma.com/api/mcp/asset/589403fb-121e-4a03-b98e-9044ff8b3b41";
-      const imgMobSocYt   = "https://www.figma.com/api/mcp/asset/1485f45d-b641-4494-84f3-d819193d62a4";
-      const imgMobSocX    = "https://www.figma.com/api/mcp/asset/0a59e73c-494f-4835-8161-6973782f91e1";
-      // Shipping logos
-      const imgMobDpd     = "https://www.figma.com/api/mcp/asset/420550b1-f3d8-4a68-80b5-997b4a99de5f";
-      const imgMobDhl     = "https://www.figma.com/api/mcp/asset/998ecead-5f20-400e-ae88-dbd9c0cc8314";
-      const imgMobGoGreen = "https://www.figma.com/api/mcp/asset/000c6882-cd80-4071-b81a-91d0468efc57";
-      // Payment logos
-      const imgMobSepa    = "https://www.figma.com/api/mcp/asset/6cfc13c6-14ac-491c-8d97-808957a93f10";
-      const imgMobAmex    = "https://www.figma.com/api/mcp/asset/e6323e48-fa9e-4b6d-a7ab-1265d173c60b";
-      const imgMobVisa    = "https://www.figma.com/api/mcp/asset/f5c90d4c-9941-432d-bbfb-032b1af4812b";
-      const imgMobAmazon  = "https://www.figma.com/api/mcp/asset/73049d1f-6b43-486f-bb23-edd603dbe630";
-      const imgMobKlarna  = "https://www.figma.com/api/mcp/asset/2e83ce42-e7ce-4952-86d0-bcb0cc7e4d5e";
-      const imgMobPayPal  = "https://www.figma.com/api/mcp/asset/f4487263-35ac-4257-8faf-7162adae2de2";
-      const imgMobMC      = "https://www.figma.com/api/mcp/asset/70dbe012-2be2-46f4-b234-fc6c78ddd0da";
-      const imgMobApple   = "https://www.figma.com/api/mcp/asset/c47011ca-297f-4541-aa24-ddec46dac786";
-      const imgMobGPay    = "https://www.figma.com/api/mcp/asset/566962d1-c928-48ee-8c0e-75310183cfa8";
-      const imgMobVork    = "https://www.figma.com/api/mcp/asset/b617db00-d3da-4f06-ac9b-c77fd621b5de";
+      const imgMobLogo    = "./footer/Metzler_Logo_footer.svg";
+      const imgMobTrusted = "./footer/Property 1=all.svg";
+      // Social icons
+      const imgMobSocPin  = "./footer/Icon=Pinterest.svg";
+      const imgMobSocFb   = "./footer/Icon=Facebook.svg";
+      const imgMobSocIg   = "./footer/Icon=VaInstagram.svg";
+      const imgMobSocYt   = "./footer/Icon=Youtube.svg";
+      const imgMobSocX    = "./footer/Icon=X.svg";
+      // Shipping logos — complete badge SVGs (shell + logo)
+      const imgMobDpd     = "./footer/Choice=dpd.svg";
+      const imgMobDhl     = "./footer/Choice=dhl.svg";
+      const imgMobGoGreen = "./footer/Choice=gogreen.svg";
+      // Payment logos — complete badge SVGs (shell + logo)
+      const imgMobSepa    = "./footer/Choice=sepa.svg";
+      const imgMobAmex    = "./footer/Choice=amex.svg";
+      const imgMobVisa    = "./footer/Choice=visa.svg";
+      const imgMobAmazon  = "./footer/Choice=pay.svg";
+      const imgMobKlarna  = "./footer/Choice=klarna.svg";
+      const imgMobPayPal  = "./footer/Choice=paypal.svg";
+      const imgMobMC      = "./footer/Choice=mastercard.svg";
+      const imgMobApple   = "./footer/Choice=apple.svg";
+      const imgMobGPay    = "./footer/Choice=google.svg";
+      const imgMobVork    = "./footer/Choice=vorkasse.svg";
 
       const [infoOpen, setInfoOpen] = useState(false);
       const [servOpen, setServOpen] = useState(false);
@@ -8243,22 +10302,12 @@ cursor: pointer;
         'Metzler Garantieerklärung','Cookie-Einstellungen','Sitemap','Impressum',
         'Batterieentsorgungsgesetz','Hinweise zur Elektroaltgeräteentsorgung'];
 
-      // Badge: aspect 2:1, flex:1, equal width in row
-      const MB = ({bg=T.white, cover=false, children}) => (
-        <div style={{flex:'1 0 0', aspectRatio:'2/1', minWidth:0, border:'1px solid #006D75',
-          borderRadius:T.r, background:bg, overflow:'hidden',
-          display:'flex', alignItems:'center', justifyContent:'center', boxSizing:'border-box'}}>
-          {children}
-        </div>
+      // Payment badge — fixed 50×28px, 4px radius, never stretches
+      const MB = ({src, alt}) => (
+        <img src={src} alt={alt} style={{width:'3.125rem', height:'1.75rem', borderRadius:'0.25rem', display:'block', flexShrink:0, objectFit:'contain'}} />
       );
-      // Logo inside badge — fills proportionally
-      const ML = ({src, alt}) => (
-        <img src={src} alt={alt} style={{maxWidth:'80%', maxHeight:'70%', objectFit:'contain', display:'block'}} />
-      );
-      // Cover image (fills badge, cropped)
-      const MC = ({src, alt}) => (
-        <img src={src} alt={alt} style={{width:'100%', height:'100%', objectFit:'cover', display:'block'}} />
-      );
+      // Empty spacer cell (for layout alignment)
+      const MBEmpty = () => <div style={{flex:'1 0 0', minWidth:0}} />;
       // Star for slider
       const TStar = ({filled}) => (
         <svg style={{flex:'1 0 0'}} width="15" height="15" viewBox="0 0 15 15" fill="none">
@@ -8267,61 +10316,86 @@ cursor: pointer;
             stroke={filled?'#E09000':'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
         </svg>
       );
+      // Hoverable social icon (mobile)
+      const MobSocBtn = ({src, alt, iw, ih}) => {
+        const [hov, setHov] = React.useState(false);
+        return (
+          <div style={{width:'1.375rem', height:'1.375rem', display:'flex', alignItems:'center', justifyContent:'center',
+            cursor:'pointer', transform: hov ? 'scale(1.15)' : 'scale(1)', transition:'transform 0.15s',
+            opacity: hov ? 1 : 0.7}}
+            onMouseEnter={()=>setHov(true)}
+            onMouseLeave={()=>setHov(false)}>
+            <img src={src} alt={alt} style={{width:iw, height:ih, objectFit:'contain'}} />
+          </div>
+        );
+      };
+      // Hoverable link item inside accordion
+      const MobLink = ({label}) => {
+        const [hov, setHov] = React.useState(false);
+        return (
+          <span style={{fontFamily:ff, fontSize:T.fSm, color: hov ? T.white : 'rgba(255,255,255,0.7)',
+            cursor:'pointer', lineHeight:'1.25rem', transition:'color 0.15s'}}
+            onMouseEnter={()=>setHov(true)}
+            onMouseLeave={()=>setHov(false)}>{label}</span>
+        );
+      };
       // Collapsible menu item
       const MobMenu = ({label, open, onToggle, links}) => (
-        <div style={{borderTop:'1px solid rgba(255,255,255,0.2)', width:'100%'}}>
+        <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', width:'100%'}}>
           <button onClick={onToggle} style={{width:'100%', background:'none', border:'none',
             cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between',
-            padding:'15px 0'}}>
+            padding:'0.9375rem 0'}}>
             <span style={{fontFamily:ff, fontSize:T.fBody, fontWeight:700, color:T.white}}>{label}</span>
-            <img src={imgMobArrow} alt="" style={{width:9, height:16,
-              transform: open ? 'rotate(90deg)' : 'rotate(-90deg)',
-              transition:'transform 0.2s ease'}} />
+            <svg width="9" height="16" viewBox="0 0 9 16" fill="none"
+              style={{transform: open ? 'rotate(90deg)' : 'rotate(-90deg)', transition:'transform 0.2s ease', flexShrink:0}}>
+              <path d="M1.5 1.5L7.5 8L1.5 14.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
           {open && (
-            <div style={{display:'flex', flexDirection:'column', gap:10, paddingBottom:15}}>
-              {links.map(l => (
-                <span key={l} style={{fontFamily:ff, fontSize:T.fSm, color:'rgba(255,255,255,0.7)',
-                  cursor:'pointer', lineHeight:'20px'}}>{l}</span>
-              ))}
+            <div style={{display:'flex', flexDirection:'column', gap:'0.625rem', paddingBottom:'0.9375rem'}}>
+              {links.map(l => <MobLink key={l} label={l} />)}
             </div>
           )}
         </div>
       );
 
       return (
-        <div style={{background:T.teal900, borderRadius:T.rLg, width:360, padding:'20px 15px',
-          boxSizing:'border-box', fontFamily:ff, marginBottom:20}}>
-          <div style={{display:'flex', flexDirection:'column', gap:15, alignItems:'center', width:'100%'}}>
+        <div style={{background:T.teal700, width:'100%', padding:'1.25rem 1.5rem',
+          boxSizing:'border-box', fontFamily:ff, marginBottom:'1.25rem'}}>
+          <div style={{display:'flex', flexDirection:'column', gap:'0.9375rem', alignItems:'center', width:'100%'}}>
 
             {/* ── Section 1: Logo + tagline ── */}
-            <div style={{borderBottom:'1px solid rgba(255,255,255,0.2)', paddingBottom:15,
-              width:'100%', display:'flex', flexDirection:'column', gap:15}}>
-              <img src={imgMobLogo} alt="Metzler" style={{width:160, height:28, objectFit:'contain'}} />
-              <p style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, lineHeight:'16px', margin:0}}>
+            <div style={{borderBottom:'0.0625rem solid rgba(255,255,255,0.2)', paddingBottom:'0.9375rem',
+              width:'100%', display:'flex', flexDirection:'column', gap:'0.9375rem'}}>
+              <img src={imgMobLogo} alt="Metzler" style={{width:'10rem', height:'1.75rem', objectFit:'contain'}} />
+              <p style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, lineHeight:'1rem', margin:0}}>
                 Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
               </p>
-              <p style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'14px', margin:0}}>
+              <p style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'0.875rem', margin:0}}>
                 {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
-                <span style={{color:'rgba(255,255,255,0.5)'}}>Metzler Gruppe</span>
+                <MintLink href="https://metzlergmbh.de" fontSize={T.fXs} lineHeight="0.875rem">Metzler Gruppe</MintLink>
               </p>
             </div>
 
             {/* ── Section 2: Contact info ── */}
-            <div style={{display:'flex', flexDirection:'column', gap:20, width:'100%'}}>
+            <div style={{display:'flex', flexDirection:'column', gap:'1.25rem', width:'100%'}}>
               {[
-                {label:'Allgemeine Hotline:',    phone:'+49 (0) 7121 / 317 7310'},
-                {label:'Sprechanlagen Hotline:', phone:'+49 (0) 7121 / 317 7333'},
+                {label:'Allgemeine Hotline:',    phone:'+49 (0) 7121 / 317 7310', href:'tel:+4971213177310'},
+                {label:'Sprechanlagen Hotline:', phone:'+49 (0) 7121 / 317 7333', href:'tel:+4971213177333'},
               ].map(c => (
-                <div key={c.label} style={{display:'flex', flexDirection:'column', gap:5}}>
+                <div key={c.label} style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
                   <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, lineHeight:'normal'}}>{c.label}</span>
-                  <span style={{fontFamily:ff, fontSize:T.fSm, color:'rgba(255,255,255,0.5)', lineHeight:'16px'}}>{c.phone}</span>
-                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'26px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                  <MintLink href={c.href} fontSize={T.fSm} lineHeight="1rem">{c.phone}</MintLink>
+                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'1.625rem'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
                 </div>
               ))}
-              <div style={{display:'flex', flexDirection:'column', gap:5}}>
+              <div style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
                 <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white}}>E-Mail Support:</span>
-                <span style={{fontFamily:ff, fontSize:T.fSm, color:'rgba(255,255,255,0.5)', lineHeight:'16px'}}>service@metzlergmbh.de</span>
+                <MintLink href="mailto:service@metzlergmbh.de" fontSize={T.fSm} lineHeight="1rem">service@metzlergmbh.de</MintLink>
+              </div>
+              <div style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
+                <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white}}>Kontaktformular:</span>
+                <MintLink href="https://edelstahl-tuerklingel.de/Kontakt" fontSize={T.fSm} lineHeight="1rem">Zum Kontaktformular</MintLink>
               </div>
             </div>
 
@@ -8331,85 +10405,85 @@ cursor: pointer;
               <MobMenu label="Service"       open={servOpen} onToggle={()=>setServOpen(o=>!o)} links={serviceLinks} />
 
               {/* Logos block */}
-              <div style={{borderTop:'1px solid rgba(255,255,255,0.2)', borderBottom:'1px solid rgba(255,255,255,0.2)',
-                paddingTop:15, paddingBottom:20, display:'flex', flexDirection:'column', gap:20}}>
+              <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', borderBottom:'0.0625rem solid rgba(255,255,255,0.2)',
+                paddingTop:'0.9375rem', paddingBottom:'1.25rem', display:'flex', flexDirection:'column', gap:'1.25rem'}}>
 
-                {/* Versandpartners — 3 visible + 2 invisible (matching ) */}
-                <div style={{display:'flex', flexDirection:'column', gap:5}}>
-                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'14px'}}>
+                {/* Versandpartners — fixed 50px badges, wrap naturally */}
+                <div style={{display:'flex', flexDirection:'column', gap:'0.625rem'}}>
+                  <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:400, color:T.white, lineHeight:'1.25rem'}}>
                     Unsere Versandpartners:
                   </span>
-                  <div style={{display:'flex', gap:5, width:'100%'}}>
-                    <MB><ML src={imgMobDpd} alt="DPD" /></MB>
-                    <MB bg="#F7CE46"><ML src={imgMobDhl} alt="DHL" /></MB>
-                    <MB cover><MC src={imgMobGoGreen} alt="GoGreen" /></MB>
-                    <MB><span style={{opacity:0}} /></MB>
-                    <MB><span style={{opacity:0}} /></MB>
+                  <div style={{display:'flex', gap:'0.3125rem', flexWrap:'wrap'}}>
+                    <MB src={imgMobDpd}     alt="DPD" />
+                    <MB src={imgMobDhl}     alt="DHL" />
+                    <MB src={imgMobGoGreen} alt="GoGreen" />
                   </div>
                 </div>
 
-                {/* Einfach bezahlen — 2 rows of 5 */}
-                <div style={{display:'flex', flexDirection:'column', gap:5}}>
-                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'14px'}}>
+                {/* Einfach bezahlen — fixed 50px badges, wrap naturally */}
+                <div style={{display:'flex', flexDirection:'column', gap:'0.625rem'}}>
+                  <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:400, color:T.white, lineHeight:'1.25rem'}}>
                     Einfach bezahlen:
                   </span>
-                  <div style={{display:'flex', gap:5, width:'100%'}}>
-                    <MB><ML src={imgMobSepa}   alt="SEPA" /></MB>
-                    <MB><MC src={imgMobAmex}   alt="AMEX" /></MB>
-                    <MB><ML src={imgMobVisa}   alt="Visa" /></MB>
-                    <MB><ML src={imgMobAmazon} alt="Amazon Pay" /></MB>
-                    <MB bg="#EA88B2"><ML src={imgMobKlarna} alt="Klarna" /></MB>
-                  </div>
-                  <div style={{display:'flex', gap:5, width:'100%'}}>
-                    <MB><ML src={imgMobPayPal} alt="PayPal" /></MB>
-                    <MB bg="#1C1818"><MC src={imgMobMC}    alt="Mastercard" /></MB>
-                    <MB><ML src={imgMobApple}  alt="Apple Pay" /></MB>
-                    <MB><ML src={imgMobGPay}   alt="Google Pay" /></MB>
-                    <MB><MC src={imgMobVork}   alt="Vorkasse" /></MB>
+                  <div style={{display:'flex', gap:'0.3125rem', flexWrap:'wrap'}}>
+                    <MB src={imgMobSepa}   alt="SEPA" />
+                    <MB src={imgMobAmex}   alt="AMEX" />
+                    <MB src={imgMobVisa}   alt="Visa" />
+                    <MB src={imgMobAmazon} alt="Amazon Pay" />
+                    <MB src={imgMobKlarna} alt="Klarna" />
+                    <MB src={imgMobPayPal} alt="PayPal" />
+                    <MB src={imgMobMC}     alt="Mastercard" />
+                    <MB src={imgMobApple}  alt="Apple Pay" />
+                    <MB src={imgMobGPay}   alt="Google Pay" />
+                    <MB src={imgMobVork}   alt="Vorkasse" />
                   </div>
                 </div>
 
-                {/* Mobile TrustedSlider — 330px, same slide data */}
+                {/* Mobile TrustedSlider — full-width, same slide data */}
                 <div onMouseEnter={()=>setMobPaused(true)} onMouseLeave={()=>setMobPaused(false)}
                   style={{display:'flex', alignItems:'center', justifyContent:'space-between',
-                    background:'rgba(255,255,255,0.08)', borderRadius:60, padding:'10px 15px',
-                    width:'100%', boxSizing:'border-box', gap:10}}>
-                  <div style={{display:'flex', gap:10, alignItems:'center', flex:1, minWidth:0, height:32}}>
-                    <img src={imgMobTrusted} alt="Trusted Shops"
-                      style={{width:30, height:30, objectFit:'contain', flexShrink:0, borderRadius:'50%'}} />
-                    <div style={{display:'flex', flexDirection:'column', gap:3, minWidth:0, flex:1}}>
-                      <div style={{display:'flex', gap:2, width:80, alignItems:'center'}}>
+                    background:'rgba(255,255,255,0.08)', borderRadius:'3.75rem', padding:'0.625rem 0.9375rem',
+                    width:'100%', boxSizing:'border-box', gap:'0.625rem'}}>
+                  <div style={{display:'flex', gap:'0.625rem', alignItems:'center', flex:1, minWidth:0, height:'2rem'}}>
+                    <img src={mobSlide.img} alt="Trusted Shops"
+                      style={{width:'1.875rem', height:'1.875rem', objectFit:'contain', flexShrink:0, borderRadius:'50%'}} />
+                    <div style={{display:'flex', flexDirection:'column', gap:'0.1875rem', minWidth:0, flex:1}}>
+                      <div style={{display:'flex', gap:'0.125rem', width:'5rem', alignItems:'center'}}>
                         {[0,1,2,3,4].map(i => <TStar key={i} filled={i < mobSlide.stars} />)}
                       </div>
                       <div key={mobIdx} style={{animation:'tslidein 0.3s ease', overflow:'hidden',
-                        display:'flex', gap:5, alignItems:'center', minWidth:0}}>
+                        display:'flex', gap:'0.3125rem', alignItems:'center', minWidth:0}}>
                         {mobSlide.score ? (
                           <>
-                            <span style={{fontFamily:ff, fontSize:T.fXs, color:T.white, whiteSpace:'nowrap', lineHeight:'14px'}}>
+                            <span style={{fontFamily:ff, fontSize:T.fXs, color:T.white, whiteSpace:'nowrap', lineHeight:'0.875rem'}}>
                               {mobSlide.score} {mobSlide.label}
                             </span>
-                            <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'14px', whiteSpace:'nowrap'}}>
+                            <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'0.875rem', whiteSpace:'nowrap'}}>
                               {mobSlide.sub}
                             </span>
                           </>
                         ) : (
                           <div style={{minWidth:0}}>
-                            <div style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'14px',
+                            <div style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem',
                               overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis'}}>{mobSlide.label}</div>
-                            <div style={{fontFamily:ff, fontSize:10, color:'rgba(255,255,255,0.5)', lineHeight:'14px'}}>{mobSlide.sub}</div>
+                            <div style={{fontFamily:ff, fontSize:T.fXxs, color:'rgba(255,255,255,0.5)', lineHeight:'0.875rem'}}>{mobSlide.sub}</div>
                           </div>
                         )}
                       </div>
                     </div>
                   </div>
-                  <div style={{display:'flex', gap:6, flexShrink:0}}>
+                  <div style={{display:'flex', gap:'0.375rem', flexShrink:0}}>
                     <button onClick={()=>setMobIdx(i=>(i-1+tsSlides.length)%tsSlides.length)}
-                      style={{width:30, height:30, padding:0, border:'none', background:'none', cursor:'pointer', flexShrink:0}}>
-                      <img src={imgMobPrev} alt="prev" style={{width:30, height:30, display:'block'}} />
+                      style={{width:'1.875rem', height:'1.875rem', borderRadius:'50%', background:'rgba(255,255,255,0.15)', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, padding:0}}>
+                      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                        <path d="M6 1L1 6L6 11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
                     </button>
                     <button onClick={()=>setMobIdx(i=>(i+1)%tsSlides.length)}
-                      style={{width:30, height:30, padding:0, border:'none', background:'none', cursor:'pointer', flexShrink:0}}>
-                      <img src={imgMobNext} alt="next" style={{width:30, height:30, display:'block'}} />
+                      style={{width:'1.875rem', height:'1.875rem', borderRadius:'50%', background:'rgba(255,255,255,0.15)', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, padding:0}}>
+                      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                        <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
                     </button>
                   </div>
                 </div>
@@ -8417,30 +10491,20 @@ cursor: pointer;
             </div>
 
             {/* ── Section 4: Social icons ── */}
-            <div style={{display:'flex', gap:34, alignItems:'center', justifyContent:'center', padding:'5px 0'}}>
-              <div style={{width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center'}}>
-                <img src={imgMobSocPin} alt="Pinterest" style={{width:15, height:19, objectFit:'contain'}} />
-              </div>
-              <div style={{width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center'}}>
-                <img src={imgMobSocFb}  alt="Facebook"  style={{width:10, height:18, objectFit:'contain'}} />
-              </div>
-              <div style={{width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center'}}>
-                <img src={imgMobSocIg}  alt="Instagram" style={{width:19, height:19, objectFit:'contain'}} />
-              </div>
-              <div style={{width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center'}}>
-                <img src={imgMobSocYt}  alt="YouTube"   style={{width:22, height:16, objectFit:'contain'}} />
-              </div>
-              <div style={{width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center'}}>
-                <img src={imgMobSocX}   alt="X"         style={{width:17, height:17, objectFit:'contain'}} />
-              </div>
+            <div style={{display:'flex', gap:'2.125rem', alignItems:'center', justifyContent:'center', padding:'0.3125rem 0'}}>
+              <MobSocBtn src={imgMobSocPin} alt="Pinterest" iw="0.9375rem" ih="1.1875rem" />
+              <MobSocBtn src={imgMobSocFb}  alt="Facebook"  iw="0.625rem"  ih="1.125rem" />
+              <MobSocBtn src={imgMobSocIg}  alt="Instagram" iw="1.1875rem" ih="1.1875rem" />
+              <MobSocBtn src={imgMobSocYt}  alt="YouTube"   iw="1.375rem"  ih="1rem" />
+              <MobSocBtn src={imgMobSocX}   alt="X"         iw="1.0625rem" ih="1.0625rem" />
             </div>
 
             {/* ── Section 5: Legal links ── */}
-            <div style={{borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:15, width:'100%',
-              display:'flex', flexWrap:'wrap', gap:'5px 15px', justifyContent:'center'}}>
+            <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', paddingTop:'0.9375rem', width:'100%',
+              display:'flex', flexWrap:'wrap', gap:'0.3125rem 0.9375rem', justifyContent:'center'}}>
               {legalLinks.map(l => (
-                <span key={l} style={{fontFamily:ff, fontSize:10, color:'rgba(255,255,255,0.5)',
-                  lineHeight:'14px', textDecoration:'underline', cursor:'pointer', whiteSpace:'nowrap'}}>
+                <span key={l} style={{fontFamily:ff, fontSize:T.fXxs, color:'rgba(255,255,255,0.5)',
+                  lineHeight:'0.875rem', textDecoration:'underline', cursor:'pointer', whiteSpace:'nowrap'}}>
                   {l}
                 </span>
               ))}
@@ -8448,11 +10512,11 @@ cursor: pointer;
 
             {/* ── Section 6: Copyright ── */}
             <div style={{textAlign:'center'}}>
-              <p style={{fontFamily:ff, fontSize:10, color:T.white, lineHeight:'14px', margin:'0 0 2px'}}>
+              <p style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem', margin:'0 0 0.125rem'}}>
                 Alle Preise inkl. gesetzliche MwSt., zzgl.{' '}
                 <span style={{color:'rgba(255,255,255,0.5)', textDecoration:'underline', cursor:'pointer'}}>Versand</span>
               </p>
-              <p style={{fontFamily:ff, fontSize:10, color:T.white, lineHeight:'14px', margin:0}}>
+              <p style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem', margin:0}}>
                 © 2013 - 2024 | Metzler GmbH
               </p>
             </div>
@@ -8501,7 +10565,7 @@ cursor: pointer;
       );
     };
 
-    const TopNav = ({activeId, onNavClick, onMenuClick, mob, onOpenIcons, iconsActive}) => {
+    const TopNav = ({activeId, onNavClick, onMenuClick, mob, onOpenIcons, iconsActive, onOpenSections}) => {
       const [query, setQuery] = useState('');
       const [open,  setOpen]  = useState(false);
       const [whatsNew, setWhatsNew] = useState(false);
@@ -8576,6 +10640,26 @@ cursor: pointer;
                   <rect x="9" y="9" width="6" height="6" rx="1.5" fill={T.white}/>
                 </svg>
                 Icons
+              </button>
+            )}
+
+            {/* Sections button — desktop only */}
+            {!mob && (
+              <button onClick={()=>onOpenSections&&onOpenSections()}
+                style={{display:'inline-flex',alignItems:'center',gap:7,flexShrink:0,cursor:'pointer',
+                  background:'linear-gradient(135deg,#010F10 0%,#012728 50%,#013D3E 100%)',
+                  border:'none',borderRadius:T.rLg,padding:'0 1rem',height:34,
+                  fontFamily:font,fontSize:T.f13,fontWeight:700,color:T.white,
+                  whiteSpace:'nowrap',marginLeft:6,
+                  transition:'filter 0.15s'}}
+                onMouseEnter={e=>{e.currentTarget.style.filter='brightness(1.3)';}}
+                onMouseLeave={e=>{e.currentTarget.style.filter='brightness(1)';}}>
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                  <rect x="1" y="1" width="14" height="5" rx="1.5" fill={T.white}/>
+                  <rect x="1" y="8" width="6" height="7" rx="1.5" fill={T.white}/>
+                  <rect x="9" y="8" width="6" height="7" rx="1.5" fill={T.white}/>
+                </svg>
+                Sections
               </button>
             )}
 
@@ -8733,8 +10817,19 @@ cursor: pointer;
     };
 
     // ── LEFT SIDEBAR — fixed desktop sidebar / mobile drawer ──
-    const SiteNav = ({activeId, onNavClick, mob, drawerOpen, onClose}) => {
+    const SiteNav = ({activeId, onNavClick, mob, drawerOpen, onClose, onOpenIcons, onOpenSections}) => {
       if (mob && !drawerOpen) return null;
+      const [searchQ, setSearchQ] = useState('');
+      const [drawerWN, setDrawerWN] = useState(false);
+      const typeStyle = {
+        new:      { bg:'#F0FDF4', color:'#15803D', label:'New' },
+        improved: { bg:'#EFF6FF', color:'#1D4ED8', label:'Improved' },
+        fix:      { bg:'#FFF7ED', color:'#C2410C', label:'Fix' },
+        removed:  { bg:T.red50,   color:T.red600,   label:'Removed' },
+      };
+      const searchResults = searchQ.trim().length > 0
+        ? allNavItems.filter(n => n.label.toLowerCase().includes(searchQ.toLowerCase().trim())).slice(0,6)
+        : [];
       const navList = (
         <div style={{padding:'12px 0 40px'}}>
           {navItems.map(item=>{
@@ -8787,10 +10882,11 @@ cursor: pointer;
           <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.45)',
             zIndex:1998,animation:'fadeIn 0.2s ease'}} />
           {/* Drawer panel */}
-          <nav style={{position:'fixed',top:0,left:0,width:280,height:'100vh',
+          <nav style={{position:'fixed',top:0,left:0,width:300,height:'100vh',
             background:T.white,zIndex:1999,overflowY:'auto',boxShadow:'4px 0 24px rgba(0,0,0,0.18)',
-            animation:'drawerIn 0.25s ease'}}>
-            {/* Drawer header */}
+            animation:'drawerIn 0.25s ease',display:'flex',flexDirection:'column'}}>
+
+            {/* Drawer header — teal bar */}
             <div style={{height:57,background:T.teal,display:'flex',alignItems:'center',
               justifyContent:'space-between',padding:'0 16px 0 20px',flexShrink:0}}>
               <Logo height={20} color="light" />
@@ -8799,6 +10895,132 @@ cursor: pointer;
                 <Icon name="close" size={20} color={T.white} />
               </button>
             </div>
+
+            {/* ── Header actions (mobile-only) ── */}
+            <div style={{padding:'1rem 1rem 0',flexShrink:0}}>
+
+              {/* Search bar */}
+              <div style={{display:'flex',alignItems:'center',gap:8,
+                background:T.paper,borderRadius:T.rLg,
+                padding:'0 12px',height:38,marginBottom:'0.75rem',
+                border:`0.0625rem solid ${T.g200}`}}>
+                <svg width="13" height="13" viewBox="0 0 18 18" fill="none" style={{flexShrink:0}}>
+                  <circle cx="7.5" cy="7.5" r="6" stroke={T.g400} strokeWidth="1.8"/>
+                  <path d="M12 12L16 16" stroke={T.g400} strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+                <input
+                  value={searchQ}
+                  onChange={e=>setSearchQ(e.target.value)}
+                  placeholder="Search components…"
+                  style={{flex:1,background:'transparent',border:'none',outline:'none',
+                    fontSize:T.fSm,color:T.black,fontFamily:font}}
+                />
+                {searchQ && (
+                  <button onClick={()=>setSearchQ('')}
+                    style={{background:'none',border:'none',cursor:'pointer',padding:2,color:T.g400,lineHeight:1,fontSize:'1rem'}}>
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* Search results */}
+              {searchResults.length > 0 && (
+                <div style={{background:T.white,borderRadius:T.rLg,
+                  boxShadow:`0 4px 16px rgba(0,0,0,0.1)`,overflow:'hidden',
+                  marginBottom:'0.75rem',border:`0.0625rem solid ${T.g200}`}}>
+                  {searchResults.map(n=>(
+                    <div key={n.id}
+                      onClick={()=>{onNavClick(n.id);setSearchQ('');onClose();}}
+                      style={{padding:'9px 14px',fontSize:T.fSm,fontFamily:font,color:T.black,
+                        cursor:'pointer',borderBottom:`0.0625rem solid ${T.g100}`,
+                        display:'flex',alignItems:'center',gap:8}}
+                      onMouseEnter={e=>e.currentTarget.style.background=T.paper}
+                      onMouseLeave={e=>e.currentTarget.style.background=T.white}>
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                        <rect width="12" height="12" rx="2" fill={T.teal} opacity="0.12"/>
+                        <path d="M3 6h6M7 4l2 2-2 2" stroke={T.teal} strokeWidth="1.3" strokeLinecap="round"/>
+                      </svg>
+                      {n.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Page shortcuts: Icons + Sections */}
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.5rem',marginBottom:'0.75rem'}}>
+                <button onClick={()=>{if(onOpenIcons)onOpenIcons();onClose();}}
+                  style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,
+                    padding:'0.5rem 0',borderRadius:T.rLg,fontFamily:font,
+                    fontSize:T.fSm,fontWeight:600,cursor:'pointer',
+                    background:`linear-gradient(135deg,#010F10 0%,#012728 50%,#013D3E 100%)`,
+                    border:'none',color:T.white}}>
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <rect x="1" y="1" width="6" height="6" rx="1.5" fill={T.white}/>
+                    <rect x="9" y="1" width="6" height="6" rx="1.5" fill={T.white}/>
+                    <rect x="1" y="9" width="6" height="6" rx="1.5" fill={T.white}/>
+                    <rect x="9" y="9" width="6" height="6" rx="1.5" fill={T.white}/>
+                  </svg>
+                  Icons
+                </button>
+                <button onClick={()=>{if(onOpenSections)onOpenSections();onClose();}}
+                  style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,
+                    padding:'0.5rem 0',borderRadius:T.rLg,fontFamily:font,
+                    fontSize:T.fSm,fontWeight:600,cursor:'pointer',
+                    background:`linear-gradient(135deg,#010F10 0%,#012728 50%,#013D3E 100%)`,
+                    border:'none',color:T.white}}>
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <rect x="1" y="1" width="14" height="5" rx="1.5" fill={T.white}/>
+                    <rect x="1" y="8" width="6" height="7" rx="1.5" fill={T.white}/>
+                    <rect x="9" y="8" width="6" height="7" rx="1.5" fill={T.white}/>
+                  </svg>
+                  Sections
+                </button>
+              </div>
+
+              {/* What's new — expandable row */}
+              <button onClick={()=>setDrawerWN(v=>!v)}
+                style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',
+                  padding:'0.5625rem 0.875rem',borderRadius:T.rLg,cursor:'pointer',
+                  background:'rgba(255,255,255,0.08)',border:`0.0625rem solid ${T.g200}`,
+                  fontFamily:font,fontSize:T.fSm,fontWeight:500,color:T.black,
+                  marginBottom:'0.5rem'}}>
+                <span style={{display:'flex',alignItems:'center',gap:6}}>
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                    <circle cx="7" cy="7" r="6" stroke={T.teal} strokeWidth="1.6"/>
+                    <path d="M7 4v3.5M7 9.5v.5" stroke={T.teal} strokeWidth="1.6" strokeLinecap="round"/>
+                  </svg>
+                  What's new v{CHANGELOG.version}
+                </span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke={T.g500} strokeWidth="1.6" strokeLinecap="round"
+                  style={{transform:drawerWN?'rotate(180deg)':'rotate(0)',transition:'transform 0.2s'}}>
+                  <polyline points="2 4 6 8 10 4"/>
+                </svg>
+              </button>
+
+              {drawerWN && (
+                <div style={{borderRadius:T.rLg,border:`0.0625rem solid ${T.g200}`,
+                  overflow:'hidden',marginBottom:'0.5rem'}}>
+                  {CHANGELOG.entries.map((e,i)=>(
+                    <div key={i} style={{padding:'0.625rem 0.875rem',
+                      borderBottom: i<CHANGELOG.entries.length-1 ? `0.0625rem solid ${T.g100}` : 'none',
+                      display:'flex',alignItems:'flex-start',gap:'0.5rem'}}>
+                      <span style={{display:'inline-block',padding:'1px 7px',borderRadius:T.r,
+                        fontSize:'0.625rem',fontWeight:700,letterSpacing:'0.04em',flexShrink:0,marginTop:1,
+                        background:(typeStyle[e.type]||typeStyle.new).bg,
+                        color:(typeStyle[e.type]||typeStyle.new).color}}>
+                        {(typeStyle[e.type]||typeStyle.new).label}
+                      </span>
+                      <span style={{fontFamily:font,fontSize:T.f13,color:T.g700,lineHeight:1.4}}>{e.text}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Divider before nav */}
+              <div style={{height:'0.0625rem',background:T.g200,margin:'0.25rem 0 0'}}/>
+            </div>
+
+            {/* Navigation items */}
             {navList}
           </nav>
         </>
@@ -9003,17 +11225,31 @@ cursor: pointer;
         const svgCode = getSvgString(iconDetailKey);
         return (
           <div style={{fontFamily:ff,minHeight:'calc(100vh - 57px)',background:T.white}}>
-            {/* Breadcrumb header */}
-            <div style={{borderBottom:`1px solid ${T.g200}`,padding:'12px 40px',display:'flex',alignItems:'center',gap:8,background:T.white}}>
-              <button onClick={onBackToMain} style={{background:'none',border:'none',cursor:'pointer',color:T.teal,fontSize:T.fSm,padding:0,fontFamily:ff}}>
-                Metzler UI Kit
+            {/* Back bar — same style as Sections page */}
+            <div style={{background:T.white,borderBottom:`0.0625rem solid ${T.g200}`,
+              padding:'0.75rem 3rem',display:'flex',alignItems:'center',gap:12}}>
+              <button onClick={onBackToMain}
+                style={{display:'inline-flex',alignItems:'center',gap:6,
+                  background:'none',border:'none',cursor:'pointer',
+                  fontSize:T.f13,color:T.teal,fontFamily:ff,fontWeight:600,padding:0}}
+                onMouseEnter={e=>e.currentTarget.style.opacity='0.7'}
+                onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Back to Design System
               </button>
-              <span style={{color:T.g450}}>/</span>
-              <button onClick={onBackToGrid} style={{background:'none',border:'none',cursor:'pointer',color:T.teal,fontSize:T.fSm,padding:0,fontFamily:ff}}>
+              <span style={{color:T.g200,fontFamily:ff}}>|</span>
+              <button onClick={onBackToGrid}
+                style={{display:'inline-flex',alignItems:'center',gap:4,
+                  background:'none',border:'none',cursor:'pointer',
+                  fontSize:T.f13,color:T.teal,fontFamily:ff,fontWeight:600,padding:0}}
+                onMouseEnter={e=>e.currentTarget.style.opacity='0.7'}
+                onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
                 Icons
               </button>
-              <span style={{color:T.g450}}>/</span>
-              <span style={{color:T.g700,fontSize:T.fSm}}>{iconData.label}</span>
+              <span style={{color:T.g200,fontFamily:ff}}>|</span>
+              <span style={{fontSize:T.f13,fontWeight:700,color:T.black,fontFamily:ff}}>{iconData.label}</span>
             </div>
 
             {/* Main content */}
@@ -9176,13 +11412,22 @@ cursor: pointer;
       // ─── GRID PAGE ───
       return (
         <div style={{fontFamily:ff,minHeight:'calc(100vh - 57px)',background:T.white}}>
-          {/* Breadcrumb — same style as detail page */}
-          <div style={{borderBottom:`1px solid ${T.g200}`,padding:'12px 40px',display:'flex',alignItems:'center',gap:8,background:T.white}}>
-            <button onClick={onBackToMain} style={{background:'none',border:'none',cursor:'pointer',color:T.teal,fontSize:T.fSm,padding:0,fontFamily:ff}}>
-              Metzler UI Kit
+          {/* Back bar — same style as Sections page */}
+          <div style={{background:T.white,borderBottom:`0.0625rem solid ${T.g200}`,
+            padding:'0.75rem 3rem',display:'flex',alignItems:'center',gap:12}}>
+            <button onClick={onBackToMain}
+              style={{display:'inline-flex',alignItems:'center',gap:6,
+                background:'none',border:'none',cursor:'pointer',
+                fontSize:T.f13,color:T.teal,fontFamily:ff,fontWeight:600,padding:0}}
+              onMouseEnter={e=>e.currentTarget.style.opacity='0.7'}
+              onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+              Back to Design System
             </button>
-            <span style={{color:T.g450}}>/</span>
-            <span style={{color:T.g700,fontSize:T.fSm,fontFamily:ff}}>Icons</span>
+            <span style={{color:T.g200,fontFamily:ff}}>|</span>
+            <span style={{fontSize:T.f13,fontWeight:700,color:T.black,fontFamily:ff}}>Icons</span>
           </div>
 
           {/* Page header */}
@@ -9237,13 +11482,13 @@ cursor: pointer;
     const DesignSystem = () => {
       const [activeId,   setActiveId]   = useState('instruction');
       const [drawerOpen, setDrawerOpen] = useState(false);
-      const [isMobile,   setIsMobile]   = useState(() => window.innerWidth < 768);
+      const [isMobile,   setIsMobile]   = useState(() => window.innerWidth < 769);
       const [page, setPage] = useState('main'); // 'main' | 'icons' | 'icon-detail'
       const [iconDetailKey, setIconDetailKey] = useState(null);
       const contentRef = useRef(null);
 
       useEffect(() => {
-        const onResize = () => setIsMobile(window.innerWidth < 768);
+        const onResize = () => setIsMobile(window.innerWidth < 769);
         window.addEventListener('resize', onResize);
         return () => window.removeEventListener('resize', onResize);
       }, []);
@@ -9280,14 +11525,17 @@ cursor: pointer;
         <div style={{background:T.white,minHeight:'100vh'}}>
           <TopNav onNavClick={navClick} onMenuClick={()=>setDrawerOpen(true)} mob={mob}
             onOpenIcons={()=>{setPage('icons');setIconDetailKey(null);}}
+            onOpenSections={()=>setPage('sections')}
             iconsActive={page!=='main'} />
 
           {/* Sidebar — desktop fixed / mobile drawer, only on main page */}
           {page==='main' && <SiteNav activeId={activeId} onNavClick={navClick}
-            mob={mob} drawerOpen={drawerOpen} onClose={()=>setDrawerOpen(false)} />}
+            mob={mob} drawerOpen={drawerOpen} onClose={()=>setDrawerOpen(false)}
+            onOpenIcons={()=>{setPage('icons');setIconDetailKey(null);}}
+            onOpenSections={()=>setPage('sections')} />}
 
           {/* Icons standalone page */}
-          {page!=='main' && (
+          {(page==='icons'||page==='icon-detail') && (
             <div style={{paddingTop:57,minHeight:'100vh',background:T.paper}}>
               <IconsPage
                 iconDetailKey={page==='icon-detail' ? iconDetailKey : null}
@@ -9296,6 +11544,11 @@ cursor: pointer;
                 onBackToMain={()=>{setPage('main');setIconDetailKey(null);}}
               />
             </div>
+          )}
+
+          {/* Sections standalone page */}
+          {page==='sections' && (
+            <SectionsPage onBackToMain={()=>setPage('main')}/>
           )}
 
           {/* Content — offset right of sidebar on desktop, full-width on mobile */}
@@ -9818,6 +12071,95 @@ cursor: pointer;
   line-height: 1.7;
 }`}/>
 
+            {/* STEPPER */}
+            <SH1 id="stepper">Stepper</SH1>
+            <Lead>Progress indicator for multi-step flows such as product configurators and checkout. The active step uses a chevron shape to point forward; completed steps are visually distinguished. Click any step to navigate.</Lead>
+            <Preview plain><StepperSection/></Preview>
+            <CodeBlock inline lang="HTML" code={`<nav class="pdp-stepper" aria-label="Konfigurationsschritte">
+  <div class="pdp-stepper-inner">
+
+    <button class="pdp-stepper-step completed" data-step="1">
+      <span class="pdp-stepper-num">1.</span>
+      <span class="pdp-stepper-label">Anschluss</span>
+    </button>
+
+    <span class="pdp-stepper-sep" aria-hidden="true">
+      <svg viewBox="0 0 8 16" fill="none" stroke="currentColor"
+           stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="1 1 7 8 1 15"/>
+      </svg>
+    </span>
+
+    <button class="pdp-stepper-step active" data-step="2" aria-current="step">
+      <span class="pdp-stepper-num">2.</span>
+      <span class="pdp-stepper-label">Modul</span>
+    </button>
+
+    <!-- repeat <span.pdp-stepper-sep> + <button.pdp-stepper-step> for each additional step -->
+
+  </div>
+</nav>`}/>
+            <CodeBlock inline lang="CSS" code={`.pdp-stepper {
+  width: 100%;
+}
+.pdp-stepper-inner {
+  display: flex;
+  align-items: stretch;
+  background: var(--color-teal);       /* Teal 500 — #015253 */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 3.5rem;
+}
+.pdp-stepper-step {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0 1.25rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.15s, background 0.2s;
+  z-index: 1;
+}
+.pdp-stepper-step.active {
+  background: var(--color-teal-dark);  /* Teal 700 — #01292A */
+  color: #fff;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 0.75rem) 0,
+    100% 50%,
+    calc(100% - 0.75rem) 100%,
+    0 100%
+  );
+  padding-right: calc(1.25rem + 0.75rem);
+  z-index: 2;
+}
+.pdp-stepper-step.completed {
+  color: rgba(255, 255, 255, 0.85);
+}
+.pdp-stepper-num  { font-weight: 700; }
+.pdp-stepper-label { font-weight: 400; }
+
+/* Hide label on inactive steps — show only the number */
+.pdp-stepper-step:not(.active) .pdp-stepper-label {
+  display: none;
+}
+
+.pdp-stepper-sep {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.3);
+}
+.pdp-stepper-sep svg {
+  width: 0.5rem;
+  height: 1rem;
+}`}/>
+
             {/* LISTS */}
             <SH1 id="lists">Lists</SH1>
             <Lead>Four list styles — unordered, ordered, checklist, and unstyled. All use teal as the accent color and a hairline divider between items.</Lead>
@@ -9948,9 +12290,10 @@ cursor: pointer;
 
             {/* HEADER */}
             <SH1 id="header">Header</SH1>
-            <Lead>Adaptive 3-row navigation header. Row 1: teal trust bar · Row 2: logo + search + icons · Row 3: category nav. Compact sticky version appears on scroll. Mobile ≤992px switches to the mobile bar. </Lead>
-            <div style={{borderRadius:T.rLg,overflow:'hidden',border:`0.0625rem solid ${T.g200}`}}>
-              <HeaderSection />
+            <Lead>Adaptive 3-row navigation header. Row 1: teal trust bar · Row 2: logo + search + icons · Row 3: category nav. Compact sticky version appears on scroll. Mobile breakpoint &lt;768px switches to the mobile bar with hamburger nav and stacked layout.</Lead>
+            <div style={{borderRadius:T.rLg,overflow:'hidden',border:`0.0625rem solid ${T.g200}`,
+              display:'flex', justifyContent: isMobile ? 'center' : 'stretch'}}>
+              {isMobile ? <MobileHeaderSection /> : <HeaderSection />}
             </div>
             <div style={{marginTop:24}}>
               <div style={{padding:'0 0 10px',fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',color:T.g500,textTransform:'uppercase',fontFamily:font}}>Compact · Sticky (on scroll)</div>
@@ -10345,8 +12688,15 @@ cursor: pointer;
     .classList.toggle('sticky-header', window.scrollY > 0);
 }); */`}/>
 
-            {/* FOOTER — hidden */}
-            {/* FOOTER — MOBILE — hidden */}
+            {/* FOOTER */}
+            <SH1 id="footer">Footer</SH1>
+            <Lead>Full-width dark footer with link columns, trust badges, and payment/shipping logos. Mobile breakpoint &lt;768px switches to the stacked accordion layout.</Lead>
+            {isMobile ? <MobileFooterSection /> : <FooterSection />}
+
+            {/* FOOTER — MOBILE */}
+            <SH1 id="footer-mobile">Footer · Mobile</SH1>
+            <Lead>Stacked mobile footer with accordion link groups, newsletter field, and trust/payment logos.</Lead>
+            <MobileFooterSection />
 
             <div style={{marginTop:60,paddingTop:40,borderTop:`1px solid ${T.g200}`}}>
               <div style={{fontSize:T.fXs,color:T.g500,fontFamily:font}}>

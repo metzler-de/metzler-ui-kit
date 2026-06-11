@@ -42,6 +42,7 @@
 
     /* Brand tokens */
     :root {
+      /* ── Brand colors ── */
       --metzler-teal:        #015253;
       --metzler-teal-dark:   #01292A;
       --metzler-teal-hover:  #006D75;
@@ -52,6 +53,17 @@
       --muted:               #6B6B6B;
       --rule:                #E6E6E6;
       --link-on-dark:        #5CDBD3;
+
+      /* ── Typography scale (mirrors index.html T tokens) ── */
+      --text-display:        2.875rem;   /* T.fD4  */
+      --text-h1:             1.875rem;   /* T.fH1  */
+      --text-h2:             1.5rem;     /* T.fH2  */
+      --text-h3:             1.25rem;    /* T.fH3  */
+      --text-h4:             1.125rem;   /* T.fH4  */
+      --text-body:           1rem;       /* T.fBody */
+      --text-sm:             0.875rem;   /* T.fSm  */
+      --text-xs:             0.75rem;    /* T.fXs  */
+      --text-xxs:            0.6875rem;  /* T.fXxs */
     }
 
     /* Each section is a "page" — adaptive by default, full width of the
@@ -2585,21 +2597,37 @@
     }
 
     /* ---- Access Methods Gallery (Section 16 · e) ---- */
-    .page.access-methods-page {
+    .page.access-methods-page,
+    #product-access-methods {
       display: flex;
       flex-direction: column;
       padding: 0;
       overflow: hidden;
       position: relative;
+      background: #000000 !important;
+      box-shadow: none !important;
+    }
+    #product-access-methods .access-stage,
+    #product-access-methods .access-stage-header,
+    #product-access-methods .access-track-wrap,
+    #product-access-methods .brand-strip,
+    #product-access-methods .palette-header {
+      background: #000000 !important;
     }
     .page.access-methods-page .brand-strip {
       padding: 40px 56px 0 56px;
+      color: rgba(255,255,255,0.45);
     }
     .page.access-methods-page .palette-header {
       grid-template-columns: 260px 1fr;
       gap: 32px;
       padding: 0 56px;
       margin: 10px 0 16px 0;
+      color: rgba(255,255,255,0.7);
+    }
+    .page.access-methods-page .palette-header .page-title,
+    .page.access-methods-page .palette-header h1 {
+      color: #ffffff;
     }
     .access-stage {
       background: #000000;
@@ -7607,17 +7635,18 @@
       stroke-linejoin: round;
     }
     .support-card-title {
-      font-size: 14px;
+      font-size: var(--text-h3);   /* 1.25rem — T.fH3 */
       font-weight: 700;
-      line-height: 1.25;
+      line-height: 1.3;
       color: var(--metzler-teal);
       letter-spacing: -0.005em;
     }
     .support-card.is-primary .support-card-title { color: #FFFFFF; }
     .support-card-desc {
-      font-size: 16px;
-      color: var(--muted);
-      line-height: 1.45;
+      font-size: var(--text-body);  /* 1rem — T.fBody */
+      font-weight: 400;
+      color: var(--digital-black);
+      line-height: 1.5;
       max-width: 32ch;
       margin: 0;
     }
@@ -7632,7 +7661,7 @@
       margin-top: 4px;
     }
     .support-card-cta {
-      font-size: 11px;
+      font-size: var(--text-xxs);   /* 0.6875rem — T.fXxs */
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -9693,7 +9722,17 @@
       margin-left: calc(50% - 50vw) !important;
       margin-right: calc(50% - 50vw) !important;
       padding: 0 !important;
-      background: #000 !important;
+      background: #000000 !important;
+      box-shadow: none !important;
+    }
+    /* Force true black on all child containers too */
+    #product-access-methods,
+    #product-access-methods .access-stage,
+    #product-access-methods .access-stage-header,
+    #product-access-methods .access-track-wrap,
+    #product-access-methods .brand-strip,
+    #product-access-methods .palette-header {
+      background: #000000 !important;
     }
     /* "Benutzerfreundliches Design" variations gallery — keep the same
        1400 px content width as the rest of the page. Cards scroll
@@ -12834,6 +12873,101 @@
       color:#CCCCCC; cursor:not-allowed;
     }
 
+    /* ── Configuration Stepper (Konfigurationsschritte breadcrumb) ── */
+    .pdp-stepper {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto 2rem;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    .pdp-stepper-inner {
+      display: flex;
+      align-items: stretch;
+      background: var(--metzler-teal);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      height: 3.5rem;
+      position: relative;
+    }
+    .pdp-stepper-step {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.375rem;
+      padding: 0 1.25rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.65);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+      transition: color 0.15s ease, background 0.2s ease;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .pdp-stepper-step:hover:not(.active):not(:disabled) {
+      color: rgba(255,255,255,0.9);
+    }
+    .pdp-stepper-step:focus-visible {
+      outline: 0.125rem solid var(--link-on-dark);
+      outline-offset: -0.125rem;
+    }
+    .pdp-stepper-step.completed {
+      color: rgba(255,255,255,0.85);
+    }
+    .pdp-stepper-step.active {
+      background: var(--metzler-teal-dark);
+      color: #fff;
+      clip-path: polygon(0 0, calc(100% - 0.75rem) 0, 100% 50%, calc(100% - 0.75rem) 100%, 0 100%);
+      z-index: 2;
+      padding-right: calc(1.25rem + 0.75rem);
+    }
+    .pdp-stepper-num  { font-weight: 700; }
+    .pdp-stepper-label { font-weight: 400; }
+    /* Inactive steps show only the number; the label appears on hover (desktop) */
+    .pdp-stepper-step:not(.active) .pdp-stepper-label { display: none; }
+    @media (min-width: 761px) {
+      .pdp-stepper-step:not(.active):hover .pdp-stepper-label { display: inline; }
+    }
+    /* Chevron separator between steps */
+    .pdp-stepper-sep {
+      flex: 0 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.35);
+      pointer-events: none;
+      position: relative;
+      z-index: 0;
+    }
+    .pdp-stepper-sep svg { width: 0.5rem; height: 1rem; flex-shrink: 0; }
+    /* ── Mobile ── */
+    @media (max-width: 760px) {
+      .pdp-stepper { padding: 0; margin-bottom: 1.5rem; }
+      .pdp-stepper-inner { height: 3rem; border-radius: 0; }
+      .pdp-stepper-step {
+        font-size: 0.875rem;
+        padding: 0 0.875rem;
+      }
+      .pdp-stepper-step.active {
+        clip-path: polygon(0 0, calc(100% - 0.625rem) 0, 100% 50%, calc(100% - 0.625rem) 100%, 0 100%);
+        padding-right: calc(0.875rem + 0.625rem);
+      }
+      .pdp-stepper-sep { flex: 0 0 0.75rem; }
+      .pdp-stepper-sep svg { width: 0.4375rem; height: 0.875rem; }
+    }
+    @media (max-width: 480px) {
+      .pdp-stepper-step { padding: 0 0.625rem; font-size: 0.8125rem; }
+      .pdp-stepper-sep { flex: 0 0 0.5rem; }
+    }
+
     #header-root, #footer-root { background:#fff; }
     #footer-root { background:transparent; }
 
@@ -15071,6 +15205,73 @@
           var tab = inner.querySelector('.pdp-tab');
           var step = tab ? (tab.offsetWidth + 16) : 160;
           inner.scrollBy({ left: step * dir, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+
+  <!-- ─────────── KONFIGURATIONSSCHRITTE (Stepper) ─────────── -->
+  <nav class="pdp-stepper" aria-label="Konfigurationsschritte">
+    <div class="pdp-stepper-inner">
+
+      <button class="pdp-stepper-step active" data-step="1" aria-current="step">
+        <span class="pdp-stepper-num">1.</span>
+        <span class="pdp-stepper-label">Anschluss</span>
+      </button>
+
+      <span class="pdp-stepper-sep" aria-hidden="true">
+        <svg viewBox="0 0 8 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 7 8 1 15"/></svg>
+      </span>
+
+      <button class="pdp-stepper-step" data-step="2">
+        <span class="pdp-stepper-num">2.</span>
+        <span class="pdp-stepper-label">Modul</span>
+      </button>
+
+      <span class="pdp-stepper-sep" aria-hidden="true">
+        <svg viewBox="0 0 8 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 7 8 1 15"/></svg>
+      </span>
+
+      <button class="pdp-stepper-step" data-step="3">
+        <span class="pdp-stepper-num">3.</span>
+        <span class="pdp-stepper-label">Farbe</span>
+      </button>
+
+      <span class="pdp-stepper-sep" aria-hidden="true">
+        <svg viewBox="0 0 8 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 7 8 1 15"/></svg>
+      </span>
+
+      <button class="pdp-stepper-step" data-step="4">
+        <span class="pdp-stepper-num">4.</span>
+        <span class="pdp-stepper-label">Zubehör</span>
+      </button>
+
+      <span class="pdp-stepper-sep" aria-hidden="true">
+        <svg viewBox="0 0 8 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 7 8 1 15"/></svg>
+      </span>
+
+      <button class="pdp-stepper-step" data-step="5">
+        <span class="pdp-stepper-num">5.</span>
+        <span class="pdp-stepper-label">Zusammenfassung</span>
+      </button>
+
+    </div>
+  </nav>
+  <script>
+    (function () {
+      var stepper = document.querySelector('.pdp-stepper');
+      if (!stepper) return;
+      var steps = stepper.querySelectorAll('.pdp-stepper-step');
+      steps.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var activeNum = +btn.dataset.step;
+          steps.forEach(function (b) {
+            var n = +b.dataset.step;
+            b.classList.toggle('active',    n === activeNum);
+            b.classList.toggle('completed', n < activeNum);
+            if (n === activeNum) b.setAttribute('aria-current', 'step');
+            else b.removeAttribute('aria-current');
+          });
         });
       });
     })();
