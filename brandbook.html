@@ -698,17 +698,10 @@
     .page.weights-page { display: flex; flex-direction: column; }
 
     .weights-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 48px;
-      margin-top: auto;
+      margin-top: 28px;
       min-height: 0;
-      padding-bottom: 12px;
-      align-items: start;
-      align-content: end;
+      padding-bottom: 40px;
     }
-
-    .weights-col { display: flex; flex-direction: column; justify-content: flex-start; }
 
     .col-eyebrow {
       font-size: 11px;
@@ -716,30 +709,58 @@
       text-transform: uppercase;
       color: var(--muted);
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 0;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--rule);
     }
 
-    .type-family-list {
+    /* Weight specimen table */
+    .weight-specimen {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      margin-top: 0;
     }
 
-    .type-family-list .weight {
+    .weight-row {
+      display: grid;
+      grid-template-columns: 140px 56px 1fr;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--rule);
+      gap: 24px;
+    }
+
+    .wt-name {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-size: 32px;
-      line-height: 1.2;
-      letter-spacing: -0.015em;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .wt-num {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--metzler-teal);
+      text-align: right;
+    }
+
+    .wt-sample {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
       color: var(--digital-black);
     }
-    .type-family-list .weight.w-thin    { font-weight: 200; }
-    .type-family-list .weight.w-light   { font-weight: 300; }
-    .type-family-list .weight.w-regular { font-weight: 400; }
-    .type-family-list .weight.w-medium  { font-weight: 500; }
-    .type-family-list .weight.w-bold    { font-weight: 700; }
-    .type-family-list .weight.w-black   { font-weight: 900; }
+    .wt-sample.w-thin    { font-weight: 200; }
+    .wt-sample.w-light   { font-weight: 300; }
+    .wt-sample.w-regular { font-weight: 400; }
+    .wt-sample.w-medium  { font-weight: 500; }
+    .wt-sample.w-bold    { font-weight: 700; }
+    .wt-sample.w-black   { font-weight: 900; }
 
     .type-sizes {
       display: grid;
@@ -9825,19 +9846,46 @@
     </div>
 
     <div class="weights-grid">
-      <!-- Left: family weights list -->
-      <div class="weights-col">
-        <div class="col-eyebrow">Family Weights</div>
-        <div class="type-family-list">
-          <div class="weight w-thin">Helvetica Neue Thin</div>
-          <div class="weight w-light">Helvetica Neue Light</div>
-          <div class="weight w-regular">Helvetica Neue Regular</div>
-          <div class="weight w-medium">Helvetica Neue Medium</div>
-          <div class="weight w-bold">Helvetica Neue Bold</div>
-          <div class="weight w-black">Helvetica Neue Black</div>
-        </div>
-      </div>
+      <div class="col-eyebrow">Family Weights</div>
+      <div class="weight-specimen">
 
+        <div class="weight-row">
+          <span class="wt-name">Thin</span>
+          <span class="wt-num">200</span>
+          <span class="wt-sample w-thin">Helvetica Neue Thin — The quick brown fox</span>
+        </div>
+
+        <div class="weight-row">
+          <span class="wt-name">Light</span>
+          <span class="wt-num">300</span>
+          <span class="wt-sample w-light">Helvetica Neue Light — The quick brown fox</span>
+        </div>
+
+        <div class="weight-row">
+          <span class="wt-name">Regular</span>
+          <span class="wt-num">400</span>
+          <span class="wt-sample w-regular">Helvetica Neue Regular — The quick brown fox</span>
+        </div>
+
+        <div class="weight-row">
+          <span class="wt-name">Medium</span>
+          <span class="wt-num">500</span>
+          <span class="wt-sample w-medium">Helvetica Neue Medium — The quick brown fox</span>
+        </div>
+
+        <div class="weight-row">
+          <span class="wt-name">Bold</span>
+          <span class="wt-num">700</span>
+          <span class="wt-sample w-bold">Helvetica Neue Bold — The quick brown fox</span>
+        </div>
+
+        <div class="weight-row">
+          <span class="wt-name">Black</span>
+          <span class="wt-num">900</span>
+          <span class="wt-sample w-black">Helvetica Neue Black — The quick brown fox</span>
+        </div>
+
+      </div>
     </div>
 
     <div class="page-footer">
