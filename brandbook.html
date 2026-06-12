@@ -8269,6 +8269,78 @@
       user-select: none;
       text-align: left;
     }
+    .gradient-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+      margin-bottom: 52px;
+    }
+
+    .grad-card {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      min-height: 0;
+    }
+
+    .grad-card-inner {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 22px 28px;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 70%);
+      gap: 40px;
+    }
+
+    .grad-card-left { flex-shrink: 0; }
+
+    .grad-card-name {
+      font-size: 30px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+
+    .grad-card-sub {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-top: 5px;
+    }
+
+    .grad-card-right {
+      text-align: right;
+      flex-shrink: 1;
+    }
+
+    .grad-card-usage {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.5;
+      margin-bottom: 9px;
+    }
+
+    .grad-card-value {
+      font-family: "SF Mono", Consolas, "Courier New", monospace;
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.65);
+      background: rgba(0,0,0,0.28);
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
     .page.gradient-page .gradient-footer {
       color: rgba(255,255,255,0.85);
       border-top-color: rgba(255,255,255,0.22);
@@ -10723,19 +10795,43 @@
       <div class="gradient-header">
         <h1 class="gradient-title">Metzler Gradient</h1>
         <p class="gradient-col">
-          The Metzler gradient is a calm transition between the deep teal of
-          Primary Dark and the lighter Primary Hover. It represents the
-          movement from foundation to clarity — from the depth of heritage
-          to the forward momentum of modern advisory. The gradient is used
-          primarily in backgrounds and large-format compositions to create
-          depth and continuity. It may be applied to section openers, key
-          visual areas, or transitions between content blocks, always in a
-          restrained manner that preserves readability and a calm visual
-          rhythm.
+          Two gradients define the Metzler visual language. <strong style="color:#FFFFFF;">Gradient Brand</strong> moves
+          from deep teal through near-black — the backbone of hero sections and
+          dark-mode surfaces. <strong style="color:#5CDBD3;">Gradient Accent</strong> sweeps from Teal Mint to
+          Brand Teal — used sparingly for decorative cards, badges, and highlights.
+          Neither gradient replaces solid brand colors; both complement them.
         </p>
       </div>
 
-      <div class="gradient-wordmark">Gradient</div>
+      <div class="gradient-showcase">
+
+        <div class="grad-card" style="background: linear-gradient(90deg,#01292A 0%,#011d1e 50%,#000000 100%);">
+          <div class="grad-card-inner">
+            <div class="grad-card-left">
+              <div class="grad-card-name">Gradient Brand</div>
+              <div class="grad-card-sub">Hero · Dark sections</div>
+            </div>
+            <div class="grad-card-right">
+              <div class="grad-card-usage">Hero section background, dark banner fills, full-width dark overlays</div>
+              <code class="grad-card-value">linear-gradient(90deg, #01292A 0%, #011d1e 50%, #000000 100%)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="grad-card" style="background: linear-gradient(135deg,#5CDBD3 0%,#015253 100%);">
+          <div class="grad-card-inner">
+            <div class="grad-card-left">
+              <div class="grad-card-name">Gradient Accent</div>
+              <div class="grad-card-sub">Accent · Decorative fills</div>
+            </div>
+            <div class="grad-card-right">
+              <div class="grad-card-usage">Accent highlights, decorative cards, icon backgrounds, badge fills</div>
+              <code class="grad-card-value">linear-gradient(135deg, #5CDBD3, #015253)</code>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
       <div class="page-footer gradient-footer">
         <span>Metzler · Metzler Gradient</span>
