@@ -9281,9 +9281,271 @@
     @media print {
       .m-nav, .m-nav-fab { display: none !important; }
     }
+
+    /* ================================================================
+       TOP NAV — same chrome as the Design System (index.html)
+    ================================================================ */
+    body { padding-top: 57px; }
+    section.page[id] { scroll-margin-top: 70px; }
+
+    .bb-topnav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: var(--metzler-teal);
+      z-index: 10000;
+      box-shadow: 0 1px 0 #014A4B;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    .bb-topnav-bar {
+      height: 57px;
+      display: flex;
+      align-items: center;
+      max-width: 1900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .bb-topnav-logo {
+      width: 260px;
+      flex-shrink: 0;
+      padding-left: 24px;
+      display: flex;
+      align-items: center;
+    }
+    .bb-topnav-logo a { display: flex; align-items: center; }
+    .bb-topnav-logo svg { height: 22px; width: auto; display: block; }
+
+    .bb-topnav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+      cursor: pointer;
+      background: linear-gradient(135deg, #010F10 0%, #012728 50%, #013D3E 100%);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0 1rem;
+      height: 34px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: filter 0.15s;
+    }
+    .bb-topnav-btn + .bb-topnav-btn { margin-left: 6px; }
+    .bb-topnav-btn:hover { filter: brightness(1.3); }
+    .bb-topnav-btn.is-active { filter: brightness(1.45); }
+
+    .bb-topnav-search-zone {
+      flex: 1;
+      position: relative;
+      padding: 0 40px;
+    }
+    .bb-topnav-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.18);
+      border-radius: 0.5rem;
+      padding: 0 14px 0 16px;
+      height: 34px;
+      border: 0.0625rem solid rgba(255,255,255,0.18);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .bb-topnav-search:focus-within { border-color: rgba(255,255,255,0.5); }
+    .bb-topnav-search svg { flex-shrink: 0; }
+    .bb-topnav-search input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 0.8125rem;
+      color: #FFFFFF;
+      font-family: inherit;
+    }
+    .bb-topnav-search input::placeholder { color: rgba(255,255,255,0.4); }
+    .bb-topnav-search kbd {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.6875rem;
+      color: rgba(255,255,255,0.4);
+      font-family: inherit;
+      background: rgba(255,255,255,0.08);
+      border: 0.0625rem solid rgba(255,255,255,0.15);
+      border-radius: 0.25rem;
+      padding: 0.125rem 0.375rem;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+    .bb-topnav-results {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 40px; right: 40px;
+      background: #FFFFFF;
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+      z-index: 10001;
+      display: none;
+    }
+    .bb-topnav-results.is-open { display: block; }
+    .bb-topnav-result {
+      padding: 10px 16px;
+      font-size: 0.875rem;
+      color: #1A171B;
+      cursor: pointer;
+      border-bottom: 1px solid #F0F0F0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .bb-topnav-result:last-child { border-bottom: none; }
+    .bb-topnav-result:hover { background: #F5F6FA; }
+    .bb-topnav-result .pg {
+      font-size: 0.6875rem;
+      color: #A1A1A1;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .bb-topnav-empty {
+      padding: 14px 16px;
+      font-size: 0.875rem;
+      color: #7A7A82;
+    }
+
+    .bb-topnav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 32px;
+      flex-shrink: 0;
+    }
+    .bb-topnav-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.08);
+      border: 0.0625rem solid rgba(255,255,255,0.5);
+      border-radius: 0.5rem;
+      padding: 0 1rem;
+      height: 34px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .bb-topnav-ghost:hover { background: rgba(255,255,255,0.18); color: #FFFFFF; }
+
+    @media (max-width: 900px) {
+      .bb-topnav-logo { width: auto; padding-left: 16px; flex: 1; }
+      .bb-topnav-btn, .bb-topnav-search-zone { display: none; }
+      .bb-topnav-right { padding-right: 16px; }
+    }
+    @media print {
+      .bb-topnav { display: none !important; }
+      body { padding-top: 0; }
+    }
+    /* When embedded inside the Design System (index.html iframe),
+       the app already provides its own header — hide ours. */
+    html.bb-embedded .bb-topnav { display: none !important; }
+    html.bb-embedded body { padding-top: 0; }
+    html.bb-embedded section.page[id] { scroll-margin-top: 0; }
   </style>
+  <script>
+    if (window.self !== window.top) {
+      document.documentElement.classList.add('bb-embedded');
+    }
+  </script>
 </head>
 <body>
+
+  <!-- ================================================================
+       TOP NAV — same chrome as the Design System (index.html)
+  ================================================================ -->
+  <header class="bb-topnav">
+    <div class="bb-topnav-bar">
+
+      <div class="bb-topnav-logo">
+        <a href="./index.html" title="Metzler Design System">
+          <svg viewBox="0 0 1095.83 184.29" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="184.3" height="184.3" rx="5.75" fill="#cc322b"/>
+            <path fill="#FFFFFF" d="M70.19,34.81l19.04,32.98-9.58,16.57-28.59-49.55h19.13ZM70.28,108.58h0l-23.45-40.64v85.89h-16.57V34.81h16.57l33.02,57.21L123.92,15.65h19.13l-63.22,109.52-9.58-16.57.02-.02ZM153.14,153.83h-16.57v-85.87l-33,57.14h-19.13l52.11-90.28h16.57v119.02l.02-.02Z"/>
+            <g fill="#FFFFFF">
+              <path d="M338.52,153.83l-.33-63.09-30.6,51.35h-14.96l-30.44-49.66v61.39h-31.11V34.81h27.72l41.82,68.7,40.82-68.7h27.72l.33,119.02h-30.98Z"/>
+              <path d="M489.31,127.82v26.01h-95.55V34.81h95.58v26.01h-62.24v20.06h52.89v25.16h-52.89v21.76h62.24Z"/>
+              <path d="M965.1,127.82v26.01h-95.55V34.81h95.58v26.01h-62.24v20.06h52.89v25.16h-52.89v21.76h62.24Z"/>
+              <path d="M544.54,61.5h-36.56v-26.7h106.62v26.7h-36.39v92.32h-33.67V61.5Z"/>
+              <path d="M737.47,127.13v26.72H633.33v-21.09l60.01-71.24h-60.12v-26.72h104.14v21.09l-60.01,71.24h60.12Z"/>
+              <path d="M758.29,34.79h33.67v92.35h56.78v26.7h-90.45V34.79Z"/>
+              <path d="M1038.2,122.21h-18.37v31.62h-33.67V34.81h54.4c10.78,0,20.13,1.78,28.06,5.34,7.93,3.56,14.05,8.66,18.37,15.3,4.3,6.64,6.46,14.43,6.46,23.38s-2,16.12-6.03,22.54c-4.03,6.41-9.78,11.42-17.26,15.05l25.68,37.41h-36.05l-21.6-31.62ZM1054.19,65.94c-3.52-3.05-8.73-4.59-15.65-4.59h-18.71v34.85h18.71c6.9,0,12.14-1.49,15.65-4.5,3.52-3.01,5.28-7.28,5.28-12.83s-1.76-9.86-5.28-12.92Z"/>
+            </g>
+          </svg>
+        </a>
+      </div>
+
+      <a class="bb-topnav-btn" href="./index.html">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <rect x="1" y="1" width="6" height="6" rx="1.5" fill="#FFFFFF"/>
+          <rect x="9" y="1" width="6" height="6" rx="1.5" fill="#FFFFFF"/>
+          <rect x="1" y="9" width="6" height="6" rx="1.5" fill="#FFFFFF"/>
+          <rect x="9" y="9" width="6" height="6" rx="1.5" fill="#FFFFFF"/>
+        </svg>
+        Icons
+      </a>
+
+      <a class="bb-topnav-btn" href="./index.html">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <rect x="1" y="1" width="14" height="5" rx="1.5" fill="#FFFFFF"/>
+          <rect x="1" y="8" width="6" height="7" rx="1.5" fill="#FFFFFF"/>
+          <rect x="9" y="8" width="6" height="7" rx="1.5" fill="#FFFFFF"/>
+        </svg>
+        Sections
+      </a>
+
+      <a class="bb-topnav-btn is-active" href="#contents" aria-current="page">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+          <rect x="1" y="1" width="10" height="14" rx="1.5" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+          <rect x="3" y="4" width="6" height="1.2" rx="0.6" fill="#FFFFFF"/>
+          <rect x="3" y="6.5" width="6" height="1.2" rx="0.6" fill="#FFFFFF"/>
+          <rect x="3" y="9" width="4" height="1.2" rx="0.6" fill="#FFFFFF"/>
+          <path d="M11 10l4 4" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="13" cy="12" r="2.5" fill="#013D3E" stroke="#FFFFFF" stroke-width="1.2"/>
+        </svg>
+        Brandbook
+      </a>
+
+      <div class="bb-topnav-search-zone">
+        <div class="bb-topnav-search">
+          <svg width="13" height="13" viewBox="0 0 18 18" fill="none">
+            <circle cx="7.5" cy="7.5" r="6" stroke="rgba(255,255,255,0.5)" stroke-width="1.8"/>
+            <path d="M12 12L16 16" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="bbTopSearch" placeholder="Search pages…" aria-label="Search brandbook pages" autocomplete="off" spellcheck="false">
+          <kbd>⌘K</kbd>
+        </div>
+        <div class="bb-topnav-results" id="bbTopResults"></div>
+      </div>
+
+      <div class="bb-topnav-right">
+        <a class="bb-topnav-ghost" href="./index.html">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8l5 5" stroke="rgba(255,255,255,0.75)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Design System
+        </a>
+      </div>
+
+    </div>
+  </header>
 
   <!-- ================================================================
        FLOATING LEFT NAV — Compact search / page jump
@@ -11224,6 +11486,75 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Top-nav search — same behavior as the Design System header search:
+    // filters the brandbook pages (sourced from the floating nav) and jumps on click.
+    (function () {
+      var input = document.getElementById('bbTopSearch');
+      var box = document.getElementById('bbTopResults');
+      if (!input || !box) return;
+
+      var pages = Array.prototype.map.call(
+        document.querySelectorAll('.m-nav-item'),
+        function (a) {
+          var label = a.querySelector('.m-nav-item-label');
+          var pg = a.querySelector('.m-nav-pg');
+          return {
+            href: a.getAttribute('href'),
+            label: label ? label.textContent.trim() : a.textContent.trim(),
+            pg: pg ? pg.textContent.trim() : ''
+          };
+        }
+      );
+
+      function esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      function render() {
+        var q = input.value.trim().toLowerCase();
+        if (!q) { box.classList.remove('is-open'); box.innerHTML = ''; return; }
+        var hits = pages.filter(function (p) { return p.label.toLowerCase().indexOf(q) !== -1; });
+        if (!hits.length) {
+          box.innerHTML = '<div class="bb-topnav-empty">No results for “' + esc(input.value.trim()) + '”</div>';
+        } else {
+          box.innerHTML = hits.map(function (p) {
+            return '<a class="bb-topnav-result" href="' + p.href + '">' +
+              '<span>' + esc(p.label) + '</span>' +
+              '<span class="pg">' + esc(p.pg) + '</span></a>';
+          }).join('');
+        }
+        box.classList.add('is-open');
+      }
+
+      input.addEventListener('input', render);
+      input.addEventListener('focus', render);
+      input.addEventListener('blur', function () {
+        setTimeout(function () { box.classList.remove('is-open'); }, 150);
+      });
+      box.addEventListener('mousedown', function (e) {
+        var a = e.target.closest('a.bb-topnav-result');
+        if (a) {
+          window.location.hash = a.getAttribute('href');
+          input.value = '';
+          box.classList.remove('is-open');
+          e.preventDefault();
+        }
+      });
+      window.addEventListener('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          input.focus();
+        }
+        if (e.key === 'Escape' && document.activeElement === input) {
+          input.value = '';
+          box.classList.remove('is-open');
+          input.blur();
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>
