@@ -6293,6 +6293,7 @@ cursor: pointer;
       const { mob } = useContext(MobCtx);
       const [activeId, setActiveId] = useState('sec-support');
       const [faqOpen, setFaqOpen] = useState(null);
+      const [faqOpenDark, setFaqOpenDark] = useState(0);
 
       const sectionsNav = [
         { type:'group', label:'Product Pages' },
@@ -6649,6 +6650,35 @@ cursor: pointer;
               .faq-btn { padding: 1.25rem 1.125rem; }
               .faq-left { gap: 0.875rem; }
               .faq-answer { padding: 0 1.125rem 1.5rem; }
+            }
+
+            /* ── FAQ · DARK VARIANT (inverted colors on dark surface) ── */
+            .faq-dark-section {
+              border-radius: ${T.rLg};
+              padding: 3rem 2.5rem 3.5rem;
+              background:
+                radial-gradient(ellipse 70% 70% at 18% 16%, #01696A 0%, transparent 55%),
+                linear-gradient(135deg, ${T.teal} 0%, #012628 60%, ${T.dBlack} 100%);
+            }
+            .faq-stage.faq-dark { border-top: 0.0625rem solid rgba(255,255,255,0.14); }
+            .faq-dark .faq-label { color: ${T.mint}; }
+            .faq-dark .faq-heading { color: ${T.white}; }
+            .faq-dark .faq-item {
+              background: rgba(255,255,255,0.06);
+              border-color: rgba(255,255,255,0.14);
+            }
+            .faq-dark .faq-item:hover { border-color: ${T.mint}; }
+            .faq-dark .faq-item.is-open {
+              border-color: ${T.mint};
+              background: rgba(255,255,255,0.10);
+            }
+            .faq-dark .faq-item.is-open::before { background: ${T.mint}; }
+            .faq-dark .faq-q { color: ${T.white}; }
+            .faq-dark .faq-btn:hover .faq-q { color: ${T.white}; }
+            .faq-dark .faq-icon { color: ${T.mint}; }
+            .faq-dark .faq-answer { color: rgba(255,255,255,0.72); }
+            @media (max-width: 35rem) {
+              .faq-dark-section { padding: 2rem 1.25rem 2.5rem; }
             }
 
             /* ── FACE RECOGNITION PROCESS STEPS ── */
@@ -7439,6 +7469,7 @@ cursor: pointer;
                   a:'Bis zu 6 Innenstationen pro Verteiler. Die Stationen werden über die bestehende 2-Draht-Leitung durchgeschleift (Daisy Chain).' },
               ];
               return (
+                <>
                 <div id="sec-faq" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
                   <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
                     color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
@@ -7485,6 +7516,55 @@ cursor: pointer;
                     </ul>
                   </div>
                 </div>
+
+                {/* ── FAQ · DARK VARIANT — same component, inverted for dark sections ── */}
+                <div id="sec-faq-dark" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+                  <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                    color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                    Section 04 · b
+                  </div>
+                  <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                    margin:'0 0 1.75rem',letterSpacing:'-0.01em'}}>FAQ · Dark</h2>
+                  <div className="faq-dark-section">
+                    <div className="faq-stage faq-dark">
+                      {/* Centered heading */}
+                      <div className="faq-header">
+                        <p className="faq-label">FAQ</p>
+                        <h3 className="faq-heading">Alles, was Sie wissen müssen</h3>
+                      </div>
+                      {/* Card-based accordion */}
+                      <ul className="faq-list">
+                        {faqs.map((item, i) => {
+                          const isOpen = faqOpenDark === i;
+                          return (
+                            <li key={i} className={`faq-item${isOpen ? ' is-open' : ''}`}>
+                              <button
+                                className="faq-btn"
+                                aria-expanded={isOpen}
+                                onClick={() => setFaqOpenDark(isOpen ? null : i)}
+                              >
+                                <span className="faq-left">
+                                  <span className="faq-q">{item.q}</span>
+                                </span>
+                                <span className="faq-icon" aria-hidden="true">
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M6 9l6 6 6-6"/>
+                                  </svg>
+                                </span>
+                              </button>
+                              <div className={`faq-body${isOpen ? ' is-open' : ''}`}>
+                                <div className="faq-body-inner">
+                                  <p className="faq-answer">{item.a}</p>
+                                </div>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                </>
               );
             })()}
 
