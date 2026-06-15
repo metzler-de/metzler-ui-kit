@@ -10009,13 +10009,13 @@ cursor: pointer;
                 {[0,1,2,3,4].map(i=><TStar key={i} filled={i < slide.stars}/>)}
               </div>
               {/* Text line — animated per slide */}
-              <div key={idx} style={{animation:'tslidein 0.3s ease',overflow:'hidden',display:'flex',gap:5,alignItems:'center',minWidth:0}}>
+              <div key={idx} style={{animation:'tslidein 0.3s ease',display:'flex',flexWrap:'wrap',columnGap:5,rowGap:1,alignItems:'center',minWidth:0}}>
                 {slide.score ? (
                   <>
                     <span style={{fontFamily:footerFf,fontSize:T.f13,fontWeight:400,color:T.white,whiteSpace:'nowrap',lineHeight:'14px'}}>
                       {slide.score} {slide.label}
                     </span>
-                    <span style={{fontFamily:footerFf,fontSize:T.f13,fontWeight:400,color:'rgba(255,255,255,0.5)',lineHeight:'14px',whiteSpace:'nowrap'}}>
+                    <span style={{fontFamily:footerFf,fontSize:T.f13,fontWeight:400,color:T.mint,whiteSpace:'nowrap',lineHeight:'14px'}}>
                       {slide.sub}
                     </span>
                   </>
@@ -10560,14 +10560,14 @@ cursor: pointer;
                       <div style={{display:'flex', gap:'0.125rem', width:'5rem', alignItems:'center'}}>
                         {[0,1,2,3,4].map(i => <TStar key={i} filled={i < mobSlide.stars} />)}
                       </div>
-                      <div key={mobIdx} style={{animation:'tslidein 0.3s ease', overflow:'hidden',
-                        display:'flex', gap:'0.3125rem', alignItems:'center', minWidth:0}}>
+                      <div key={mobIdx} style={{animation:'tslidein 0.3s ease',
+                        display:'flex', flexWrap:'wrap', columnGap:'0.3125rem', rowGap:'0.0625rem', alignItems:'center', minWidth:0}}>
                         {mobSlide.score ? (
                           <>
                             <span style={{fontFamily:ff, fontSize:T.fXs, color:T.white, whiteSpace:'nowrap', lineHeight:'0.875rem'}}>
                               {mobSlide.score} {mobSlide.label}
                             </span>
-                            <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'0.875rem', whiteSpace:'nowrap'}}>
+                            <span style={{fontFamily:ff, fontSize:T.fXs, color:T.mint, whiteSpace:'nowrap', lineHeight:'0.875rem'}}>
                               {mobSlide.sub}
                             </span>
                           </>

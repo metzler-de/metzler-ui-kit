@@ -9283,6 +9283,304 @@
     }
 
     /* ================================================================
+       SECTION 05 — MAGAZINE LAYOUT RULES
+    ================================================================ */
+    .page.mag-page { display: flex; flex-direction: column; }
+    .mag-bands { display: flex; flex-direction: column; }
+
+    .mag-band {
+      display: grid;
+      grid-template-columns: 172px 1fr;
+      gap: 28px;
+      padding: 22px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .mag-band:first-of-type { border-top: none; padding-top: 4px; }
+
+    .mag-band-label { padding-top: 4px; }
+    .mag-band-num {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.16em;
+      color: var(--metzler-teal); text-transform: uppercase;
+    }
+    .mag-band-title {
+      font-size: 20px; font-weight: 800; letter-spacing: -0.015em;
+      color: var(--digital-black); line-height: 1.08; margin: 7px 0 0;
+    }
+    .mag-band-meta {
+      font-size: 10.5px; color: var(--muted); margin-top: 9px; line-height: 1.5;
+    }
+
+    .mag-cards { display: grid; gap: 14px; }
+    .mag-cards.cols-1 { grid-template-columns: 1fr; }
+    .mag-cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .mag-cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .mag-card {
+      border: 1px solid var(--rule); border-radius: 10px;
+      overflow: hidden; background: var(--paper);
+      display: flex; flex-direction: column;
+    }
+    .mag-viz {
+      height: 108px; background: #F5F6FA;
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      padding: 12px; position: relative; overflow: hidden;
+    }
+    .mag-card-body { padding: 11px 13px 13px; flex: 1; }
+    .mag-principle {
+      font-size: 12.5px; font-weight: 800; color: var(--digital-black);
+      line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 5px;
+    }
+    .mag-example { font-size: 10.5px; color: var(--muted); line-height: 1.55; margin: 0; }
+    .mag-example code {
+      font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 9.5px;
+      color: var(--metzler-teal); background: #F2F6F6;
+      padding: 1px 5px; border-radius: 4px; white-space: nowrap;
+    }
+
+    /* viz helpers (div-based mini examples) */
+    .viz-stack { display: flex; flex-direction: column; gap: 6px; width: 100%; align-items: flex-start; }
+    .viz-bar { border-radius: 2px; }
+    .viz-fonts { display: flex; gap: 22px; align-items: flex-end; }
+    .viz-fonts .fa { line-height: 0.9; color: var(--digital-black); }
+    .viz-fonts .flbl { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    .viz-swatches { display: flex; width: 100%; height: 52px; border-radius: 6px; overflow: hidden; border: 1px solid var(--rule); }
+    .viz-swatches span { flex: 1; }
+    .viz-bullets { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .viz-bullets .b { display: flex; align-items: center; gap: 8px; }
+    .viz-bullets .b .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--metzler-teal); flex-shrink: 0; }
+    .viz-bullets .b .ln { height: 6px; border-radius: 3px; background: #C9CDD4; }
+    .viz-covers { display: flex; gap: 10px; align-items: flex-end; }
+    .mini-cover {
+      width: 48px; height: 64px; border-radius: 3px;
+      background: linear-gradient(135deg, #015253 0%, #01292A 100%);
+      position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .mini-cover .mc-logo { position: absolute; top: 5px; left: 5px; width: 9px; height: 9px; border-radius: 1.5px; background: var(--metzler-red); }
+    .mini-cover .mc-head { position: absolute; left: 5px; right: 5px; bottom: 14px; height: 7px; border-radius: 1px; background: var(--link-on-dark); }
+    .mini-cover .mc-sub { position: absolute; left: 5px; width: 22px; bottom: 7px; height: 3px; border-radius: 1px; background: rgba(255,255,255,0.6); }
+    .mini-cover .mc-lbl { position: absolute; top: 5px; right: 5px; font-size: 6px; font-weight: 800; color: rgba(255,255,255,0.7); }
+    .viz-toc {
+      width: 100%; background: #FFFFFF; border: 1px solid var(--rule);
+      border-radius: 6px; padding: 9px 11px; font-size: 8.5px;
+    }
+    .viz-toc .toc-h { font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--metzler-teal); font-size: 7.5px; margin-bottom: 6px; }
+    .viz-toc .toc-row { display: flex; align-items: baseline; gap: 6px; padding: 3px 0; border-bottom: 1px dotted var(--rule); }
+    .viz-toc .toc-row:last-child { border-bottom: none; }
+    .viz-toc .toc-row .t { color: var(--digital-black); font-weight: 600; }
+    .viz-toc .toc-row .d { flex: 1; }
+    .viz-toc .toc-row .n { color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .viz-measure { width: 100%; }
+    .viz-measure .mline { height: 5px; border-radius: 2.5px; background: #C9CDD4; margin-bottom: 6px; }
+    .viz-measure .ruler {
+      display: flex; align-items: center; gap: 6px; margin-top: 8px;
+      font-size: 8px; font-weight: 700; color: var(--metzler-teal);
+    }
+    .viz-measure .ruler .track { flex: 1; height: 1px; background: var(--metzler-teal); position: relative; }
+    .viz-measure .ruler .track::before,
+    .viz-measure .ruler .track::after { content: ""; position: absolute; top: -3px; width: 1px; height: 7px; background: var(--metzler-teal); }
+    .viz-measure .ruler .track::before { left: 0; }
+    .viz-measure .ruler .track::after { right: 0; }
+
+    @media (max-width: 900px) {
+      .mag-band { grid-template-columns: 1fr; gap: 14px; }
+      .mag-cards.cols-2, .mag-cards.cols-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Per-group big-card layout (one principle group per page) ---- */
+    .mag-grid { display: grid; gap: 22px; align-content: start; }
+    .mag-grid.cols-1 { grid-template-columns: 1fr; }
+    .mag-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .mag-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .mag-card-lg {
+      display: flex; flex-direction: column;
+      border: 1px solid var(--rule); border-radius: 14px;
+      background: var(--paper); overflow: hidden;
+      box-shadow: 0 1px 3px rgba(1,41,42,0.04);
+    }
+    .mag-viz-lg {
+      height: 280px;
+      background: #F5F6FA; border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      padding: 26px; overflow: hidden;
+    }
+    .mag-viz-lg svg { height: 100%; width: 100%; display: block; }
+    .mag-card-foot { padding: 18px 22px 20px; flex: 1; }
+    .mag-tag {
+      display: inline-block; font-size: 9.5px; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--metzler-teal); background: #E3F2F0;
+      padding: 3px 9px; border-radius: 999px; margin-bottom: 10px;
+    }
+    .mag-principle-lg {
+      font-size: 17.5px; font-weight: 800; letter-spacing: -0.015em;
+      color: var(--digital-black); line-height: 1.26; margin: 0 0 9px;
+    }
+    .mag-example-lg { font-size: 13px; color: #54545C; line-height: 1.6; margin: 0; }
+    .mag-example-lg code {
+      font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 11.5px;
+      color: var(--metzler-teal); background: #F2F6F6;
+      padding: 1px 6px; border-radius: 4px; white-space: nowrap;
+    }
+
+    /* Color page — swatch strip + role cards */
+    .mag-color-strip { display: flex; width: 100%; height: 132px; border-radius: 12px; overflow: hidden; border: 1px solid var(--rule); }
+    .mag-color-strip .sw { flex: 1; display: flex; align-items: flex-end; padding: 9px; }
+    .mag-color-strip .sw .hx { font-size: 10px; font-weight: 700; font-family: "SF Mono", Consolas, monospace; letter-spacing: 0.01em; }
+    .mag-roles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+    .mag-role { border-left: 3px solid var(--metzler-teal); padding: 3px 0 3px 13px; }
+    .mag-role h4 { font-size: 13.5px; font-weight: 800; color: var(--digital-black); margin: 0 0 4px; letter-spacing: -0.01em; }
+    .mag-role p { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+
+    /* Format page — scale diagram + spec table */
+    .mag-format { display: grid; grid-template-columns: 320px 1fr; gap: 30px; align-items: center; }
+    .mag-format-stage { background: #F5F6FA; border: 1px solid var(--rule); border-radius: 14px; min-height: 300px; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .mag-format-stage svg { width: 100%; height: auto; max-height: 320px; }
+    .mag-spec-table { width: 100%; border-collapse: collapse; }
+    .mag-spec-table th { text-align: left; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 0 14px 11px 0; border-bottom: 2px solid var(--rule); }
+    .mag-spec-table td { padding: 14px 14px 14px 0; border-bottom: 1px solid var(--rule); font-size: 13px; color: #54545C; vertical-align: top; line-height: 1.5; }
+    .mag-spec-table td .fmt { display: block; font-weight: 800; color: var(--digital-black); font-size: 14.5px; margin-bottom: 2px; letter-spacing: -0.01em; }
+    .mag-spec-table td code { font-family: "SF Mono", Consolas, monospace; font-size: 11.5px; color: var(--metzler-teal); white-space: nowrap; }
+    .mag-spec-table tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 900px) {
+      .mag-grid.cols-2, .mag-grid.cols-3 { grid-template-columns: 1fr; }
+      .mag-roles { grid-template-columns: 1fr 1fr; }
+      .mag-format { grid-template-columns: 1fr; }
+    }
+
+    /* ================================================================
+       SECTION 06 — PRINT COVER PLAYBOOK
+    ================================================================ */
+    .page.cp-dark {
+      background:
+        radial-gradient(ellipse 70% 70% at 16% 20%, #01696A 0%, transparent 55%),
+        linear-gradient(135deg, var(--metzler-teal) 0%, #012628 60%, var(--digital-black) 100%);
+      color: #FFFFFF;
+    }
+    .page.cp-dark .brand-strip { color: rgba(255,255,255,0.8); }
+    .page.cp-dark .brand-strip .dot { background: #5CDBD3; }
+    .page.cp-dark .page-title { color: #FFFFFF; }
+    .page.cp-dark .palette-header-note { color: rgba(255,255,255,0.78); }
+    .page.cp-dark .page-footer { color: rgba(255,255,255,0.55); border-top-color: rgba(255,255,255,0.18); }
+
+    /* ---- Magazine cover mockup ---- */
+    .cover-mock {
+      position: relative; aspect-ratio: 3 / 4;
+      border-radius: 9px; overflow: hidden; color: #FFFFFF;
+      background: linear-gradient(158deg, #04595a 0%, #01292A 54%, #060d0d 100%);
+      box-shadow: 0 18px 40px rgba(1,28,29,0.34);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 14px 14px 15px;
+    }
+    .cover-mock::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(56% 46% at 64% 38%, rgba(92,219,211,0.34), transparent 66%);
+      pointer-events: none;
+    }
+    .cover-mock > * { position: relative; z-index: 1; }
+    .cm-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .cm-masthead { font: 800 25px/0.86 Helvetica, sans-serif; letter-spacing: -0.045em; }
+    .cm-issue { font-size: 7px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.62; margin-top: 4px; }
+    .cm-logo { width: 19px; height: 19px; border-radius: 3px; background: #D42924; flex-shrink: 0; position: relative; }
+    .cm-logo::after { content: "M"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: 800 12px Helvetica; color: #fff; }
+    .cm-bottom .cm-kicker { font-size: 7.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #5CDBD3; margin-bottom: 6px; }
+    .cm-bottom .cm-headline { font: 800 22px/0.98 Helvetica, sans-serif; letter-spacing: -0.03em; }
+    .cm-bottom .cm-sub { font-size: 8.5px; line-height: 1.45; opacity: 0.78; margin-top: 7px; max-width: 82%; }
+    .cm-barcode { display: flex; gap: 1.5px; margin-top: 12px; height: 13px; width: 46px; opacity: 0.8; }
+    .cm-barcode i { flex: 1; background: rgba(255,255,255,0.85); }
+    .cm-barcode i:nth-child(2n) { flex: 0.5; }
+    .cm-barcode i:nth-child(3n) { flex: 1.6; }
+    /* numbered annotation pins */
+    .cm-pin { position: absolute; z-index: 3; width: 19px; height: 19px; border-radius: 50%; background: #D42924; color: #fff; font: 800 9.5px Helvetica; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+    /* cluttered variant */
+    .cover-mock.is-busy::before {
+      background:
+        radial-gradient(38% 26% at 28% 28%, rgba(92,219,211,0.30), transparent 60%),
+        radial-gradient(40% 26% at 74% 70%, rgba(212,41,36,0.30), transparent 60%);
+    }
+    .cover-clutter { display: flex; flex-direction: column; gap: 5px; }
+    .cover-clutter .cl { font: 800 14px/0.95 Helvetica; letter-spacing: -0.02em; }
+    .cover-clutter .cl.s { font-size: 10px; opacity: 0.9; }
+    .cover-clutter .cl.t { color: #5CDBD3; }
+    .cover-clutter .cl.r { color: #ff9a94; }
+
+    /* size covers to their container */
+    .mag-viz-lg .cover-mock { height: 100%; width: auto; }
+
+    /* ---- Anatomy page (dark) ---- */
+    .cp-anatomy { display: grid; grid-template-columns: 260px 1fr; gap: 50px; align-items: center; align-content: start; padding-top: 8px; }
+    .cp-anatomy-stage { display: flex; justify-content: center; }
+    .cp-anatomy-stage .cover-mock { width: 230px; height: auto; }
+    .cp-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; }
+    .cp-legend .lg-item { display: flex; gap: 13px; }
+    .cp-legend .lg-n { width: 27px; height: 27px; border-radius: 50%; border: 1.5px solid #5CDBD3; color: #5CDBD3; font: 800 12px Helvetica; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cp-legend h4 { font-size: 14px; font-weight: 800; color: #fff; margin: 0 0 4px; letter-spacing: -0.01em; }
+    .cp-legend p { font-size: 11.5px; color: rgba(255,255,255,0.72); line-height: 1.5; margin: 0; }
+
+    /* ---- Cover caption (do/don't, examples) ---- */
+    .cp-caption { padding: 16px 20px 18px; }
+    .cp-caption .cap-flag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .cp-caption .cap-flag.no { color: var(--metzler-red); }
+    .cp-caption .cap-flag.yes { color: var(--success); }
+    .cp-caption h3 { font-size: 16px; font-weight: 800; color: var(--digital-black); margin: 0 0 6px; letter-spacing: -0.01em; }
+    .cp-caption p { font-size: 12.5px; color: #54545C; line-height: 1.6; margin: 0; }
+
+    /* ---- Process steps ---- */
+    .cp-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+    .cp-step { padding: 0 16px; position: relative; }
+    .cp-step:first-child { padding-left: 0; }
+    .cp-step::before { content: ""; position: absolute; top: 18px; left: 0; width: 100%; height: 2px; background: var(--rule); z-index: 0; }
+    .cp-step:first-child::before { display: none; }
+    .cp-step .num { position: relative; z-index: 1; width: 38px; height: 38px; border-radius: 50%; background: var(--metzler-teal); color: #fff; font: 800 15px Helvetica; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .cp-step h4 { font-size: 14px; font-weight: 800; color: var(--digital-black); margin: 0 0 6px; letter-spacing: -0.01em; }
+    .cp-step p { font-size: 11.5px; color: var(--muted); line-height: 1.55; margin: 0; }
+    .cp-note {
+      margin-top: 26px; border-radius: 12px; padding: 16px 20px;
+      background: #F2F6F6; border: 1px solid rgba(1,82,83,0.16);
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .cp-note .cp-note-icon { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; background: var(--metzler-teal); color: #fff; display: flex; align-items: center; justify-content: center; font: 800 15px Helvetica; }
+    .cp-note h4 { font-size: 13.5px; font-weight: 800; color: var(--digital-black); margin: 0 0 3px; }
+    .cp-note p { font-size: 12px; color: #54545C; line-height: 1.55; margin: 0; }
+
+    /* ---- Finishes ---- */
+    .cp-finishes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .finish-card { border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: var(--paper); }
+    .finish-tile { aspect-ratio: 16 / 10; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .finish-tile .ft-label { font: 800 26px Helvetica; letter-spacing: -0.03em; }
+    .finish-tile.foil { background: linear-gradient(115deg, #e6fffb 0%, #5CDBD3 26%, #0b7a70 50%, #5CDBD3 73%, #f0fffd 100%); }
+    .finish-tile.foil .ft-label { color: #013E3E; }
+    .finish-tile.uv { background: #01292A; }
+    .finish-tile.uv .ft-label { color: #0c4546; }
+    .finish-tile.uv::after { content: ""; position: absolute; top: -50%; left: -10%; width: 50%; height: 200%; background: linear-gradient(105deg, transparent, rgba(255,255,255,0.22), transparent); transform: rotate(10deg); }
+    .finish-tile.emboss { background: #E3F2F0; }
+    .finish-tile.emboss .ft-label { color: #cfe6e2; text-shadow: 0 1.5px 0 #fff, 0 -1px 1.5px rgba(1,82,83,0.22); }
+    .finish-tile.diecut { background: var(--metzler-teal); }
+    .finish-tile.diecut .ft-hole { width: 48px; height: 48px; border-radius: 50%; background: #F5F6FA; box-shadow: inset 0 2px 6px rgba(0,0,0,0.28); }
+    .finish-card .ft-body { padding: 12px 14px 14px; }
+    .finish-card .ft-name { font-size: 13.5px; font-weight: 800; color: var(--digital-black); letter-spacing: -0.01em; }
+    .finish-card .ft-use { font-size: 10.5px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+
+    /* ---- Consistency row of covers ---- */
+    .cp-consistency { display: flex; gap: 18px; align-items: flex-end; margin-top: 22px; }
+    .cp-consistency .cc-set { display: flex; gap: 14px; }
+    .cp-consistency .cover-mock { width: 116px; }
+    .cp-consistency .cc-text { flex: 1; padding-left: 8px; }
+    .cp-consistency .cc-text h4 { font-size: 14px; font-weight: 800; color: var(--digital-black); margin: 0 0 6px; letter-spacing: -0.01em; }
+    .cp-consistency .cc-text p { font-size: 12px; color: #54545C; line-height: 1.6; margin: 0; }
+
+    @media (max-width: 900px) {
+      .cp-anatomy, .cp-legend { grid-template-columns: 1fr; }
+      .cp-steps { grid-template-columns: 1fr; gap: 18px; }
+      .cp-step { padding: 0; }
+      .cp-step::before { display: none; }
+      .cp-finishes { grid-template-columns: 1fr 1fr; }
+      .cp-consistency { flex-direction: column; align-items: stretch; }
+    }
+
+    /* ================================================================
        TOP NAV — same chrome as the Design System (index.html)
     ================================================================ */
     body { padding-top: 57px; }
@@ -9603,7 +9901,26 @@
         <a class="m-nav-item" href="#metzler-gradient"><span class="m-nav-item-label">Metzler Gradient</span><span class="m-nav-pg">03 c</span></a>
       </div>
       <div class="m-nav-group">
-        <div class="m-nav-chapter"><span class="m-nav-chapter-num">05</span><span>Quick Reference</span></div>
+        <div class="m-nav-chapter"><span class="m-nav-chapter-num">05</span><span>Magazine Layout Rules</span></div>
+        <a class="m-nav-item" href="#magazine-grid"><span class="m-nav-item-label">Grid &amp; Structure</span><span class="m-nav-pg">05 a</span></a>
+        <a class="m-nav-item" href="#magazine-whitespace"><span class="m-nav-item-label">Whitespace &amp; Balance</span><span class="m-nav-pg">05 b</span></a>
+        <a class="m-nav-item" href="#magazine-hierarchy"><span class="m-nav-item-label">Visual Hierarchy</span><span class="m-nav-pg">05 c</span></a>
+        <a class="m-nav-item" href="#magazine-typography"><span class="m-nav-item-label">Typography</span><span class="m-nav-pg">05 d</span></a>
+        <a class="m-nav-item" href="#magazine-color"><span class="m-nav-item-label">Color</span><span class="m-nav-pg">05 e</span></a>
+        <a class="m-nav-item" href="#magazine-flow"><span class="m-nav-item-label">Flow &amp; Navigation</span><span class="m-nav-pg">05 f</span></a>
+        <a class="m-nav-item" href="#magazine-consistency"><span class="m-nav-item-label">Consistency</span><span class="m-nav-pg">05 g</span></a>
+        <a class="m-nav-item" href="#magazine-formats"><span class="m-nav-item-label">Format Specs</span><span class="m-nav-pg">05 h</span></a>
+      </div>
+      <div class="m-nav-group">
+        <div class="m-nav-chapter"><span class="m-nav-chapter-num">06</span><span>Print Cover Playbook</span></div>
+        <a class="m-nav-item" href="#cover-anatomy"><span class="m-nav-item-label">Anatomy of a Cover</span><span class="m-nav-pg">06 a</span></a>
+        <a class="m-nav-item" href="#cover-focus"><span class="m-nav-item-label">Lead With One Story</span><span class="m-nav-pg">06 b</span></a>
+        <a class="m-nav-item" href="#cover-imagery"><span class="m-nav-item-label">Imagery, Type &amp; Contrast</span><span class="m-nav-pg">06 c</span></a>
+        <a class="m-nav-item" href="#cover-strategy"><span class="m-nav-item-label">Strategy &amp; Testing</span><span class="m-nav-pg">06 d</span></a>
+        <a class="m-nav-item" href="#cover-finishes"><span class="m-nav-item-label">Finishes &amp; Consistency</span><span class="m-nav-pg">06 e</span></a>
+      </div>
+      <div class="m-nav-group">
+        <div class="m-nav-chapter"><span class="m-nav-chapter-num">07</span><span>Quick Reference</span></div>
         <a class="m-nav-item" href="#do-dont"><span class="m-nav-item-label">Do / Don't Quick Reference</span><span class="m-nav-pg">17</span></a>
       </div>
       <div class="m-nav-empty" id="mNavEmpty" hidden>No pages match your search.</div>
@@ -9882,10 +10199,43 @@
         </ul>
       </div>
 
-      <!-- 05 — Quick Reference -->
+      <!-- 05 — Magazine Layout Rules -->
       <div class="contents-group">
         <div class="contents-chapter">
           <span class="contents-num">05</span>
+          <h3 class="contents-chapter-title">Magazine Layout Rules</h3>
+        </div>
+        <ul class="contents-items">
+          <li><a href="#magazine-grid">Grid &amp; Structure</a><span class="pg">05 a</span></li>
+          <li><a href="#magazine-whitespace">Whitespace &amp; Balance</a><span class="pg">05 b</span></li>
+          <li><a href="#magazine-hierarchy">Visual Hierarchy</a><span class="pg">05 c</span></li>
+          <li><a href="#magazine-typography">Typography</a><span class="pg">05 d</span></li>
+          <li><a href="#magazine-color">Color</a><span class="pg">05 e</span></li>
+          <li><a href="#magazine-flow">Flow &amp; Navigation</a><span class="pg">05 f</span></li>
+          <li><a href="#magazine-consistency">Consistency</a><span class="pg">05 g</span></li>
+          <li><a href="#magazine-formats">Format Specs</a><span class="pg">05 h</span></li>
+        </ul>
+      </div>
+
+      <!-- 06 — Print Cover Playbook -->
+      <div class="contents-group">
+        <div class="contents-chapter">
+          <span class="contents-num">06</span>
+          <h3 class="contents-chapter-title">Print Cover Playbook</h3>
+        </div>
+        <ul class="contents-items">
+          <li><a href="#cover-anatomy">Anatomy of a Cover</a><span class="pg">06 a</span></li>
+          <li><a href="#cover-focus">Lead With One Story</a><span class="pg">06 b</span></li>
+          <li><a href="#cover-imagery">Imagery, Type &amp; Contrast</a><span class="pg">06 c</span></li>
+          <li><a href="#cover-strategy">Strategy &amp; Testing</a><span class="pg">06 d</span></li>
+          <li><a href="#cover-finishes">Finishes &amp; Consistency</a><span class="pg">06 e</span></li>
+        </ul>
+      </div>
+
+      <!-- 07 — Quick Reference -->
+      <div class="contents-group">
+        <div class="contents-chapter">
+          <span class="contents-num">07</span>
           <h3 class="contents-chapter-title">Quick Reference</h3>
         </div>
         <ul class="contents-items">
@@ -11103,6 +11453,872 @@
     </div>
   </section>
   <!-- ================================================================
+       SECTION 05 · a — MAGAZINE: GRID & STRUCTURE
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-grid">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Grid &amp;<br>Structure</h1>
+      <p class="palette-header-note">
+        The skeleton every page hangs on. Set the grid before any design begins,
+        treat facing pages as one canvas, and load the most important content into
+        the zone the reader sees first.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-3">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 150 92" aria-hidden="true">
+            <g fill="none" stroke="#C9CDD4" stroke-width="1" stroke-dasharray="3 3">
+              <line x1="50" y1="2" x2="50" y2="90"/><line x1="100" y1="2" x2="100" y2="90"/>
+              <line x1="2" y1="31" x2="148" y2="31"/><line x1="2" y1="61" x2="148" y2="61"/>
+            </g>
+            <rect x="2" y="2" width="146" height="88" fill="none" stroke="#C9CDD4" stroke-width="1"/>
+            <rect x="6" y="6" width="90" height="21" rx="2" fill="#015253"/>
+            <rect x="104" y="6" width="40" height="21" rx="2" fill="#5CDBD3"/>
+            <rect x="6" y="35" width="40" height="22" rx="2" fill="#D9DEE4"/>
+            <rect x="54" y="35" width="90" height="22" rx="2" fill="#D9DEE4"/>
+            <rect x="6" y="65" width="138" height="21" rx="2" fill="#014A4B"/>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 01</span>
+          <p class="mag-principle-lg">Build on a 2–3 column grid; think 3×3 for even distribution.</p>
+          <p class="mag-example-lg">A4 body uses 3 columns with a <code>4 mm</code> gutter. Overlay a 3×3 matrix and seat each block on a cell so visual weight spreads evenly across the page.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 160 92" aria-hidden="true">
+            <rect x="2" y="6" width="76" height="80" fill="#FFFFFF" stroke="#C9CDD4"/>
+            <rect x="82" y="6" width="76" height="80" fill="#FFFFFF" stroke="#C9CDD4"/>
+            <line x1="80" y1="4" x2="80" y2="88" stroke="#D42924" stroke-width="1" stroke-dasharray="3 2"/>
+            <rect x="40" y="16" width="80" height="34" rx="2" fill="#015253"/>
+            <rect x="12" y="58" width="56" height="6" rx="2" fill="#C9CDD4"/>
+            <rect x="12" y="68" width="56" height="6" rx="2" fill="#C9CDD4"/>
+            <rect x="92" y="58" width="56" height="6" rx="2" fill="#C9CDD4"/>
+            <rect x="92" y="68" width="40" height="6" rx="2" fill="#C9CDD4"/>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 02</span>
+          <p class="mag-principle-lg">Design each spread as one unit, not two pages.</p>
+          <p class="mag-example-lg">Let the hero image cross the gutter and align baselines left-to-right. Keep critical content <code>≥ 10 mm</code> clear of the spine fold.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 76 92" aria-hidden="true">
+            <rect x="2" y="2" width="72" height="88" fill="#FFFFFF" stroke="#C9CDD4"/>
+            <rect x="2" y="2" width="72" height="29" fill="#E3F2F0"/>
+            <line x1="2" y1="31" x2="74" y2="31" stroke="#015253" stroke-width="1" stroke-dasharray="3 2"/>
+            <rect x="8" y="9" width="50" height="9" rx="2" fill="#015253"/>
+            <rect x="8" y="21" width="34" height="5" rx="2" fill="#5CDBD3"/>
+            <rect x="8" y="40" width="60" height="5" rx="2" fill="#D9DEE4"/>
+            <rect x="8" y="49" width="60" height="5" rx="2" fill="#D9DEE4"/>
+            <rect x="8" y="58" width="44" height="5" rx="2" fill="#D9DEE4"/>
+            <text x="68" y="14" font-size="8" font-weight="700" fill="#015253" text-anchor="end" font-family="Helvetica">⅓</text>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 03</span>
+          <p class="mag-principle-lg">Place key content in the upper third of the page.</p>
+          <p class="mag-example-lg">Headline, kicker, and lead image sit in the top <code>33%</code> — the zone read first and visible above a newsstand fold.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Grid &amp; Structure</span>
+      <span>05 a</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · b — MAGAZINE: WHITESPACE & BALANCE
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-whitespace">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Whitespace<br>&amp; Balance</h1>
+      <p class="palette-header-note">
+        Space is an active design element, not leftover. Give every element room to
+        breathe, and balance the spread around an optical centre using unequal sizes
+        rather than rigid symmetry.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-2">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 200 92" aria-hidden="true">
+            <rect x="6" y="10" width="78" height="72" rx="3" fill="#015253"/>
+            <g fill="#C9CDD4">
+              <rect x="104" y="14" width="90" height="6" rx="3"/>
+              <rect x="104" y="26" width="90" height="6" rx="3"/>
+              <rect x="104" y="38" width="76" height="6" rx="3"/>
+              <rect x="104" y="58" width="90" height="6" rx="3"/>
+              <rect x="104" y="70" width="60" height="6" rx="3"/>
+            </g>
+            <g stroke="#D42924" stroke-width="1">
+              <line x1="88" y1="10" x2="88" y2="82"/>
+              <line x1="100" y1="10" x2="100" y2="82"/>
+            </g>
+            <text x="94" y="50" font-size="8" font-weight="800" fill="#D42924" text-anchor="middle" font-family="Helvetica" transform="rotate(-90 94 50)">2–3 ch</text>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 04</span>
+          <p class="mag-principle-lg">Use whitespace deliberately; hold a 2–3 character buffer between image and text.</p>
+          <p class="mag-example-lg">At 11 pt body that buffer is roughly <code>5–7 mm</code>. Never let captions or columns touch a picture edge — give every element room to breathe.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 200 92" aria-hidden="true">
+            <line x1="100" y1="6" x2="100" y2="86" stroke="#D9DEE4" stroke-width="1" stroke-dasharray="2 3"/>
+            <circle cx="62" cy="46" r="26" fill="#015253"/>
+            <circle cx="146" cy="40" r="15" fill="#5CDBD3"/>
+            <rect x="120" y="62" width="52" height="6" rx="3" fill="#C9CDD4"/>
+            <rect x="120" y="72" width="38" height="6" rx="3" fill="#C9CDD4"/>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 05</span>
+          <p class="mag-principle-lg">Balance the spread around an optical centre.</p>
+          <p class="mag-example-lg">One large mass on the left is offset by a smaller accent plus text on the right — unequal sizes, even visual weight. Avoid mirror-symmetry.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Whitespace &amp; Balance</span>
+      <span>05 b</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · c — MAGAZINE: VISUAL HIERARCHY
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-hierarchy">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Visual<br>Hierarchy</h1>
+      <p class="palette-header-note">
+        Guide the eye before a single word is read. Bigger elements read as more
+        important — use size, weight, and colour to rank everything, and give each
+        cover a single dominant focal point.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-2">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="viz-stack" style="gap:9px;max-width:340px;">
+            <div class="viz-bar" style="width:80%;height:26px;background:#01292A;"></div>
+            <div class="viz-bar" style="width:58%;height:18px;background:#015253;"></div>
+            <div class="viz-bar" style="width:46%;height:13px;background:#54545C;"></div>
+            <div class="viz-bar" style="width:90%;height:7px;background:#C9CDD4;"></div>
+            <div class="viz-bar" style="width:82%;height:7px;background:#C9CDD4;"></div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 06</span>
+          <p class="mag-principle-lg">Build clear heading levels with size, weight, and colour.</p>
+          <p class="mag-example-lg">Four steps: <code>H1 28/700</code>, <code>H2 18/700</code>, <code>H3 13/700</code>, body <code>11/400</code>. Each level differs from the next in at least two attributes.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="mini-cover" style="width:118px;height:158px;">
+            <span class="mc-logo" style="width:14px;height:14px;top:8px;left:8px;"></span>
+            <span class="mc-lbl" style="font-size:9px;top:9px;right:8px;">№ 07</span>
+            <div style="position:absolute;left:10px;right:10px;top:58px;font:800 30px/0.9 Helvetica;color:#fff;letter-spacing:-0.03em;">BOLD<br>STORY</div>
+            <span class="mc-sub" style="bottom:16px;left:10px;width:54px;height:5px;"></span>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 07</span>
+          <p class="mag-principle-lg">Strong size contrast; one bold focal point per cover.</p>
+          <p class="mag-example-lg">The cover line dwarfs everything else — roughly <code>5–8×</code> the supporting text. A single dominant element, with no competing headlines.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Visual Hierarchy</span>
+      <span>05 c</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · d — MAGAZINE: TYPOGRAPHY
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-typography">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Typography</h1>
+      <p class="palette-header-note">
+        Set type for comfortable, scannable reading. Keep the font palette tight,
+        size the body for sustained reading, and break long copy into chunks a
+        skimming reader can navigate.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-3">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="viz-fonts" style="gap:28px;">
+            <div style="text-align:center;">
+              <div class="fa" style="font:800 56px Helvetica;letter-spacing:-0.03em;">Aa</div>
+              <div class="flbl" style="font-size:10px;margin-top:8px;">Display · Bold</div>
+            </div>
+            <div style="text-align:center;">
+              <div class="fa" style="font:400 46px Georgia,serif;">Aa</div>
+              <div class="flbl" style="font-size:10px;margin-top:8px;">Text · Serif</div>
+            </div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 08</span>
+          <p class="mag-principle-lg">Use 1–2 fonts matching the magazine's personality.</p>
+          <p class="mag-example-lg">Metzler editorial pairs <code>Helvetica Neue</code> for display with one serif text face. Two families maximum — weights do the rest.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="viz-measure" style="max-width:300px;">
+            <div class="mline" style="height:8px;margin-bottom:9px;width:100%;"></div>
+            <div class="mline" style="height:8px;margin-bottom:9px;width:100%;"></div>
+            <div class="mline" style="height:8px;margin-bottom:9px;width:96%;"></div>
+            <div class="mline" style="height:8px;margin-bottom:0;width:62%;"></div>
+            <div class="ruler" style="font-size:11px;margin-top:12px;"><span>50</span><span class="track"></span><span>70 ch</span></div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 09</span>
+          <p class="mag-principle-lg">Body 10–13 pt, leading ~120%, line length 50–70 characters.</p>
+          <p class="mag-example-lg">House setting: <code>11 pt / 13.2 pt</code> leading, columns sized to land near <code>60 characters</code> per line for a steady rhythm.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="viz-bullets" style="gap:13px;max-width:300px;">
+            <div class="b"><span class="dot" style="width:9px;height:9px;"></span><span class="ln" style="width:80%;height:9px;"></span></div>
+            <div class="b"><span class="dot" style="width:9px;height:9px;"></span><span class="ln" style="width:64%;height:9px;"></span></div>
+            <div class="b"><span class="dot" style="width:9px;height:9px;"></span><span class="ln" style="width:72%;height:9px;"></span></div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 10</span>
+          <p class="mag-principle-lg">Break long copy into scannable chunks; use bullets as entry points.</p>
+          <p class="mag-example-lg">Cap paragraphs at <code>3–4 lines</code>. Lead sections with bullets or bold run-ins so a skimming reader still catches every key point.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Typography</span>
+      <span>05 d</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · e — MAGAZINE: COLOR
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-color">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Color</h1>
+      <p class="palette-header-note">
+        A disciplined, complementary set keeps every issue unmistakably Metzler.
+        Anchor on the teal scale, add one complement and one signal accent, and let
+        the neutrals carry structure and type.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-1">
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg" style="height:auto;flex-direction:column;align-items:stretch;padding:26px;">
+          <div class="mag-color-strip">
+            <span class="sw" style="background:#F2F6F6;"><span class="hx" style="color:#54545C;">#F2F6F6</span></span>
+            <span class="sw" style="background:#E6EEEE;"><span class="hx" style="color:#54545C;">#E6EEEE</span></span>
+            <span class="sw" style="background:#5CDBD3;"><span class="hx" style="color:#01292A;">#5CDBD3</span></span>
+            <span class="sw" style="background:#015253;"><span class="hx" style="color:#fff;">#015253</span></span>
+            <span class="sw" style="background:#014A4B;"><span class="hx" style="color:#fff;">#014A4B</span></span>
+            <span class="sw" style="background:#01292A;"><span class="hx" style="color:#fff;">#01292A</span></span>
+            <span class="sw" style="background:#D42924;"><span class="hx" style="color:#fff;">#D42924</span></span>
+            <span class="sw" style="background:#1A171B;"><span class="hx" style="color:#fff;">#1A171B</span></span>
+          </div>
+          <div class="mag-roles">
+            <div class="mag-role"><h4>Anchor</h4><p>Teal scale carries all brand surfaces, nav, and CTAs.</p></div>
+            <div class="mag-role" style="border-left-color:#5CDBD3;"><h4>Complement</h4><p>Teal Mint for accents, highlights, and links on dark.</p></div>
+            <div class="mag-role" style="border-left-color:#D42924;"><h4>Signal</h4><p>Metzler Rot, used only for the logo square and rare alerts.</p></div>
+            <div class="mag-role" style="border-left-color:#A1A1A1;"><h4>Neutrals</h4><p>Graphite scale for structure, body text, and rules.</p></div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 11</span>
+          <p class="mag-principle-lg">Limit the palette to ~6–8 complementary shades; apply contrast &amp; complementary theory.</p>
+          <p class="mag-example-lg">Eight stops total — never sample off-system colours from photos. Pair the warm <code>Metzler Rot</code> against cool teal for maximum contrast where it matters.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Color</span>
+      <span>05 e</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · f — MAGAZINE: FLOW & NAVIGATION
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-flow">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Flow &amp;<br>Navigation</h1>
+      <p class="palette-header-note">
+        Plan the route the eye takes through the spread. Follow the natural reading
+        path, signal any non-linear jumps with clear cues, and reserve the margins
+        for wayfinding marks.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-2">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 150 92" aria-hidden="true">
+            <rect x="2" y="2" width="146" height="88" fill="#FFFFFF" stroke="#C9CDD4"/>
+            <circle cx="22" cy="20" r="7" fill="#015253"/>
+            <circle cx="128" cy="20" r="7" fill="#5CDBD3"/>
+            <circle cx="22" cy="72" r="7" fill="#5CDBD3"/>
+            <circle cx="128" cy="72" r="7" fill="#D42924"/>
+            <g fill="none" stroke="#015253" stroke-width="1.6" marker-end="url(#ahf)">
+              <path d="M31 20 H117"/>
+              <path d="M122 27 L28 65"/>
+              <path d="M31 72 H117"/>
+            </g>
+            <defs><marker id="ahf" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#015253"/></marker></defs>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 12</span>
+          <p class="mag-principle-lg">Guide the reader top-left to bottom-right; cue non-linear jumps.</p>
+          <p class="mag-example-lg">Follow the natural <code>Z-pattern</code>. When the order breaks, add a numbered marker or arrow so the reader never loses the thread.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <svg viewBox="0 0 76 92" aria-hidden="true">
+            <rect x="2" y="2" width="72" height="88" fill="#FFFFFF" stroke="#C9CDD4"/>
+            <rect x="14" y="14" width="48" height="58" fill="#F0F0F0"/>
+            <line x1="14" y1="10" x2="62" y2="10" stroke="#D9DEE4"/>
+            <text x="14" y="9" font-size="5.5" font-weight="700" fill="#7A7A82" font-family="Helvetica">METZLER MAG · 07</text>
+            <text x="54" y="84" font-size="9" font-weight="800" fill="#015253" font-family="Helvetica">12</text>
+            <line x1="14" y1="78" x2="62" y2="78" stroke="#D9DEE4"/>
+          </svg>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 13</span>
+          <p class="mag-principle-lg">Use the margins for page numbers and markers.</p>
+          <p class="mag-example-lg">Folios and running heads live in the outer/bottom margin — <code>8 pt</code>, Graphite 600 — never inside the live text area.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Flow &amp; Navigation</span>
+      <span>05 f</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · g — MAGAZINE: CONSISTENCY
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-consistency">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Consistency</h1>
+      <p class="palette-header-note">
+        A magazine earns trust by being recognisable. Repeat the same system every
+        issue, and give readers a dependable, consistently formatted table of
+        contents to navigate by.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-2">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="viz-covers" style="gap:14px;">
+            <div class="mini-cover" style="width:74px;height:99px;"><span class="mc-logo" style="width:11px;height:11px;"></span><span class="mc-lbl">01</span><span class="mc-head"></span><span class="mc-sub"></span></div>
+            <div class="mini-cover" style="width:74px;height:99px;"><span class="mc-logo" style="width:11px;height:11px;"></span><span class="mc-lbl">02</span><span class="mc-head"></span><span class="mc-sub"></span></div>
+            <div class="mini-cover" style="width:74px;height:99px;"><span class="mc-logo" style="width:11px;height:11px;"></span><span class="mc-lbl">03</span><span class="mc-head"></span><span class="mc-sub"></span></div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 14</span>
+          <p class="mag-principle-lg">Keep the style consistent across all issues.</p>
+          <p class="mag-example-lg">Logo position, masthead, grid, and folio style are fixed. Only content and the issue number change — three issues read as one family.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="viz-toc" style="max-width:280px;font-size:11px;padding:14px 16px;">
+            <div class="toc-h" style="font-size:9px;margin-bottom:9px;">Contents</div>
+            <div class="toc-row" style="padding:5px 0;"><span class="t">Editorial</span><span class="d"></span><span class="n">03</span></div>
+            <div class="toc-row" style="padding:5px 0;"><span class="t">Cover Story</span><span class="d"></span><span class="n">08</span></div>
+            <div class="toc-row" style="padding:5px 0;"><span class="t">Product Focus</span><span class="d"></span><span class="n">16</span></div>
+            <div class="toc-row" style="padding:5px 0;"><span class="t">Reference</span><span class="d"></span><span class="n">24</span></div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 15</span>
+          <p class="mag-principle-lg">Include a readable, consistently formatted table of contents.</p>
+          <p class="mag-example-lg">Same TOC layout every issue: section title, dotted leader, page number in tabular figures — aligned and instantly scannable.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Consistency</span>
+      <span>05 g</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 05 · h — MAGAZINE: FORMAT SPECS
+  ================================================================ -->
+  <section class="page mag-page" id="magazine-formats">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 05 · Magazine</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Format<br>Specs</h1>
+      <p class="palette-header-note">
+        Start from a standard trim format and hold it for every issue of a title.
+        The diagram shows the common sizes to scale; the table lists exact
+        dimensions, typical use, and bleed.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-1">
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg" style="height:auto;padding:26px;">
+          <div class="mag-format">
+            <div class="mag-format-stage">
+              <svg viewBox="0 0 200 150" aria-hidden="true">
+                <rect x="2" y="2" width="150" height="146" fill="none" stroke="#C9CDD4" stroke-width="1.2" stroke-dasharray="5 4"/>
+                <text x="8" y="16" font-size="8" font-weight="700" fill="#A1A1A1" font-family="Helvetica">Oversized</text>
+                <rect x="2" y="40" width="108" height="108" fill="rgba(1,82,83,0.10)" stroke="#015253" stroke-width="1.2"/>
+                <text x="8" y="54" font-size="8" font-weight="800" fill="#015253" font-family="Helvetica">US Letter</text>
+                <rect x="2" y="52" width="92" height="96" fill="rgba(1,82,83,0.24)" stroke="#014A4B" stroke-width="1.2"/>
+                <text x="50" y="142" font-size="8" font-weight="800" fill="#FFFFFF" font-family="Helvetica">A4</text>
+                <rect x="2" y="82" width="68" height="66" fill="#015253" stroke="#01292A" stroke-width="1.2"/>
+                <text x="8" y="142" font-size="8" font-weight="800" fill="#FFFFFF" font-family="Helvetica">Digest</text>
+              </svg>
+            </div>
+            <table class="mag-spec-table">
+              <thead><tr><th>Format</th><th>Dimensions</th><th>Typical use</th></tr></thead>
+              <tbody>
+                <tr><td><span class="fmt">US Letter</span></td><td><code>8.5 × 11 in</code><br><code>216 × 279 mm</code></td><td>North-American print runs</td></tr>
+                <tr><td><span class="fmt">A4 · house default</span></td><td><code>210 × 297 mm</code></td><td>Magazines, catalogs, datasheets</td></tr>
+                <tr><td><span class="fmt">Digest</span></td><td><code>5.5 × 8.5 in</code><br><code>140 × 216 mm</code></td><td>Pocket guides, mailers</td></tr>
+                <tr><td><span class="fmt">Oversized</span></td><td><code>custom trim</code></td><td>Fashion &amp; art editorial</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Rule 16</span>
+          <p class="mag-principle-lg">Start from a standard trim format and hold it for every issue.</p>
+          <p class="mag-example-lg">Add <code>3 mm</code> bleed on all sides and keep content inside the safety margin. Pick one trim per title — never mix formats within a series.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Magazine · Format Specs</span>
+      <span>05 h</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 06 · a — PRINT COVER PLAYBOOK · ANATOMY (dark hero)
+  ================================================================ -->
+  <section class="page cp-dark" id="cover-anatomy">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 06 · Print Cover Playbook</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Anatomy<br>of a Cover</h1>
+      <p class="palette-header-note">
+        A great print cover does one job: stop the reader and sell one story. Every
+        Metzler front — magazine, report, or brochure — is built from the same six
+        zones. Lead with a single idea, give it room, and let the brand hold the
+        frame. Be bold; a cover that plays it safe gets skipped.
+      </p>
+    </div>
+
+    <div class="cp-anatomy">
+      <div class="cp-anatomy-stage">
+        <div class="cover-mock">
+          <span class="cm-pin" style="top:14px;left:122px;">1</span>
+          <span class="cm-pin" style="top:62px;left:14px;">2</span>
+          <span class="cm-pin" style="top:16px;right:42px;">3</span>
+          <span class="cm-pin" style="bottom:106px;right:14px;">4</span>
+          <span class="cm-pin" style="bottom:58px;right:14px;">5</span>
+          <span class="cm-pin" style="bottom:16px;left:84px;">6</span>
+          <div class="cm-top">
+            <div>
+              <div class="cm-masthead">SIGNAL</div>
+              <div class="cm-issue">The Metzler Magazine · № 07</div>
+            </div>
+            <div class="cm-logo"></div>
+          </div>
+          <div class="cm-bottom">
+            <div class="cm-kicker">Cover Story</div>
+            <div class="cm-headline">The Quiet<br>Door</div>
+            <div class="cm-sub">How access design disappears into the architecture.</div>
+            <div class="cm-barcode"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cp-legend">
+        <div class="lg-item"><span class="lg-n">1</span><div><h4>Masthead</h4><p>Fixed title and position every issue — the anchor of recognition.</p></div></div>
+        <div class="lg-item"><span class="lg-n">2</span><div><h4>Issue &amp; Date</h4><p>Volume, number, season. Small, consistent, out of the way.</p></div></div>
+        <div class="lg-item"><span class="lg-n">3</span><div><h4>Brand Mark</h4><p>The Metzler M square — clear space kept, never on busy areas.</p></div></div>
+        <div class="lg-item"><span class="lg-n">4</span><div><h4>Lead Headline</h4><p>One dominant cover line. Biggest type on the page by far.</p></div></div>
+        <div class="lg-item"><span class="lg-n">5</span><div><h4>Supporting Line</h4><p>A short deck that earns the headline — kept brief and secondary.</p></div></div>
+        <div class="lg-item"><span class="lg-n">6</span><div><h4>Barcode / Folio</h4><p>Production marks live in the margin, off the focal zone.</p></div></div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Cover Playbook · Anatomy</span>
+      <span>06 a</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 06 · b — LEAD WITH ONE STORY (cluttered vs focused)
+  ================================================================ -->
+  <section class="page mag-page" id="cover-focus">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 06 · Print Cover Playbook</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Lead With<br>One Story</h1>
+      <p class="palette-header-note">
+        Less is more. Build a clear visual hierarchy around a single hero, and use
+        negative space to let it breathe. Competing cover lines cancel each other
+        out — emphasise the lead and let everything else step back.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-2">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="cover-mock is-busy">
+            <div class="cm-top">
+              <div><div class="cm-masthead" style="font-size:20px;">SIGNAL</div></div>
+              <div class="cm-logo" style="width:15px;height:15px;"></div>
+            </div>
+            <div class="cover-clutter">
+              <span class="cl t">5 ACCESS TRENDS</span>
+              <span class="cl">THE QUIET DOOR</span>
+              <span class="cl r">WIN A VDM10!</span>
+              <span class="cl s">Inside the factory · Q&amp;A · Specs</span>
+              <span class="cl s">Smart intercoms · Retrofit guide</span>
+              <span class="cl t">+ 12 PRODUCTS RATED</span>
+            </div>
+          </div>
+        </div>
+        <div class="cp-caption">
+          <span class="cap-flag no">✕ Cluttered</span>
+          <h3>Six headlines, no winner</h3>
+          <p>Every line shouts at the same volume, so nothing reads first. The eye bounces and gives up — the cover has no focal point.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="cover-mock">
+            <div class="cm-top">
+              <div><div class="cm-masthead">SIGNAL</div><div class="cm-issue">№ 07 · Autumn</div></div>
+              <div class="cm-logo"></div>
+            </div>
+            <div class="cm-bottom">
+              <div class="cm-kicker">Cover Story</div>
+              <div class="cm-headline">The Quiet<br>Door</div>
+              <div class="cm-sub">Access design that disappears.</div>
+            </div>
+          </div>
+        </div>
+        <div class="cp-caption">
+          <span class="cap-flag yes">✓ Focused</span>
+          <h3>One idea, room to breathe</h3>
+          <p>A single dominant headline, a calm field of space, and clear hierarchy. The reader knows in a half-second what this issue is about.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Cover Playbook · Lead With One Story</span>
+      <span>06 b</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 06 · c — IMAGERY, TYPE & CONTRAST
+  ================================================================ -->
+  <section class="page mag-page" id="cover-imagery">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 06 · Print Cover Playbook</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Imagery, Type<br>&amp; Contrast</h1>
+      <p class="palette-header-note">
+        The three levers that make a cover pop: one striking image, confident
+        typography, and bold contrast between them. Treat each as deliberate — never
+        decorate, always direct the eye.
+      </p>
+    </div>
+
+    <div class="mag-grid cols-3">
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="cover-mock" style="background:linear-gradient(150deg,#0a6b6c 0%,#013E3E 45%,#01191a 100%);">
+            <div class="cm-top">
+              <div><div class="cm-masthead">SIGNAL</div></div>
+              <div class="cm-logo"></div>
+            </div>
+            <div class="cm-bottom">
+              <div class="cm-headline" style="font-size:18px;">One Subject.<br>Full Frame.</div>
+            </div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Tip 03</span>
+          <p class="mag-principle-lg">Use eye-catching, high-quality imagery.</p>
+          <p class="mag-example-lg">One hero subject fills the frame at <code>300 dpi</code>. Place the focal point on a third, leave a calm zone for the masthead and headline.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="cover-mock" style="justify-content:center;text-align:center;background:#F5F6FA;color:#1A171B;box-shadow:0 18px 40px rgba(1,41,42,0.18);">
+            <div class="cm-top" style="position:absolute;top:14px;left:14px;right:14px;">
+              <div class="cm-issue" style="color:#7A7A82;">SIGNAL · № 07</div>
+              <div class="cm-logo"></div>
+            </div>
+            <div style="font:800 52px/0.82 Helvetica;letter-spacing:-0.05em;color:#015253;">Aa</div>
+            <div style="font-size:8px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#7A7A82;margin-top:8px;">Helvetica Neue</div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Tip 05</span>
+          <p class="mag-principle-lg">Typography matters — legible, on-brand, distinctive.</p>
+          <p class="mag-example-lg">Set the masthead in <code>Helvetica Neue 800</code>. One type family; let weight and scale create the personality, not extra fonts.</p>
+        </div>
+      </div>
+
+      <div class="mag-card-lg">
+        <div class="mag-viz-lg">
+          <div class="cover-mock" style="background:#1A171B;">
+            <div class="cm-top">
+              <div><div class="cm-masthead" style="color:#fff;">SIGNAL</div></div>
+              <div class="cm-logo"></div>
+            </div>
+            <div class="cm-bottom">
+              <div class="cm-kicker" style="color:#D42924;">Special Issue</div>
+              <div class="cm-headline" style="color:#5CDBD3;">Loud<br>&amp; Clear</div>
+            </div>
+          </div>
+        </div>
+        <div class="mag-card-foot">
+          <span class="mag-tag">Tip 06</span>
+          <p class="mag-principle-lg">Play with contrast for a bold, creative cover.</p>
+          <p class="mag-example-lg">Mint type on near-black hits hard. Aim for a contrast ratio <code>≥ 4.5:1</code>, and reserve <code>Metzler Rot</code> for one accent only.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Cover Playbook · Imagery, Type &amp; Contrast</span>
+      <span>06 c</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 06 · d — STRATEGY & TESTING
+  ================================================================ -->
+  <section class="page mag-page" id="cover-strategy">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 06 · Print Cover Playbook</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Strategy<br>&amp; Testing</h1>
+      <p class="palette-header-note">
+        A strong cover is researched, not guessed. Work the process before the
+        polish: know who you're for, see what's already out there, then test and
+        refine the concept with real eyes.
+      </p>
+    </div>
+
+    <div class="cp-flow">
+    <div class="cp-steps">
+      <div class="cp-step">
+        <div class="num">1</div>
+        <h4>Know the Audience</h4>
+        <p>Define who picks this up — their values and pain points. Design for them, not for the brand team.</p>
+      </div>
+      <div class="cp-step">
+        <div class="num">2</div>
+        <h4>Scan Competitors</h4>
+        <p>Study rival covers on the shelf. Spot the trend, then deliberately stand apart from it.</p>
+      </div>
+      <div class="cp-step">
+        <div class="num">3</div>
+        <h4>Concept &amp; Season</h4>
+        <p>Tie the lead story to the moment — seasonal colour, theme, or event — and sketch 2–3 directions.</p>
+      </div>
+      <div class="cp-step">
+        <div class="num">4</div>
+        <h4>A/B Test Layouts</h4>
+        <p>Mock up alternates — image vs type-led, headline placement — and compare engagement.</p>
+      </div>
+      <div class="cp-step">
+        <div class="num">5</div>
+        <h4>Gather Feedback</h4>
+        <p>Show colleagues and a few readers. Watch the first-glance reaction, then refine.</p>
+      </div>
+    </div>
+
+    <div class="cp-note">
+      <div class="cp-note-icon">★</div>
+      <div>
+        <h4>Then be bold.</h4>
+        <p>Research sets the guardrails — it shouldn't sand off the edges. Once the strategy is clear, take a real creative risk on execution; the safe cover is the forgettable one.</p>
+      </div>
+    </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Cover Playbook · Strategy &amp; Testing</span>
+      <span>06 d</span>
+    </div>
+  </section>
+  <!-- ================================================================
+       SECTION 06 · e — FINISHES & CONSISTENCY
+  ================================================================ -->
+  <section class="page mag-page" id="cover-finishes">
+    <div class="brand-strip">
+      <span class="dot"></span>
+      <span>Metzler · Brandbook · Section 06 · Print Cover Playbook</span>
+    </div>
+
+    <div class="palette-header">
+      <h1 class="page-title">Finishes<br>&amp; Consistency</h1>
+      <p class="palette-header-note">
+        Production craft is the final 10% that reads as premium. Use special finishes
+        with restraint, and keep the system identical across every issue so the
+        series is unmistakably Metzler.
+      </p>
+    </div>
+
+    <div class="cp-flow">
+    <div class="cp-finishes">
+      <div class="finish-card">
+        <div class="finish-tile foil"><span class="ft-label">M</span></div>
+        <div class="ft-body"><div class="ft-name">Metallic Foil</div><div class="ft-use">Masthead or M-mark on flagship issues. Teal or warm silver only.</div></div>
+      </div>
+      <div class="finish-card">
+        <div class="finish-tile uv"><span class="ft-label">M</span></div>
+        <div class="ft-body"><div class="ft-name">Spot UV</div><div class="ft-use">Gloss varnish over a matte cover — picks out the logo or headline.</div></div>
+      </div>
+      <div class="finish-card">
+        <div class="finish-tile emboss"><span class="ft-label">M</span></div>
+        <div class="ft-body"><div class="ft-name">Emboss / Deboss</div><div class="ft-use">Tactile relief for the wordmark. Works blind, no ink needed.</div></div>
+      </div>
+      <div class="finish-card">
+        <div class="finish-tile diecut"><span class="ft-hole"></span></div>
+        <div class="ft-body"><div class="ft-name">Die-Cut</div><div class="ft-use">A cut window revealing page two. Reserve for special editions.</div></div>
+      </div>
+    </div>
+
+    <div class="cp-consistency">
+      <div class="cc-set">
+        <div class="cover-mock"><div class="cm-top"><div><div class="cm-masthead" style="font-size:18px;">SIGNAL</div></div><div class="cm-logo" style="width:14px;height:14px;"></div></div><div class="cm-bottom"><div class="cm-kicker">№ 06</div><div class="cm-headline" style="font-size:15px;">Open House</div></div></div>
+        <div class="cover-mock" style="background:linear-gradient(158deg,#0a6b6c,#013E3E 60%,#020a0a);"><div class="cm-top"><div><div class="cm-masthead" style="font-size:18px;">SIGNAL</div></div><div class="cm-logo" style="width:14px;height:14px;"></div></div><div class="cm-bottom"><div class="cm-kicker">№ 07</div><div class="cm-headline" style="font-size:15px;">The Quiet Door</div></div></div>
+        <div class="cover-mock" style="background:#1A171B;"><div class="cm-top"><div><div class="cm-masthead" style="font-size:18px;">SIGNAL</div></div><div class="cm-logo" style="width:14px;height:14px;"></div></div><div class="cm-bottom"><div class="cm-kicker" style="color:#D42924;">№ 08</div><div class="cm-headline" style="font-size:15px;color:#5CDBD3;">Loud &amp; Clear</div></div></div>
+      </div>
+      <div class="cc-text">
+        <h4>Consistent across issues</h4>
+        <p>Masthead, M-mark position, kicker style, and type system stay fixed. Only the imagery, colour mood, and story change — three issues that still read as one family on the shelf.</p>
+      </div>
+    </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Metzler · Cover Playbook · Finishes &amp; Consistency</span>
+      <span>06 e</span>
+    </div>
+  </section>
+  <!-- ================================================================
        SECTION 17 — DO / DON'T QUICK REFERENCE
   ================================================================ -->
   <section class="page ext-page" id="do-dont">
@@ -11500,10 +12716,14 @@
         function (a) {
           var label = a.querySelector('.m-nav-item-label');
           var pg = a.querySelector('.m-nav-pg');
+          var group = a.closest('.m-nav-group');
+          var chapter = group ? group.querySelector('.m-nav-chapter') : null;
+          var chapterName = chapter ? chapter.textContent.replace(/^\s*\d+\s*/, '').trim() : '';
           return {
             href: a.getAttribute('href'),
             label: label ? label.textContent.trim() : a.textContent.trim(),
-            pg: pg ? pg.textContent.trim() : ''
+            pg: pg ? pg.textContent.trim() : '',
+            chapter: chapterName
           };
         }
       );
@@ -11515,7 +12735,10 @@
       function render() {
         var q = input.value.trim().toLowerCase();
         if (!q) { box.classList.remove('is-open'); box.innerHTML = ''; return; }
-        var hits = pages.filter(function (p) { return p.label.toLowerCase().indexOf(q) !== -1; });
+        var hits = pages.filter(function (p) {
+          return p.label.toLowerCase().indexOf(q) !== -1 ||
+                 p.chapter.toLowerCase().indexOf(q) !== -1;
+        });
         if (!hits.length) {
           box.innerHTML = '<div class="bb-topnav-empty">No results for “' + esc(input.value.trim()) + '”</div>';
         } else {
