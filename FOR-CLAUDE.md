@@ -89,6 +89,8 @@ Copy this block into every page `<style>` (or link `metzler-tokens.css`):
 All text uses `font-family: var(--font)` — never set a custom font-family.
 Letter-spacing is negative on large headings, zero on body.
 
+**Forbidden font sizes** — never use these: `10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px, 48px` or any px value not matching an exact class below. Use only the defined scale.
+
 ```css
 /* ── HEADINGS ── */
 h1, .h1 {
@@ -130,23 +132,23 @@ h4, .h4 {
 
 /* ── BODY ── */
 p, .body {
-  font-size: 1rem;            /* 16px */
+  font-size: 1rem;            /* 16px — ALWAYS 1rem, never 17px or 15px */
   font-weight: 400;
   line-height: 1.55;
-  color: var(--g-800);
+  color: var(--g-800);        /* ALWAYS --g-800 for body; --g-700 is secondary only */
   font-family: var(--font);
   margin: 0 0 1rem;
 }
 .body-sm {
   font-size: 0.875rem;        /* 14px */
   line-height: 1.5;
-  color: var(--g-700);
+  color: var(--g-700);        /* secondary / supporting text */
   font-family: var(--font);
 }
 .caption {
   font-size: 0.75rem;         /* 12px */
   line-height: 1.4;
-  color: var(--g-600);
+  color: var(--g-600);        /* captions, metadata, timestamps */
   font-family: var(--font);
 }
 
@@ -156,9 +158,11 @@ p, .body {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--g-600);
+  color: var(--g-600);        /* ALWAYS --g-600 on white/paper; ALWAYS --mint on dark/teal-900 */
   font-family: var(--font);
 }
+/* On dark sections only: */
+.section--dark .overline { color: var(--mint); }
 .label {
   font-size: 0.8125rem;       /* 13px */
   font-weight: 600;
@@ -346,12 +350,23 @@ Every page must follow this exact structure:
 ```
 
 ```js
-// Sticky header — activate only after first scroll
-window.addEventListener('scroll', () => {
-  document.getElementById('site-header')
-    .classList.toggle('is-sticky', window.scrollY > 0);
-}, { passive: true });
+// Sticky header — CRITICAL: compact must be hidden at page load
+// Only call this ONCE — never set is-sticky / hdr-compact--visible in CSS by default
+const siteHeader = document.getElementById('site-header');
+const compactHeader = document.getElementById('hdr-compact');  // if two-row design
+
+function onScroll() {
+  const scrolled = window.scrollY > 0;
+  siteHeader.classList.toggle('is-sticky', scrolled);
+  if (compactHeader) compactHeader.classList.toggle('visible', scrolled);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+// Run once on load to ensure correct initial state (NOT sticky):
+onScroll();
 ```
+
+**IMPORTANT:** The compact/sticky header row must NEVER have `visible`, `active`, or `show` class on page load. It starts hidden. The scroll listener adds visibility. Never use `position: fixed` on the compact header row at load time — it must enter the DOM as `display: none` or `opacity: 0; pointer-events: none`.
+
 
 ### Mobile (< 768px) — 3.125rem (50px) tall
 
@@ -519,8 +534,8 @@ Always left-aligned, always below the header, always in the same container.
 /* Icon badge inside card (for feature cards) */
 .card-icon {
   width: 2.5rem; height: 2.5rem;
-  border-radius: 0.625rem;
-  background: rgba(1,82,83,0.08);
+  border-radius: var(--radius-lg);   /* 0.5rem = 8px — NEVER 0.625rem (10px) */
+  background: rgba(1,82,83,0.08);    /* teal at 8% opacity — always this value */
   color: var(--teal);
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -636,107 +651,227 @@ Always left-aligned, always below the header, always in the same container.
 
 ---
 
-## 14 · Footer
+## 14 · Footer — Copy This Verbatim
+
+**MANDATORY:** Every Metzler page must use this exact footer. Do not create a custom footer. Do not invent columns, headings, or links. Copy the HTML and CSS below exactly — only change `href` values to match the page's URL structure.
+
+The footer has 4 columns on desktop, stacks to 1 on mobile:
+- **Col 1:** Logo + company tagline
+- **Col 2:** Kontakt (exact phone/email — copy these values)
+- **Col 3:** Informationen (exact link list)
+- **Col 4:** Service (exact link list)
 
 ```html
 <footer class="site-footer">
   <div class="container">
 
-    <!-- Top row: 4 columns -->
     <div class="footer-grid">
 
-      <!-- Col 1: logo + description -->
+      <!-- Col 1: Logo + tagline -->
       <div class="footer-col footer-col--brand">
-        <!-- logo -->
-        <p style="font-size:0.875rem; color:rgba(255,255,255,0.65); line-height:1.6; margin:1rem 0 0;">
-          Metzler GmbH — Ihre Experten für Türsprechanlagen, Briefkästen und Hausnummern.
+        <!-- Metzler Logo — white version -->
+        <a href="/" class="footer-logo" aria-label="Metzler">
+          <svg width="120" height="28" viewBox="0 0 184.3 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- M-square icon -->
+            <rect width="40" height="40" rx="2" fill="#D42924"/>
+            <path fill="#fff" d="M15.2 7.5l4.1 7.2-2.1 3.6L11 7.5h4.2zm0.02 16.1l-5.1-8.8v18.6H6.5V7.5H10l7.2 12.4 10.6-19.3h4.2L18.3 27.2l-2.1-3.6.02-.02zM33.1 33.4h-3.6V14.6l-7.2 12.5h-4.2l11.3-19.6h3.6v25.9z"/>
+            <!-- METZLER wordmark -->
+            <text x="50" y="30" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="22" font-weight="800" letter-spacing="3" fill="#FFFFFF">METZLER</text>
+          </svg>
+        </a>
+        <p class="footer-tagline">
+          Edelstahl-Tuerklingel.de ist ein Unternehmen der
+          <a href="https://metzlergmbh.de" class="footer-mint-link">Metzler Gruppe</a>
+        </p>
+        <p class="footer-tagline" style="font-weight:700; color:var(--white); margin-top:0.75rem;">
+          Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
         </p>
       </div>
 
-      <!-- Col 2–3: link lists -->
+      <!-- Col 2: Contact — EXACT values, do not change -->
       <div class="footer-col">
-        <p class="footer-col-heading">Produkte</p>
+        <p class="footer-col-heading">Kontakt</p>
+
+        <div class="footer-contact-block">
+          <p class="footer-contact-label">Allgemeine Hotline:</p>
+          <a href="tel:+4971213177310" class="footer-mint-link">+49 (0) 7121 / 317 7310</a>
+          <p class="footer-contact-hours">Mo–Fr: 09:00–16:00 Uhr</p>
+        </div>
+
+        <div class="footer-contact-block">
+          <p class="footer-contact-label">Sprechanlagen Hotline:</p>
+          <a href="tel:+4971213177333" class="footer-mint-link">+49 (0) 7121 / 317 7333</a>
+          <p class="footer-contact-hours">Mo–Fr: 09:00–16:00 Uhr</p>
+        </div>
+
+        <div class="footer-contact-block">
+          <p class="footer-contact-label">E-Mail Support:</p>
+          <a href="mailto:service@metzlergmbh.de" class="footer-mint-link">service@metzlergmbh.de</a>
+        </div>
+
+        <div class="footer-contact-block">
+          <p class="footer-contact-label">Kontaktformular:</p>
+          <a href="https://edelstahl-tuerklingel.de/Kontakt" class="footer-mint-link">Zum Kontaktformular</a>
+        </div>
+      </div>
+
+      <!-- Col 3: Informationen — EXACT links, do not change -->
+      <div class="footer-col">
+        <p class="footer-col-heading">Informationen</p>
         <ul class="footer-links">
-          <li><a href="#">Türsprechanlagen</a></li>
-          <li><a href="#">Briefkästen</a></li>
-          <li><a href="#">Hausnummern</a></li>
+          <li><a href="#">Auszeichnungen</a></li>
+          <li><a href="#">Fotowettbewerb</a></li>
+          <li><a href="#">Kundenbilder</a></li>
+          <li><a href="#">Stellenangebote</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Zahlung und Versand</a></li>
         </ul>
       </div>
 
+      <!-- Col 4: Service — EXACT links, do not change -->
       <div class="footer-col">
         <p class="footer-col-heading">Service</p>
         <ul class="footer-links">
-          <li><a href="#">Support</a></li>
-          <li><a href="#">Installation</a></li>
+          <li><a href="#">Begriffserklärung</a></li>
           <li><a href="#">FAQ</a></li>
+          <li><a href="#">Geschäftskunden</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">VDM10 FAQ</a></li>
         </ul>
       </div>
 
-      <!-- Col 4: contact -->
-      <div class="footer-col">
-        <p class="footer-col-heading">Kontakt</p>
-        <p style="font-size:0.875rem; color:rgba(255,255,255,0.65);">
-          Mo – Fr · 08:00 – 17:00 Uhr<br>
-          +49 (0) 7181 / 4999 110
-        </p>
-      </div>
-    </div>
+    </div><!-- /.footer-grid -->
 
-    <!-- Divider -->
-    <div class="divider divider--dark"></div>
-
-    <!-- Legal row -->
+    <!-- Legal row — EXACT links, do not change -->
     <div class="footer-legal">
       <span>© 2026 Metzler GmbH</span>
-      <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
-        <a href="#">Impressum</a>
+      <div class="footer-legal-links">
         <a href="#">Datenschutz</a>
         <a href="#">AGB</a>
+        <a href="#">Impressum</a>
         <a href="#">Widerrufsrecht</a>
+        <a href="#">Sitemap</a>
+        <a href="#">Cookie-Einstellungen</a>
       </div>
     </div>
 
-  </div>
+  </div><!-- /.container -->
 </footer>
 ```
 
 ```css
+/* ── FOOTER — do not customise, use exactly as written ── */
 .site-footer {
   background: var(--teal-900);
   color: var(--white);
-  padding: 3.5rem 0 1.5rem;
+  padding: 3.5rem 0 2rem;
   margin-top: 5rem;
+  font-family: var(--font);
 }
+
+.footer-logo { display: inline-block; margin-bottom: 1.25rem; }
+
+.footer-tagline {
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.55;
+  margin: 0 0 0.5rem;
+  font-family: var(--font);
+}
+
+.footer-mint-link {
+  color: var(--mint);
+  text-decoration: none;
+  font-family: var(--font);
+  font-size: 0.9375rem;
+  transition: opacity 0.14s;
+}
+.footer-mint-link:hover { opacity: 0.8; }
+
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
-  gap: 3rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: 1.8fr 1.4fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 0.0625rem solid rgba(255,255,255,0.1);
+  margin-bottom: 1.5rem;
 }
+
 .footer-col-heading {
-  font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--mint);
-  margin: 0 0 1rem; font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 1.25rem;
+  font-family: var(--font);
 }
-.footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+
+.footer-contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  margin-bottom: 1.25rem;
+}
+.footer-contact-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+  font-family: var(--font);
+}
+.footer-contact-hours {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+  font-family: var(--font);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 1rem;
+}
 .footer-links a {
-  font-size: 0.9375rem; color: rgba(255,255,255,0.72);
-  text-decoration: none; font-family: var(--font);
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  font-family: var(--font);
   transition: color 0.14s;
 }
 .footer-links a:hover { color: var(--mint); }
-.footer-legal {
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-  font-size: 0.8125rem; color: rgba(255,255,255,0.45); font-family: var(--font);
-}
-.footer-legal a { color: rgba(255,255,255,0.45); text-decoration: none; }
-.footer-legal a:hover { color: var(--white); }
 
-/* Mobile footer */
+.footer-legal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.45);
+  font-family: var(--font);
+}
+.footer-legal-links {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+}
+.footer-legal a,
+.footer-legal-links a {
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-family: var(--font);
+  transition: color 0.14s;
+}
+.footer-legal a:hover,
+.footer-legal-links a:hover { color: var(--white); }
+
+/* Mobile */
+@media (max-width: 64rem) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
 @media (max-width: 48rem) {
   .site-footer { padding: 2.5rem 0 1.5rem; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-legal { flex-direction: column; align-items: flex-start; }
+  .footer-legal { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .footer-legal-links { gap: 1rem; }
 }
 ```
 
@@ -817,10 +952,10 @@ Apply these on every page for the `< 768px` breakpoint:
 5. **No padding on `<header>` / `<footer>` outer tags** — padding lives inside `.container` only
 6. **Header two-state:** not sticky at page load; `.is-sticky` class added via JS on first scroll
 7. **Breadcrumbs always left-aligned** — never centered
-8. **Footer always `var(--teal-900)` background** — never a custom dark color
+8. **Footer always `var(--teal-900)` background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 4 columns: logo+tagline | Kontakt (with exact phone numbers) | Informationen | Service. The column headings and link texts are fixed — do not change them.
 9. **Cards always `var(--radius-lg)` (0.5rem) radius** — never sharp corners, never pill-radius
 10. **Arrows / carousel controls never show step numbers** — navigation arrows are controls only
-11. **No external icon libraries** — use inline `<svg>` with `stroke="currentColor"`, `stroke-width: 1.8–2`, `stroke-linecap: round`, `stroke-linejoin: round`, `fill: none`; icon container is 2.5rem × 2.5rem with `border-radius: 0.625rem`
+11. **No external icon libraries** — use inline `<svg>` with `stroke="currentColor"`, `stroke-width: 1.8–2`, `stroke-linecap: round`, `stroke-linejoin: round`, `fill: none`; icon container is 2.5rem × 2.5rem with `border-radius: var(--radius-lg)` (0.5rem = 8px — never 10px / 0.625rem)
 12. **Mobile-first** — base styles for mobile, overrides inside `@media (min-width: 48rem)`
 
 ---
@@ -886,11 +1021,226 @@ Apply these on every page for the `< 768px` breakpoint:
   </footer>
 
   <script>
-    window.addEventListener('scroll', () => {
-      document.getElementById('site-header')
-        .classList.toggle('is-sticky', window.scrollY > 0);
-    }, { passive: true });
+    const siteHeader = document.getElementById('site-header');
+    const compactHeader = document.getElementById('hdr-compact');
+    function onScroll() {
+      const scrolled = window.scrollY > 0;
+      siteHeader.classList.toggle('is-sticky', scrolled);
+      if (compactHeader) compactHeader.classList.toggle('visible', scrolled);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // ensure correct state at load — NOT sticky
   </script>
 </body>
 </html>
 ```
+
+---
+
+## 19 · Common Mistakes — What Claude Gets Wrong
+
+Read this section carefully. These are real errors observed in generated pages.
+
+### ❌ Body text wrong font-size or color
+
+```css
+/* WRONG — never do this */
+p { font-size: 17px; }         /* invented value */
+p { font-size: 15px; }         /* invented value */
+p { color: var(--g-700); }     /* g-700 is secondary text, not body */
+
+/* CORRECT */
+p { font-size: 1rem; }         /* always 16px = 1rem */
+p { color: var(--g-800); }     /* primary body text */
+.body-sm { color: var(--g-700); }  /* secondary/supporting text only */
+```
+
+### ❌ Inventing font sizes outside the type scale
+
+**Permitted font sizes only:**
+
+| Class | Size | Use |
+|-------|------|-----|
+| `.caption` | 0.75rem (12px) | metadata, timestamps |
+| `.overline` | 0.6875rem (11px) | section kickers |
+| `.label` / `.body-sm` | 0.8125–0.875rem (13–14px) | labels, captions |
+| `p` / `.body` | 1rem (16px) | body text |
+| `h4` | 1.125rem (18px) | small headings |
+| `h3` | 1.25rem (20px) | sub-headings |
+| `h2` | 1.5rem (24px) | section headings |
+| `h1` | 1.875rem (30px) | page title |
+| `.display-4` | 2.875rem (46px) | hero headings |
+| `.display-3–1` | clamp | large hero |
+
+**NEVER use:** 10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px, 48px — or any px value not listed above.
+
+### ❌ Sticky compact header visible at page load
+
+```css
+/* WRONG — never apply a visible/active/show class by default */
+.hdr-compact { display: block; opacity: 1; }
+.hdr-compact.visible { ... }   /* OK as a rule, but 'visible' must NOT be in HTML on load */
+
+/* CORRECT starting state in HTML */
+<div id="hdr-compact" class="hdr-compact">   <!-- no 'visible' class -->
+
+/* JS adds it only on scroll */
+function onScroll() {
+  document.getElementById('hdr-compact')
+    .classList.toggle('visible', window.scrollY > 0);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll(); // ← call immediately to set correct initial state
+```
+
+### ❌ Overline/section-kicker wrong color
+
+```css
+/* WRONG */
+.overline { color: var(--teal); }   /* teal is for CTAs, not kicker labels */
+
+/* CORRECT — always gray on light backgrounds */
+.overline { color: var(--g-600); }
+
+/* CORRECT — only on dark (teal-900) backgrounds */
+.section--dark .overline { color: var(--mint); }
+```
+
+### ❌ Icon badge border-radius not using token
+
+```css
+/* WRONG — 0.625rem (10px) is not a token */
+.card-icon { border-radius: 0.625rem; }
+
+/* CORRECT */
+.card-icon { border-radius: var(--radius-lg); }  /* 0.5rem = 8px */
+```
+
+### ❌ Dark CTA/banner using pure black instead of brand dark
+
+```css
+/* WRONG */
+.cta-section { background: #000; }
+.cta-section { background: #111; }
+
+/* CORRECT — always use the brand dark token */
+.cta-section { background: var(--teal-900); }   /* #001D1D */
+/* OR the brand gradient */
+.cta-section { background: var(--gradient-brand); }
+```
+
+### ❌ Section padding not using defined classes
+
+```css
+/* WRONG — arbitrary one-off values */
+section { padding: 32px 0 48px; }
+section { padding: 10px 0; }
+
+/* CORRECT — always one of these three */
+.section     { padding: 4rem 0; }   /* standard — use for most sections */
+.section--sm { padding: 2.5rem 0; } /* compact — for tight rows */
+.section--lg { padding: 6rem 0; }   /* spacious — hero sections */
+
+@media (max-width: 48rem) {
+  .section     { padding: 2.5rem 0; }
+  .section--sm { padding: 1.75rem 0; }
+  .section--lg { padding: 3.5rem 0; }
+}
+```
+
+### ❌ Custom footer with wrong columns or invented links
+
+```html
+<!-- WRONG — Claude invented "Paketboxen", "Briefkästen", "Sprechanlagen" as columns -->
+<footer>
+  <div>
+    <h3>Produkte</h3>
+    <ul><li>Paketboxen</li><li>Briefkästen</li></ul>
+  </div>
+  <div>
+    <h3>Kontakt</h3>
+    <p>Mo – Fr · 08:00 – 17:00 Uhr</p>
+    <p>+49 (0) 7181 / 4999 110</p>  <!-- WRONG phone number -->
+  </div>
+</footer>
+
+<!-- CORRECT — copy Section 14 verbatim with these exact 4 columns and content:
+     Col 1: logo + company tagline (fixed text)
+     Col 2: Kontakt — exact phones: +49 (0) 7121 / 317 7310 and +49 (0) 7121 / 317 7333, email: service@metzlergmbh.de
+     Col 3: Informationen — exact links: Auszeichnungen, Fotowettbewerb, Kundenbilder, Stellenangebote, News, Zahlung und Versand
+     Col 4: Service — exact links: Begriffserklärung, FAQ, Geschäftskunden, Newsletter, VDM10 FAQ
+     Legal: Datenschutz | AGB | Impressum | Widerrufsrecht | Sitemap | Cookie-Einstellungen
+-->
+```
+
+### ❌ Section with padding but no container inside
+
+```html
+<!-- WRONG — section has its own padding, content bleeds edge to edge -->
+<section style="padding: 64px 30px;">
+  <h2>Heading</h2>
+</section>
+
+<!-- CORRECT — section has no padding; container provides alignment -->
+<section class="section section--tinted">
+  <div class="container">
+    <h2>Heading</h2>
+  </div>
+</section>
+```
+
+### ❌ Mixing text color tokens incorrectly
+
+| Token | Correct use |
+|-------|------------|
+| `--black` / `--g-900` | H1, H2, H3, H4 headings |
+| `--g-800` | Primary body paragraphs |
+| `--g-700` | Secondary body, section intro lead text |
+| `--g-600` | Captions, breadcrumb links, overlines, metadata |
+| `--g-500` | Placeholders, disabled text |
+| `--teal` | Links, icon colors, interactive elements |
+| `--white` | Text on dark/teal backgrounds |
+| `--mint` | Links and icons on dark/teal-900 backgrounds |
+
+**Never use `--g-700` for primary body paragraphs. Never use `--g-600` for body text.**
+
+---
+
+## 20 · Product Page (PDP) — Specific Rules
+
+For product detail pages, follow this structure in addition to all general rules:
+
+```
+Trust bar (dark, full-width)
+Header (two-state)
+Breadcrumbs (left-aligned)
+Product hero (image gallery left, info panel right — 55% / 45% split)
+Feature bar (4 icons in a row, white bg)
+Why-this-product section (section-intro centered + 3-col feature cards)
+Split sections (alternating image left/right with text)
+Personalization / configurator section (--paper bg)
+Gallery / lifestyle images
+Specs / dimensions table
+Awards / trust section
+FAQ accordion
+CTA bar (--teal-900 bg, price + button)
+Footer
+```
+
+**Product hero panel rules:**
+- Price: `font-size: 2rem; font-weight: 700; color: var(--black);`
+- Original price (strikethrough): `font-size: 1.25rem; color: var(--g-500); text-decoration: line-through;`
+- Availability badge: green dot + `color: var(--green); font-size: 0.875rem;`
+- Add-to-cart button: `.btn.btn--primary.btn--lg` — always full width in the panel
+- Star rating color: `color: var(--star);` (#FFC041)
+
+**Feature bar (4 icons below hero):**
+- Each icon: `.card-icon` (2.5rem × 2.5rem, `var(--radius-lg)`, teal 8% bg)
+- Label below icon: `font-size: 0.8125rem; font-weight: 600; color: var(--black);`
+- Sub-label: `font-size: 0.75rem; color: var(--g-600);`
+- Layout: 4-col on desktop, 2-col on mobile (never 1-col)
+
+**FAQ accordion:**
+- Question row: `font-size: 1rem; font-weight: 600; color: var(--black);`
+- Border between rows: `0.0625rem solid var(--g-200);`
+- Expand icon: `+` rotates to `×` — never use numbers or chevrons here
