@@ -18,7 +18,9 @@
 
 ## 2. Color Tokens
 
-Never hardcode hex. Reference tokens by name. All hex values are listed for lookup only.
+Never hardcode hex. Reference tokens by their **CSS variable name** — the canonical names live in `metzler-tokens.css` (always link it: `<link rel="stylesheet" href="metzler-tokens.css">`). Hex values below are for lookup only.
+
+**Name mapping** (prose label → CSS variable): `Teal 500` → `var(--color-teal-500)` / `var(--color-teal)`, `Teal 600` → `var(--color-teal-600)`, … `Metzler Rot` → `var(--color-metzler-rot)`, `Digital Schwarz` → `var(--color-digital-black)`, `Green` → `var(--color-green)`, `Red 500` → `var(--color-red)`, `Star Yellow` → `var(--color-star)`, `Paper White` → `var(--color-paper)`, `Graphite 100…900` → `var(--color-graphite-100…900)`, `White` → `var(--color-white)`. Never emit short names like `--teal` or `--g-800`.
 
 ### Teal Tones
 
@@ -50,10 +52,10 @@ Never hardcode hex. Reference tokens by name. All hex values are listed for look
 
 | Token Name | Hex | RGB | Usage Rule |
 |---|---|---|---|
-| Red 50 | `#FFF1F1` | 255 · 241 · 241 | Alert/error background fills, validation row tints |
-| **Red 500** *(default)* | `#C90000` | 201 · 0 · 0 | Sale prices, error text, error badges, error borders. **Never on CTA buttons** |
-| Red 600 | `#A30000` | 163 · 0 · 0 | Hover/pressed state for any red interactive element |
-| Red 900 | `#4A0000` | 74 · 0 · 0 | Readable text on Red 50 alert surfaces (error messages, alert body text) |
+| Red 50 | `#FFF0EF` | 255 · 240 · 239 | Alert/error background fills, validation row tints |
+| **Red 500** *(default)* | `#D42924` | 212 · 41 · 36 | Sale prices, error text, error badges, error borders. Equals Metzler Rot. **Never on CTA buttons** |
+| Red 600 | `#B52320` | 181 · 35 · 32 | Hover/pressed state for any red interactive element |
+| Red 900 | `#4D0E0D` | 77 · 14 · 13 | Readable text on Red 50 alert surfaces (error messages, alert body text) |
 
 ### Yellow
 
@@ -85,7 +87,7 @@ Never hardcode hex. Reference tokens by name. All hex values are listed for look
 
 | Token Name | Hex | RGB | Usage Rule |
 |---|---|---|---|
-| True Black | `#000000` | 0 · 0 · 0 | Logo, primary CTA, "Add to cart" |
+| True Black | `#000000` | 0 · 0 · 0 | Rarely used — overlay scrims / max-contrast only. The primary CTA / "Add to cart" is **teal** (`var(--color-teal)`), NOT black. |
 | Pure White | `#FFFFFF` | 255 · 255 · 255 | Card backgrounds, modal surfaces, button labels on teal/dark, icon fill on teal |
 | White 50% | `rgba(255,255,255,0.5)` | — | Footer accordion labels, footer nav text, top-bar secondary text on teal |
 
@@ -121,10 +123,10 @@ Never hardcode hex. Reference tokens by name. All hex values are listed for look
 
 | Name | rem / clamp | Weight | Line Height | Token | Used For |
 |---|---|---|---|---|---|
-| Display 1 | `clamp(3rem, 9vw, 8rem)` | 700 | 0.85 | `--display-1` | Landing hero heading |
-| Display 2 | `clamp(3rem, 7vw, 6rem)` | 700 | 0.95 | `--display-2` | Section feature titles |
-| Display 3 | `clamp(2rem, 5vw, 4.5rem)` | 700 | 1.05 | `--display-3` | Landing intro / large body |
-| Display 4 | `2.875rem` | 700 | 1.15 | `--display-4` | Landing hero |
+| Display 1 | `clamp(3rem, 9vw, 5rem)` | 700 | 0.85 | `--display-1` | Landing hero heading |
+| Display 2 | `clamp(3rem, 7vw, 3.5rem)` | 700 | 0.92 | `--display-2` | Section feature titles |
+| Display 3 | `3rem` | 700 | 1.0 | `--display-3` | Landing intro / large body |
+| Display 4 | `2.875rem` | 700 | 1.1 | `--display-4` | Landing hero |
 
 ### Headings — page & section structure
 
@@ -139,8 +141,11 @@ Never hardcode hex. Reference tokens by name. All hex values are listed for look
 
 | Name | rem | px | Weight | Line Height | Token | Used For |
 |---|---|---|---|---|---|---|
-| Body Regular | `1rem` | 16px | 400 | 1.5 | `--text-body` | Default everywhere |
-| Body Medium | `1rem` | 16px | 500 | 1.5 | `--text-body-medium` | Emphasis, UI text |
+| Body LG Regular | `1.125rem` | 18px | 400 | 1.5 | `--text-body-lg` | Lead paragraphs, intros |
+| Body LG Medium | `1.125rem` | 18px | 500 | 1.5 | `--text-body-lg-medium` | Emphasis in lead text |
+| Body LG Bold | `1.125rem` | 18px | 700 | 1.375 | `--text-body-lg-bold` | Strong emphasis, large |
+| Body Regular | `1rem` | 16px | 400 | 1.55 | `--text-body` | Default everywhere |
+| Body Medium | `1rem` | 16px | 500 | 1.55 | `--text-body-medium` | Emphasis, UI text |
 | Body Bold | `1rem` | 16px | 700 | 1.375 | `--text-body-bold` | Strong emphasis |
 | Body SM Regular | `0.875rem` | 14px | 400 | 1.5 | `--text-body-sm` | Sidebars, cards |
 | Body SM Medium | `0.875rem` | 14px | 500 | 1.5 | `--text-body-sm-medium` | Labels, nav items |
@@ -212,7 +217,7 @@ Never hardcode hex. Reference tokens by name. All hex values are listed for look
 - `.btn-block` — full-width button in forms or mobile contexts
 
 **When NOT to use:**
-- Never use red (`#C90000`) on any button variant — red triggers purchase anxiety
+- Never use red (`#D42924`) on any button variant — red triggers purchase anxiety
 - Never use `.btn-dark` or `.btn-dark-outline` on white/light backgrounds
 
 ```css
@@ -386,8 +391,8 @@ Numbered page buttons used in product listing pagination. Always paired with `.b
 .listing-btn--lg { width: 3.125rem;  height: 3.125rem;  font-size: 1.1rem; }
 .listing-btn--sm { width: 2.1875rem; height: 2.1875rem; font-size: 0.9rem; }
 
-.listing-btn:hover  { background: rgba(1, 82, 83, 0.05); color: #005253; }
-.listing-btn.active { background: #005253; border-color: #005253; color: #ffffff; cursor: default; }
+.listing-btn:hover  { background: rgba(1, 82, 83, 0.05); color: #015253; }
+.listing-btn.active { background: #015253; border-color: #015253; color: #ffffff; cursor: default; }
 .listing-btn.more   { border: none; cursor: default; }
 
 /* Inverted — teal or dark section backgrounds */
@@ -409,7 +414,7 @@ Hierarchical navigation trail. No border-radius token used — purely text-based
 
 **Rules:**
 - Active (current) page: `color: #000000`, no underline
-- Parent links: `color: #005253`, underlined
+- Parent links: `color: #015253`, underlined
 - Separator: `#A1A1A1` chevron SVG (`›`), `0.375rem × 0.625rem`
 - Font: `0.875rem` (14px), weight 400
 
@@ -439,7 +444,7 @@ Hierarchical navigation trail. No border-radius token used — purely text-based
 .breadcrumb-item a {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.875rem;
-  color: #005253;
+  color: #015253;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -474,7 +479,7 @@ Floating-label input. Border changes state; no background change.
 - Default: border `#DADADA`, placeholder text `#A1A1A1`
 - Active (focused): border `#009951` (Green), label floats above
 - Done (has value): border `#009951`, label stays floated
-- Error: border `#C90000`, error message bottom-right on border line
+- Error: border `#D42924`, error message bottom-right on border line
 
 **Sizes:** `.form-control-lg` (large), `.form-control` (default), `.form-control-sm` (small)
 
@@ -513,7 +518,7 @@ Floating-label input. Border changes state; no background change.
   transition: border-color 0.15s;
 }
 .form-control:focus   { border-color: #015253; }
-.form-control.error   { border-color: #C90000; }
+.form-control.error   { border-color: #D42924; }
 .form-control-lg      { padding: 0.8rem 1rem;      font-size: 1.125rem; }
 .form-control-sm      { padding: 0.35rem 0.75rem;  font-size: 0.875rem; }
 
@@ -555,7 +560,7 @@ Floating-label input. Border changes state; no background change.
   padding: 0 0.3125rem;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.75rem;
-  color: #C90000;
+  color: #D42924;
   white-space: nowrap;
   line-height: 0.875rem;
 }
@@ -648,7 +653,7 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
 - Default: `1.25rem × 1.25rem` (20px)
 - Small (`.radio-sm`): `1rem × 1rem` (16px)
 
-**States:** default (white, `#DADADA` border), active (`#009951` border + green dot), error (`#C90000` border), disabled (opacity 0.45, `cursor: not-allowed`)
+**States:** default (white, `#DADADA` border), active (`#009951` border + green dot), error (`#D42924` border), disabled (opacity 0.45, `cursor: not-allowed`)
 
 **When to use:** single-select from a list (shipping method, payment type, product variant)
 **When NOT to use:** multi-select (use Checkbox)
@@ -719,7 +724,7 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
 }
 .radio-sm .radio.active::after { width: 0.625rem; height: 0.625rem; }
 .radio.active { border-color: #009951; }
-.radio.error  { border-color: #C90000; }
+.radio.error  { border-color: #D42924; }
 ```
 
 ---
@@ -730,7 +735,7 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
 
 **Color rule:** Never hardcode hex values. Always reference the token name (e.g., "Teal 500", "Red 500") in comments and use the corresponding hex only as its value.
 
-**Red on CTAs:** Red (`#C90000`, `#D42924`) is strictly forbidden on any clickable button. Red is for sale prices, error states, and the logo M-square only. It triggers purchase anxiety and must never appear on call-to-action elements.
+**Red on CTAs:** Red (`#D42924`, `#D42924`) is strictly forbidden on any clickable button. Red is for sale prices, error states, and the logo M-square only. It triggers purchase anxiety and must never appear on call-to-action elements.
 
 **Dark buttons on dark backgrounds only:** `.btn-dark` and `.btn-dark-outline` are only valid on dark hero sections, full-bleed images, or teal backgrounds. On white/light surfaces they break visual hierarchy.
 

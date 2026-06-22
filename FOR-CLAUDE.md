@@ -19,48 +19,49 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
 
 ## 2 · Design Tokens
 
-Copy this block into every page `<style>` (or link `metzler-tokens.css`):
+**Preferred:** link the canonical stylesheet — `<link rel="stylesheet" href="metzler-tokens.css">` — then use `var(--color-teal)` etc. The block below is an inline fallback with the **same names and values** as that file; never define competing short names like `--teal` or `--g-800`.
 
 ```css
 :root {
-  --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* ── TEAL — primary brand ── */
-  --teal-50:    #F2F6F6;   /* icon badge backgrounds */
-  --teal-75:    #E3F2F0;   /* light tint hover fills */
-  --teal-100:   #E6EEEE;   /* selected backgrounds */
-  --teal:       #015253;   /* CTAs, links, active borders, focus rings */
-  --teal-600:   #014A4B;   /* hover / pressed state */
-  --teal-700:   #01292A;   /* high-contrast text on light */
-  --teal-900:   #001D1D;   /* footer background */
+  --color-teal-50:    #F2F6F6;   /* icon badge backgrounds */
+  --color-teal-75:    #E3F2F0;   /* light tint hover fills */
+  --color-teal-100:   #E6EEEE;   /* selected backgrounds */
+  --color-teal:       #015253;   /* CTAs, links, active borders, focus rings */
+  --color-teal-600:   #014A4B;   /* hover / pressed state */
+  --color-teal-700:   #013E3E;   /* high-contrast text on teal surfaces */
+  --color-teal-900:   #001D1D;   /* footer background */
 
   /* ── BRAND ── */
-  --rot:        #D42924;   /* Metzler Rot — logo M-square, sale badges ONLY */
-  --black:      #1A171B;   /* Digital Schwarz — headlines, wordmark */
+  --color-metzler-rot:        #D42924;   /* Metzler Rot — logo M-square, sale badges ONLY */
+  --color-digital-black:      #1A171B;   /* Digital Schwarz — headlines, wordmark */
 
   /* ── STATUS ── */
-  --green:      #009951;   /* success, availability dot */
-  --red-50:     #FFF0EF;   /* error background */
-  --red:        #D42924;   /* error borders, text */
-  --red-600:    #B52320;   /* error hover */
+  --color-green:      #009951;   /* success, availability dot */
+  --color-red-50:     #FFF0EF;   /* error background */
+  --color-red:        #D42924;   /* error borders, text */
+  --color-red-600:    #B52320;   /* error hover */
 
   /* ── ACCENT ── */
-  --mint:       #5CDBD3;   /* links / icons on dark/teal backgrounds */
-  --star:       #FFC041;   /* rating stars only */
+  --color-mint:       #5CDBD3;   /* links / icons on dark/teal backgrounds */
+  --color-star:       #FFC041;   /* rating stars only */
 
   /* ── SURFACES ── */
-  --white:      #FFFFFF;   /* card backgrounds, input backgrounds */
-  --paper:      #F5F6FA;   /* page background, secondary surfaces */
-  --g-100:      #F0F0F0;   /* row separators, skeleton fills */
-  --g-200:      #E6E6E8;   /* hairline dividers (1px lines) */
-  --g-300:      #DADADA;   /* default borders on inputs, cards */
+  --color-white:      #FFFFFF;   /* card backgrounds, input backgrounds */
+  --color-paper:      #F5F6FA;   /* page background, secondary surfaces */
+  --color-graphite-100:      #F0F0F0;   /* row separators, skeleton fills */
+  --color-graphite-200:      #E6E6E8;   /* hairline dividers (1px lines) */
+  --color-graphite-300:      #DADADA;   /* default borders on inputs, cards */
+  --color-graphite-400:      #BFBFC2;   /* focused borders, ghost-button hover border */
 
   /* ── TEXT ── */
-  --g-500:      #A1A1A1;   /* placeholder, disabled, metadata */
-  --g-600:      #7A7A82;   /* captions, secondary labels */
-  --g-700:      #54545C;   /* secondary body text */
-  --g-800:      #2E2E36;   /* primary body text */
-  --g-900:      #1A1A1F;   /* heading text (alternative to --black) */
+  --color-graphite-500:      #A1A1A1;   /* placeholder, disabled, metadata */
+  --color-graphite-600:      #7A7A82;   /* captions, secondary labels */
+  --color-graphite-700:      #54545C;   /* secondary body text */
+  --color-graphite-800:      #2E2E36;   /* primary body text */
+  --color-graphite-900:      #1A1A1F;   /* heading text (alternative to --color-digital-black) */
 
   /* ── BORDER RADIUS ── */
   --radius-sm:   0.125rem;   /*  2px — tags, micro badges */
@@ -75,7 +76,7 @@ Copy this block into every page `<style>` (or link `metzler-tokens.css`):
   --shadow-modal: 0 1.25rem 3.75rem rgba(0,0,0,0.2), 0 0.25rem 1rem rgba(0,0,0,0.1);
 
   /* ── GRADIENTS ── */
-  --gradient-brand:  linear-gradient(90deg, #01292A 0%, #011a1b 35%, #050505 70%, #000 100%);
+  --gradient-brand:  linear-gradient(90deg, #01292A 0%, #011D1E 50%, #000000 100%);
   --gradient-accent: linear-gradient(135deg, #5CDBD3 0%, #015253 100%);
 }
 ```
@@ -86,10 +87,10 @@ Copy this block into every page `<style>` (or link `metzler-tokens.css`):
 
 **Font weight vocabulary:** 400 = regular, 500 = medium, 700 = bold, 800 = extrabold
 
-All text uses `font-family: var(--font)` — never set a custom font-family.
+All text uses `font-family: var(--font-family)` — never set a custom font-family.
 Letter-spacing is negative on large headings, zero on body.
 
-**Forbidden font sizes** — never use these: `10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px, 48px` or any px value not matching an exact class below. Use only the defined scale.
+**Forbidden font sizes** — never use these: `10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px` or any px value not matching an exact class below. Use only the defined scale.
 
 ```css
 /* ── HEADINGS ── */
@@ -98,8 +99,8 @@ h1, .h1 {
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.02em;
-  color: var(--black);
-  font-family: var(--font);
+  color: var(--color-digital-black);
+  font-family: var(--font-family);
   margin: 0 0 1rem;
 }
 h2, .h2 {
@@ -107,8 +108,8 @@ h2, .h2 {
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.015em;
-  color: var(--black);
-  font-family: var(--font);
+  color: var(--color-digital-black);
+  font-family: var(--font-family);
   margin: 0 0 0.875rem;
 }
 h3, .h3 {
@@ -116,8 +117,8 @@ h3, .h3 {
   font-weight: 700;
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: var(--black);
-  font-family: var(--font);
+  color: var(--color-digital-black);
+  font-family: var(--font-family);
   margin: 0 0 0.75rem;
 }
 h4, .h4 {
@@ -125,8 +126,8 @@ h4, .h4 {
   font-weight: 700;
   line-height: 1.375;
   letter-spacing: -0.005em;
-  color: var(--black);
-  font-family: var(--font);
+  color: var(--color-digital-black);
+  font-family: var(--font-family);
   margin: 0 0 0.625rem;
 }
 
@@ -135,21 +136,30 @@ p, .body {
   font-size: 1rem;            /* 16px — ALWAYS 1rem, never 17px or 15px */
   font-weight: 400;
   line-height: 1.55;
-  color: var(--g-800);        /* ALWAYS --g-800 for body; --g-700 is secondary only */
-  font-family: var(--font);
+  color: var(--color-graphite-800);        /* ALWAYS --color-graphite-800 for body; --color-graphite-700 is secondary only */
+  font-family: var(--font-family);
   margin: 0 0 1rem;
 }
+.body-lg {
+  font-size: 1.125rem;        /* 18px — lead paragraphs, intros */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-graphite-800);
+  font-family: var(--font-family);
+}
+.body-lg--medium { font-weight: 500; }
+.body-lg--bold   { font-weight: 700; line-height: 1.375; }
 .body-sm {
   font-size: 0.875rem;        /* 14px */
   line-height: 1.5;
-  color: var(--g-700);        /* secondary / supporting text */
-  font-family: var(--font);
+  color: var(--color-graphite-700);        /* secondary / supporting text */
+  font-family: var(--font-family);
 }
 .caption {
   font-size: 0.75rem;         /* 12px */
   line-height: 1.4;
-  color: var(--g-600);        /* captions, metadata, timestamps */
-  font-family: var(--font);
+  color: var(--color-graphite-600);        /* captions, metadata, timestamps */
+  font-family: var(--font-family);
 }
 
 /* ── LABELS / OVERLINES ── */
@@ -158,23 +168,23 @@ p, .body {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--g-600);        /* ALWAYS --g-600 on white/paper; ALWAYS --mint on dark/teal-900 */
-  font-family: var(--font);
+  color: var(--color-graphite-600);        /* ALWAYS --color-graphite-600 on white/paper; ALWAYS --color-mint on dark/teal-900 */
+  font-family: var(--font-family);
 }
 /* On dark sections only: */
-.section--dark .overline { color: var(--mint); }
+.section--dark .overline { color: var(--color-mint); }
 .label {
   font-size: 0.8125rem;       /* 13px */
   font-weight: 600;
-  color: var(--g-800);
-  font-family: var(--font);
+  color: var(--color-graphite-800);
+  font-family: var(--font-family);
 }
 
 /* ── DISPLAY (hero headlines only) ── */
-.display-1 { font-size: clamp(3rem, 9vw, 8rem);   font-weight: 700; line-height: 0.85; letter-spacing: -0.04em; }
-.display-2 { font-size: clamp(3rem, 7vw, 6rem);   font-weight: 700; line-height: 0.92; letter-spacing: -0.04em; }
-.display-3 { font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 700; line-height: 1.0;  letter-spacing: -0.03em; }
-.display-4 { font-size: 2.875rem;                  font-weight: 700; line-height: 1.1;  letter-spacing: -0.02em; }
+.display-1 { font-size: clamp(3rem, 9vw, 5rem);   font-weight: 700; line-height: 0.85; letter-spacing: -0.04em; } /* max 80px / min 48px */
+.display-2 { font-size: clamp(3rem, 7vw, 3.5rem); font-weight: 700; line-height: 0.92; letter-spacing: -0.04em; } /* max 56px / min 48px */
+.display-3 { font-size: 3rem;                      font-weight: 700; line-height: 1.0;  letter-spacing: -0.03em; } /* 48px */
+.display-4 { font-size: 2.875rem;                  font-weight: 700; line-height: 1.1;  letter-spacing: -0.02em; } /* 46px */
 ```
 
 ---
@@ -294,13 +304,13 @@ Every page must follow this exact structure:
         <rect width="184.3" height="184.3" rx="5.75" fill="#D42924"/>
         <path fill="#fff" d="M70.19,34.81l19.04,32.98-9.58,16.57-28.59-49.55h19.13ZM70.28,108.58h0l-23.45-40.64v85.89h-16.57V34.81h16.57l33.02,57.21L123.92,15.65h19.13l-63.22,109.52-9.58-16.57.02-.02ZM153.14,153.83h-16.57v-85.87l-33,57.14h-19.13l52.11-90.28h16.57v119.02l.02-.02Z"/>
       </svg>
-      <span style="font-size:1.0625rem; font-weight:800; letter-spacing:0.14em; color:#1A171B; font-family:var(--font);">METZLER</span>
+      <span style="font-size:1.0625rem; font-weight:800; letter-spacing:0.14em; color:#1A171B; font-family:var(--font-family);">METZLER</span>
     </a>
 
     <!-- Alle Kategorien button -->
-    <button style="background:var(--teal); color:#fff; border:none; border-radius:var(--radius);
+    <button style="background:var(--color-teal); color:#fff; border:none; border-radius:var(--radius);
                    height:2.5rem; padding:0 1.125rem; font-size:1rem; font-weight:500;
-                   font-family:var(--font); cursor:pointer; display:flex; align-items:center; gap:0.5rem; flex-shrink:0;">
+                   font-family:var(--font-family); cursor:pointer; display:flex; align-items:center; gap:0.5rem; flex-shrink:0;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
@@ -308,14 +318,14 @@ Every page must follow this exact structure:
     </button>
 
     <!-- Search bar -->
-    <div style="flex:1; height:2.5rem; background:var(--paper); border:0.0625rem solid var(--g-300);
+    <div style="flex:1; height:2.5rem; background:var(--color-paper); border:0.0625rem solid var(--color-graphite-300);
                 border-radius:var(--radius); display:flex; align-items:center; padding:0 0.875rem; gap:0.625rem;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A1A1A1" stroke-width="2">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
       <input type="search" placeholder="Suchen — Türklingel, Briefkasten, Hausnummer …"
-             style="flex:1; border:none; background:none; font-size:0.9375rem; font-family:var(--font);
-                    color:var(--black); outline:none;"/>
+             style="flex:1; border:none; background:none; font-size:0.9375rem; font-family:var(--font-family);
+                    color:var(--color-digital-black); outline:none;"/>
     </div>
 
     <!-- Account + Cart -->
@@ -329,8 +339,8 @@ Every page must follow this exact structure:
 
 ```css
 .site-header {
-  background: var(--white);
-  border-bottom: 0.0625rem solid var(--g-200);
+  background: var(--color-white);
+  border-bottom: 0.0625rem solid var(--color-graphite-200);
   position: relative;
   z-index: 100;
 }
@@ -343,10 +353,10 @@ Every page must follow this exact structure:
 .header-icon-btn {
   width: 2.5rem; height: 2.5rem;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 50%; color: var(--black); text-decoration: none;
+  border-radius: 50%; color: var(--color-digital-black); text-decoration: none;
   transition: background 0.14s;
 }
-.header-icon-btn:hover { background: var(--paper); }
+.header-icon-btn:hover { background: var(--color-paper); }
 ```
 
 ```js
@@ -390,12 +400,12 @@ onScroll();
 ```
 
 ```css
-.site-header--mobile { border-bottom: 0.0625rem solid var(--g-300); }
+.site-header--mobile { border-bottom: 0.0625rem solid var(--color-graphite-300); }
 .mobile-icon-btn {
   width: 2rem; height: 2rem;
   background: none; border: none; cursor: pointer; padding: 0;
   display: flex; align-items: center; justify-content: center;
-  color: var(--black);
+  color: var(--color-digital-black);
 }
 ```
 
@@ -403,16 +413,16 @@ onScroll();
 
 ## 8 · Breadcrumbs
 
-Always left-aligned, always below the header, always in the same container.
+Always left-aligned, always below the header, always in the same `.container`. The separator is a **chevron SVG** (not `/` text). Links are `var(--color-teal)` with underline, active/current item is `var(--color-digital-black)`.
 
 ```html
 <section class="breadcrumb-bar">
   <div class="container">
-    <nav aria-label="Breadcrumb">
+    <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li><a href="/kategorie">Türsprechanlagen</a></li>
-        <li aria-current="page">XDM10</li>
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/paketboxen">Paketboxen</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Bispo Max 2</li>
       </ol>
     </nav>
   </div>
@@ -421,23 +431,36 @@ Always left-aligned, always below the header, always in the same container.
 
 ```css
 .breadcrumb-bar {
-  background: var(--white);
-  border-bottom: 0.0625rem solid var(--g-200);
+  background: var(--color-white);
+  border-bottom: 0.0625rem solid var(--color-graphite-200);
   padding: 0.625rem 0;
 }
 .breadcrumb {
   list-style: none; margin: 0; padding: 0;
-  display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap;
-  font-size: 0.8125rem; font-family: var(--font);
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.625rem;
 }
-.breadcrumb li { display: flex; align-items: center; gap: 0.375rem; }
-.breadcrumb li:not(:last-child)::after {
-  content: "/"; color: var(--g-500); font-size: 0.75rem;
+.breadcrumb-item a {
+  font-size: 0.875rem; font-family: var(--font-family);
+  color: var(--color-teal); text-decoration: underline; cursor: pointer;
 }
-.breadcrumb a { color: var(--g-600); text-decoration: none; }
-.breadcrumb a:hover { color: var(--teal); }
-.breadcrumb li:last-child { color: var(--black); font-weight: 500; }
+.breadcrumb-item a:hover { opacity: 0.8; }
+.breadcrumb-item.active {
+  font-size: 0.875rem; font-family: var(--font-family);
+  color: var(--color-digital-black); font-weight: 500;
+}
+/* Chevron separator — SVG data URI, NOT "/" text */
+.breadcrumb-item + .breadcrumb-item {
+  display: flex; align-items: center; gap: 0.625rem;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  content: '';
+  display: inline-block;
+  width: 0.375rem; height: 0.625rem;
+  background: url("data:image/svg+xml,%3Csvg width='6' height='10' viewBox='0 0 6 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4-4 4' stroke='%23A1A1A1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+}
 ```
+
+**Never use `content: "/"` as the separator** — always use the chevron data URI above.
 
 ---
 
@@ -457,14 +480,14 @@ Always left-aligned, always below the header, always in the same container.
 
 /* Dark background section */
 .section--dark {
-  background: var(--teal-900);
-  color: var(--white);
+  background: var(--color-teal-900);
+  color: var(--color-white);
 }
 /* Tinted background section */
-.section--tinted { background: var(--paper); }
+.section--tinted { background: var(--color-paper); }
 
 /* White background section */
-.section--white { background: var(--white); }
+.section--color-white { background: var(--color-white); }
 
 @media (max-width: 48rem) {
   .section     { padding: 2.5rem 0; }
@@ -488,7 +511,7 @@ Always left-aligned, always below the header, always in the same container.
 .section-intro .overline { margin-bottom: 0.5rem; }
 .section-intro h2 { margin-bottom: 0.625rem; }
 .section-intro__lead {
-  font-size: 1rem; color: var(--g-700); max-width: 60ch; line-height: 1.6;
+  font-size: 1rem; color: var(--color-graphite-700); max-width: 60ch; line-height: 1.6;
 }
 /* Centered variant */
 .section-intro--center { text-align: center; }
@@ -501,7 +524,7 @@ Always left-aligned, always below the header, always in the same container.
 /* Standard hairline — between sections or inside cards */
 .divider {
   width: 100%; height: 0;
-  border: none; border-top: 0.0625rem solid var(--g-200);
+  border: none; border-top: 0.0625rem solid var(--color-graphite-200);
   margin: 2rem 0;
 }
 /* On dark backgrounds */
@@ -515,15 +538,15 @@ Always left-aligned, always below the header, always in the same container.
 ```css
 /* Base card */
 .card {
-  background: var(--white);
-  border: 0.0625rem solid var(--g-200);
+  background: var(--color-white);
+  border: 0.0625rem solid var(--color-graphite-200);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: box-shadow 0.18s, border-color 0.18s;
 }
 .card:hover {
   box-shadow: var(--shadow-hover);
-  border-color: var(--g-300);
+  border-color: var(--color-graphite-300);
 }
 
 /* Card padding variants */
@@ -534,9 +557,9 @@ Always left-aligned, always below the header, always in the same container.
 /* Icon badge inside card (for feature cards) */
 .card-icon {
   width: 2.5rem; height: 2.5rem;
-  border-radius: var(--radius-lg);   /* 0.5rem = 8px — NEVER 0.625rem (10px) */
+  border-radius: var(--radius-lg);   /* 0.5rem = 8px for the generic .card-icon (the feature-grid .nfs-card-icon uses 0.625rem — see Section 19) */
   background: rgba(1,82,83,0.08);    /* teal at 8% opacity — always this value */
-  color: var(--teal);
+  color: var(--color-teal);
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
@@ -552,7 +575,7 @@ Always left-aligned, always below the header, always in the same container.
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
   height: 2.75rem; padding: 0 1.375rem;
-  font-size: 1rem; font-weight: 500; font-family: var(--font);
+  font-size: 1rem; font-weight: 500; font-family: var(--font-family);
   border: none; border-radius: var(--radius);
   cursor: pointer; text-decoration: none; white-space: nowrap;
   transition: background 0.14s, color 0.14s, border-color 0.14s;
@@ -561,27 +584,27 @@ Always left-aligned, always below the header, always in the same container.
 .btn--lg { height: 3.25rem; padding: 0 2rem; font-size: 1.0625rem; }
 
 /* Primary */
-.btn--primary { background: var(--teal); color: #fff; }
-.btn--primary:hover  { background: var(--teal-600); }
-.btn--primary:active { background: var(--teal-700); }
+.btn--primary { background: var(--color-teal); color: #fff; }
+.btn--primary:hover  { background: var(--color-teal-600); }
+.btn--primary:active { background: var(--color-teal-700); }
 
 /* Secondary (outline) */
 .btn--secondary {
-  background: transparent; color: var(--teal);
-  border: 0.125rem solid var(--teal);
+  background: transparent; color: var(--color-teal);
+  border: 0.125rem solid var(--color-teal);
 }
-.btn--secondary:hover { background: var(--teal-50); }
+.btn--secondary:hover { background: var(--color-teal-50); }
 
 /* Ghost */
 .btn--ghost {
-  background: transparent; color: var(--g-700);
-  border: 0.0625rem solid var(--g-300);
+  background: transparent; color: var(--color-graphite-700);
+  border: 0.0625rem solid var(--color-graphite-300);
 }
-.btn--ghost:hover { background: var(--paper); border-color: var(--g-400); }
+.btn--ghost:hover { background: var(--color-paper); border-color: var(--color-graphite-400); }
 
 /* Danger */
-.btn--danger { background: var(--red); color: #fff; }
-.btn--danger:hover { background: var(--red-600); }
+.btn--danger { background: var(--color-red); color: #fff; }
+.btn--danger:hover { background: var(--color-red-600); }
 
 /* Block button — full width on mobile */
 @media (max-width: 48rem) {
@@ -591,37 +614,90 @@ Always left-aligned, always below the header, always in the same container.
 
 ---
 
-## 12 · Form Inputs
+## 12 · Form Inputs — Floating Label Pattern
+
+The Metzler design system uses a **floating label** — the `<label>` sits inside the input and floats above the border on focus or when a value is present. Never use a simple stacked label-above-input pattern.
+
+**HTML structure — copy exactly:**
+
+```html
+<!-- Default state -->
+<div class="field-wrapper">
+  <input type="text" id="name" placeholder=" "/>
+  <label for="name">Name</label>
+</div>
+
+<!-- With hint text -->
+<div class="field-wrapper">
+  <input type="password" id="password" placeholder=" "/>
+  <label for="password">Passwort</label>
+  <span class="field__hint">Passwort muss aus mindestens 8 Zeichen bestehen.</span>
+</div>
+
+<!-- Error state -->
+<div class="field-wrapper field--error">
+  <input type="text" id="name" placeholder=" "/>
+  <label for="name">Name</label>
+  <span class="field__error">Dieses Feld ausfüllen</span>
+</div>
+```
+
+Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:not(:placeholder-shown)` to detect when a value is present and float the label.
+
+**CSS — copy exactly:**
 
 ```css
-.input {
-  width: 100%; height: 3rem;
-  border: 0.0625rem solid var(--g-300);
+/* Base input */
+.form-control {
+  display: block; width: 100%;
+  padding: 0.7rem 0.9375rem;
+  font-family: var(--font-family); font-size: 1rem;
+  color: var(--color-digital-black); background: var(--color-white);
+  border: 0.0625rem solid var(--color-graphite-300);
   border-radius: var(--radius);
-  padding: 0 1rem; font-size: 1rem; font-family: var(--font);
-  color: var(--g-800); background: var(--white); outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box; outline: none;
+  transition: border-color 0.15s;
 }
-.input:focus {
-  border-color: var(--teal);
-  box-shadow: 0 0 0 0.1875rem rgba(1,82,83,0.15);
-}
-.input::placeholder { color: var(--g-500); }
-.input.is-error     { border-color: var(--red); }
-.input:disabled     { background: var(--paper); color: var(--g-500); cursor: not-allowed; }
+.form-control:focus   { border-color: var(--color-teal); }
+.form-control.error   { border-color: var(--color-red); }
 
-/* Label above input */
-.input-label {
-  display: block; margin-bottom: 0.375rem;
-  font-size: 0.875rem; font-weight: 600;
-  color: var(--g-800); font-family: var(--font);
+/* Floating label wrapper */
+.field-wrapper { position: relative; }
+
+.field-wrapper label {
+  position: absolute; left: 0.9375rem; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-family); font-size: 1rem;
+  color: var(--color-graphite-500);
+  pointer-events: none; transition: all 0.15s ease;
+  background: transparent; padding: 0;
+  line-height: 1.4; white-space: nowrap; z-index: 1;
 }
-/* Error message below input */
-.input-error {
-  margin-top: 0.25rem; font-size: 0.8125rem;
-  color: var(--red); font-family: var(--font);
+
+/* Float label on focus or when value is present */
+.field-wrapper .form-control:focus + label,
+.field-wrapper .form-control:not(:placeholder-shown) + label {
+  top: -0.5625rem; left: 0.6875rem;
+  transform: none; font-size: 0.75rem;
+  color: var(--color-digital-black);
+  background: var(--color-white); padding: 0 0.3125rem;
+}
+
+/* Error & hint text */
+.field__error {
+  position: absolute; bottom: -0.4375rem; right: 0.6875rem;
+  background: var(--color-white); padding: 0 0.3125rem;
+  font-family: var(--font-family); font-size: 0.75rem;
+  color: var(--color-red); white-space: nowrap;
+}
+.field__hint {
+  display: block; margin-top: 0.3125rem;
+  font-family: var(--font-family); font-size: 0.8125rem;
+  color: var(--color-graphite-600); line-height: 1.45;
 }
 ```
+
+**Never use** `<label class="input-label">` stacked above an `<input class="input">` — that is not the Metzler design system pattern.
 
 ---
 
@@ -629,25 +705,25 @@ Always left-aligned, always below the header, always in the same container.
 
 | Context | Token |
 |---------|-------|
-| Page background | `--paper` |
-| Card / panel background | `--white` |
-| Primary CTA, links, active state | `--teal` |
-| CTA hover | `--teal-600` |
-| Hairline dividers between sections | `--g-200` |
-| Default card / input borders | `--g-300` |
-| Main headline text | `--black` |
-| Body text | `--g-800` |
-| Secondary / supporting text | `--g-700` |
-| Captions, metadata | `--g-600` |
-| Placeholder, disabled | `--g-500` |
-| Footer background | `--teal-900` |
-| Links / icons on footer / dark bg | `--mint` |
-| Error state | `--red` |
-| Success / availability | `--green` |
-| Metzler logo M-square + sale badge | `--rot` |
-| Rating stars only | `--star` |
+| Page background | `--color-paper` |
+| Card / panel background | `--color-white` |
+| Primary CTA, links, active state | `--color-teal` |
+| CTA hover | `--color-teal-600` |
+| Hairline dividers between sections | `--color-graphite-200` |
+| Default card / input borders | `--color-graphite-300` |
+| Main headline text | `--color-digital-black` |
+| Body text | `--color-graphite-800` |
+| Secondary / supporting text | `--color-graphite-700` |
+| Captions, metadata | `--color-graphite-600` |
+| Placeholder, disabled | `--color-graphite-500` |
+| Footer background | `--color-teal-900` |
+| Links / icons on footer / dark bg | `--color-mint` |
+| Error state | `--color-red` |
+| Success / availability | `--color-green` |
+| Metzler logo M-square + sale badge | `--color-metzler-rot` |
+| Rating stars only | `--color-star` |
 
-**Icon badge tint** (feature cards, support cards): `background: rgba(1,82,83,0.08)` — do not use `--teal-50` for this.
+**Icon badge tint** (feature cards, support cards): `background: rgba(1,82,83,0.08)` — do not use `--color-teal-50` for this.
 
 ---
 
@@ -683,7 +759,7 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
           Edelstahl-Tuerklingel.de ist ein Unternehmen der
           <a href="https://metzlergmbh.de" class="footer-mint-link">Metzler Gruppe</a>
         </p>
-        <p class="footer-tagline" style="font-weight:700; color:var(--white); margin-top:0.75rem;">
+        <p class="footer-tagline" style="font-weight:700; color:var(--color-white); margin-top:0.75rem;">
           Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
         </p>
       </div>
@@ -762,11 +838,11 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
 ```css
 /* ── FOOTER — do not customise, use exactly as written ── */
 .site-footer {
-  background: var(--teal-900);
-  color: var(--white);
+  background: var(--color-teal-900);
+  color: var(--color-white);
   padding: 3.5rem 0 2rem;
   margin-top: 5rem;
-  font-family: var(--font);
+  font-family: var(--font-family);
 }
 
 .footer-logo { display: inline-block; margin-bottom: 1.25rem; }
@@ -776,13 +852,13 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
   color: rgba(255,255,255,0.5);
   line-height: 1.55;
   margin: 0 0 0.5rem;
-  font-family: var(--font);
+  font-family: var(--font-family);
 }
 
 .footer-mint-link {
-  color: var(--mint);
+  color: var(--color-mint);
   text-decoration: none;
-  font-family: var(--font);
+  font-family: var(--font-family);
   font-size: 0.9375rem;
   transition: opacity 0.14s;
 }
@@ -800,9 +876,9 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
 .footer-col-heading {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--color-white);
   margin: 0 0 1.25rem;
-  font-family: var(--font);
+  font-family: var(--font-family);
 }
 
 .footer-contact-block {
@@ -814,15 +890,15 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
 .footer-contact-label {
   font-size: 0.9375rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--color-white);
   margin: 0;
-  font-family: var(--font);
+  font-family: var(--font-family);
 }
 .footer-contact-hours {
   font-size: 0.875rem;
   color: rgba(255,255,255,0.5);
   margin: 0;
-  font-family: var(--font);
+  font-family: var(--font-family);
 }
 
 .footer-links {
@@ -834,10 +910,10 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
   font-size: 0.9375rem;
   color: rgba(255,255,255,0.72);
   text-decoration: none;
-  font-family: var(--font);
+  font-family: var(--font-family);
   transition: color 0.14s;
 }
-.footer-links a:hover { color: var(--mint); }
+.footer-links a:hover { color: var(--color-mint); }
 
 .footer-legal {
   display: flex;
@@ -847,7 +923,7 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
   gap: 1rem;
   font-size: 0.8125rem;
   color: rgba(255,255,255,0.45);
-  font-family: var(--font);
+  font-family: var(--font-family);
 }
 .footer-legal-links {
   display: flex; gap: 1.5rem; flex-wrap: wrap;
@@ -857,11 +933,11 @@ The footer has 4 columns on desktop, stacks to 1 on mobile:
   color: rgba(255,255,255,0.45);
   text-decoration: none;
   font-size: 0.8125rem;
-  font-family: var(--font);
+  font-family: var(--font-family);
   transition: color 0.14s;
 }
 .footer-legal a:hover,
-.footer-legal-links a:hover { color: var(--white); }
+.footer-legal-links a:hover { color: var(--color-white); }
 
 /* Mobile */
 @media (max-width: 64rem) {
@@ -946,16 +1022,16 @@ Apply these on every page for the `< 768px` breakpoint:
 ## 17 · Rules Claude Must Always Follow
 
 1. **All values in rem** — never use px in CSS output (1px = 0.0625rem)
-2. **All colors from tokens** — never use bare hex codes; reference `var(--teal)`, `var(--g-200)` etc.
-3. **Font always `var(--font)`** — never set a custom font-family
+2. **All colors from tokens** — never use bare hex codes; reference `var(--color-teal)`, `var(--color-graphite-200)` etc.
+3. **Font always `var(--font-family)`** — never set a custom font-family
 4. **Container max-width exactly 100rem** — never 90rem, 1440px, or anything else
 5. **No padding on `<header>` / `<footer>` outer tags** — padding lives inside `.container` only
 6. **Header two-state:** not sticky at page load; `.is-sticky` class added via JS on first scroll
 7. **Breadcrumbs always left-aligned** — never centered
-8. **Footer always `var(--teal-900)` background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 4 columns: logo+tagline | Kontakt (with exact phone numbers) | Informationen | Service. The column headings and link texts are fixed — do not change them.
+8. **Footer always `var(--color-teal-900)` background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 4 columns: logo+tagline | Kontakt (with exact phone numbers) | Informationen | Service. The column headings and link texts are fixed — do not change them.
 9. **Cards always `var(--radius-lg)` (0.5rem) radius** — never sharp corners, never pill-radius
 10. **Arrows / carousel controls never show step numbers** — navigation arrows are controls only
-11. **No external icon libraries** — use inline `<svg>` with `stroke="currentColor"`, `stroke-width: 1.8–2`, `stroke-linecap: round`, `stroke-linejoin: round`, `fill: none`; icon container is 2.5rem × 2.5rem with `border-radius: var(--radius-lg)` (0.5rem = 8px — never 10px / 0.625rem)
+11. **No external icon libraries** — use inline `<svg>` with `stroke="currentColor"`, `stroke-width: 1.8–2`, `stroke-linecap: round`, `stroke-linejoin: round`, `fill: none`; icon container is 2.5rem × 2.5rem with `border-radius: var(--radius-lg)` (0.5rem = 8px) for the generic `.card-icon`; the feature-grid `.nfs-card-icon` is the one exception at 0.625rem (10px)
 12. **Mobile-first** — base styles for mobile, overrides inside `@media (min-width: 48rem)`
 
 ---
@@ -974,13 +1050,13 @@ Apply these on every page for the `< 768px` breakpoint:
     body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background: #F5F6FA; }
 
     :root {
-      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --teal: #015253; --teal-600: #014A4B; --teal-900: #001D1D;
-      --teal-50: #F2F6F6; --mint: #5CDBD3;
-      --black: #1A171B; --rot: #D42924;
-      --white: #FFFFFF; --paper: #F5F6FA;
-      --g-200: #E6E6E8; --g-300: #DADADA;
-      --g-600: #7A7A82; --g-700: #54545C; --g-800: #2E2E36;
+      --font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --color-teal: #015253; --color-teal-600: #014A4B; --color-teal-900: #001D1D;
+      --color-teal-50: #F2F6F6; --color-mint: #5CDBD3;
+      --color-digital-black: #1A171B; --color-metzler-rot: #D42924;
+      --color-white: #FFFFFF; --color-paper: #F5F6FA;
+      --color-graphite-200: #E6E6E8; --color-graphite-300: #DADADA;
+      --color-graphite-600: #7A7A82; --color-graphite-700: #54545C; --color-graphite-800: #2E2E36;
       --radius: 0.25rem; --radius-lg: 0.5rem;
     }
 
@@ -1007,7 +1083,7 @@ Apply these on every page for the `< 768px` breakpoint:
     </div>
   </section>
 
-  <section class="section section--white">
+  <section class="section section--color-white">
     <div class="container">
       <h1>Seitenüberschrift</h1>
       <p>Beschreibung der Seite.</p>
@@ -1047,12 +1123,12 @@ Read this section carefully. These are real errors observed in generated pages.
 /* WRONG — never do this */
 p { font-size: 17px; }         /* invented value */
 p { font-size: 15px; }         /* invented value */
-p { color: var(--g-700); }     /* g-700 is secondary text, not body */
+p { color: var(--color-graphite-700); }     /* g-700 is secondary text, not body */
 
 /* CORRECT */
 p { font-size: 1rem; }         /* always 16px = 1rem */
-p { color: var(--g-800); }     /* primary body text */
-.body-sm { color: var(--g-700); }  /* secondary/supporting text only */
+p { color: var(--color-graphite-800); }     /* primary body text */
+.body-sm { color: var(--color-graphite-700); }  /* secondary/supporting text only */
 ```
 
 ### ❌ Inventing font sizes outside the type scale
@@ -1070,9 +1146,11 @@ p { color: var(--g-800); }     /* primary body text */
 | `h2` | 1.5rem (24px) | section headings |
 | `h1` | 1.875rem (30px) | page title |
 | `.display-4` | 2.875rem (46px) | hero headings |
-| `.display-3–1` | clamp | large hero |
+| `.display-3` | 3rem (48px) | landing intro |
+| `.display-2` | clamp → max 3.5rem (56px) | large hero |
+| `.display-1` | clamp → max 5rem (80px) | landing hero |
 
-**NEVER use:** 10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px, 48px — or any px value not listed above.
+**NEVER use:** 10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px, 72px — or any px value not listed above.
 
 ### ❌ Sticky compact header visible at page load
 
@@ -1097,23 +1175,27 @@ onScroll(); // ← call immediately to set correct initial state
 
 ```css
 /* WRONG */
-.overline { color: var(--teal); }   /* teal is for CTAs, not kicker labels */
+.overline { color: var(--color-teal); }   /* teal is for CTAs, not kicker labels */
 
 /* CORRECT — always gray on light backgrounds */
-.overline { color: var(--g-600); }
+.overline { color: var(--color-graphite-600); }
 
 /* CORRECT — only on dark (teal-900) backgrounds */
-.section--dark .overline { color: var(--mint); }
+.section--dark .overline { color: var(--color-mint); }
 ```
 
 ### ❌ Icon badge border-radius not using token
 
 ```css
-/* WRONG — 0.625rem (10px) is not a token */
+/* WRONG — generic card icon must use the token, not a raw value */
 .card-icon { border-radius: 0.625rem; }
 
-/* CORRECT */
+/* CORRECT — generic icon badge */
 .card-icon { border-radius: var(--radius-lg); }  /* 0.5rem = 8px */
+
+/* EXCEPTION — the feature-grid icon is intentionally 0.625rem (10px). This is the
+   one place 0.625rem is correct; it matches the rendered .nfs-card-icon component. */
+.nfs-card-icon { border-radius: 0.625rem; background: rgba(1,82,83,0.08); color: var(--color-teal); }
 ```
 
 ### ❌ Dark CTA/banner using pure black instead of brand dark
@@ -1124,7 +1206,7 @@ onScroll(); // ← call immediately to set correct initial state
 .cta-section { background: #111; }
 
 /* CORRECT — always use the brand dark token */
-.cta-section { background: var(--teal-900); }   /* #001D1D */
+.cta-section { background: var(--color-teal-900); }   /* #001D1D */
 /* OR the brand gradient */
 .cta-section { background: var(--gradient-brand); }
 ```
@@ -1193,16 +1275,88 @@ section { padding: 10px 0; }
 
 | Token | Correct use |
 |-------|------------|
-| `--black` / `--g-900` | H1, H2, H3, H4 headings |
-| `--g-800` | Primary body paragraphs |
-| `--g-700` | Secondary body, section intro lead text |
-| `--g-600` | Captions, breadcrumb links, overlines, metadata |
-| `--g-500` | Placeholders, disabled text |
-| `--teal` | Links, icon colors, interactive elements |
-| `--white` | Text on dark/teal backgrounds |
-| `--mint` | Links and icons on dark/teal-900 backgrounds |
+| `--color-digital-black` / `--color-graphite-900` | H1, H2, H3, H4 headings |
+| `--color-graphite-800` | Primary body paragraphs |
+| `--color-graphite-700` | Secondary body, section intro lead text |
+| `--color-graphite-600` | Captions, breadcrumb links, overlines, metadata |
+| `--color-graphite-500` | Placeholders, disabled text |
+| `--color-teal` | Links, icon colors, interactive elements |
+| `--color-white` | Text on dark/teal backgrounds |
+| `--color-mint` | Links and icons on dark/teal-900 backgrounds |
 
-**Never use `--g-700` for primary body paragraphs. Never use `--g-600` for body text.**
+**Never use `--color-graphite-700` for primary body paragraphs. Never use `--color-graphite-600` for body text.**
+
+### ❌ Breadcrumb with "/" text separator and wrong link color
+
+```css
+/* WRONG */
+.breadcrumb li:not(:last-child)::after { content: "/"; }  /* ❌ text separator */
+.breadcrumb a { color: var(--color-graphite-600); }                    /* ❌ wrong color */
+
+/* CORRECT */
+/* Separator is a chevron SVG via ::before on li + li (see Section 8) */
+.breadcrumb-item a { color: var(--color-teal); text-decoration: underline; }
+.breadcrumb-item.active { color: var(--color-digital-black); font-weight: 500; }
+```
+
+### ❌ Section overline/heading without section-intro wrapper (bad spacing)
+
+```html
+<!-- WRONG — overline and heading floated directly in section, no spacing control -->
+<section>
+  <div class="container">
+    <span class="overline">AUSGEZEICHNETE QUALITÄT</span>
+    <h2>Geprüft, empfohlen & tausendfach bewährt</h2>
+  </div>
+</section>
+
+<!-- CORRECT — always wrap in .section-intro for consistent spacing -->
+<section class="section section--color-white">
+  <div class="container">
+    <div class="section-intro section-intro--center">
+      <p class="overline">Ausgezeichnete Qualität</p>
+      <h2>Geprüft, empfohlen &amp; tausendfach bewährt</h2>
+      <p class="section-intro__lead">Supporting lead text here.</p>
+    </div>
+    <!-- section content below -->
+  </div>
+</section>
+```
+`.section-intro .overline` has `margin-bottom: 0.5rem` and `.section-intro h2` has `margin-bottom: 0.625rem` — these spacings only work inside `.section-intro`.
+
+### ❌ Stacked label+input instead of floating label pattern
+
+```html
+<!-- WRONG — stacked label above input, wrong classes -->
+<label class="input-label">Name</label>
+<input class="input" type="text" placeholder="z. B. Familie Breitenbach"/>
+
+<!-- CORRECT — floating label inside field-wrapper, placeholder must be a single space -->
+<div class="field-wrapper">
+  <input type="text" id="name" placeholder=" "/>
+  <label for="name">Name</label>
+</div>
+```
+
+### ❌ FAQ built from scratch instead of using the design system component
+
+```html
+<!-- WRONG — invented classes, wrong icon, wrong sizes -->
+<div class="faq">
+  <div class="faq-item">
+    <div class="faq-q">Frage?</div>
+    <div class="faq-a-inner" style="font-size:0.9375rem; color:var(--color-graphite-700);">...</div>
+    <!-- ❌ uses + icon, wrong classes, no hover/open states, no left accent bar -->
+  </div>
+</div>
+
+<!-- CORRECT — copy the verbatim template from Section 20 -->
+<!-- Key class names: faq-stage, faq-list (ul), faq-item (li), faq-btn, faq-q, faq-icon, faq-body, faq-answer -->
+<!-- Question: font-size: 1.125rem; font-weight: 700 -->
+<!-- Answer: font-size: 1rem; color: var(--color-graphite-700) — g-700 IS CORRECT for faq-answer -->
+<!-- Icon: chevron SVG that rotates 180deg (not + / ×) -->
+<!-- Open state: teal border + left accent bar (.faq-item.is-open::before) -->
+```
 
 ---
 
@@ -1218,29 +1372,143 @@ Product hero (image gallery left, info panel right — 55% / 45% split)
 Feature bar (4 icons in a row, white bg)
 Why-this-product section (section-intro centered + 3-col feature cards)
 Split sections (alternating image left/right with text)
-Personalization / configurator section (--paper bg)
+Personalization / configurator section (--color-paper bg)
 Gallery / lifestyle images
 Specs / dimensions table
 Awards / trust section
 FAQ accordion
-CTA bar (--teal-900 bg, price + button)
+CTA bar (--color-teal-900 bg, price + button)
 Footer
 ```
 
 **Product hero panel rules:**
-- Price: `font-size: 2rem; font-weight: 700; color: var(--black);`
-- Original price (strikethrough): `font-size: 1.25rem; color: var(--g-500); text-decoration: line-through;`
-- Availability badge: green dot + `color: var(--green); font-size: 0.875rem;`
+- Price: `font-size: 2rem; font-weight: 700; color: var(--color-digital-black);`
+- Original price (strikethrough): `font-size: 1.25rem; color: var(--color-graphite-500); text-decoration: line-through;`
+- Availability badge: green dot + `color: var(--color-green); font-size: 0.875rem;`
 - Add-to-cart button: `.btn.btn--primary.btn--lg` — always full width in the panel
-- Star rating color: `color: var(--star);` (#FFC041)
+- Star rating color: `color: var(--color-star);` (#FFC041)
 
 **Feature bar (4 icons below hero):**
 - Each icon: `.card-icon` (2.5rem × 2.5rem, `var(--radius-lg)`, teal 8% bg)
-- Label below icon: `font-size: 0.8125rem; font-weight: 600; color: var(--black);`
-- Sub-label: `font-size: 0.75rem; color: var(--g-600);`
+- Label below icon: `font-size: 0.8125rem; font-weight: 600; color: var(--color-digital-black);`
+- Sub-label: `font-size: 0.75rem; color: var(--color-graphite-600);`
 - Layout: 4-col on desktop, 2-col on mobile (never 1-col)
 
-**FAQ accordion:**
-- Question row: `font-size: 1rem; font-weight: 600; color: var(--black);`
-- Border between rows: `0.0625rem solid var(--g-200);`
-- Expand icon: `+` rotates to `×` — never use numbers or chevrons here
+**Specs / dimensions table — use this exact structure:**
+
+```html
+<div class="specs-table-wrapper">
+  <table class="specs-table">
+    <tbody>
+      <tr>
+        <td class="specs-label">Breite</td>
+        <td class="specs-value">72 cm</td>
+      </tr>
+      <tr>
+        <td class="specs-label">Höhe</td>
+        <td class="specs-value">145 cm</td>
+      </tr>
+      <!-- repeat for each spec row -->
+    </tbody>
+  </table>
+</div>
+```
+
+```css
+.specs-table-wrapper {
+  border: 0.0625rem solid var(--color-graphite-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.specs-table {
+  width: 100%; border-collapse: collapse; font-family: var(--font-family);
+}
+.specs-table tr { border-bottom: 0.0625rem solid var(--color-graphite-100); }
+.specs-table tr:last-child { border-bottom: none; }
+.specs-table tr:hover { background: var(--color-paper); }
+.specs-label {
+  padding: 0.75rem 1rem; width: 40%;
+  font-size: 0.875rem; color: var(--color-graphite-600); font-weight: 400;
+}
+.specs-value {
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem; color: var(--color-digital-black); font-weight: 600;
+}
+```
+
+**FAQ accordion — ALWAYS use the exact design system component. Copy this HTML and CSS verbatim:**
+
+```html
+<div class="faq-stage">
+  <div class="faq-header">
+    <p class="faq-label">HÄUFIGE FRAGEN</p>
+    <h2 class="faq-heading">Gut zu wissen</h2>
+  </div>
+  <ul class="faq-list">
+    <li class="faq-item">
+      <button class="faq-btn" aria-expanded="false" onclick="toggleFaq(this)">
+        <span class="faq-left">
+          <span class="faq-q">Question text here?</span>
+        </span>
+        <span class="faq-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+      <div class="faq-body">
+        <div class="faq-body-inner">
+          <p class="faq-answer">Answer text here.</p>
+        </div>
+      </div>
+    </li>
+    <!-- repeat <li class="faq-item"> for each question -->
+  </ul>
+</div>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const body = item.querySelector('.faq-body');
+  const isOpen = item.classList.contains('is-open');
+  document.querySelectorAll('.faq-item.is-open').forEach(el => {
+    el.classList.remove('is-open');
+    el.querySelector('.faq-body').classList.remove('is-open');
+    el.querySelector('.faq-btn').setAttribute('aria-expanded','false');
+  });
+  if (!isOpen) {
+    item.classList.add('is-open');
+    body.classList.add('is-open');
+    btn.setAttribute('aria-expanded','true');
+  }
+}
+</script>
+```
+
+```css
+.faq-stage { border-top: 0.0625rem solid var(--color-graphite-200); padding: 2.5rem 0 3rem; display: flex; flex-direction: column; align-items: center; }
+.faq-header { text-align: center; margin-bottom: 2.5rem; }
+.faq-label { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); margin: 0 0 1.25rem; }
+.faq-heading { font-size: 2.875rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.04em; color: var(--color-digital-black); margin: 0; }
+.faq-list { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 54rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.faq-item { position: relative; background: var(--color-white); border: 0.0625rem solid var(--color-graphite-200); border-radius: 0.5rem; overflow: hidden; transition: border-color 0.2s ease; }
+.faq-item:hover { border-color: var(--color-teal); }
+.faq-item.is-open { border-color: var(--color-teal); background: linear-gradient(180deg, var(--color-white) 0%, var(--color-paper) 100%); }
+.faq-item.is-open::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 0.25rem; background: var(--color-teal); }
+.faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem; background: none; border: none; cursor: pointer; text-align: left; }
+.faq-left { display: flex; align-items: center; gap: 1.25rem; min-width: 0; }
+.faq-q { font-size: 1.125rem; font-weight: 700; color: var(--color-digital-black); line-height: 1.3; letter-spacing: -0.01em; margin: 0; }
+.faq-btn:hover .faq-q { color: var(--color-teal); }
+.faq-icon { width: 2rem; height: 2rem; display: inline-flex; align-items: center; justify-content: center; color: var(--color-teal); transition: transform 0.35s cubic-bezier(.22,1,.36,1); flex-shrink: 0; }
+.faq-item.is-open .faq-icon { transform: rotate(180deg); }
+.faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 400ms cubic-bezier(.22,1,.36,1); }
+.faq-body.is-open { grid-template-rows: 1fr; }
+.faq-body-inner { overflow: hidden; min-height: 0; }
+.faq-answer { font-size: 1rem; line-height: 1.7; color: var(--color-graphite-700); padding: 0 1.5rem 1.75rem; margin: 0; max-width: 42rem; }
+@media (max-width: 62.5rem) { .faq-heading { font-size: 1.875rem; } }
+```
+
+Key rules:
+- Icon is a **chevron** (not `+`/`×`) that **rotates 180deg** when open
+- Open item gets a **left accent bar** via `::before` (0.25rem teal) and **teal border**
+- `max-width: 54rem` on `.faq-list` is correct per design system — do not change it
+- Question: `font-size: 1.125rem; font-weight: 700` — NEVER 1rem/600
+- Answer: `font-size: 1rem; color: var(--color-graphite-700)` — 1rem is correct, g-700 is correct here
