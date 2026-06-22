@@ -292,6 +292,8 @@ Every page must follow this exact structure:
 
 ## 7 · Header
 
+> ⚠️ **The block below is a SIMPLIFIED single-row header.** The canonical production header is the full multi-row component in **`header/preview.html`**: green trust-bar (`.hdr-row1`) + logo/search/icons (`.hdr-row2`) + category nav (`.nav` with `.nav-cat`) + sticky compact bar (`.hdr-compact`) + mobile bar (`.hdr-mobile`) + side drawer (`.side-menu`), `position: fixed` with `body { padding-top: 158px }` (78px mobile). **For real pages, copy `header/preview.html` verbatim** — use the simplified template below only for a quick mockup.
+
 ### Desktop (≥ 768px) — 4rem (64px) tall
 
 ```html
@@ -727,11 +729,13 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
 
 ---
 
-## 14 · Footer — Copy This Verbatim
+## 14 · Footer
 
-**MANDATORY:** Every Metzler page must use this exact footer. Do not create a custom footer. Do not invent columns, headings, or links. Copy the HTML and CSS below exactly — only change `href` values to match the page's URL structure.
+> ⚠️ **The block below is a SIMPLIFIED footer (4 columns only).** The canonical production footer is the `FooterSection` component in **`index.html`** + the image assets in **`footer/`**, and its background is **`var(--color-teal-700)` (#013E3E)**, *not* teal-900. The real footer also has: a **5th column** ("Follow us" social icons + "Qualität" award badges), a **payment row** (Versandpartner DPD/DHL/GoGreen + "Einfach bezahlen" SEPA/Visa/PayPal/Klarna/Mastercard/Apple Pay/Google Pay/SEPA/Vorkasse) + a **Trusted Shops rating pill**, **10 legal links** (Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Impressum · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen), and the copyright line "Alle Preise inkl. gesetzliche MwSt., zzgl. Versand © 2013 - 2026 | Metzler GmbH". **For real pages, reproduce that full component + copy the `footer/` assets** (a working static version is in `../tst/index.html`). The simplified block below is for quick mockups only.
 
-The footer has 4 columns on desktop, stacks to 1 on mobile:
+**Contact values are exact (used in both versions). Do not invent columns, headings, or links.**
+
+The simplified footer has 4 columns on desktop, stacks to 1 on mobile:
 - **Col 1:** Logo + company tagline
 - **Col 2:** Kontakt (exact phone/email — copy these values)
 - **Col 3:** Informationen (exact link list)

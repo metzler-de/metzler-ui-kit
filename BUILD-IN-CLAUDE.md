@@ -155,22 +155,33 @@ For each component, copy the class names, states, and CSS from the live system. 
 
 ---
 
-## 7 · Header — two-state, sticky on scroll
+## 7 · Header — copy the canonical component, do not simplify
 
-Use the design-system header. Desktop 4rem tall (logo + "Alle Kategorien" button + search bar + account/cart). Mobile 3.125rem ([hamburger, search] · centered logo · [account, cart]).
+**The header is a full multi-row component. Reproduce it from `header/preview.html` (the canonical source) — copy its CSS, markup, and JS. Do NOT build a simplified single-row header.**
 
-**Critical:** the header is **NOT sticky at page load.** A scroll listener adds `.is-sticky` only when `window.scrollY > 0`; any compact row starts hidden and must never carry a `visible`/`active`/`show` class in the initial HTML. Run the handler once on load to set the correct (non-sticky) state.
+The real header is `position: fixed` and has these parts (classes are exact):
+- `.hdr-row1` — green top trust-bar (`#015253`, 32px): rotating badges (`.hdr-badge`: "Original Metzler Qualität seit 2013", "über 1.8 Mio. zufriedene Kunden", "10 Jahre Metzler Garantie", "TrustedShops Käuferschutz", "Kauf auf Rechnung") + right links (`.hdr-link`: Kontakt, Zahlung und Versand).
+- `.hdr-row2` — white row (72px): logo (`logo.svg`) + `.hdr-searchbar` + `.hdr-icons` (account, cart).
+- `.nav` — white category bar (54px): `.nav-cat` links (Briefkästen, Paketboxen, Mülltonnenboxen, Sprechanlagen, Sicherheitstechnik, Türklingeln, Hausnummern, Außenleuchten, Garten) with teal underline-on-hover; overflow collapses into `.nav-alle-btn`.
+- `.hdr-compact` — condensed sticky bar that slides in on scroll (`window.scrollY > 150`); rows 1–3 fade out.
+- `.hdr-mobile` — mobile bar (<768px): topbar + hamburger/search · centered logo · account/cart.
+- `.side-menu` / `.side-overlay` — slide-in category drawer opened by the menu buttons.
+
+The body needs `padding-top` to clear the fixed header (158px desktop = 32+72+54; 78px mobile = 28+50). Note: the canonical header CSS predates the token system and uses raw hex/px — that is acceptable **only because you are copying the existing component verbatim**; do not introduce new raw values of your own.
 
 ---
 
-## 8 · Footer — copy verbatim, never invent
+## 8 · Footer — copy the canonical component, do not simplify
 
-Use the exact design-system footer (`background: var(--color-teal-900)`). 4 columns on desktop → 1 on mobile. Do not invent columns, headings, or links:
-- **Col 1:** logo + tagline ("Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe" / "Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.")
-- **Col 2 · Kontakt** (exact): Allgemeine Hotline `+49 (0) 7121 / 317 7310`, Sprechanlagen Hotline `+49 (0) 7121 / 317 7333` (Mo–Fr 09:00–16:00), `service@metzlergmbh.de`, Kontaktformular.
-- **Col 3 · Informationen:** Auszeichnungen · Fotowettbewerb · Kundenbilder · Stellenangebote · News · Zahlung und Versand
-- **Col 4 · Service:** Begriffserklärung · FAQ · Geschäftskunden · Newsletter · VDM10 FAQ
-- **Legal row:** © 2026 Metzler GmbH · Datenschutz · AGB · Impressum · Widerrufsrecht · Sitemap · Cookie-Einstellungen
+**The real footer is rendered by the `FooterSection` component in `index.html` and uses the image assets in `footer/`. Reproduce that — do NOT build a 4-column-only footer.** Background is **`var(--color-teal-700)` (#013E3E)** — *not* teal-900.
+
+Structure (top to bottom):
+1. **Columns row** (5 cols ≥1141px, collapsing below): **Col 1** logo (`footer/Metzler_Logo_footer.svg`) + tagline ("…ein Unternehmen der **Metzler Gruppe**" mint link) + bold 18px line "Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern." · **Col 2 Kontakt** Allgemeine Hotline `+49 (0) 7121 / 317 7310`, Sprechanlagen Hotline `+49 (0) 7121 / 317 7333` (Mo-Fr 09:00–16:00), `service@metzlergmbh.de`, Kontaktformular (phones/email are mint links) · **Col 3 Informationen** Auszeichnungen · Fotowettbewerb · Kundenbilder · Stellenangebote · News · Zahlung und Versand · **Col 4 Service** Begriffserklärung · FAQ · Geschäftskunden · Newsletter · VDM10 FAQ · **Col 5** "Follow us" (5 social icons `footer/Icon=*.svg` in 35px circles) + "Qualität" (4 award badges `footer/2023.png`,`2024.png`,`2025.png`,`3jahre.png`).
+2. **Payment row:** "Unsere Versandpartners:" (`Choice=dpd/dhl/gogreen.svg`) + "Einfach bezahlen:" (`Choice=sepa,amex,visa,pay,klarna,paypal,mastercard,apple,google,vorkasse.svg`, each 53×30) + a Trusted Shops rating pill (`footer/Property 1=all.svg`, 5 stars, "4,72 Sehr gut · 32.780 Bewertungen").
+3. **Legal row** (centered, 10 links): Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Impressum · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen.
+4. **Copyright** (centered): "Alle Preise inkl. gesetzliche MwSt., zzgl. *Versand*  © 2013 - 2026 | Metzler GmbH".
+
+Link colour `rgba(255,255,255,0.5)` → white on hover; phone/email/Gruppe links are `var(--color-mint)`. Copy the `footer/` assets alongside the page. A working static reconstruction lives in `../tst/index.html`.
 
 ---
 
@@ -181,10 +192,10 @@ Reject your own output if any of these fail:
 - [ ] Every color/size/radius/shadow is a `var(--color-*)` / token — zero raw hex, zero px.
 - [ ] No short token names (`--teal`, `--g-800`, `--black`) anywhere.
 - [ ] Container is `100rem`; header/footer outer tags have no padding.
-- [ ] Header is not sticky on load; becomes sticky via JS on scroll.
+- [ ] Header is the **full multi-row component** from `header/preview.html` (trust bar + logo/search + category nav + compact + mobile + drawer) — not a simplified single row; not sticky on load.
 - [ ] Buttons use real `.btn-*` classes; no red on any CTA.
 - [ ] Breadcrumbs left-aligned with chevron-SVG separator.
-- [ ] Footer matches §8 exactly (phones, links, columns).
+- [ ] Footer is the **full component** (5 columns + shipping/payment icons + Trusted Shops rating + social + award badges + 10 legal links + copyright) on `var(--color-teal-700)`; `footer/` assets copied alongside.
 - [ ] All copy is German.
 - [ ] Font sizes are only from the §4 scale.
 - [ ] Page renders standalone (no external CSS/JS/font/icon dependencies).
@@ -201,3 +212,4 @@ Reject your own output if any of these fail:
 - ❌ FAQ question at `1rem`/600. ✅ `1.125rem`/700.
 - ❌ Generic icon badge at `0.625rem`. ✅ `var(--radius-lg)` (0.625rem only for `.nfs-card-icon`).
 - ❌ Inventing footer columns or phone numbers. ✅ Copy §8 verbatim.
+- ❌ **Building a simplified single-row header or a 4-column-only footer.** ✅ Copy the full header from `header/preview.html` (§7) and the full footer component + `footer/` assets (§8). bg = `--color-teal-700`, not teal-900.
