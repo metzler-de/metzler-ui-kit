@@ -11370,7 +11370,7 @@ cursor: pointer;
             <IntroStep num="4" title="Reference tokens by name">
               Never hardcode a value. When implementing a component, use the token names shown in
               the <strong>Colors</strong> and <strong>Typography</strong> pages. For example, use{' '}
-              <IntroCodeBlock>#015253</IntroCodeBlock> (Teal 600) for primary actions — never an arbitrary hex.
+              <IntroCodeBlock>#015253</IntroCodeBlock> (Teal 500 · default) for primary actions — never an arbitrary hex.
             </IntroStep>
             <IntroStep num="5" title="Check layout behaviour by breakpoint">
               Open the <strong>Breakpoints</strong> section to understand when layouts switch from mobile to desktop.
@@ -11390,13 +11390,14 @@ cursor: pointer;
                     Use with Claude AI
                   </div>
                   <div style={{fontSize:T.fSm,color:T.g700,fontFamily:font,lineHeight:1.65}}>
-                    Paste this page URL into any Claude chat session and ask Claude to build a Metzler page or component.
+                    Paste this page URL into any Claude chat session and ask Claude to build a Metzler page, component, or presentation.
                     A hidden block on this page automatically provides Claude with all design tokens, typography rules,
-                    layout patterns, and the 17 mandatory rules — including exact CSS variable values that stay in sync
-                    whenever the design system is updated.
+                    layout patterns, and the 18 mandatory rules — including exact CSS variable values that stay in sync
+                    whenever the design system is updated. This is a <strong>closed system</strong>: Claude reuses only the
+                    styles defined here and never invents new colours, sizes, or components.
                   </div>
                   {(() => {
-                    const promptText = 'Read the design rules at metzler-de.github.io/metzler-ui-kit/ and build me a [page type] page with [description]. Follow all rules from the hidden for-claude block on that page.';
+                    const promptText = 'Read the design rules at metzler-de.github.io/metzler-ui-kit/ and build me a [page type / presentation] with [description]. Use ONLY the existing tokens, type scale, and components from this design system — never invent new colours, sizes, spacing, or styles. Follow every rule in the hidden for-claude block on that page.';
                     const [copied, setCopied] = React.useState(false);
                     const doCopy = () => {
                       navigator.clipboard.writeText(promptText).then(() => {
@@ -11451,7 +11452,7 @@ cursor: pointer;
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)'}}>
             {[
               {label:'Base font size',    value:'16px = 1rem',     note:'All sizes expressed in rem'},
-              {label:'Primary color',     value:'#015253',         note:'Teal 600 — buttons, links, focus rings'},
+              {label:'Primary color',     value:'#015253',         note:'Teal 500 (default) — buttons, links, focus rings'},
               {label:'Body font',         value:'Helvetica Neue',  note:'Fallback: Helvetica, Arial, sans-serif'},
               {label:'Mobile breakpoint', value:'< 768px',         note:'Hamburger nav, stacked layout'},
               {label:'Border radius — cards',   value:'0.5rem (8px)',  note:'Cards and large containers'},
@@ -13286,6 +13287,7 @@ cursor: pointer;
         '15. No external CSS frameworks.',
         '16. Every page must use the design system header AND footer.',
         '17. Never invent token values — if a value is missing, flag it and ask.',
+        '18. CLOSED SYSTEM — use ONLY the tokens, type scale, components, and patterns defined here. Never invent new colours, font sizes, spacing, radii, shadows, components, or class names. Applies to every output: pages, components, emails, slide decks/presentations, documents. If a needed style is missing, reuse the closest existing token/component or ask — never create one.',
         '',
         '---',
         '## 15 · Common Mistakes — DO NOT DO THESE',

@@ -14,6 +14,22 @@ Default deliverable: **one self-contained HTML file** (inline `<style>`, inline 
 
 ---
 
+## 0.1 · This is a CLOSED system — use only what already exists
+
+**The single most important rule.** Every page, component, email, **slide deck / presentation**, or document you produce must be assembled **exclusively** from the styles already defined in this design system. You are reusing a fixed vocabulary, not designing a new one.
+
+- ✅ Use only the existing **colour tokens, type scale, spacing, radii, shadows, components, and layout patterns** from `metzler-tokens.css` and `index.html`.
+- 🚫 **Never invent** a new colour, hex, font size, font family, spacing value, border radius, shadow, gradient, component, or class name — not even "just for this one screen."
+- 🚫 No new themes, no decorative accents outside the palette, no off-scale font sizes, no rounded values that aren't tokens.
+- ❓ If something you need does not exist in the system, **do one of two things only**: (a) reuse the closest existing token/component, or (b) stop and ask. Never create a new value silently.
+- This applies to **every output format**, including non-web ones:
+  - **Presentations / slides:** titles use `--display-*` or `h1/h2`; body uses `.body-lg` / `p`; backgrounds use `--color-paper` (light) or `--color-teal-900` / `--gradient-brand` (dark); accents use `--color-teal` / `--color-mint`; never a new slide theme or colour.
+  - **Documents / emails:** same tokens and type scale, same German voice.
+
+When in doubt, the answer is always: *reuse, don't invent.*
+
+---
+
 ## 1 · Read the repo first — and obey this precedence
 
 Before writing any code, read these files. When two sources disagree, the one **higher in this list wins**:
@@ -161,6 +177,7 @@ Use the exact design-system footer (`background: var(--color-teal-900)`). 4 colu
 ## 9 · Quality bar — self-check before returning code
 
 Reject your own output if any of these fail:
+- [ ] **Closed system:** every style traces to an existing token/component — nothing new invented (colour, size, spacing, radius, shadow, component, or class).
 - [ ] Every color/size/radius/shadow is a `var(--color-*)` / token — zero raw hex, zero px.
 - [ ] No short token names (`--teal`, `--g-800`, `--black`) anywhere.
 - [ ] Container is `100rem`; header/footer outer tags have no padding.
