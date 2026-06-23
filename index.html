@@ -2149,10 +2149,10 @@ a {
     // ── Shared contact service cards list ──
     const ContactCards = () => (
       <div style={{display:'flex',flexDirection:'column',gap:'0.625rem'}}>
-        <ServiceCard title="Produktberatung & Bestellung" sub="Beratung vor dem Kauf · Antwort meist in 5 Min." icon={contactIcons[0]}/>
-        <ServiceCard title="Technischer Support" sub="Termin innerhalb von 48 Stunden" icon={contactIcons[1]}/>
-        <ServiceCard title="Partnerbetrieb in Ihrer Nähe" sub="Installation · Suche per Postleitzahl" icon={contactIcons[2]}/>
-        <ServiceCard title="Dokumentation & Downloads" sub="Anleitungen · Häufige Fragen · Downloads" icon={contactIcons[3]}/>
+        <ServiceCard title="Dokumentation & Downloads" sub="Anleitungen, häufig gestellte Fragen und Tipps." icon={contactIcons[3]}/>
+        <ServiceCard title="Produktberatung & Bestellung" sub="Beratung vor dem Kauf einer Sprechanlage." icon={contactIcons[0]}/>
+        <ServiceCard title="Technischer Support" sub="Techniker Termin zur Einrichtung." icon={contactIcons[1]}/>
+        <ServiceCard title="Metzler Partnerbetriebe" sub="Installationspartner in Ihrer Nähe." icon={contactIcons[2]}/>
       </div>
     );
 
@@ -2205,7 +2205,6 @@ a {
               fontFamily:font,fontSize:T.fXxs,fontWeight:700,
               letterSpacing:'0.18em',textTransform:'uppercase',
               color:T.g600,marginBottom:'0.875rem'}}>
-              <span style={{width:'1.75rem',height:'0.0625rem',background:T.teal,display:'block',flexShrink:0}}/>
               Kontakt &amp; Service
             </div>
             <h4 style={{margin:'0 0 0.5rem',fontFamily:font,fontSize:T.fH2,fontWeight:700,
@@ -2226,7 +2225,7 @@ a {
     const ContactModal = ({open, onClose}) => {
       const { mob } = useContext(MobCtx);
       return (
-        <MobSheet open={open} onClose={onClose} maxW="55rem" dir="row" bottomSheet>
+        <MobSheet open={open} onClose={onClose} maxW="60rem" dir="row" bottomSheet>
           {mob ? (
             /* ── MOBILE: white bottom sheet, hotline at bottom ── */
             <div style={{display:'flex',flexDirection:'column',background:T.white}}>
@@ -2322,15 +2321,20 @@ a {
                 </span>
                 <span style={{fontFamily:font,fontSize:T.fSm,color:T.g600}}>4,5 (4 Bewertungen)</span>
               </div>
-              <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody,borderBottom:`0.0625rem solid ${T.g100}`}}>
+              <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody,margin:'0.75rem 0'}}>
                 <tbody>
                   <tr>
-                    {[['Hersteller:','Metzler'],['Breite × Höhe × Tiefe:','25,40 × 16,60 × 2,47 cm'],['Artikelnummer:','29407']].map(([label,val])=>(
-                      <td key={label} style={{padding:'0.5rem 1rem 0.5rem 0',verticalAlign:'top',textAlign:'center'}}>
+                    {[['Hersteller:','Metzler'],['Breite × Höhe × Tiefe:','25,40 × 16,60 × 2,47 cm'],['Artikelnummer:','29407']].map(([label,val],i,arr)=>{
+                      const align = i===0 ? 'left' : i===arr.length-1 ? 'right' : 'center';
+                      const pad   = i===0 ? '0.5rem 1rem 0.5rem 0' : i===arr.length-1 ? '0.5rem 0 0.5rem 1rem' : '0.5rem 1rem';
+                      const wid   = i===1 ? '46%' : '27%';   /* middle column widest so its longer text wraps to 2 rows like the others */
+                      return (
+                      <td key={label} style={{padding:pad,verticalAlign:'top',width:wid,textAlign:align,
+                        borderRight: i < arr.length-1 ? `0.0625rem solid ${T.g200}` : 'none'}}>
                         <div style={{color:T.g500,marginBottom:'0.25rem'}}>{label}</div>
                         <div style={{fontWeight:700,color:T.black}}>{val}</div>
                       </td>
-                    ))}
+                    );})}
                   </tr>
                 </tbody>
               </table>
@@ -2521,51 +2525,82 @@ a {
           <BH>LG · 960px — 3 Varianten</BH>
           <BD>Großer Inhalt, Bewertungsfotos und Kontakt-Split-Panel nutzen alle dieselbe Breite. Header oder Overlay-X je nach Variante.</BD>
 
-          {/* LG-A Standard */}
-          <p style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black,margin:'0 0 0.5rem'}}>A — Standard (Header + scrollbarer Body)</p>
+          {/* LG-A Kundenfoto & Bewertung (Split-Panel, Bildergalerie) */}
+          <p style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black,margin:'0 0 0.5rem'}}>A — Kundenfoto &amp; Bewertung (Split-Panel, Bildergalerie)</p>
           <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1rem'}}>
             <div style={{padding:'2.5rem 1.5rem',background:T.paper,display:'flex',justifyContent:'center'}}>
-              <div style={{width:'100%',maxWidth:'60rem',background:T.white,borderRadius:T.rLg,
-                boxShadow:'0 1.25rem 3.75rem rgba(0,0,0,0.12), 0 0.25rem 1rem rgba(0,0,0,0.06)',overflow:'hidden'}}>
-                {/* Header */}
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
-                  padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`}}>
-                  <span style={{fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Lieferinformation</span>
-                  <button style={{display:'flex',alignItems:'center',justifyContent:'center',
-                    width:'2rem',height:'2rem',borderRadius:T.r,
-                    border:'none',background:'transparent',cursor:'pointer',color:T.g600}}>
-                    <XIcon/>
-                  </button>
+              <div style={{width:'100%',maxWidth:'60rem',height:'37.5rem',background:T.white,borderRadius:T.rLg,
+                boxShadow:'0 1.25rem 3.75rem rgba(0,0,0,0.12), 0 0.25rem 1rem rgba(0,0,0,0.06)',overflow:'hidden',display:'flex'}}>
+                {/* Left — photo panel */}
+                <div style={{flex:'0 0 50%',background:T.g900,position:'relative',overflow:'hidden'}}>
+                  <img src={reviewPhotos[photoIdx]} alt={`Kundenfoto ${photoIdx+1}`}
+                    style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                  {/* Prev arrow */}
+                  <div role="button" onClick={()=>setPhotoIdx(i=>(i-1+reviewPhotos.length)%reviewPhotos.length)}
+                    style={{position:'absolute',left:'0.75rem',top:'50%',transform:'translateY(-50%)',
+                      width:'2.625rem',height:'2.625rem',borderRadius:T.r,background:T.white,color:T.teal,
+                      border:`0.0625rem solid ${T.teal}`,display:'flex',alignItems:'center',justifyContent:'center',
+                      cursor:'pointer',userSelect:'none',zIndex:2,transition:'background 0.15s ease, color 0.15s ease'}}
+                    onMouseEnter={e=>{e.currentTarget.style.background=T.teal100;}}
+                    onMouseLeave={e=>{e.currentTarget.style.background=T.white;e.currentTarget.style.color=T.teal;}}>
+                    <svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="8,1.5 1.5,8 8,14.5"/></svg>
+                  </div>
+                  {/* Next arrow */}
+                  <div role="button" onClick={()=>setPhotoIdx(i=>(i+1)%reviewPhotos.length)}
+                    style={{position:'absolute',right:'0.75rem',top:'50%',transform:'translateY(-50%)',
+                      width:'2.625rem',height:'2.625rem',borderRadius:T.r,background:T.white,color:T.teal,
+                      border:`0.0625rem solid ${T.teal}`,display:'flex',alignItems:'center',justifyContent:'center',
+                      cursor:'pointer',userSelect:'none',zIndex:2,transition:'background 0.15s ease, color 0.15s ease'}}
+                    onMouseEnter={e=>{e.currentTarget.style.background=T.teal100;}}
+                    onMouseLeave={e=>{e.currentTarget.style.background=T.white;e.currentTarget.style.color=T.teal;}}>
+                    <svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1,1.5 7.5,8 1,14.5"/></svg>
+                  </div>
+                  {/* Thumbnail strip */}
+                  <div style={{position:'absolute',bottom:'0.75rem',left:0,right:0,display:'flex',gap:'0.5rem',justifyContent:'center',zIndex:2}}>
+                    {reviewPhotos.map((src,i)=>(
+                      <div key={i} role="button" onClick={()=>setPhotoIdx(i)}
+                        style={{width:'3rem',height:'3rem',borderRadius:T.rSm,cursor:'pointer',overflow:'hidden',flexShrink:0,
+                          border:`0.125rem solid ${i===photoIdx?T.teal:'rgba(255,255,255,0.4)'}`,transition:'border-color 0.15s'}}>
+                        <img src={src} alt="" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                {/* Body */}
-                <div style={{padding:'1.5rem',fontFamily:font,fontSize:T.fSm,color:T.g700,lineHeight:1.6}}>
-                  <table style={{width:'100%',borderCollapse:'collapse',marginBottom:'1rem',fontSize:T.fSm}}>
-                    <tbody>
-                      {[['Versandzeit','1–3 Werktage'],['Versandart','DHL Express / Standardversand'],['Liefergebiet','Deutschland, Österreich, Schweiz']].map(([k,v])=>(
-                        <tr key={k} style={{borderBottom:`0.0625rem solid ${T.g200}`}}>
-                          <td style={{padding:'0.5rem 0',fontWeight:600,color:T.black,width:'40%'}}>{k}</td>
-                          <td style={{padding:'0.5rem 0',color:T.g700}}>{v}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <p style={{margin:'0 0 0.75rem'}}>Bestellungen, die bis 14:00 Uhr eingehen, werden noch am selben Tag bearbeitet und versendet. Versandkostenfreie Lieferung ab einem Bestellwert von 50 €.</p>
-                  <p style={{margin:0}}>Bei Fragen zur Sendung wenden Sie sich bitte an unseren Kundenservice. Wir helfen Ihnen gerne weiter.</p>
+                {/* Right — review content panel */}
+                <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',padding:'1.25rem 1.5rem',flexShrink:0}}>
+                    <button style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',
+                      borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}><XIcon/></button>
+                  </div>
+                  <div style={{flex:1,padding:'0 2rem 2rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'0.75rem'}}>
+                      <h4 style={{margin:0,fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font,lineHeight:1.3}}>Schicke Video-Türsprechanlage</h4>
+                      <span style={{color:T.star,fontSize:T.fBody,whiteSpace:'nowrap',flexShrink:0,letterSpacing:'0.04em'}}>★★★★★</span>
+                    </div>
+                    <p style={{margin:0,fontFamily:font,fontSize:T.fXs,color:T.g500}}>Philip W. | 2026-04-05</p>
+                    <p style={{margin:0,fontFamily:font,fontSize:T.fBody,color:T.g700,lineHeight:1.65}}>
+                      Wir sind insgesamt sehr zufrieden mit dieser schicken und zuverlässigen Video-Türsprechanlage. Diese fügt sich optisch gut ins Gesamtbild und die Bedienung ist sehr einfach.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
             <CodeBlock inline lang="HTML" code={
 `<div class="modal-overlay">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-split">
 
-    <div class="modal-header">
-      <span class="modal-title">Lieferinformation</span>
-      <button class="modal-close" aria-label="Schließen">✕</button>
+    <div class="modal-gallery">
+      <img class="modal-photo" src="…" alt="Kundenfoto"/>
+      <button class="nav-arr nav-prev" aria-label="Zurück">‹</button>
+      <button class="nav-arr nav-next" aria-label="Weiter">›</button>
+      <div class="modal-thumbs"> … </div>
     </div>
 
-    <div class="modal-body">
-      <table class="modal-specs-table"> … </table>
-      <p>Bestellungen, die bis 14:00 Uhr eingehen …</p>
+    <div class="modal-review">
+      <button class="modal-close" aria-label="Schließen">✕</button>
+      <h4>Schicke Video-Türsprechanlage <span class="stars">★★★★★</span></h4>
+      <p class="review-meta">Philip W. | 2026-04-05</p>
+      <p>Wir sind insgesamt sehr zufrieden …</p>
     </div>
 
   </div>
@@ -2637,14 +2672,18 @@ a {
                 </div>
                 {/* Body preview */}
                 <div style={{padding:'1.5rem',fontFamily:font,fontSize:T.fSm,color:T.g700,lineHeight:1.6}}>
-                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.75rem',fontSize:T.fSm}}>Akzeptierte Zahlungsmöglichkeiten</div>
-                  <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem',marginBottom:'1.25rem'}}>
-                    {['PayPal','Amazon Pay','Klarna','Kreditkarte','SEPA-Lastschrift','Apple Pay','Google Pay','Vorkasse'].map(m=>(
-                      <span key={m} style={{padding:'0.25rem 0.625rem',borderRadius:T.r,border:`0.0625rem solid ${T.g300}`,fontSize:T.fXs,color:T.g700,background:T.white,whiteSpace:'nowrap'}}>{m}</span>
+                  {/* Payment methods */}
+                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.875rem',fontSize:T.fSm}}>Akzeptierte Zahlungsmöglichkeiten</div>
+                  <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem',marginBottom:'0.5rem'}}>
+                    {['PayPal','PayPal Express','SEPA-Lastschrift','Apple Pay','Google Pay','Amazon Pay','Klarna – Sofortüberweisung','Klarna – Rechnung','Klarna – Ratenkauf','Klarna – Lastschrift','Kreditkarte','Vorkasse / Überweisung'].map(m=>(
+                      <span key={m} style={{padding:'0.3125rem 0.75rem',borderRadius:T.r,border:`0.0625rem solid ${T.g300}`,fontSize:T.fXs,color:T.g700,background:T.white,whiteSpace:'nowrap'}}>{m}</span>
                     ))}
                   </div>
-                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.5rem'}}>Versandkosten (inkl. MwSt.)</div>
-                  <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1rem'}}>
+                  <p style={{margin:'0 0 1.5rem',fontSize:T.fXs,color:T.g500}}>Zahlung per Rechnung ist ausschließlich für Behörden und öffentliche Institutionen möglich. Der Rechnungsbetrag ist innerhalb von 14 Tagen auszugleichen.</p>
+
+                  {/* Shipping costs */}
+                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.75rem',fontSize:T.fSm}}>Versandkosten (inkl. gesetzl. MwSt.)</div>
+                  <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
                     <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:T.fSm}}>
                       <thead>
                         <tr style={{borderBottom:`0.0625rem solid ${T.g200}`}}>
@@ -2667,11 +2706,21 @@ a {
                       </tbody>
                     </table>
                   </div>
-                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.5rem'}}>Lieferfristen</div>
-                  <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+
+                  {/* Bulky goods */}
+                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.5rem',fontSize:T.fSm}}>Versandkosten Sperrgut (DPD Sperrgut)</div>
+                  <div style={{display:'flex',flexWrap:'wrap',gap:'0.375rem 1.25rem',marginBottom:'1.5rem',fontSize:T.fXs,color:T.g700}}>
+                    {[['bis 30 kg','29,00 €'],['bis 60 kg','58,00 €'],['bis 90 kg','87,00 €'],['bis 120 kg','116,00 €'],['bis 150 kg','145,00 €'],['bis 1.000 kg','174,00 €']].map(([kg,p])=>(
+                      <span key={kg}><span style={{color:T.g500}}>{kg}</span> — <strong style={{color:T.black}}>{p}</strong></span>
+                    ))}
+                  </div>
+
+                  {/* Delivery times */}
+                  <div style={{fontWeight:700,color:T.black,marginBottom:'0.75rem',fontSize:T.fSm}}>Lieferfristen</div>
+                  <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1rem'}}>
                     <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:T.fSm}}>
                       <tbody>
-                        {[['Deutschland','1–3 Werktage'],['Österreich','2–4 Werktage'],['Europa / Schweiz / GB','3–5 Werktage']].map((r,i,arr)=>(
+                        {[['Deutschland','1–3 Werktage'],['Österreich','2–4 Werktage'],['Europa / Schweiz / Großbritannien','3–5 Werktage']].map((r,i,arr)=>(
                           <tr key={i} style={{borderBottom: i<arr.length-1 ? `0.0625rem solid ${T.g100}` : 'none', background:T.white}}>
                             <td style={{padding:'0.625rem 0.75rem',color:T.g700,width:'55%',
                               borderRight:`0.0625rem solid ${T.g100}`}}>{r[0]}</td>
@@ -2681,6 +2730,11 @@ a {
                       </tbody>
                     </table>
                   </div>
+                  <p style={{margin:'0 0 0.5rem',fontSize:T.fXs,color:T.g600}}>Soweit im Angebot keine andere Frist angegeben ist, erfolgt die Lieferung innerhalb Deutschlands in 1–3 Werktagen nach Vertragsschluss. An <strong>Sonn- und Feiertagen erfolgt keine Zustellung</strong>. Bei Bestellungen mit unterschiedlichen Lieferzeiten gilt die längste Lieferzeit.</p>
+
+                  {/* Conditions */}
+                  <div style={{fontWeight:700,color:T.black,margin:'1.25rem 0 0.5rem',fontSize:T.fSm}}>Es gelten folgende Bedingungen:</div>
+                  <p style={{margin:0,fontSize:T.fXs,color:T.g600}}>Die Lieferung erfolgt im Inland (Deutschland) und in folgende Länder: Belgien, Bulgarien, Dänemark, Estland, Finnland, Frankreich, Griechenland, Großbritannien, Irland, Italien, Kroatien, Lettland, Litauen, Luxemburg, Malta, Niederlande, Österreich, Polen, Portugal, Rumänien, Schweden, Schweiz, Slowakei, Slowenien, Spanien, Tschechien, Ungarn, Zypern.</p>
                 </div>
               </div>
             </div>
@@ -2732,6 +2786,69 @@ a {
         <button class="btn btn-ghost">Ablehnen</button>
         <button class="btn btn-ghost">Konfigurieren</button>
       </div>
+    </div>
+
+  </div>
+</div>`}/>
+          </div>
+
+          {/* ── SM · 400px ── */}
+          <BH>SM · 400px — Login / kleine Formulare</BH>
+          <BD>Schmalster Dialog — Standard Header-Balken, Titel links, X rechts, Trennlinie darunter. Kompaktes Formular mit vollbreitem CTA-Button im Body, kein Footer.</BD>
+          <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
+            <div style={{padding:'2.5rem 1.5rem',background:T.paper,display:'flex',justifyContent:'center'}}>
+              <div style={{width:'100%',maxWidth:'25rem',background:T.white,borderRadius:T.rLg,
+                boxShadow:'0 1.25rem 3.75rem rgba(0,0,0,0.12), 0 0.25rem 1rem rgba(0,0,0,0.06)',
+                overflow:'hidden',display:'flex',flexDirection:'column'}}>
+                {/* Standard header */}
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
+                  padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`}}>
+                  <span style={{fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Anmelden</span>
+                  <button style={{display:'flex',alignItems:'center',justifyContent:'center',
+                    width:'2rem',height:'2rem',borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}>
+                    <XIcon/>
+                  </button>
+                </div>
+                {/* Body */}
+                <div style={{padding:'1.5rem',display:'flex',flexDirection:'column',gap:'1.25rem',fontFamily:font}}>
+                  <p style={{margin:0,fontSize:T.fSm,color:T.g700,lineHeight:1.55}}>Melden Sie sich an, um Ihre Bestellungen und Ihren Account zu verwalten.</p>
+                  <DSInputField label="E-Mail" type="email" />
+                  <DSInputField label="Passwort" showToggle />
+                  <div style={{textAlign:'right',marginTop:'-0.5rem'}}>
+                    <a href="#" style={{fontSize:T.fSm,color:T.teal,textDecoration:'underline',fontFamily:font,cursor:'pointer'}}>Passwort vergessen?</a>
+                  </div>
+                  <button style={{width:'100%',height:'2.625rem',padding:'0 1.25rem',borderRadius:T.r,border:'none',
+                    background:T.teal,color:T.white,boxSizing:'border-box',fontFamily:font,fontSize:T.fBody,fontWeight:500,cursor:'pointer',letterSpacing:'0.01em'}}>
+                    Anmelden
+                  </button>
+                  <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
+                    <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
+                    <span style={{fontSize:T.fSm,color:T.g500,fontFamily:font}}>oder</span>
+                    <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
+                  </div>
+                  <p style={{margin:0,fontSize:T.fSm,color:T.g700,textAlign:'center',fontFamily:font}}>
+                    Neu hier?{' '}
+                    <a href="#" style={{color:T.teal,textDecoration:'underline',fontFamily:font,cursor:'pointer'}}>Jetzt registrieren!</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <CodeBlock inline lang="HTML" code={
+`<div class="modal-overlay">
+  <div class="modal-dialog modal-sm">
+
+    <div class="modal-header">
+      <span class="modal-title">Anmelden</span>
+      <button class="modal-close" aria-label="Schließen">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <p>Melden Sie sich an, um Ihre Bestellungen …</p>
+      <div class="field-wrapper"><input type="email" placeholder=" "/><label>E-Mail</label></div>
+      <div class="field-wrapper"><input type="password" placeholder=" "/><label>Passwort</label></div>
+      <a class="link-right" href="#">Passwort vergessen?</a>
+      <button class="btn btn-primary btn-block">Anmelden</button>
+      <p>Neu hier? <a href="#">Jetzt registrieren!</a></p>
     </div>
 
   </div>
@@ -2843,12 +2960,12 @@ a {
           <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
             <div style={{padding:'1.5rem',background:T.paper,display:'flex',gap:'0.75rem',flexWrap:'wrap',alignItems:'center'}}>
               <Btn onClick={()=>setOpenFull(true)} variant="primary">XL · 1100px — Produktdetail</Btn>
-              <Btn onClick={()=>setOpenContact(true)} variant="primary">LG · Experten-Kontakt</Btn>
-              <Btn onClick={()=>setOpenPayment(true)} variant="primary">LG · Zahlung &amp; Versand</Btn>
-              <Btn onClick={()=>{setOpenPhotoReview(true);setPhotoIdx(0);}} variant="primary">LG · Kundenfoto &amp; Bewertung</Btn>
+              <Btn onClick={()=>setOpenPayment(true)} variant="primary">LG · 960px — Zahlung &amp; Versand</Btn>
+              <Btn onClick={()=>{setOpenPhotoReview(true);setPhotoIdx(0);}} variant="primary">LG · 960px — Kundenfoto &amp; Bewertung</Btn>
+              <Btn onClick={()=>setOpenContact(true)} variant="primary">LG · 960px — Experten-Kontakt</Btn>
               <Btn onClick={()=>{setOpenCookie(true);setCookieChoice(null);}} variant="primary">MD · 600px — Cookie-Banner</Btn>
+              <Btn onClick={()=>setOpenPrivacy(true)} variant="primary">MD · 600px — Datenschutz-Einstellungen</Btn>
               <Btn onClick={()=>setOpenSm(true)} variant="primary">SM · 400px — Login</Btn>
-              <Btn onClick={()=>setOpenPrivacy(true)} variant="primary">SM · Datenschutz-Einstellungen</Btn>
               {cookieChoice && <span style={{fontFamily:font,fontSize:T.fSm,color:T.g500}}>Gewählt: <strong style={{color:T.teal}}>{cookieChoice}</strong></span>}
             </div>
           </div>
@@ -12041,6 +12158,12 @@ cursor: pointer;
                     {name:'Caption Bold',    rem:'0.75rem',  px:'12px', weight:700, lh:'1.4',  token:'--text-caption-bold',   jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
                   ]
                 },
+                {
+                  label: 'Labels & Overlines — utility',
+                  rows: [
+                    {name:'.overline', rem:'0.75rem', px:'12px', weight:700, lh:'1.4', ls:'0.1em', token:'--color-graphite-600', preview:'Ausgezeichnete Qualität', use:'Section kicker / eyebrow', color:T.g600, caps:true},
+                  ]
+                },
               ];
               return (
                 <div style={{marginBottom:32}}>
@@ -12064,7 +12187,7 @@ cursor: pointer;
                             </div>
                           </div>
                           {/* Preview */}
-                          <div style={{flex:1,overflow:'hidden',whiteSpace:'nowrap',textOverflow:'ellipsis',fontFamily:font,fontSize:row.px,fontWeight:row.weight,lineHeight:row.lh,letterSpacing:row.ls||'normal',color:T.black}}>{row.preview}</div>
+                          <div style={{flex:1,overflow:'hidden',whiteSpace:'nowrap',textOverflow:'ellipsis',fontFamily:font,fontSize:row.px,fontWeight:row.weight,lineHeight:row.lh,letterSpacing:row.ls||'normal',textTransform:row.caps?'uppercase':'none',color:row.color||T.black}}>{row.preview}</div>
                           {/* Usage */}
                           <div style={{minWidth:130,fontSize:T.fXxs,color:T.g500,fontFamily:font,textAlign:'right',flexShrink:0}}>{row.use}</div>
                         </div>
