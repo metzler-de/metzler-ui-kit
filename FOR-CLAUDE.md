@@ -443,9 +443,9 @@ Always left-aligned, always below the header, always in the same `.container`. T
 }
 .breadcrumb-item a {
   font-size: 0.875rem; font-family: var(--font-family);
-  color: var(--color-teal); text-decoration: underline; cursor: pointer;
+  color: var(--color-graphite-600); text-decoration: none; cursor: pointer; transition: color 0.15s;
 }
-.breadcrumb-item a:hover { opacity: 0.8; }
+.breadcrumb-item a:hover { color: var(--color-teal); text-decoration: underline; }
 .breadcrumb-item.active {
   font-size: 0.875rem; font-family: var(--font-family);
   color: var(--color-digital-black); font-weight: 500;
@@ -1299,7 +1299,8 @@ section { padding: 10px 0; }
 
 /* CORRECT */
 /* Separator is a chevron SVG via ::before on li + li (see Section 8) */
-.breadcrumb-item a { color: var(--color-teal); text-decoration: underline; }
+.breadcrumb-item a { color: var(--color-graphite-600); text-decoration: none; }
+.breadcrumb-item a:hover { color: var(--color-teal); text-decoration: underline; }
 .breadcrumb-item.active { color: var(--color-digital-black); font-weight: 500; }
 ```
 
