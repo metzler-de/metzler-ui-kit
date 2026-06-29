@@ -2222,57 +2222,304 @@ a {
     );
 
     // ── Contact Modal — separate component so it can read MobCtx independently ──
+    // Contact mobile content — shared between live mobile modal and Mobile-Popups preview
+    const ContactMobileContent = ({onClose}) => (
+      <div style={{display:'flex',flexDirection:'column',background:T.white}}>
+        {/* Sticky header: title + close (matches desktop) */}
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
+          padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+          <span style={{fontFamily:font,fontSize:T.fH3,fontWeight:700,lineHeight:1.3,
+            letterSpacing:'-0.015em',color:T.dBlack}}>
+            Kontakt &amp; Service
+          </span>
+          <div role="button" aria-label="Schließen" onClick={onClose}
+            style={{width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
+              color:T.g600,cursor:onClose?'pointer':'default',display:'inline-flex',alignItems:'center',
+              justifyContent:'center',transition:'background 0.15s',userSelect:'none'}}
+            onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
+            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+            <XIcon/>
+          </div>
+        </div>
+        {/* Scrollable body */}
+        <div style={{overflowY:'auto',padding:'1.25rem 1.25rem 1.75rem',display:'flex',flexDirection:'column'}}>
+          <h4 style={{margin:'0 0 0.375rem',fontFamily:font,fontSize:T.fH4,fontWeight:700,
+            color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
+            Wie können wir Ihnen helfen?
+          </h4>
+          <p style={{margin:'0 0 1rem',fontFamily:font,fontSize:T.fSm,lineHeight:1.5,color:T.g600}}>
+            Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.
+          </p>
+          <ContactCards/>
+          {/* Hotline — below service cards */}
+          <div style={{marginTop:'1.375rem',paddingTop:'1.125rem',
+            borderTop:`0.0625rem solid ${T.g100}`,
+            display:'flex',flexDirection:'column',gap:'0.25rem'}}>
+            <span style={{fontFamily:font,fontSize:T.fXxs,fontWeight:700,
+              letterSpacing:'0.16em',textTransform:'uppercase',color:T.teal}}>Hotline</span>
+            <a href="tel:+4971213177333" style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
+              color:T.black,letterSpacing:'-0.01em',lineHeight:1.2,
+              textDecoration:'none',display:'inline-block'}}>
+              +49 (0) 7121 · 317 7333
+            </a>
+            <span style={{fontFamily:font,fontSize:T.fXs,color:T.g600}}>Mo–Fr · 09:00–16:00 Uhr</span>
+            <span style={{fontFamily:font,fontSize:T.fSm,color:T.black,marginTop:'0.25rem'}}>
+              service@metzlergmbh.de
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Privacy settings content — shared between live modal and Mobile-Popups preview
+    const PrivacyContent = ({onClose, allOn, toggleAll, serviceToggles, toggleService, expandedService, setExpandedService, serviceInfo}) => {
+      const { mob } = useContext(MobCtx);
+      return (<>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
+          padding:'1.25rem 1.5rem',background:T.white,borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+          <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Datenschutz-Einstellungen</span>
+          <button onClick={onClose}
+            style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',borderRadius:T.r,
+              border:'none',outline:'none',background:'transparent',cursor:onClose?'pointer':'default',color:T.g600,transition:'background 0.15s'}}
+            onMouseEnter={e=>e.currentTarget.style.background=T.g100}
+            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+            <XIcon/>
+          </button>
+        </div>
+        <div style={{flex:1,overflowY:'auto',padding: mob ? '1rem 1.25rem' : '1.5rem',fontFamily:font}}>
+          <p style={{margin:'0 0 0.75rem',fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.6}}>Einstellungen, die Sie hier vornehmen, werden auf Ihrem Endgerät im „Local Storage" gespeichert und sind beim nächsten Besuch unseres Onlineshops wieder aktiv. Sie können diese Einstellungen jederzeit ändern (Fingerabdruck-Icon links unten).</p>
+          <p style={{margin:'0 0 0.75rem',fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.6}}>Informationen zur Cookie-Funktionsdauer sowie Details zu technisch notwendigen Cookies erhalten Sie in unserer <strong>Datenschutzerklärung</strong>.</p>
+          <div style={{borderBottom:`0.0625rem solid ${T.g200}`,margin:'1rem 0'}}/>
+          <div style={{display:'flex',gap:'1rem',marginBottom:'0'}}>
+            <span style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.teal,textDecoration:'underline',cursor:'pointer'}}>Impressum</span>
+            <span style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.teal,textDecoration:'underline',cursor:'pointer'}}>Datenschutz</span>
+          </div>
+          <div style={{borderBottom:`0.0625rem solid ${T.g200}`,margin:'1rem 0'}}/>
+          <div style={{display:'flex',alignItems:'center',gap:'0.75rem',padding:'0.75rem 0',borderBottom:`0.0625rem solid ${T.g200}`}}>
+            <PrivacyToggle on={allOn} onToggle={toggleAll}/>
+            <span style={{flex:1,fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.black,fontWeight:700}}>Alle ab-/auswählen</span>
+          </div>
+          {[['youtube','YouTube'],['vimeo','Vimeo'],['recaptcha','ReCaptcha'],['analytics','Analytics via Google Tag Manager'],['bing','Microsoft Bing Ads'],['paypal','PayPal Express & Ratenzahlung'],['hotjar','Hotjar Tracking'],['awin','AWIN'],['pinterest','Pinterest'],['googleads','Google Ads']].map(([key,label])=>{
+            const isOpen = expandedService === key;
+            const info = serviceInfo[key];
+            return (
+              <div key={key} style={{borderBottom:`0.0625rem solid ${T.g100}`}}>
+                <div style={{display:'flex',alignItems:'center',gap:'0.75rem',padding:'0.75rem 0'}}>
+                  <PrivacyToggle on={serviceToggles[key]} onToggle={()=>toggleService(key)}/>
+                  <span style={{flex:1,fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.black}}>{label}</span>
+                  <span onClick={()=>setExpandedService(isOpen ? null : key)}
+                    style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.teal,textDecoration:'underline',cursor:'pointer',whiteSpace:'nowrap',display:'flex',alignItems:'center',gap:'0.25rem'}}>
+                    Weitere Informationen
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  </span>
+                </div>
+                {isOpen && (
+                  <div style={{paddingBottom:'0.875rem'}}>
+                    <p style={{margin:'0 0 0.875rem',fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.6}}>{info.desc}</p>
+                    <div style={{background:T.paper,borderRadius:T.r,padding:'1rem 1.25rem',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
+                      <div><div style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,fontWeight:700,color:T.black,marginBottom:'0.125rem'}}>Beschreibung</div><div style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700}}>{info.purpose}</div></div>
+                      <div><div style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,fontWeight:700,color:T.black,marginBottom:'0.125rem'}}>Verarbeitende Firma</div><div style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700}}>{info.company}</div></div>
+                      <div><div style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,fontWeight:700,color:T.black,marginBottom:'0.125rem'}}>Nutzungsbedingungen</div><a href={info.terms} target="_blank" rel="noreferrer" style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.teal,textDecoration:'underline'}}>Link</a></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div style={{flexShrink:0,padding:'1rem 1.5rem',borderTop:`0.0625rem solid ${T.g200}`}}>
+          <Btn block variant="primary" onClick={onClose}>Übernehmen</Btn>
+        </div>
+      </>);
+    };
+
+    // Photo review content — shared between live modal and Mobile-Popups preview.
+    // panelH lets the preview render the (otherwise full-screen) mobile layout at a card height.
+    const PhotoReviewContent = ({onClose, panelH, photoIdx, setPhotoIdx, reviewPhotos}) => {
+      const { mob } = useContext(MobCtx);
+      const ph = panelH || '50dvh';
+      return (
+        <div style={{position:'relative',display:'flex',flexDirection:mob?'column':'row',height:'100%'}}>
+          {mob && (
+            <button onClick={onClose}
+              style={{position:'absolute',top:'0.75rem',right:'0.75rem',zIndex:10,
+                display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',borderRadius:T.r,
+                border:'none',outline:'none',background:'rgba(0,0,0,0.35)',cursor:onClose?'pointer':'default',color:T.white,transition:'background 0.15s'}}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(0,0,0,0.55)'}
+              onMouseLeave={e=>e.currentTarget.style.background='rgba(0,0,0,0.35)'}>
+              <XIcon/>
+            </button>
+          )}
+          {/* Left/Top — photo panel */}
+          <div style={{flex: mob ? 'none' : '0 0 50%', height: mob ? ph : '100%', background:T.g900, position:'relative', overflow:'hidden'}}>
+            <img src={reviewPhotos[photoIdx]} alt={`Kundenfoto ${photoIdx+1}`}
+              style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',display:'block',transition:'opacity 0.2s'}}/>
+            <div role="button" onClick={()=>setPhotoIdx(i=>(i-1+reviewPhotos.length)%reviewPhotos.length)}
+              style={{position:'absolute',left:'0.75rem',top:'50%',transform:'translateY(-50%)',width:'2.625rem',height:'2.625rem',borderRadius:T.r,
+                background:T.white,color:T.teal,border:`0.0625rem solid ${T.teal}`,display:'flex',alignItems:'center',justifyContent:'center',
+                cursor:'pointer',userSelect:'none',zIndex:2,transition:'background 0.15s ease, color 0.15s ease'}}
+              onMouseEnter={e=>{e.currentTarget.style.background=T.teal100;}}
+              onMouseLeave={e=>{e.currentTarget.style.background=T.white;e.currentTarget.style.color=T.teal;}}>
+              <svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="8,1.5 1.5,8 8,14.5"/></svg>
+            </div>
+            <div role="button" onClick={()=>setPhotoIdx(i=>(i+1)%reviewPhotos.length)}
+              style={{position:'absolute',right:'0.75rem',top:'50%',transform:'translateY(-50%)',width:'2.625rem',height:'2.625rem',borderRadius:T.r,
+                background:T.white,color:T.teal,border:`0.0625rem solid ${T.teal}`,display:'flex',alignItems:'center',justifyContent:'center',
+                cursor:'pointer',userSelect:'none',zIndex:2,transition:'background 0.15s ease, color 0.15s ease'}}
+              onMouseEnter={e=>{e.currentTarget.style.background=T.teal100;}}
+              onMouseLeave={e=>{e.currentTarget.style.background=T.white;e.currentTarget.style.color=T.teal;}}>
+              <svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1,1.5 7.5,8 1,14.5"/></svg>
+            </div>
+            <div style={{position:'absolute',bottom:'0.75rem',left:0,right:0,display:'flex',gap:'0.5rem',justifyContent:'center',zIndex:2}}>
+              {reviewPhotos.map((src,i)=>(
+                <div key={i} role="button" onClick={()=>setPhotoIdx(i)}
+                  style={{width:'3rem',height:'3rem',borderRadius:T.rSm,cursor:'pointer',overflow:'hidden',flexShrink:0,
+                    border:`0.125rem solid ${i===photoIdx?T.teal:'rgba(255,255,255,0.4)'}`,transition:'border-color 0.15s'}}>
+                  <img src={src} alt="" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Right/Bottom — content panel */}
+          <div style={{flex: mob ? 'none' : 1, height: mob ? ph : '100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
+            <div style={{display: mob ? 'none' : 'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
+              padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+              <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
+              <button onClick={onClose}
+                style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',borderRadius:T.r,
+                  border:'none',outline:'none',background:'transparent',cursor:onClose?'pointer':'default',color:T.g600,transition:'background 0.15s'}}
+                onMouseEnter={e=>e.currentTarget.style.background=T.g100}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <XIcon/>
+              </button>
+            </div>
+            <div style={{flex:1,padding: mob ? '1.25rem' : '1.5rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'0.75rem'}}>
+                <h4 style={{margin:0,fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font,lineHeight:1.3}}>Schicke Video-Türsprechanlage</h4>
+                <span style={{color:T.star,fontSize:mob?T.fSm:T.fBody,whiteSpace:'nowrap',flexShrink:0,letterSpacing:'0.04em'}}>★★★★★</span>
+              </div>
+              <p style={{margin:0,fontFamily:font,fontSize:T.fXs,color:T.g500}}>Philip W. | 2026-04-05</p>
+              <p style={{margin:0,fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.65}}>
+                Wir sind insgesamt sehr zufrieden mit dieser schicken und zuverlässigen Video-Türsprechanlage. Diese fügt sich optisch gut ins Gesamtbild und die Bedienung ist sehr einfach.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // Payment & shipping content — shared between live modal and Mobile-Popups preview
+    const PaymentContent = ({onClose}) => {
+      const { mob } = useContext(MobCtx);
+      return (<>
+        {/* Standard header */}
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
+          padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+          <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
+          <button onClick={onClose}
+            style={{display:'flex',alignItems:'center',justifyContent:'center',
+              width:'2rem',height:'2rem',borderRadius:T.r,
+              border:'none',outline:'none',background:'transparent',cursor:onClose?'pointer':'default',color:T.g600,
+              transition:'background 0.15s'}}
+            onMouseEnter={e=>e.currentTarget.style.background=T.g100}
+            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+            <XIcon/>
+          </button>
+        </div>
+        {/* Scrollable body */}
+        <div style={{overflowY:'auto',flex:1,padding: mob ? '1.25rem' : '1.5rem',fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.7}}>
+          <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.875rem'}}>Akzeptierte Zahlungsmöglichkeiten</div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem',marginBottom:'0.5rem'}}>
+            {['PayPal','PayPal Express','SEPA-Lastschrift','Apple Pay','Google Pay','Amazon Pay','Klarna – Sofortüberweisung','Klarna – Rechnung','Klarna – Ratenkauf','Klarna – Lastschrift','Kreditkarte','Vorkasse / Überweisung'].map(m=>(
+              <span key={m} style={{padding:'0.3125rem 0.75rem',borderRadius:T.r,border:`0.0625rem solid ${T.g300}`,fontSize:T.fXs,color:T.g700,background:T.white,whiteSpace:'nowrap'}}>{m}</span>
+            ))}
+          </div>
+          <p style={{margin:'0 0 1.5rem',fontSize:T.fXs,color:T.g500}}>Zahlung per Rechnung ist ausschließlich für Behörden und öffentliche Institutionen möglich. Der Rechnungsbetrag ist innerhalb von 14 Tagen auszugleichen.</p>
+          <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.75rem'}}>Versandkosten (inkl. gesetzl. MwSt.)</div>
+          <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
+            <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody}}>
+              <thead>
+                <tr style={{borderBottom:`0.0625rem solid ${T.g200}`}}>
+                  {['Versandland','Versandart','Preis'].map((h,i,arr)=>(
+                    <th key={h} style={{padding:'0.625rem 0.75rem',textAlign:'left',fontWeight:700,color:T.black,background:T.g100,whiteSpace:'nowrap',borderRight: i<arr.length-1 ? `0.0625rem solid ${T.g200}` : 'none'}}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[['Deutschland + Österreich','DHL / DPD','Gratis ab 99,00 €, sonst 4,95 €'],['Europa','DHL / DPD','9,90 €'],['Schweiz + Großbritannien','DHL / DPD','19,90 €']].map((r,i,arr)=>(
+                  <tr key={i} style={{borderBottom: i<arr.length-1 ? `0.0625rem solid ${T.g100}` : 'none'}}>
+                    <td style={{padding:'0.625rem 0.75rem',color:T.g700,borderRight:`0.0625rem solid ${T.g100}`}}>{r[0]}</td>
+                    <td style={{padding:'0.625rem 0.75rem',color:T.g700,borderRight:`0.0625rem solid ${T.g100}`}}>{r[1]}</td>
+                    <td style={{padding:'0.625rem 0.75rem',color:T.g700}}>{r[2]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.5rem'}}>Versandkosten Sperrgut (DPD Sperrgut)</div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:'0.375rem 1.25rem',marginBottom:'1.5rem',fontSize:T.fXs,color:T.g700}}>
+            {[['bis 30 kg','29,00 €'],['bis 60 kg','58,00 €'],['bis 90 kg','87,00 €'],['bis 120 kg','116,00 €'],['bis 150 kg','145,00 €'],['bis 1.000 kg','174,00 €']].map(([kg,p])=>(
+              <span key={kg}><span style={{color:T.g500}}>{kg}</span> — <strong style={{color:T.black}}>{p}</strong></span>
+            ))}
+          </div>
+          <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.75rem'}}>Lieferfristen</div>
+          <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1rem'}}>
+            <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody}}>
+              <tbody>
+                {[['Deutschland','1–3 Werktage'],['Österreich','2–4 Werktage'],['Europa / Schweiz / Großbritannien','3–5 Werktage']].map((r,i,arr)=>(
+                  <tr key={i} style={{borderBottom: i<arr.length-1 ? `0.0625rem solid ${T.g100}` : 'none'}}>
+                    <td style={{padding:'0.625rem 0.75rem',color:T.g700,width:'55%',borderRight:`0.0625rem solid ${T.g100}`}}>{r[0]}</td>
+                    <td style={{padding:'0.625rem 0.75rem',color:T.g700}}>{r[1]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p style={{margin:'0 0 0.5rem',fontSize:T.fXs,color:T.g600}}>Soweit im Angebot keine andere Frist angegeben ist, erfolgt die Lieferung innerhalb Deutschlands in 1–3 Werktagen nach Vertragsschluss. An <strong>Sonn- und Feiertagen erfolgt keine Zustellung</strong>. Bei Bestellungen mit unterschiedlichen Lieferzeiten gilt die längste Lieferzeit.</p>
+          <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,margin:'1.25rem 0 0.5rem'}}>Es gelten folgende Bedingungen:</div>
+          <p style={{margin:0,fontSize:T.fXs,color:T.g600}}>Die Lieferung erfolgt im Inland (Deutschland) und in folgende Länder: Belgien, Bulgarien, Dänemark, Estland, Finnland, Frankreich, Griechenland, Großbritannien, Irland, Italien, Kroatien, Lettland, Litauen, Luxemburg, Malta, Niederlande, Österreich, Polen, Portugal, Rumänien, Schweden, Schweiz, Slowakei, Slowenien, Spanien, Tschechien, Ungarn, Zypern.</p>
+        </div>
+      </>);
+    };
+
+    // Login form content — shared between live modal and Mobile-Popups preview
+    const LoginContent = () => {
+      const { mob } = useContext(MobCtx);
+      return (
+        <div style={{display:'flex',flexDirection:'column',gap:'1.25rem',fontFamily:font}}>
+          <p style={{margin:0,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.55}}>Melden Sie sich an, um Ihre Bestellungen und Ihren Account zu verwalten.</p>
+          <DSInputField label="E-Mail" type="email" />
+          <DSInputField label="Passwort" showToggle />
+          <div style={{textAlign:'right',marginTop:'-0.5rem'}}>
+            <a href="#" style={{fontSize:mob?T.fSm:T.fBody,color:T.teal,textDecoration:'underline',fontFamily:font,cursor:'pointer'}}>Passwort vergessen?</a>
+          </div>
+          <button style={{width:'100%',height:'2.625rem',padding:'0 1.25rem',borderRadius:T.r,border:'none',
+            background:T.teal,color:T.white,boxSizing:'border-box',fontFamily:font,fontSize:T.fBody,fontWeight:500,
+            cursor:'pointer',transition:'background 0.15s',letterSpacing:'0.01em'}}
+            onMouseEnter={e=>e.currentTarget.style.background=T.teal600}
+            onMouseLeave={e=>e.currentTarget.style.background=T.teal}>
+            Anmelden
+          </button>
+          <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
+            <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
+            <span style={{fontSize:mob?T.fSm:T.fBody,color:T.g500,fontFamily:font}}>oder</span>
+            <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
+          </div>
+          <p style={{margin:0,fontSize:mob?T.fSm:T.fBody,color:T.g700,textAlign:'center',fontFamily:font}}>
+            Neu hier?{' '}
+            <a href="#" style={{color:T.teal,textDecoration:'underline',fontFamily:font,cursor:'pointer'}}>Jetzt registrieren!</a>
+          </p>
+        </div>
+      );
+    };
+
     const ContactModal = ({open, onClose}) => {
       const { mob } = useContext(MobCtx);
       return (
         <MobSheet open={open} onClose={onClose} maxW="48rem" dir="row">
           {mob ? (
             /* ── MOBILE: centered card, hotline at bottom ── */
-            <div style={{display:'flex',flexDirection:'column',background:T.white}}>
-              {/* Sticky header: title + close (matches desktop) */}
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
-                padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                <span style={{fontFamily:font,fontSize:T.fH3,fontWeight:700,lineHeight:1.3,
-                  letterSpacing:'-0.015em',color:T.dBlack}}>
-                  Kontakt &amp; Service
-                </span>
-                <div role="button" aria-label="Schließen" onClick={onClose}
-                  style={{width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
-                    color:T.g600,cursor:'pointer',display:'inline-flex',alignItems:'center',
-                    justifyContent:'center',transition:'background 0.15s',userSelect:'none'}}
-                  onMouseEnter={e=>e.currentTarget.style.background=T.g100}
-                  onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-                  <XIcon/>
-                </div>
-              </div>
-              {/* Scrollable body */}
-              <div style={{overflowY:'auto',padding:'1.25rem 1.25rem 1.75rem',display:'flex',flexDirection:'column'}}>
-                <h4 style={{margin:'0 0 0.375rem',fontFamily:font,fontSize:T.fH4,fontWeight:700,
-                  color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
-                  Wie können wir Ihnen helfen?
-                </h4>
-                <p style={{margin:'0 0 1rem',fontFamily:font,fontSize:T.fSm,lineHeight:1.5,color:T.g600}}>
-                  Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.
-                </p>
-                <ContactCards/>
-                {/* Hotline — below service cards */}
-                <div style={{marginTop:'1.375rem',paddingTop:'1.125rem',
-                  borderTop:`0.0625rem solid ${T.g100}`,
-                  display:'flex',flexDirection:'column',gap:'0.25rem'}}>
-                  <span style={{fontFamily:font,fontSize:T.fXxs,fontWeight:700,
-                    letterSpacing:'0.16em',textTransform:'uppercase',color:T.teal}}>Hotline</span>
-                  <a href="tel:+4971213177333" style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
-                    color:T.black,letterSpacing:'-0.01em',lineHeight:1.2,
-                    textDecoration:'none',display:'inline-block'}}>
-                    +49 (0) 7121 · 317 7333
-                  </a>
-                  <span style={{fontFamily:font,fontSize:T.fXs,color:T.g600}}>Mo–Fr · 09:00–16:00 Uhr</span>
-                  <span style={{fontFamily:font,fontSize:T.fSm,color:T.black,marginTop:'0.25rem'}}>
-                    service@metzlergmbh.de
-                  </span>
-                </div>
-              </div>
-            </div>
+            <ContactMobileContent onClose={onClose}/>
           ) : (
             /* ── DESKTOP: shared component ── */
             <ContactDesktopContent onClose={onClose}/>
@@ -3002,207 +3249,54 @@ a {
               <div style={{display:'flex',gap:'2rem',flexWrap:'wrap',padding:'1.5rem',
                 background:T.g50,borderRadius:T.rLg,border:`0.0625rem solid ${T.g200}`,marginBottom:'1.5rem'}}>
 
-                {/* 1. Cookie-Banner */}
+                {/* 1. Cookie-Banner — live content (shared CookieContent) */}
                 <PhoneCard label="Cookie-Banner">
-                  <div style={{display:'flex',alignItems:'center',gap:'0.75rem',padding:'1rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                    <div style={{width:'2.25rem',height:'2.25rem',borderRadius:T.rPill,background:T.teal,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.white} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    </div>
-                    <span style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black}}>Wie wir Cookies & Co nutzen</span>
-                  </div>
-                  <div style={{padding:'1rem 1.25rem',fontFamily:font,overflowY:'auto'}}>
-                    <p style={{margin:'0 0 1rem',fontSize:T.fSm,color:T.g700,lineHeight:1.6}}>Durch Klicken auf „Alle akzeptieren" gestatten Sie den Einsatz folgender Dienste auf unserer Website: YouTube, Vimeo, ReCaptcha, Hotjar Tracking, AWIN, Pinterest, PayPal Express Checkout und Ratenzahlung, Analytics via Google Tag Manager, Microsoft Bing Ads, Google Ads. Unsere Partner erheben Daten und verwenden Cookies, um personalisierte Werbung bereitzustellen und zu Analysezwecken. Sie können die Einstellung jederzeit über den Link Cookie-Einstellungen im Footer ändern. Weitere Details finden Sie unter <em>Konfigurieren</em> und in unserer <span style={{color:T.teal,textDecoration:'underline'}}>Datenschutzerklärung</span> | <span style={{color:T.teal,textDecoration:'underline'}}>Impressum</span>.</p>
-                    <div style={{display:'flex',flexDirection:'column',gap:'0.5rem'}}>
-                      <div style={{padding:'0.5rem 0.875rem',borderRadius:T.r,background:T.teal,color:T.white,fontFamily:font,fontSize:T.fSm,fontWeight:600,textAlign:'center'}}>Alle akzeptieren</div>
-                      <div style={{display:'flex',gap:'0.5rem'}}>
-                        <div style={{flex:1,padding:'0.4rem 0.5rem',borderRadius:T.r,border:`0.125rem solid ${T.teal}`,color:T.teal,fontFamily:font,fontSize:T.fSm,fontWeight:500,textAlign:'center'}}>Ablehnen</div>
-                        <div style={{flex:1,padding:'0.4rem 0.5rem',borderRadius:T.r,border:`0.125rem solid ${T.teal}`,color:T.teal,fontFamily:font,fontSize:T.fSm,fontWeight:500,textAlign:'center'}}>Konfigurieren</div>
-                      </div>
-                    </div>
-                  </div>
+                  <MobCtx.Provider value={{mob:true}}>
+                    <CookieContent onAccept={()=>{}} onReject={()=>{}} onKonfigurieren={()=>{}}/>
+                  </MobCtx.Provider>
                 </PhoneCard>
 
                 {/* 2. Datenschutz-Einstellungen */}
                 <PhoneCard label="Datenschutz-Einstellungen">
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                    <span style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black}}>Datenschutz-Einstellungen</span>
-                    <div style={{width:'1.75rem',height:'1.75rem',borderRadius:T.r,display:'flex',alignItems:'center',justifyContent:'center',color:T.g600}}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                    </div>
-                  </div>
-                  <div style={{padding:'1rem 1.25rem',fontFamily:font,fontSize:T.fSm,color:T.g700,lineHeight:1.6,overflowY:'auto'}}>
-                    <p style={{margin:'0 0 0.75rem'}}>Einstellungen, die Sie hier vornehmen, werden auf Ihrem Endgerät im „Local Storage" gespeichert und sind beim nächsten Besuch unseres Onlineshops wieder aktiv. Sie können diese Einstellungen jederzeit ändern (Fingerabdruck-Icon links unten).</p>
-                    <div style={{borderBottom:`0.0625rem solid ${T.g200}`,margin:'0.75rem 0'}}/>
-                    <div style={{display:'flex',gap:'1rem',marginBottom:'0.75rem'}}>
-                      <span style={{color:T.teal,textDecoration:'underline',cursor:'pointer',fontSize:T.fSm}}>Impressum</span>
-                      <span style={{color:T.teal,textDecoration:'underline',cursor:'pointer',fontSize:T.fSm}}>Datenschutz</span>
-                    </div>
-                    <div style={{borderBottom:`0.0625rem solid ${T.g200}`,margin:'0 0 0.25rem'}}/>
-                    {/* Alle ab-/auswählen */}
-                    <div style={{display:'flex',alignItems:'center',gap:'0.75rem',padding:'0.5rem 0',borderBottom:`0.0625rem solid ${T.g200}`}}>
-                      <div style={{width:'2.75rem',height:'1.5rem',borderRadius:T.rLg,background:T.g300,position:'relative',flexShrink:0}}>
-                        <div style={{position:'absolute',top:'0.1875rem',left:'0.1875rem',width:'1.125rem',height:'1.125rem',borderRadius:'50%',background:T.white,boxShadow:'0 1px 3px rgba(0,0,0,0.15)'}}/>
-                      </div>
-                      <span style={{fontWeight:700,color:T.black,fontSize:T.fSm}}>Alle ab-/auswählen</span>
-                    </div>
-                    {[['YouTube','Einbetten von Videos'],['Vimeo','Einbetten von Videos'],['ReCaptcha','Bot- und Spam-Schutz'],['Analytics via Google Tag Manager','Website-Analyse'],['Microsoft Bing Ads','Werbemessung'],['PayPal Express & Ratenzahlung','Zahlungsabwicklung'],['Hotjar Tracking','Nutzerverhalten & UX-Analyse'],['AWIN','Affiliate-Marketing'],['Pinterest','Werbemessung'],['Google Ads','Werbemessung']].map(([name,desc])=>(
-                      <div key={name} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.5rem 0',borderBottom:`0.0625rem solid ${T.g100}`}}>
-                        <div style={{flex:1,minWidth:0,marginRight:'0.5rem'}}>
-                          <div style={{fontWeight:600,color:T.black,fontSize:T.fSm}}>{name}</div>
-                          <div style={{color:T.g500,fontSize:T.fXs}}>{desc}</div>
-                        </div>
-                        <div style={{width:'2.75rem',height:'1.5rem',borderRadius:T.rLg,background:T.g300,position:'relative',flexShrink:0}}>
-                          <div style={{position:'absolute',top:'0.1875rem',left:'0.1875rem',width:'1.125rem',height:'1.125rem',borderRadius:'50%',background:T.white,boxShadow:'0 1px 3px rgba(0,0,0,0.15)'}}/>
-                        </div>
-                      </div>
-                    ))}
-                    <div style={{padding:'1rem 0 0.25rem'}}>
-                      <div style={{padding:'0.5rem',borderRadius:T.r,background:T.teal,color:T.white,fontWeight:600,fontSize:T.fSm,textAlign:'center'}}>Übernehmen</div>
-                    </div>
-                  </div>
+                  <MobCtx.Provider value={{mob:true}}>
+                    <PrivacyContent allOn={allOn} toggleAll={toggleAll} serviceToggles={serviceToggles} toggleService={toggleService} expandedService={expandedService} setExpandedService={setExpandedService} serviceInfo={serviceInfo}/>
+                  </MobCtx.Provider>
                 </PhoneCard>
 
                 {/* 3. Anmelden */}
                 <PhoneCard label="Anmelden">
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                    <span style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black}}>Anmelden</span>
-                    <div style={{width:'1.75rem',height:'1.75rem',borderRadius:T.r,display:'flex',alignItems:'center',justifyContent:'center',color:T.g600}}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  <MobCtx.Provider value={{mob:true}}>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+                      <span style={{fontFamily:font,fontSize:T.fH3,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Anmelden</span>
+                      <div style={{width:'1.75rem',height:'1.75rem',display:'flex',alignItems:'center',justifyContent:'center',color:T.g600}}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                      </div>
                     </div>
-                  </div>
-                  <div style={{padding:'1rem 1.25rem',fontFamily:font,display:'flex',flexDirection:'column',gap:'0.625rem',overflowY:'auto'}}>
-                    <p style={{margin:0,fontSize:T.fSm,color:T.g700,lineHeight:1.6}}>Melden Sie sich an, um Ihre Bestellungen zu verwalten und von exklusiven Vorteilen zu profitieren.</p>
-                    <div style={{position:'relative',height:'2.5rem',border:`0.0625rem solid ${T.g300}`,borderRadius:T.r,background:T.white}}>
-                      <span style={{position:'absolute',top:'-0.5rem',left:'0.625rem',background:T.white,padding:'0 0.25rem',fontSize:T.fXs,color:T.g500}}>E-Mail</span>
+                    <div style={{padding:'1.25rem'}}>
+                      <LoginContent/>
                     </div>
-                    <div style={{position:'relative',height:'2.5rem',border:`0.0625rem solid ${T.g300}`,borderRadius:T.r,background:T.white}}>
-                      <span style={{position:'absolute',top:'-0.5rem',left:'0.625rem',background:T.white,padding:'0 0.25rem',fontSize:T.fXs,color:T.g500}}>Passwort</span>
-                    </div>
-                    <span style={{fontSize:T.fSm,color:T.teal,textDecoration:'underline',cursor:'pointer',alignSelf:'flex-start'}}>Passwort vergessen?</span>
-                    <div style={{padding:'0.5rem',borderRadius:T.r,background:T.teal,color:T.white,fontSize:T.fSm,fontWeight:600,textAlign:'center'}}>Anmelden</div>
-                    <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
-                      <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
-                      <span style={{fontSize:T.fSm,color:T.g500}}>oder</span>
-                      <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
-                    </div>
-                    <span style={{fontSize:T.fSm,color:T.g700,textAlign:'center'}}>Neu hier? <span style={{color:T.teal,textDecoration:'underline',cursor:'pointer'}}>Jetzt registrieren</span></span>
-                  </div>
+                  </MobCtx.Provider>
                 </PhoneCard>
 
                 {/* 4. Zahlung & Versand */}
                 <PhoneCard label="Zahlung & Versand">
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                    <span style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black}}>Zahlung und Versand</span>
-                    <div style={{width:'1.75rem',height:'1.75rem',display:'flex',alignItems:'center',justifyContent:'center',color:T.g600}}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                    </div>
-                  </div>
-                  <div style={{padding:'1rem 1.25rem',fontFamily:font,fontSize:T.fSm,color:T.g700,overflowY:'auto'}}>
-                    <div style={{fontWeight:700,color:T.black,marginBottom:'0.5rem',fontSize:T.fSm}}>Akzeptierte Zahlungsmöglichkeiten</div>
-                    <div style={{display:'flex',flexWrap:'wrap',gap:'0.375rem',marginBottom:'0.5rem'}}>
-                      {['PayPal','PayPal Express','SEPA-Lastschrift','Apple Pay','Google Pay','Amazon Pay','Klarna – Sofortüberweisung','Klarna – Rechnung','Klarna – Ratenkauf','Klarna – Lastschrift','Kreditkarte','Vorkasse / Überweisung'].map(m=>(
-                        <span key={m} style={{padding:'0.1875rem 0.5rem',borderRadius:T.r,border:`0.0625rem solid ${T.g300}`,fontSize:T.fXs,color:T.g700,background:T.white,whiteSpace:'nowrap'}}>{m}</span>
-                      ))}
-                    </div>
-                    <p style={{margin:'0 0 0.875rem',fontSize:T.fXs,color:T.g500}}>Zahlung per Rechnung ist ausschließlich für Behörden und öffentliche Institutionen möglich.</p>
-                    <div style={{fontWeight:700,color:T.black,marginBottom:'0.375rem',fontSize:T.fSm}}>Versandkosten (inkl. gesetzl. MwSt.)</div>
-                    <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'0.875rem'}}>
-                      <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font}}>
-                        <thead>
-                          <tr style={{borderBottom:`0.0625rem solid ${T.g200}`}}>
-                            {['Versandland','Versandart','Preis'].map((h,i,arr)=>(
-                              <th key={h} style={{padding:'0.375rem 0.5rem',textAlign:'left',fontWeight:700,color:T.black,background:T.g100,fontSize:T.fXs,whiteSpace:'nowrap',borderRight:i<arr.length-1?`0.0625rem solid ${T.g200}`:'none'}}>{h}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {[['Deutschland + Österreich','DHL / DPD','Gratis ab 99,00 €, sonst 4,95 €'],['Europa','DHL / DPD','9,90 €'],['Schweiz + Großbritannien','DHL / DPD','19,90 €']].map((r,i,arr)=>(
-                            <tr key={i} style={{borderBottom:i<arr.length-1?`0.0625rem solid ${T.g100}`:'none'}}>
-                              {r.map((c,j)=>(
-                                <td key={j} style={{padding:'0.375rem 0.5rem',color:T.g700,fontSize:T.fXs,borderRight:j<r.length-1?`0.0625rem solid ${T.g100}`:'none'}}>{c}</td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div style={{fontWeight:700,color:T.black,marginBottom:'0.375rem',fontSize:T.fSm}}>Versandkosten Sperrgut (DPD)</div>
-                    <div style={{display:'flex',flexWrap:'wrap',gap:'0.25rem 1rem',marginBottom:'0.875rem',fontSize:T.fXs,color:T.g700}}>
-                      {[['bis 30 kg','29,00 €'],['bis 60 kg','58,00 €'],['bis 90 kg','87,00 €'],['bis 120 kg','116,00 €']].map(([kg,p])=>(
-                        <span key={kg}><span style={{color:T.g500}}>{kg}</span> — <strong style={{color:T.black}}>{p}</strong></span>
-                      ))}
-                    </div>
-                    <div style={{fontWeight:700,color:T.black,marginBottom:'0.375rem',fontSize:T.fSm}}>Lieferfristen</div>
-                    <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
-                      <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font}}>
-                        <tbody>
-                          {[['Deutschland','1–3 Werktage'],['Österreich','2–4 Werktage'],['Europa / Schweiz / GB','3–5 Werktage']].map((r,i,arr)=>(
-                            <tr key={i} style={{borderBottom:i<arr.length-1?`0.0625rem solid ${T.g100}`:'none'}}>
-                              <td style={{padding:'0.375rem 0.5rem',color:T.g700,fontSize:T.fXs,width:'55%',borderRight:`0.0625rem solid ${T.g100}`}}>{r[0]}</td>
-                              <td style={{padding:'0.375rem 0.5rem',color:T.g700,fontSize:T.fXs}}>{r[1]}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                  <MobCtx.Provider value={{mob:true}}>
+                    <PaymentContent/>
+                  </MobCtx.Provider>
                 </PhoneCard>
 
                 {/* 5. Kundenfoto & Bewertung */}
                 <PhoneCard label="Kundenfoto & Bewertung">
-                  <div style={{display:'flex',flexDirection:'column',height:'28rem'}}>
-                    <div style={{flex:'0 0 50%',position:'relative',overflow:'hidden',background:T.g100}}>
-                      <img src="Pictures/reviews/1.webp" alt="" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
-                      <div role="button" style={{position:'absolute',top:'0.625rem',right:'0.625rem',width:'1.75rem',height:'1.75rem',borderRadius:T.r,background:'rgba(0,0,0,0.45)',display:'flex',alignItems:'center',justifyContent:'center',color:T.white,cursor:'pointer'}}>
-                        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                      </div>
-                    </div>
-                    <div style={{flex:1,overflowY:'auto',padding:'0.875rem 1rem',fontFamily:font,display:'flex',flexDirection:'column',gap:'0.375rem'}}>
-                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-                        <span style={{fontSize:T.fSm,fontWeight:700,color:T.black,lineHeight:1.3}}>Schicke Video-Türsprechanlage</span>
-                        <span style={{color:T.star,fontSize:T.fXs,flexShrink:0,marginLeft:'0.5rem'}}>★★★★★</span>
-                      </div>
-                      <span style={{fontSize:T.fXs,color:T.g500}}>Philip W. | 2026-04-05</span>
-                      <p style={{margin:0,fontSize:T.fXs,color:T.g700,lineHeight:1.6}}>Wir sind insgesamt sehr zufrieden mit dieser schicken und zuverlässigen Video-Türsprechanlage …</p>
-                    </div>
-                  </div>
+                  <MobCtx.Provider value={{mob:true}}>
+                    <PhotoReviewContent panelH="14rem" photoIdx={photoIdx} setPhotoIdx={setPhotoIdx} reviewPhotos={reviewPhotos}/>
+                  </MobCtx.Provider>
                 </PhoneCard>
 
                 {/* 6. Experten-Kontakt */}
                 <PhoneCard label="Experten-Kontakt">
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 1.25rem 0.75rem',borderBottom:`0.0625rem solid ${T.g100}`}}>
-                    <div style={{display:'inline-flex',alignItems:'center',gap:'0.5rem',fontFamily:font,fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.18em',textTransform:'uppercase',color:T.g600}}>
-                      <span style={{width:'1.25rem',height:'0.0625rem',background:T.teal,display:'block'}}/>
-                      Kontakt & Service
-                    </div>
-                    <div style={{width:'1.75rem',height:'1.75rem',display:'flex',alignItems:'center',justifyContent:'center',color:T.g600}}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                    </div>
-                  </div>
-                  <div style={{padding:'0.875rem 1.25rem',fontFamily:font}}>
-                    <h4 style={{margin:'0 0 0.25rem',fontSize:T.fSm,fontWeight:700,color:T.dBlack}}>Wie können wir Ihnen helfen?</h4>
-                    <p style={{margin:'0 0 0.75rem',fontSize:T.fXs,color:T.g600}}>Wählen Sie Ihr Anliegen.</p>
-                    {[
-                      ['Produktberatung & Bestellung','Antwort meist in 5 Min.'],
-                      ['Technischer Support','Termin in 48 Stunden'],
-                    ].map(([title,sub])=>(
-                      <div key={title} style={{display:'flex',alignItems:'center',gap:'0.625rem',padding:'0.5rem 0.625rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.r,marginBottom:'0.375rem',background:T.white}}>
-                        <div style={{width:'2rem',height:'2rem',borderRadius:T.r,background:T.teal50,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                          <div style={{width:'0.75rem',height:'0.75rem',borderRadius:'50%',background:T.teal}}/>
-                        </div>
-                        <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontWeight:600,color:T.black,fontSize:T.fXs}}>{title}</div>
-                          <div style={{color:T.g500,fontSize:'0.6875rem'}}>{sub}</div>
-                        </div>
-                        <svg width="8" height="12" viewBox="0 0 8 14" fill="none" stroke={T.g400} strokeWidth="1.8" strokeLinecap="round"><polyline points="1,1 7,7 1,13"/></svg>
-                      </div>
-                    ))}
-                    <div style={{marginTop:'0.75rem',paddingTop:'0.625rem',borderTop:`0.0625rem solid ${T.g100}`,display:'flex',flexDirection:'column',gap:'0.125rem'}}>
-                      <span style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.14em',textTransform:'uppercase',color:T.teal}}>Hotline</span>
-                      <span style={{fontWeight:700,color:T.black,fontSize:T.fSm}}>+49 (0) 7121 · 317 7333</span>
-                      <span style={{fontSize:T.fXs,color:T.g600}}>Mo–Fr · 09:00–16:00 Uhr</span>
-                    </div>
-                  </div>
+                  <MobCtx.Provider value={{mob:true}}>
+                    <ContactMobileContent/>
+                  </MobCtx.Provider>
                 </PhoneCard>
 
               </div>
@@ -3326,243 +3420,17 @@ a {
 
           {/* ── LIVE SM LOGIN MODAL ── */}
           <Modal open={openSm} onClose={()=>closeMobile(setOpenSm)} title="Anmelden" size="sm">
-            <div style={{display:'flex',flexDirection:'column',gap:'1.25rem',fontFamily:font}}>
-              <p style={{margin:0,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.55}}>Melden Sie sich an, um Ihre Bestellungen und Ihren Account zu verwalten.</p>
-
-              {/* DS floating-label inputs */}
-              <DSInputField label="E-Mail" type="email" />
-              <DSInputField label="Passwort" showToggle />
-
-              {/* Forgot link */}
-              <div style={{textAlign:'right',marginTop:'-0.5rem'}}>
-                <a href="#" style={{fontSize:mob?T.fSm:T.fBody,color:T.teal,textDecoration:'underline',fontFamily:font,cursor:'pointer'}}>Passwort vergessen?</a>
-              </div>
-
-              {/* Primary CTA — DS button, full-width */}
-              <button onClick={()=>closeMobile(setOpenSm)}
-                style={{width:'100%',height:'2.625rem',padding:'0 1.25rem',borderRadius:T.r,border:'none',
-                  background:T.teal,color:T.white,boxSizing:'border-box',
-                  fontFamily:font,fontSize:T.fBody,fontWeight:500,cursor:'pointer',
-                  transition:'background 0.15s',letterSpacing:'0.01em'}}
-                onMouseEnter={e=>e.currentTarget.style.background=T.teal600}
-                onMouseLeave={e=>e.currentTarget.style.background=T.teal}>
-                Anmelden
-              </button>
-
-              {/* Divider */}
-              <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
-                <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
-                <span style={{fontSize:mob?T.fSm:T.fBody,color:T.g500,fontFamily:font}}>oder</span>
-                <div style={{flex:1,height:'0.0625rem',background:T.g200}}/>
-              </div>
-
-              {/* Register link */}
-              <p style={{margin:0,fontSize:mob?T.fSm:T.fBody,color:T.g700,textAlign:'center',fontFamily:font}}>
-                Neu hier?{' '}
-                <a href="#" style={{color:T.teal,textDecoration:'underline',fontFamily:font,cursor:'pointer'}}>Jetzt registrieren!</a>
-              </p>
-            </div>
+            <LoginContent/>
           </Modal>
 
           {/* ── LIVE LG ZAHLUNG & VERSAND MODAL ── */}
           <MobSheet open={openPayment} onClose={()=>closeMobile(setOpenPayment)} maxW="60rem">
-                {/* Standard header */}
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
-                  padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                  <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
-                  <button onClick={()=>closeMobile(setOpenPayment)}
-                    style={{display:'flex',alignItems:'center',justifyContent:'center',
-                      width:'2rem',height:'2rem',borderRadius:T.r,
-                      border:'none',outline:'none',background:'transparent',cursor:'pointer',color:T.g600,
-                      transition:'background 0.15s'}}
-                    onMouseEnter={e=>e.currentTarget.style.background=T.g100}
-                    onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-                    <XIcon/>
-                  </button>
-                </div>
-                {/* Scrollable body */}
-                <div style={{overflowY:'auto',flex:1,padding: mob ? '1.25rem' : '1.5rem',fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.7}}>
-
-                  {/* Payment methods */}
-                  <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.875rem'}}>Akzeptierte Zahlungsmöglichkeiten</div>
-                  <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem',marginBottom:'0.5rem'}}>
-                    {['PayPal','PayPal Express','SEPA-Lastschrift','Apple Pay','Google Pay','Amazon Pay','Klarna – Sofortüberweisung','Klarna – Rechnung','Klarna – Ratenkauf','Klarna – Lastschrift','Kreditkarte','Vorkasse / Überweisung'].map(m=>(
-                      <span key={m} style={{padding:'0.3125rem 0.75rem',borderRadius:T.r,
-                        border:`0.0625rem solid ${T.g300}`,fontSize:T.fXs,color:T.g700,
-                        background:T.white,whiteSpace:'nowrap'}}>{m}</span>
-                    ))}
-                  </div>
-                  <p style={{margin:'0 0 1.5rem',fontSize:T.fXs,color:T.g500}}>
-                    Zahlung per Rechnung ist ausschließlich für Behörden und öffentliche Institutionen möglich. Der Rechnungsbetrag ist innerhalb von 14 Tagen auszugleichen.
-                  </p>
-
-                  {/* Shipping costs */}
-                  <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.75rem'}}>Versandkosten (inkl. gesetzl. MwSt.)</div>
-                  <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
-                    <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody}}>
-                      <thead>
-                        <tr style={{borderBottom:`0.0625rem solid ${T.g200}`}}>
-                          {['Versandland','Versandart','Preis'].map((h,i,arr)=>(
-                            <th key={h} style={{padding:'0.625rem 0.75rem',textAlign:'left',fontWeight:700,color:T.black,
-                              background:T.g100,whiteSpace:'nowrap',
-                              borderRight: i<arr.length-1 ? `0.0625rem solid ${T.g200}` : 'none'}}>{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {[
-                          ['Deutschland + Österreich','DHL / DPD','Gratis ab 99,00 €, sonst 4,95 €'],
-                          ['Europa','DHL / DPD','9,90 €'],
-                          ['Schweiz + Großbritannien','DHL / DPD','19,90 €'],
-                        ].map((r,i,arr)=>(
-                          <tr key={i} style={{borderBottom: i<arr.length-1 ? `0.0625rem solid ${T.g100}` : 'none'}}>
-                            <td style={{padding:'0.625rem 0.75rem',color:T.g700,borderRight:`0.0625rem solid ${T.g100}`}}>{r[0]}</td>
-                            <td style={{padding:'0.625rem 0.75rem',color:T.g700,borderRight:`0.0625rem solid ${T.g100}`}}>{r[1]}</td>
-                            <td style={{padding:'0.625rem 0.75rem',color:T.g700}}>{r[2]}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Bulky goods */}
-                  <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.5rem'}}>Versandkosten Sperrgut (DPD Sperrgut)</div>
-                  <div style={{display:'flex',flexWrap:'wrap',gap:'0.375rem 1.25rem',marginBottom:'1.5rem',fontSize:T.fXs,color:T.g700}}>
-                    {[['bis 30 kg','29,00 €'],['bis 60 kg','58,00 €'],['bis 90 kg','87,00 €'],['bis 120 kg','116,00 €'],['bis 150 kg','145,00 €'],['bis 1.000 kg','174,00 €']].map(([kg,p])=>(
-                      <span key={kg}><span style={{color:T.g500}}>{kg}</span> — <strong style={{color:T.black}}>{p}</strong></span>
-                    ))}
-                  </div>
-
-                  {/* Delivery times */}
-                  <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,marginBottom:'0.75rem'}}>Lieferfristen</div>
-                  <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1rem'}}>
-                    <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody}}>
-                      <tbody>
-                        {[['Deutschland','1–3 Werktage'],['Österreich','2–4 Werktage'],['Europa / Schweiz / Großbritannien','3–5 Werktage']].map((r,i,arr)=>(
-                          <tr key={i} style={{borderBottom: i<arr.length-1 ? `0.0625rem solid ${T.g100}` : 'none'}}>
-                            <td style={{padding:'0.625rem 0.75rem',color:T.g700,width:'55%',borderRight:`0.0625rem solid ${T.g100}`}}>{r[0]}</td>
-                            <td style={{padding:'0.625rem 0.75rem',color:T.g700}}>{r[1]}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <p style={{margin:'0 0 0.5rem',fontSize:T.fXs,color:T.g600}}>
-                    Soweit im Angebot keine andere Frist angegeben ist, erfolgt die Lieferung innerhalb Deutschlands in 1–3 Werktagen nach Vertragsschluss. An <strong>Sonn- und Feiertagen erfolgt keine Zustellung</strong>. Bei Bestellungen mit unterschiedlichen Lieferzeiten gilt die längste Lieferzeit.
-                  </p>
-
-                  {/* Conditions */}
-                  <div style={{fontWeight:700,color:T.black,fontSize:mob?T.fSm:T.fBody,margin:'1.25rem 0 0.5rem'}}>Es gelten folgende Bedingungen:</div>
-                  <p style={{margin:0,fontSize:T.fXs,color:T.g600}}>
-                    Die Lieferung erfolgt im Inland (Deutschland) und in folgende Länder: Belgien, Bulgarien, Dänemark, Estland, Finnland, Frankreich, Griechenland, Großbritannien, Irland, Italien, Kroatien, Lettland, Litauen, Luxemburg, Malta, Niederlande, Österreich, Polen, Portugal, Rumänien, Schweden, Schweiz, Slowakei, Slowenien, Spanien, Tschechien, Ungarn, Zypern.
-                  </p>
-                </div>
+            <PaymentContent onClose={()=>closeMobile(setOpenPayment)}/>
           </MobSheet>
 
           {/* ── LIVE LG KUNDENFOTO & BEWERTUNG MODAL ── */}
           <MobSheet open={openPhotoReview} onClose={()=>closeMobile(setOpenPhotoReview)} maxW="60rem" dir="row" fixedH="37.5rem" fullScreen>
-                <div style={{position:'relative',display:'flex',flexDirection:mob?'column':'row',height:'100%'}}>
-                  {/* Mobile: floating close button over image */}
-                  {mob && (
-                    <button onClick={()=>closeMobile(setOpenPhotoReview)}
-                      style={{position:'absolute',top:'0.75rem',right:'0.75rem',zIndex:10,
-                        display:'flex',alignItems:'center',justifyContent:'center',
-                        width:'2rem',height:'2rem',borderRadius:T.r,
-                        border:'none',outline:'none',background:'rgba(0,0,0,0.35)',cursor:'pointer',color:T.white,
-                        transition:'background 0.15s'}}
-                      onMouseEnter={e=>e.currentTarget.style.background='rgba(0,0,0,0.55)'}
-                      onMouseLeave={e=>e.currentTarget.style.background='rgba(0,0,0,0.35)'}>
-                      <XIcon/>
-                    </button>
-                  )}
-                  {/* Left/Top — photo panel */}
-                  <div style={{flex: mob ? 'none' : '0 0 50%', height: mob ? '50dvh' : '100%', background:T.g900, position:'relative', overflow:'hidden'}}>
-                    {/* Main photo fills entire panel height */}
-                    <img
-                      src={reviewPhotos[photoIdx]}
-                      alt={`Kundenfoto ${photoIdx+1}`}
-                      style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',display:'block',transition:'opacity 0.2s'}}
-                    />
-                    {/* Prev arrow — DS NavArr medium: white → teal100 hover → teal pressed, loops */}
-                    <div role="button"
-                      onClick={()=>setPhotoIdx(i=>(i-1+reviewPhotos.length)%reviewPhotos.length)}
-                      style={{position:'absolute',left:'0.75rem',top:'50%',transform:'translateY(-50%)',
-                        width:'2.625rem',height:'2.625rem',borderRadius:T.r,
-                        background:T.white, color:T.teal,
-                        border:`0.0625rem solid ${T.teal}`,
-                        display:'flex',alignItems:'center',justifyContent:'center',
-                        cursor:'pointer',userSelect:'none',zIndex:2,
-                        transition:'background 0.15s ease, color 0.15s ease'}}
-                      onMouseEnter={e=>{e.currentTarget.style.background=T.teal100;}}
-                      onMouseLeave={e=>{e.currentTarget.style.background=T.white;e.currentTarget.style.color=T.teal;}}
-                      onMouseDown={e=>{e.currentTarget.style.background=T.teal;e.currentTarget.style.color=T.white;}}
-                      onMouseUp={e=>{e.currentTarget.style.background=T.teal100;e.currentTarget.style.color=T.teal;}}>
-                      <svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="8,1.5 1.5,8 8,14.5"/>
-                      </svg>
-                    </div>
-                    {/* Next arrow — DS NavArr medium, white default, loops */}
-                    <div role="button"
-                      onClick={()=>setPhotoIdx(i=>(i+1)%reviewPhotos.length)}
-                      style={{position:'absolute',right:'0.75rem',top:'50%',transform:'translateY(-50%)',
-                        width:'2.625rem',height:'2.625rem',borderRadius:T.r,
-                        background:T.white, color:T.teal,
-                        border:`0.0625rem solid ${T.teal}`,
-                        display:'flex',alignItems:'center',justifyContent:'center',
-                        cursor:'pointer',userSelect:'none',zIndex:2,
-                        transition:'background 0.15s ease, color 0.15s ease'}}
-                      onMouseEnter={e=>{e.currentTarget.style.background=T.teal100;}}
-                      onMouseLeave={e=>{e.currentTarget.style.background=T.white;e.currentTarget.style.color=T.teal;}}
-                      onMouseDown={e=>{e.currentTarget.style.background=T.teal;e.currentTarget.style.color=T.white;}}
-                      onMouseUp={e=>{e.currentTarget.style.background=T.teal100;e.currentTarget.style.color=T.teal;}}>
-                      <svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="1,1.5 7.5,8 1,14.5"/>
-                      </svg>
-                    </div>
-                    {/* Thumbnail strip — overlaid at bottom, centred, square thumbs */}
-                    <div style={{position:'absolute',bottom:'0.75rem',left:0,right:0,
-                      display:'flex',gap:'0.5rem',justifyContent:'center',zIndex:2}}>
-                      {reviewPhotos.map((src,i)=>(
-                        <div key={i} role="button" onClick={()=>setPhotoIdx(i)}
-                          style={{width:'3rem',height:'3rem',borderRadius:T.rSm,cursor:'pointer',
-                            overflow:'hidden',flexShrink:0,
-                            border:`0.125rem solid ${i===photoIdx?T.teal:'rgba(255,255,255,0.4)'}`,
-                            transition:'border-color 0.15s'}}>
-                          <img src={src} alt="" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Right/Bottom — content panel */}
-                  <div style={{flex: mob ? 'none' : 1, height: mob ? '50dvh' : '100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
-                    {/* Desktop: header with close button in right panel */}
-                    <div style={{display: mob ? 'none' : 'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
-                      padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                      <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
-                      <button onClick={()=>closeMobile(setOpenPhotoReview)}
-                        style={{display:'flex',alignItems:'center',justifyContent:'center',
-                          width:'2rem',height:'2rem',borderRadius:T.r,
-                          border:'none',outline:'none',background:'transparent',cursor:'pointer',color:T.g600,
-                          transition:'background 0.15s'}}
-                        onMouseEnter={e=>e.currentTarget.style.background=T.g100}
-                        onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-                        <XIcon/>
-                      </button>
-                    </div>
-                    <div style={{flex:1,padding: mob ? '1.25rem' : '1.5rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
-                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'0.75rem'}}>
-                        <h4 style={{margin:0,fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font,lineHeight:1.3}}>
-                          Schicke Video-Türsprechanlage
-                        </h4>
-                        <span style={{color:T.star,fontSize:mob?T.fSm:T.fBody,whiteSpace:'nowrap',flexShrink:0,letterSpacing:'0.04em'}}>★★★★★</span>
-                      </div>
-                      <p style={{margin:0,fontFamily:font,fontSize:T.fXs,color:T.g500}}>Philip W. | 2026-04-05</p>
-                      <p style={{margin:0,fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.65}}>
-                        Wir sind insgesamt sehr zufrieden mit dieser schicken und zuverlässigen Video-Türsprechanlage. Diese fügt sich optisch gut ins Gesamtbild und die Bedienung ist sehr einfach.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            <PhotoReviewContent onClose={()=>closeMobile(setOpenPhotoReview)} photoIdx={photoIdx} setPhotoIdx={setPhotoIdx} reviewPhotos={reviewPhotos}/>
           </MobSheet>
 
           {/* ── LIVE LG EXPERTEN-KONTAKT MODAL ── */}
