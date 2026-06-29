@@ -1983,7 +1983,7 @@ a {
               borderBottom:`0.0625rem solid ${T.g200}`,
               flexShrink:0,
             }}>
-              <span style={{fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>{title}</span>
+              <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>{title}</span>
               <button
                 onClick={onClose}
                 style={{
@@ -2074,9 +2074,9 @@ a {
             cursor:'pointer',
             transition:'border-color 0.15s, background 0.15s',
           }}>
-          {/* Icon badge */}
-          <div style={{width:'2.75rem',height:'2.75rem',flexShrink:0,
-            borderRadius:T.rLg,background:T.teal75,color:T.teal,
+          {/* Icon badge — matches 2draht-bus .upg-step-icon (2.5rem · 0.625rem radius · teal 8%) */}
+          <div style={{width:'2.5rem',height:'2.5rem',flexShrink:0,
+            borderRadius:'0.625rem',background:'rgba(1,82,83,0.08)',color:T.teal,
             display:'flex',alignItems:'center',justifyContent:'center'}}>
             {icon}
           </div>
@@ -2162,7 +2162,7 @@ a {
         {/* Left teal panel */}
         <div style={{flex:'0 0 38%',
           background:`linear-gradient(160deg, ${T.teal900} 0%, ${T.teal} 100%)`,
-          padding:'2.75rem 2.5rem',display:'flex',flexDirection:'column',
+          padding:'1.5rem',display:'flex',flexDirection:'column',
           gap:'1.375rem',boxSizing:'border-box',overflowY:'auto'}}>
           <h3 style={{margin:0,fontFamily:font,fontSize:'2.125rem',fontWeight:700,
             lineHeight:1.1,letterSpacing:'-0.01em',color:T.white}}>
@@ -2173,11 +2173,11 @@ a {
             color:'rgba(255,255,255,0.78)'}}>
             Persönliche Beratung, technischer Support und geprüfte Partnerbetriebe — alles an einem Ort.
           </p>
-          <div style={{height:'0.0625rem',background:'rgba(255,255,255,0.18)'}}/>
+          <div style={{height:'0.0625rem',background:'rgba(255,255,255,0.18)',marginTop:'auto'}}/>
           <div style={{display:'flex',flexDirection:'column',gap:'0.375rem'}}>
             <span style={{fontFamily:font,fontSize:T.fXxs,fontWeight:700,
-              letterSpacing:'0.16em',textTransform:'uppercase',color:T.mint}}>Hotline</span>
-            <span style={{fontFamily:font,fontSize:'1.3125rem',fontWeight:700,
+              letterSpacing:'0.16em',textTransform:'uppercase',color:T.mint,marginBottom:'0.375rem'}}>Hotline</span>
+            <span style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
               color:T.white,letterSpacing:'-0.01em',lineHeight:1.2,whiteSpace:'nowrap'}}>
               +49 (0) 7121 · 317 7333
             </span>
@@ -2189,28 +2189,28 @@ a {
           </div>
         </div>
         {/* Right white panel */}
-        <div style={{flex:1,background:T.white,position:'relative',display:'flex',flexDirection:'column'}}>
-          <div role="button" aria-label="Schließen" onClick={onClose||undefined}
-            style={{position:'absolute',top:'1.25rem',right:'1.25rem',zIndex:2,
-              width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
-              color:T.g600,cursor:onClose?'pointer':'default',
-              display:'inline-flex',alignItems:'center',justifyContent:'center',
-              transition:'background 0.15s',userSelect:'none'}}
-            onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
-            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-            <XIcon/>
-          </div>
-          <div style={{overflowY:'auto',flex:1,padding:'2.75rem 2.5rem',display:'flex',flexDirection:'column'}}>
-            <div style={{display:'inline-flex',alignItems:'center',gap:'0.75rem',
-              fontFamily:font,fontSize:T.fXxs,fontWeight:700,
-              letterSpacing:'0.18em',textTransform:'uppercase',
-              color:T.g600,marginBottom:'0.875rem'}}>
-              Kontakt &amp; Service
+        <div style={{flex:1,background:T.white,display:'flex',flexDirection:'column'}}>
+          {/* Standard header bar — same style as Produktdetails (title h2 left, X right, divider) */}
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
+            padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+            <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,
+              letterSpacing:'-0.015em',color:T.dBlack}}>Kontakt &amp; Service</span>
+            <div role="button" aria-label="Schließen" onClick={onClose||undefined}
+              style={{width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',flexShrink:0,
+                color:T.g600,cursor:onClose?'pointer':'default',
+                display:'inline-flex',alignItems:'center',justifyContent:'center',
+                transition:'background 0.15s',userSelect:'none'}}
+              onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
+              onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+              <XIcon/>
             </div>
-            <h4 style={{margin:'0 0 0.5rem',fontFamily:font,fontSize:T.fH2,fontWeight:700,
-              color:T.dBlack,lineHeight:1.2,letterSpacing:'-0.01em'}}>
+          </div>
+          {/* Scrollable body */}
+          <div style={{overflowY:'auto',flex:1,padding:'1.5rem',display:'flex',flexDirection:'column'}}>
+            <h3 style={{margin:'0 0 0.5rem',fontFamily:font,fontSize:T.fH3,fontWeight:700,
+              color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
               Wie können wir Ihnen helfen?
-            </h4>
+            </h3>
             <p style={{margin:'0 0 1.375rem',fontFamily:font,fontSize:T.fSm,
               lineHeight:1.5,color:T.g600}}>
               Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.
@@ -2225,18 +2225,17 @@ a {
     const ContactModal = ({open, onClose}) => {
       const { mob } = useContext(MobCtx);
       return (
-        <MobSheet open={open} onClose={onClose} maxW="60rem" dir="row" bottomSheet>
+        <MobSheet open={open} onClose={onClose} maxW="48rem" dir="row">
           {mob ? (
-            /* ── MOBILE: white bottom sheet, hotline at bottom ── */
+            /* ── MOBILE: centered card, hotline at bottom ── */
             <div style={{display:'flex',flexDirection:'column',background:T.white}}>
-              {/* Sticky header: eyebrow + close */}
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
-                padding:'1.125rem 1.25rem 0.875rem',borderBottom:`0.0625rem solid ${T.g100}`,flexShrink:0}}>
-                <div style={{display:'inline-flex',alignItems:'center',
-                  fontFamily:font,fontSize:T.fXxs,fontWeight:700,
-                  letterSpacing:'0.18em',textTransform:'uppercase',color:T.g600}}>
+              {/* Sticky header: title + close (matches desktop) */}
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
+                padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+                <span style={{fontFamily:font,fontSize:T.fH3,fontWeight:700,lineHeight:1.3,
+                  letterSpacing:'-0.015em',color:T.dBlack}}>
                   Kontakt &amp; Service
-                </div>
+                </span>
                 <div role="button" aria-label="Schließen" onClick={onClose}
                   style={{width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
                     color:T.g600,cursor:'pointer',display:'inline-flex',alignItems:'center',
@@ -2248,8 +2247,8 @@ a {
               </div>
               {/* Scrollable body */}
               <div style={{overflowY:'auto',padding:'1.25rem 1.25rem 1.75rem',display:'flex',flexDirection:'column'}}>
-                <h4 style={{margin:'0 0 0.375rem',fontFamily:font,fontSize:'1.375rem',fontWeight:700,
-                  color:T.dBlack,lineHeight:1.2,letterSpacing:'-0.01em'}}>
+                <h4 style={{margin:'0 0 0.375rem',fontFamily:font,fontSize:T.fH4,fontWeight:700,
+                  color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
                   Wie können wir Ihnen helfen?
                 </h4>
                 <p style={{margin:'0 0 1rem',fontFamily:font,fontSize:T.fSm,lineHeight:1.5,color:T.g600}}>
@@ -2290,7 +2289,7 @@ a {
           {/* Header */}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
             padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-            <span style={{fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Produktdetails</span>
+            <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Produktdetails</span>
             <button onClick={onClose||undefined}
               style={{display:'flex',alignItems:'center',justifyContent:'center',
                 width:'2rem',height:'2rem',borderRadius:T.r,
@@ -2370,7 +2369,7 @@ a {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
               </svg>
             </div>
-            <span style={{fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Wie wir Cookies &amp; Co nutzen</span>
+            <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Wie wir Cookies &amp; Co nutzen</span>
           </div>
           {/* Body */}
           <div style={{padding:mob?'1rem 1.25rem':'1.5rem',fontFamily:font}}>
@@ -2568,11 +2567,12 @@ a {
                 </div>
                 {/* Right — review content panel */}
                 <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-                  <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',padding:'1.25rem 1.5rem',flexShrink:0}}>
-                    <button style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+                    <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
+                    <button style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',flexShrink:0,
                       borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}><XIcon/></button>
                   </div>
-                  <div style={{flex:1,padding:'0 2rem 2rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
+                  <div style={{flex:1,padding:'1.5rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
                     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'0.75rem'}}>
                       <h4 style={{margin:0,fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font,lineHeight:1.3}}>Schicke Video-Türsprechanlage</h4>
                       <span style={{color:T.star,fontSize:T.fBody,whiteSpace:'nowrap',flexShrink:0,letterSpacing:'0.04em'}}>★★★★★</span>
@@ -2611,9 +2611,9 @@ a {
           <p style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black,margin:'0 0 0.5rem'}}>D — Experten-Kontakt &amp; Service (Split-Panel, product page)</p>
           <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
             <div style={{padding:'2.5rem 1.5rem',background:T.paper,display:'flex',justifyContent:'center'}}>
-              <div style={{width:'100%',maxWidth:'60rem',borderRadius:T.rLg,
+              <div style={{width:'100%',maxWidth:'48rem',borderRadius:T.rLg,
                 boxShadow:'0 1.25rem 3.75rem rgba(0,0,0,0.14),0 0.25rem 1rem rgba(0,0,0,0.06)',
-                overflow:'hidden',display:'flex',minHeight:'22rem'}}>
+                overflow:'hidden',display:'flex'}}>
                 <ContactDesktopContent/>
               </div>
             </div>
@@ -2664,7 +2664,7 @@ a {
                 {/* Header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                  <span style={{fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Zahlung und Versand</span>
+                  <span style={{fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
                   <button style={{display:'flex',alignItems:'center',justifyContent:'center',
                     width:'2rem',height:'2rem',borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}>
                     <XIcon/>
@@ -2803,7 +2803,7 @@ a {
                 {/* Standard header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`}}>
-                  <span style={{fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Anmelden</span>
+                  <span style={{fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Anmelden</span>
                   <button style={{display:'flex',alignItems:'center',justifyContent:'center',
                     width:'2rem',height:'2rem',borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}>
                     <XIcon/>
@@ -2886,12 +2886,12 @@ a {
 .modal-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.25rem 1.5rem;
-  border-bottom: 0.0625rem solid #E6E6E8;
+  border-bottom: 0.0625rem solid var(--color-graphite-200);
   flex-shrink: 0;
 }
 .modal-title {
   font-family: var(--font-family);
-  font-size: 1.125rem; font-weight: 700; color: var(--color-black);
+  font-size: 1.5rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.015em; color: var(--color-digital-black);
 }
 
 /* Close button — same style in all modals */
@@ -2899,7 +2899,7 @@ a {
   display: flex; align-items: center; justify-content: center;
   width: 2rem; height: 2rem;
   border: none; border-radius: var(--radius);
-  background: transparent; cursor: pointer; color: #54545C;
+  background: transparent; cursor: pointer; color: var(--color-graphite-700);
   transition: background 0.15s; flex-shrink: 0;
 }
 .modal-close:hover { background: var(--color-graphite-100); }
@@ -2917,7 +2917,7 @@ a {
 .modal-body {
   padding: 1.5rem; overflow-y: auto; flex-grow: 1;
   font-family: var(--font-family);
-  font-size: 1rem; color: #54545C; line-height: 1.6;
+  font-size: 1rem; color: var(--color-graphite-700); line-height: 1.6;
 }
 
 /* XL: 2-column product layout */
@@ -3229,7 +3229,7 @@ a {
                   background:T.white,
                   borderBottom:`0.0625rem solid ${T.g200}`,
                   flexShrink:0}}>
-                  <span style={{fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Datenschutz-Einstellungen</span>
+                  <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Datenschutz-Einstellungen</span>
                   <button onClick={()=>setOpenPrivacy(false)}
                     style={{display:'flex',alignItems:'center',justifyContent:'center',
                       width:'2rem',height:'2rem',borderRadius:T.r,
@@ -3369,7 +3369,7 @@ a {
                 {/* Standard header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                  <span style={{fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Zahlung und Versand</span>
+                  <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
                   <button onClick={()=>closeMobile(setOpenPayment)}
                     style={{display:'flex',alignItems:'center',justifyContent:'center',
                       width:'2rem',height:'2rem',borderRadius:T.r,
@@ -3536,8 +3536,9 @@ a {
                   {/* Right/Bottom — content panel */}
                   <div style={{flex: mob ? 'none' : 1, height: mob ? '50dvh' : '100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
                     {/* Desktop: header with close button in right panel */}
-                    <div style={{display: mob ? 'none' : 'flex',alignItems:'center',justifyContent:'flex-end',
-                      padding:'1.25rem 1.5rem',flexShrink:0}}>
+                    <div style={{display: mob ? 'none' : 'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
+                      padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
+                      <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
                       <button onClick={()=>closeMobile(setOpenPhotoReview)}
                         style={{display:'flex',alignItems:'center',justifyContent:'center',
                           width:'2rem',height:'2rem',borderRadius:T.r,
@@ -3548,7 +3549,7 @@ a {
                         <XIcon/>
                       </button>
                     </div>
-                    <div style={{flex:1,padding: mob ? '1.25rem' : '2rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
+                    <div style={{flex:1,padding: mob ? '1.25rem' : '1.5rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'0.625rem'}}>
                       <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'0.75rem'}}>
                         <h4 style={{margin:0,fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font,lineHeight:1.3}}>
                           Schicke Video-Türsprechanlage
@@ -3577,7 +3578,7 @@ a {
                 {/* Standard header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                  <span style={{fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font}}>Lieferinformation</span>
+                  <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Lieferinformation</span>
                   <button onClick={()=>setOpenDelivery(false)}
                     style={{display:'flex',alignItems:'center',justifyContent:'center',
                       width:'2rem',height:'2rem',borderRadius:T.r,
@@ -8363,30 +8364,76 @@ cursor: pointer;
             <div id="sec-xdm-hero" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
               <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>Section 10</div>
               <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>XDM10 Hero — 2-Draht-BUS (dark)</h2>
-              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>Dunkler Produkt-Hero: Breadcrumb, Eyebrow (mint), Display-Headline mit Mint-Akzent, Badges, Lead und vollbreiter Teal-CTA. Hintergrund <code style={{fontFamily:'monospace',fontSize:T.fXs,background:T.paper,padding:'1px 5px',borderRadius:3}}>--color-teal-900 → --color-teal-700</code>.</p>
-              <div style={{overflow:'hidden'}}>
-                <section style={{background:`linear-gradient(135deg, ${T.teal900} 0%, ${T.teal700} 55%, #001012 100%)`,color:T.white,padding: mob?'1.5rem':'2.5rem 3rem 3rem',overflow:'hidden'}}>
-                  <nav style={{fontFamily:font,fontSize:T.fSm,display:'flex',gap:'0.5rem',flexWrap:'wrap',marginBottom: mob?'1.5rem':'2.5rem'}}>
-                    <a href="#" style={{color:'rgba(255,255,255,0.6)',textDecoration:'none'}}>Startseite</a><span style={{color:'rgba(255,255,255,0.3)'}}>/</span>
-                    <a href="#" style={{color:'rgba(255,255,255,0.6)',textDecoration:'none'}}>Sprechanlagen</a><span style={{color:'rgba(255,255,255,0.3)'}}>/</span>
-                    <span style={{color:T.white,fontWeight:500}}>2-Draht-BUS System</span>
-                  </nav>
-                  <div style={{display:'flex',flexDirection: mob?'column':'row',alignItems:'center',gap: mob?'2rem':'2.5rem'}}>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:font,fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.16em',textTransform:'uppercase',color:T.mint,marginBottom:'1rem'}}>2-Draht-BUS System</div>
-                      <h2 style={{fontFamily:font,fontSize: mob?'2rem':'3rem',fontWeight:700,lineHeight:1.05,letterSpacing:'-0.03em',color:T.white,margin:'0 0 1.5rem'}}>XDM10 <span style={{color:T.mint,fontWeight:300,fontStyle:'italic'}}>–</span> Smartes Upgrade für Ihre vorhandene <span style={{color:T.mint}}>Verkabelung</span></h2>
-                      <div style={{display:'flex',flexWrap:'wrap',gap:'0.625rem',marginBottom:'1.5rem'}}>
-                        {['Powered by HIKVISION','Designed in Germany 🇩🇪'].map((b,i)=>(
-                          <span key={i} style={{fontFamily:font,fontSize:T.fXs,color:'rgba(255,255,255,0.7)',border:'0.0625rem solid rgba(255,255,255,0.2)',borderRadius:T.r,padding:'0.375rem 0.75rem',whiteSpace:'nowrap'}}>{b}</span>
-                        ))}
-                      </div>
-                      <p style={{fontFamily:font,fontSize:T.fBody,lineHeight:1.6,color:'rgba(255,255,255,0.78)',margin:'0 0 2rem',maxWidth:'34rem'}}>Die XDM10 nutzt die vorhandene Verkabelung, um alte Klingel- oder Sprechanlagen ohne neue Kabel in ein modernes System mit App-Anbindung zu verwandeln. Die ideale Lösung zum einfachen Austausch bestehender Türsprechanlagen.</p>
-                      <a href="#" style={{display:'inline-flex',alignItems:'center',justifyContent:'center',gap:'0.625rem',width: mob?'100%':'auto',height:'3.25rem',padding:'0 2rem',borderRadius:T.r,background:T.teal,color:T.white,fontFamily:font,fontSize:'1.0625rem',fontWeight:500,textDecoration:'none',boxSizing:'border-box'}}>Zur Produktauswahl
-                        <svg width="14" height="12" viewBox="0 0 14 12" fill="none" style={{flexShrink:0}}><path d="M1 6h12M7 1l6 5-6 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </a>
+              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>Exakter Port des 2-Draht-BUS Hero — vollbreiter dunkler Verlauf mit Ambient-Glows, absolut positioniertes Produktbild, Breadcrumb, Mint-Eyebrow, Display-H1 (3rem) mit kursivem Bindestrich, Badges, Lead und CTA. <code style={{fontFamily:'monospace',fontSize:T.fXs,background:T.paper,padding:'1px 5px',borderRadius:3}}>min-height: 48rem</code> auf Desktop.</p>
+              <div style={{overflow:'hidden',borderRadius:T.rLg}}>
+                <style>{`
+                  .xh-hero{position:relative;overflow:hidden;background:#000;background-image:linear-gradient(90deg,#01292A 0%,#011a1b 35%,#050505 70%,#000 100%);display:flex;flex-direction:column;min-height:0;color:#fff;font-family:${font};}
+                  @media(min-width:768px){.xh-hero{min-height:48rem}}
+                  .xh-ambient1{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%, rgba(92,219,211,0.07) 0%, transparent 55%);pointer-events:none;}
+                  .xh-ambient2{position:absolute;inset:0;background:radial-gradient(ellipse at 100% 100%, #000 0%, transparent 70%);pointer-events:none;}
+                  .xh-grid{position:relative;z-index:10;flex:1;display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;align-content:center;padding:2.5rem 1.5rem;max-width:100rem;width:100%;margin:0 auto;box-sizing:border-box;}
+                  @media(min-width:769px){.xh-grid{padding:3rem 3rem}}
+                  .xh-center{grid-column:span 12;position:relative;z-index:20;max-width:44%;}
+                  @media(max-width:768px){.xh-center{max-width:100%}}
+                  @media(min-width:769px) and (max-width:80rem){.xh-center{max-width:54%}.xh-product{width:44%}.xh-grid{padding-top:5rem}}
+                  .xh-breadcrumbs{position:absolute;top:1.75rem;left:0;right:0;z-index:25;font-family:${font};font-size:0.8125rem;line-height:1;}
+                  .xh-breadcrumbs-inner{max-width:100rem;margin:0 auto;padding:0 3rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.375rem;color:rgba(255,255,255,0.6);}
+                  @media(max-width:768px){.xh-breadcrumbs{position:static;padding-top:1.5rem}.xh-breadcrumbs-inner{padding:0 1.5rem}}
+                  .xh-breadcrumbs a{color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s ease}
+                  .xh-breadcrumbs a:hover{color:#fff}
+                  .xh-breadcrumbs .sep{color:rgba(255,255,255,0.3)}
+                  .xh-breadcrumbs .current{color:#fff;font-weight:500}
+                  .xh-eyebrow{display:block;font-family:${font};font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#5CDBD3;margin-bottom:1rem;}
+                  .xh-h1{font-family:${font};font-weight:700;font-size:3rem;line-height:1.05;letter-spacing:-0.03em;margin:0;color:#fff;}
+                  .xh-h1 .dash{font-style:italic;font-weight:300}
+                  .xh-h1 .accent{color:inherit;font-style:inherit}
+                  .xh-badges{display:flex;flex-wrap:wrap;gap:0.625rem;margin-top:1.5rem}
+                  .xh-badge{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;border-radius:0.25rem;border:0.0625rem solid rgba(255,255,255,0.2);font-size:0.75rem;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.7);}
+                  .xh-badge strong{font-weight:700;color:#fff;letter-spacing:0.08em}
+                  .xh-desc{margin-top:1.5rem;max-width:34rem;font-size:1rem;color:rgba(255,255,255,0.78);line-height:1.6;}
+                  .xh-actions{margin-top:2rem;display:flex;gap:1rem}
+                  .xh-actions .xh-btn{flex:1;text-align:center}
+                  .xh-product{grid-column:span 12;}
+                  @media(min-width:768px){.xh-product{position:absolute;right:3rem;top:3rem;bottom:3rem;transform:none;width:48%;max-width:38rem;z-index:0;display:flex;align-items:center;justify-content:flex-end;}.xh-product img{max-width:72%;max-height:72%;width:auto;height:auto;object-fit:contain;object-position:right center;display:block;}}
+                  @media(min-width:1024px){.xh-product{width:50%;max-width:45rem}}
+                  @media(min-width:1440px){.xh-product{width:50%;max-width:50rem}}
+                  .xh-product img{position:relative;width:100%;height:auto;}
+                  .xh-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;height:2.625rem;padding:0.7rem 1.2rem;border-radius:0.25rem;font-family:${font};font-size:1rem;font-weight:500;white-space:nowrap;line-height:1.2;cursor:pointer;transition:background 0.15s ease;text-decoration:none;border:none;}
+                  .xh-btn-lg{height:3.125rem;font-size:1.1rem;font-weight:600;padding:0.7rem 1.75rem}
+                  .xh-btn-primary{background:#015253;color:#fff}
+                  .xh-btn-primary:hover{background:#014A4B}
+                `}</style>
+                <section className="xh-hero" aria-label="XDM10 — Hero">
+                  <div className="xh-ambient1" aria-hidden="true"/>
+                  <div className="xh-ambient2" aria-hidden="true"/>
+                  <nav className="xh-breadcrumbs" aria-label="Breadcrumb">
+                    <div className="xh-breadcrumbs-inner">
+                      <a href="#">Startseite</a><span className="sep">/</span>
+                      <a href="#">Sprechanlagen</a><span className="sep">/</span>
+                      <span className="current">2-Draht-BUS System</span>
                     </div>
-                    <div style={{flex:'0 0 42%',display:'flex',justifyContent:'center'}}>
-                      <img src="xdm10-hero.webp" alt="Metzler XDM10 Video-Türsprechanlage" style={{width:'100%',maxWidth:'20rem',height:'auto',display:'block'}}/>
+                  </nav>
+                  <div className="xh-grid">
+                    <div className="xh-center">
+                      <span className="xh-eyebrow">2-Draht-BUS System</span>
+                      <div className="xh-h1">
+                        XDM10 <span className="dash">–</span> Smartes Upgrade für Ihre vorhandene <span className="accent">Verkabelung</span>
+                      </div>
+                      <div className="xh-badges">
+                        <span className="xh-badge">Powered by <strong>HIKVISION</strong></span>
+                        <span className="xh-badge">Designed in Germany 🇩🇪</span>
+                      </div>
+                      <p className="xh-desc">
+                        Die XDM10 nutzt die vorhandene Verkabelung, um alte Klingel- oder Sprechanlagen ohne neue Kabel in ein modernes System mit App-Anbindung zu verwandeln. Die ideale Lösung zum einfachen Austausch bestehender Türsprechanlagen.
+                      </p>
+                      <div className="xh-actions">
+                        <a href="#" className="xh-btn xh-btn-primary xh-btn-lg">Zur Produktauswahl
+                          <svg width="12" height="10" viewBox="0 0 14 12" fill="none" aria-hidden="true" style={{flexShrink:0}}><path d="M1 6h12M7 1l6 5-6 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="xh-product">
+                      <img src="xdm10-hero.webp" alt="Metzler XDM10 Video-Türsprechanlage 2-Draht-BUS in RAL 7016 Anthrazit"/>
                     </div>
                   </div>
                 </section>
