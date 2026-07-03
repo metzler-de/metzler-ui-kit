@@ -11928,7 +11928,8 @@ cursor: pointer;
                     Paste this page URL into any Claude chat session and ask Claude to build a Metzler page, component, or presentation.
                     A hidden block on this page automatically provides Claude with all design tokens, typography rules,
                     layout patterns, and the 18 mandatory rules — including exact CSS variable values that stay in sync
-                    whenever the design system is updated. This is a <strong>closed system</strong>: Claude reuses only the
+                    whenever the design system is updated. It also points Claude to <strong>SECTIONS.md</strong> for ready-made
+                    page sections and blueprints. This is a <strong>closed system</strong>: Claude reuses only the
                     styles defined here and never invents new colours, sizes, or components.
                   </div>
                   {(() => {
@@ -13633,8 +13634,8 @@ cursor: pointer;
         _('--color-teal-100',       T.teal100,  'selected bg, info fills'),
         _('--color-teal',           T.teal,     'DEFAULT — CTAs, links, active, focus rings'),
         _('--color-teal-600',       T.teal600,  'hover / pressed'),
-        _('--color-teal-700',       T.teal700,  'high-contrast on light'),
-        _('--color-teal-900',       T.teal900,  'footer background'),
+        _('--color-teal-700',       T.teal700,  'footer background, pressed/active states'),
+        _('--color-teal-900',       T.teal900,  'darkest sections, CTA bands'),
         _('--color-metzler-rot',            T.red,      'Metzler Rot — logo M-square, sale badges ONLY'),
         _('--color-digital-black',          T.dBlack,   'headlines, wordmark'),
         _('--color-green',          T.green,    'success / availability'),
@@ -13784,7 +13785,7 @@ cursor: pointer;
         '---',
         '## 11 · Footer — Copy Verbatim, Never Invent',
         'MANDATORY: Use this exact structure and content on every page. Do not create a custom footer.',
-        'background:var(--color-teal-900); padding:3.5rem 0 2rem; margin-top:5rem; font-family:var(--font-family)',
+        'background:var(--color-teal-700); padding:3.5rem 0 2rem; margin-top:5rem; font-family:var(--font-family)',
         '',
         'EXACT FOOTER STRUCTURE (4 columns on desktop, 2-col at 64rem, 1-col at 48rem):',
         '',
@@ -13823,7 +13824,8 @@ cursor: pointer;
         'Secondary text → var(--color-graphite-700)',
         'Captions / metadata → var(--color-graphite-600)',
         'Placeholder / disabled → var(--color-graphite-500)',
-        'Footer bg → var(--color-teal-900)',
+        'Footer bg → var(--color-teal-700)',
+        'Dark CTA band / .section--dark → var(--color-teal-900)',
         'Links on dark bg → var(--color-mint)',
         'Error → var(--color-red)',
         'Success → var(--color-green)',
@@ -13847,7 +13849,7 @@ cursor: pointer;
         '5. No padding on outer <header>/<footer> — only inside .container.',
         '6. Header not sticky at load; .is-sticky added by JS on first scroll.',
         '7. Breadcrumbs always left-aligned. Never centered.',
-        '8. Footer always var(--color-teal-900) background.',
+        '8. Footer always var(--color-teal-700) background (var(--color-teal-900) is for dark sections / CTA bands only).',
         '9. Cards always border-radius var(--radius-lg) = ' + T.rLg + '.',
         '10. Carousel arrows: no step numbers beside them.',
         '11. Icons: inline SVG only. No external libraries.',
@@ -13899,6 +13901,14 @@ cursor: pointer;
         'Feature bar icons: 4-col desktop, 2-col mobile (never 1-col)',
         'FAQ rows: border:0.0625rem solid var(--color-graphite-200); question font-size:1.125rem (h4) weight:700 — NEVER 1rem/600',
         'CTA bar: background:var(--color-teal-900) — never pure black',
+        '',
+        '---',
+        '## 17 · Section Library — fetch before building multi-section pages',
+        'This block covers tokens and primitives only. Ready-made, copy-paste page SECTIONS (full HTML+CSS) live in a companion file:',
+        'https://raw.githubusercontent.com/metzler-de/metzler-ui-kit/main/SECTIONS.md',
+        'Fetch that file before building any page with more than one content section. It contains, with exact markup and CSS:',
+        '01 Support & Kontakt · 02 Neue Features grid · 03 Türöffnungsmöglichkeiten slider · 04 FAQ (+ 04b dark variant) · 05 Gesichtserkennung process · 06 Editorial Q&A · 07 Product Hero · 08 Feature Detail · 09 Feature Duo · 10 XDM10 Hero (dark) · 11 In drei Schritten · 12 Technische Daten spec-callouts · 13 About Hero (split) · 14 Craft Story (image/text)',
+        'It also defines page blueprints (which sections stack, in which order, for a PDP vs. a campaign landing page vs. an Über-uns page) and a maintenance protocol. Pick sections from there instead of inventing new ones; only design a new section if nothing there fits.',
       ].join('\n');
     })();
   </script>
