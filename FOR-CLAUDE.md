@@ -3,6 +3,8 @@
 Paste this file into Claude when asking it to build any Metzler page, section, or component.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.
 
+> **Companion file:** ready-made page sections (heroes, feature grids, sliders, FAQ, spec layouts …) live in **`SECTIONS.md`** — always check there first before designing a new section from scratch. This file covers tokens, primitives (buttons, forms, cards), header/footer, and page scaffolding.
+
 ---
 
 ## 1 · Brand & Language
@@ -30,9 +32,9 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
   --color-teal-75:    #E3F2F0;   /* light tint hover fills */
   --color-teal-100:   #E6EEEE;   /* selected backgrounds */
   --color-teal:       #015253;   /* CTAs, links, active borders, focus rings */
-  --color-teal-600:   #014A4B;   /* hover / pressed state */
-  --color-teal-700:   #013E3E;   /* high-contrast text on teal surfaces */
-  --color-teal-900:   #001D1D;   /* footer background */
+  --color-teal-600:   #014A4B;   /* hover state */
+  --color-teal-700:   #01292A;   /* footer background, pressed/active states, dark gradient stops */
+  --color-teal-900:   #001D1D;   /* darkest sections, CTA bands (.section--dark) */
 
   /* ── BRAND ── */
   --color-metzler-rot:        #D42924;   /* Metzler Rot — logo M-square, sale badges ONLY */
@@ -43,6 +45,7 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
   --color-red-50:     #FFF0EF;   /* error background */
   --color-red:        #D42924;   /* error borders, text */
   --color-red-600:    #B52320;   /* error hover */
+  --color-red-900:    #4D0E0D;   /* readable text on red-50 surfaces */
 
   /* ── ACCENT ── */
   --color-mint:       #5CDBD3;   /* links / icons on dark/teal backgrounds */
@@ -50,17 +53,20 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
 
   /* ── SURFACES ── */
   --color-white:      #FFFFFF;   /* card backgrounds, input backgrounds */
+  --color-black:      #000000;   /* reserved — never for text or section backgrounds */
   --color-paper:      #F5F6FA;   /* page background, secondary surfaces */
   --color-graphite-100:      #F0F0F0;   /* row separators, skeleton fills */
   --color-graphite-200:      #E6E6E8;   /* hairline dividers (1px lines) */
   --color-graphite-300:      #DADADA;   /* default borders on inputs, cards */
   --color-graphite-400:      #BFBFC2;   /* focused borders, ghost-button hover border */
+  --color-graphite-450:      #CCCCCC;   /* soft borders, dividers, skeleton lines */
 
   /* ── TEXT ── */
   --color-graphite-500:      #A1A1A1;   /* placeholder, disabled, metadata */
   --color-graphite-600:      #7A7A82;   /* captions, secondary labels */
   --color-graphite-700:      #54545C;   /* secondary body text */
   --color-graphite-800:      #2E2E36;   /* primary body text */
+  --color-graphite-850:      #333333;   /* icon fills, dark UI labels, editorial answer text */
   --color-graphite-900:      #1A1A1F;   /* heading text (alternative to --color-digital-black) */
 
   /* ── BORDER RADIUS ── */
@@ -238,6 +244,8 @@ Every page must follow this exact structure:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seitentitel — Metzler</title>
+  <!-- PFLICHT: Metzler-Favicon auf JEDER Seite (rotes M-Quadrat) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     /* paste design tokens here */
     /* paste component CSS here */
@@ -718,7 +726,8 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
 | Secondary / supporting text | `--color-graphite-700` |
 | Captions, metadata | `--color-graphite-600` |
 | Placeholder, disabled | `--color-graphite-500` |
-| Footer background | `--color-teal-900` |
+| Footer background | `--color-teal-700` |
+| Dark CTA band / `.section--dark` | `--color-teal-900` |
 | Links / icons on footer / dark bg | `--color-mint` |
 | Error state | `--color-red` |
 | Success / availability | `--color-green` |
@@ -731,7 +740,7 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
 
 ## 14 · Footer
 
-> ⚠️ **The block below is a SIMPLIFIED footer (4 columns only).** The canonical production footer is the `FooterSection` component in **`index.html`** + the image assets in **`footer/`**, and its background is **`var(--color-teal-700)` (#013E3E)**, *not* teal-900. The real footer also has: a **5th column** ("Follow us" social icons + "Qualität" award badges), a **payment row** (Versandpartner DPD/DHL/GoGreen + "Einfach bezahlen" SEPA/Visa/PayPal/Klarna/Mastercard/Apple Pay/Google Pay/SEPA/Vorkasse) + a **Trusted Shops rating pill**, **10 legal links** (Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Impressum · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen), and the copyright line "Alle Preise inkl. gesetzliche MwSt., zzgl. Versand © 2013 - 2026 | Metzler GmbH". **For real pages, reproduce that full component + copy the `footer/` assets** (a working static version is in `../tst/index.html`). The simplified block below is for quick mockups only.
+> ⚠️ **The block below is a SIMPLIFIED footer (4 columns only).** The canonical production footer is the `FooterSection` component in **`index.html`** + the image assets in **`footer/`**. Its background is **`var(--color-teal-700)` (#01292A)** — both versions below use this token. The real footer also has: a **5th column** ("Follow us" social icons + "Qualität" award badges), a **payment row** (Versandpartner DPD/DHL/GoGreen + "Einfach bezahlen" SEPA/Visa/PayPal/Klarna/Mastercard/Apple Pay/Google Pay/SEPA/Vorkasse) + a **Trusted Shops rating pill**, **10 legal links** (Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Impressum · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen), and the copyright line "Alle Preise inkl. gesetzliche MwSt., zzgl. Versand © 2013 - 2026 | Metzler GmbH". **For real pages, reproduce that full component + copy the `footer/` assets** (a working static version is in `../tst/index.html`). The simplified block below is for quick mockups only.
 
 **Contact values are exact (used in both versions). Do not invent columns, headings, or links.**
 
@@ -842,7 +851,7 @@ The simplified footer has 4 columns on desktop, stacks to 1 on mobile:
 ```css
 /* ── FOOTER — do not customise, use exactly as written ── */
 .site-footer {
-  background: var(--color-teal-900);
+  background: var(--color-teal-700);   /* #01292A — same token as the production FooterSection */
   color: var(--color-white);
   padding: 3.5rem 0 2rem;
   margin-top: 5rem;
@@ -1032,7 +1041,7 @@ Apply these on every page for the `< 768px` breakpoint:
 5. **No padding on `<header>` / `<footer>` outer tags** — padding lives inside `.container` only
 6. **Header two-state:** not sticky at page load; `.is-sticky` class added via JS on first scroll
 7. **Breadcrumbs always left-aligned** — never centered
-8. **Footer always `var(--color-teal-900)` background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 4 columns: logo+tagline | Kontakt (with exact phone numbers) | Informationen | Service. The column headings and link texts are fixed — do not change them.
+8. **Footer always `var(--color-teal-700)` (#01292A) background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 4 columns: logo+tagline | Kontakt (with exact phone numbers) | Informationen | Service. The column headings and link texts are fixed — do not change them.
 9. **Cards always `var(--radius-lg)` (0.5rem) radius** — never sharp corners, never pill-radius
 10. **Arrows / carousel controls never show step numbers** — navigation arrows are controls only
 11. **No external icon libraries** — use inline `<svg>` with `stroke="currentColor"`, `stroke-width: 1.8–2`, `stroke-linecap: round`, `stroke-linejoin: round`, `fill: none`; icon container is 2.5rem × 2.5rem with `border-radius: var(--radius-lg)` (0.5rem = 8px) for the generic `.card-icon`; the feature-grid `.nfs-card-icon` is the one exception at 0.625rem (10px)
@@ -1049,6 +1058,8 @@ Apply these on every page for the `< 768px` breakpoint:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neue Seite — Metzler</title>
+  <!-- PFLICHT: Metzler-Favicon auf JEDER Seite (rotes M-Quadrat) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background: #F5F6FA; }
@@ -1491,10 +1502,10 @@ function toggleFaq(btn) {
 ```css
 .faq-stage { border-top: 0.0625rem solid var(--color-graphite-200); padding: 2.5rem 0 3rem; display: flex; flex-direction: column; align-items: center; }
 .faq-header { text-align: center; margin-bottom: 2.5rem; }
-.faq-label { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); margin: 0 0 1.25rem; }
-.faq-heading { font-size: 2.875rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.04em; color: var(--color-digital-black); margin: 0; }
+.faq-label { font-size: 0.75rem; font-weight: 700; line-height: 1.4; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-teal); margin: 0 0 1.25rem; }
+.faq-heading { font-size: 2.875rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--color-digital-black); margin: 0; }
 .faq-list { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 54rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.faq-item { position: relative; background: var(--color-white); border: 0.0625rem solid var(--color-graphite-200); border-radius: 0.5rem; overflow: hidden; transition: border-color 0.2s ease; }
+.faq-item { position: relative; background: var(--color-white); border: 0.0625rem solid var(--color-graphite-200); border-radius: 0.5rem; overflow: hidden; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
 .faq-item:hover { border-color: var(--color-teal); }
 .faq-item.is-open { border-color: var(--color-teal); background: linear-gradient(180deg, var(--color-white) 0%, var(--color-paper) 100%); }
 .faq-item.is-open::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 0.25rem; background: var(--color-teal); }
@@ -1509,6 +1520,12 @@ function toggleFaq(btn) {
 .faq-body-inner { overflow: hidden; min-height: 0; }
 .faq-answer { font-size: 1rem; line-height: 1.7; color: var(--color-graphite-700); padding: 0 1.5rem 1.75rem; margin: 0; max-width: 42rem; }
 @media (max-width: 62.5rem) { .faq-heading { font-size: 1.875rem; } }
+@media (max-width: 35rem) {
+  .faq-heading { font-size: 1.5rem; }
+  .faq-btn { padding: 1.25rem 1.125rem; }
+  .faq-left { gap: 0.875rem; }
+  .faq-answer { padding: 0 1.125rem 1.5rem; }
+}
 ```
 
 Key rules:

@@ -31,8 +31,8 @@ Never hardcode hex. Reference tokens by their **CSS variable name** — the cano
 | Teal 100 | `#E6EEEE` | 230 · 238 · 238 | Info box fills, selected filter chip, tooltip backgrounds |
 | **Teal 500** *(default)* | `#015253` | 1 · 82 · 83 | CTAs, nav, active states, focus rings, links — **the single brand anchor** |
 | Teal 600 | `#014A4B` | 1 · 74 · 75 | Hover/pressed state for any teal interactive element |
-| Teal 700 | `#013E3E` | 1 · 62 · 62 | High-contrast icons, focus rings on light bg, accessible text on Teal 50/100 |
-| Teal 900 | `#001D1D` | 0 · 29 · 29 | Footer background (dark footer), maximum-contrast text on teal surfaces |
+| Teal 700 | `#01292A` | 1 · 41 · 42 | Footer background (dark footer), pressed/active states, dark gradient stops, accessible text on Teal 50/100 |
+| Teal 900 | `#001D1D` | 0 · 29 · 29 | Darkest sections, CTA bands, maximum-contrast text on teal surfaces |
 
 ### Brand
 
@@ -217,7 +217,7 @@ Never hardcode hex. Reference tokens by their **CSS variable name** — the cano
 - `.btn-block` — full-width button in forms or mobile contexts
 
 **When NOT to use:**
-- Never use red (`#D42924`) on any button variant — red triggers purchase anxiety
+- Never use red (`var(--color-red)`) on any button variant — red triggers purchase anxiety
 - Never use `.btn-dark` or `.btn-dark-outline` on white/light backgrounds
 
 ```css
@@ -242,19 +242,19 @@ Never hardcode hex. Reference tokens by their **CSS variable name** — the cano
 .btn-block { display: flex; text-align: center; width: 100%; }
 
 .btn-primary,
-.btn-proceed { background: #015253; color: #fff; border: none; }
-.btn-primary:hover,  .btn-proceed:hover  { background: #014A4B; }
-.btn-primary:active, .btn-proceed:active { background: #013E3E; }
-.btn-primary:disabled, .btn-proceed:disabled { background: #A1A1A1; cursor: default; }
+.btn-proceed { background: var(--color-teal); color: var(--color-white); border: none; }
+.btn-primary:hover,  .btn-proceed:hover  { background: var(--color-teal-600); }
+.btn-primary:active, .btn-proceed:active { background: var(--color-teal-700); }
+.btn-primary:disabled, .btn-proceed:disabled { background: var(--color-graphite-500); cursor: default; }
 
-.btn-secondary { background: transparent; color: #015253; border: 0.125rem solid #015253; }
-.btn-secondary:hover  { background: #E6EEEE; }
-.btn-secondary:active { background: #015253; color: #fff; }
-.btn-secondary:disabled { color: #A1A1A1; border-color: #A1A1A1; cursor: default; }
+.btn-secondary { background: transparent; color: var(--color-teal); border: 0.125rem solid var(--color-teal); }
+.btn-secondary:hover  { background: var(--color-teal-100); }
+.btn-secondary:active { background: var(--color-teal); color: var(--color-white); }
+.btn-secondary:disabled { color: var(--color-graphite-500); border-color: var(--color-graphite-500); cursor: default; }
 
-.btn-white { background: transparent; color: #fff; border: 0.125rem solid #fff; }
+.btn-white { background: transparent; color: var(--color-white); border: 0.125rem solid var(--color-white); }
 .btn-white:hover  { background: rgba(255,255,255,0.1); }
-.btn-white:active { background: #fff; color: #015253; border-color: #fff; }
+.btn-white:active { background: var(--color-white); color: var(--color-teal); border-color: var(--color-white); }
 .btn-white:disabled { color: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.25); cursor: default; }
 
 /* Dark / Hero variants — use ONLY on dark or image backgrounds */
@@ -268,12 +268,12 @@ Never hardcode hex. Reference tokens by their **CSS variable name** — the cano
   text-align: center;
   transition: opacity 0.2s, border-color 0.3s, background 0.3s;
 }
-.btn-dark { background: #015253; color: #fff; border: none; }
+.btn-dark { background: var(--color-teal); color: var(--color-white); border: none; }
 .btn-dark:hover  { opacity: 0.85; }
 .btn-dark:disabled { background: rgba(1,82,83,0.4); color: rgba(255,255,255,0.5); cursor: default; }
 
-.btn-dark-outline { background: transparent; color: #fff; border: 0.0625rem solid #fff; }
-.btn-dark-outline:hover  { border-color: #015253; background: rgba(255,255,255,0.05); }
+.btn-dark-outline { background: transparent; color: var(--color-white); border: 0.0625rem solid var(--color-white); }
+.btn-dark-outline:hover  { border-color: var(--color-teal); background: rgba(255,255,255,0.05); }
 .btn-dark-outline:disabled { color: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.25); cursor: default; }
 ```
 
@@ -316,26 +316,26 @@ Square icon-only buttons for carousels, sliders, and gallery navigation.
   height: 2.625rem;
   border-radius: 0.25rem;
   background: transparent;
-  color: #015253;
-  border: 0.0625rem solid #015253;
+  color: var(--color-teal);
+  border: 0.0625rem solid var(--color-teal);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 .btn-nav-lg { width: 3.125rem; height: 3.125rem; }
 .btn-nav-sm { width: 2.1875rem; height: 2.1875rem; }
 
-.btn-nav:hover    { background: #E6EEEE; }
-.btn-nav:active   { background: #015253; color: #fff; }
-.btn-nav:disabled { color: #A1A1A1; border-color: #A1A1A1; cursor: default; }
+.btn-nav:hover    { background: var(--color-teal-100); }
+.btn-nav:active   { background: var(--color-teal); color: var(--color-white); }
+.btn-nav:disabled { color: var(--color-graphite-500); border-color: var(--color-graphite-500); cursor: default; }
 
 /* Inverted — use on teal or dark section backgrounds */
 .btn-nav-inverted {
   background: transparent;
-  color: #fff;
+  color: var(--color-white);
   border: 0.0625rem solid rgba(255, 255, 255, 0.55);
 }
 .btn-nav-inverted:hover  { background: rgba(255, 255, 255, 0.12); }
-.btn-nav-inverted:active { background: #fff; color: #015253; }
+.btn-nav-inverted:active { background: var(--color-white); color: var(--color-teal); }
 .btn-nav-inverted:disabled {
   color: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.2);
@@ -379,30 +379,30 @@ Numbered page buttons used in product listing pagination. Always paired with `.b
   width: 2.625rem;
   height: 2.625rem;
   border-radius: 0.25rem;
-  background: #ffffff;
-  border: 0.0625rem solid #015253;
+  background: var(--color-white);
+  border: 0.0625rem solid var(--color-teal);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
   font-weight: 500;
-  color: #000000;
+  color: var(--color-digital-black);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 .listing-btn--lg { width: 3.125rem;  height: 3.125rem;  font-size: 1.1rem; }
 .listing-btn--sm { width: 2.1875rem; height: 2.1875rem; font-size: 0.9rem; }
 
-.listing-btn:hover  { background: rgba(1, 82, 83, 0.05); color: #015253; }
-.listing-btn.active { background: #015253; border-color: #015253; color: #ffffff; cursor: default; }
+.listing-btn:hover  { background: rgba(1, 82, 83, 0.05); color: var(--color-teal); }
+.listing-btn.active { background: var(--color-teal); border-color: var(--color-teal); color: var(--color-white); cursor: default; }
 .listing-btn.more   { border: none; cursor: default; }
 
 /* Inverted — teal or dark section backgrounds */
 .listing-btn-inverted {
   background: transparent;
   border: 0.0625rem solid rgba(255, 255, 255, 0.5);
-  color: #ffffff;
+  color: var(--color-white);
 }
 .listing-btn-inverted:hover  { background: rgba(255, 255, 255, 0.12); }
-.listing-btn-inverted.active { background: #ffffff; color: #015253; border-color: #ffffff; cursor: default; }
+.listing-btn-inverted.active { background: var(--color-white); color: var(--color-teal); border-color: var(--color-white); cursor: default; }
 .listing-btn-inverted.more   { border: none; }
 ```
 
@@ -413,9 +413,9 @@ Numbered page buttons used in product listing pagination. Always paired with `.b
 Hierarchical navigation trail. No border-radius token used — purely text-based.
 
 **Rules:**
-- Active (current) page: `color: #000000`, no underline
-- Parent links: `color: #015253`, underlined
-- Separator: `#A1A1A1` chevron SVG (`›`), `0.375rem × 0.625rem`
+- Active (current) page: `color: var(--color-digital-black)`, no underline
+- Parent links: `color: var(--color-teal)`, underlined
+- Separator: `var(--color-graphite-500)` chevron SVG (`›`), `0.375rem × 0.625rem`
 - Font: `0.875rem` (14px), weight 400
 
 **When to use:** every page below the homepage
@@ -444,14 +444,14 @@ Hierarchical navigation trail. No border-radius token used — purely text-based
 .breadcrumb-item a {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.875rem;
-  color: #015253;
+  color: var(--color-teal);
   text-decoration: underline;
   cursor: pointer;
 }
 .breadcrumb-item.active {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.875rem;
-  color: #000000;
+  color: var(--color-digital-black);
   text-decoration: none;
 }
 /* Chevron separator — SVG data URI */
@@ -476,10 +476,10 @@ Hierarchical navigation trail. No border-radius token used — purely text-based
 Floating-label input. Border changes state; no background change.
 
 **States:**
-- Default: border `#DADADA`, placeholder text `#A1A1A1`
-- Active (focused): border `#009951` (Green), label floats above
-- Done (has value): border `#009951`, label stays floated
-- Error: border `#D42924`, error message bottom-right on border line
+- Default: border `var(--color-graphite-300)`, placeholder text `var(--color-graphite-500)`
+- Active (focused): border `var(--color-green)` (Green), label floats above
+- Done (has value): border `var(--color-green)`, label stays floated
+- Error: border `var(--color-red)`, error message bottom-right on border line
 
 **Sizes:** `.form-control-lg` (large), `.form-control` (default), `.form-control-sm` (small)
 
@@ -509,16 +509,16 @@ Floating-label input. Border changes state; no background change.
   padding: 0.7rem 0.9375rem;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
-  color: #000;
-  background: #fff;
-  border: 0.0625rem solid #DADADA;
+  color: var(--color-digital-black);
+  background: var(--color-white);
+  border: 0.0625rem solid var(--color-graphite-300);
   border-radius: 0.25rem;
   box-sizing: border-box;
   outline: none;
   transition: border-color 0.15s;
 }
-.form-control:focus   { border-color: #015253; }
-.form-control.error   { border-color: #D42924; }
+.form-control:focus   { border-color: var(--color-teal); }
+.form-control.error   { border-color: var(--color-red); }
 .form-control-lg      { padding: 0.8rem 1rem;      font-size: 1.125rem; }
 .form-control-sm      { padding: 0.35rem 0.75rem;  font-size: 0.875rem; }
 
@@ -531,7 +531,7 @@ Floating-label input. Border changes state; no background change.
   transform: translateY(-50%);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
-  color: #A1A1A1;
+  color: var(--color-graphite-500);
   pointer-events: none;
   transition: all 0.15s ease;
   background: transparent;
@@ -547,8 +547,8 @@ Floating-label input. Border changes state; no background change.
   left: 0.6875rem;
   transform: none;
   font-size: 0.75rem;
-  color: #000;
-  background: #fff;
+  color: var(--color-digital-black);
+  background: var(--color-white);
   padding: 0 0.3125rem;
 }
 /* Error text — on the bottom border line */
@@ -556,11 +556,11 @@ Floating-label input. Border changes state; no background change.
   position: absolute;
   bottom: -0.4375rem;
   right: 0.6875rem;
-  background: #fff;
+  background: var(--color-white);
   padding: 0 0.3125rem;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.75rem;
-  color: #D42924;
+  color: var(--color-red);
   white-space: nowrap;
   line-height: 0.875rem;
 }
@@ -569,7 +569,7 @@ Floating-label input. Border changes state; no background change.
   margin-top: 0.3125rem;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 0.8125rem;
-  color: #888;
+  color: var(--color-graphite-600);
   line-height: 1.45;
 }
 ```
@@ -579,14 +579,14 @@ Floating-label input. Border changes state; no background change.
 ### Checkbox (`.checkbox`)
 
 **Variants:**
-- **Filter** (default): checked fill `#015253` (Teal 500) — for filter panels and navigation
-- **Configurator**: checked fill `#009951` (Green) — for product configurators and selection lists
+- **Filter** (default): checked fill `var(--color-teal)` (Teal 500) — for filter panels and navigation
+- **Configurator**: checked fill `var(--color-green)` (Green) — for product configurators and selection lists
 
 **Sizes:**
 - Default: `1.5625rem × 1.5625rem` (25px), `border-radius: 0.25rem`
 - Small (`.checkbox-sm`): `1.125rem × 1.125rem` (18px), `border-radius: 0.1875rem`
 
-**States:** unchecked (white, `#DADADA` border), checked (colored fill, white checkmark SVG)
+**States:** unchecked (white, `var(--color-graphite-300)` border), checked (colored fill, white checkmark SVG)
 
 **When to use:** multi-select filter panels, configurators, agreement checkboxes
 **When NOT to use:** single-select (use Radio Button)
@@ -619,7 +619,7 @@ Floating-label input. Border changes state; no background change.
   cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
-  color: #000000;
+  color: var(--color-digital-black);
   user-select: none;
 }
 .checkbox-wrapper.checkbox-sm { font-size: 0.875rem; }
@@ -628,8 +628,8 @@ Floating-label input. Border changes state; no background change.
   width: 1.5625rem;
   height: 1.5625rem;
   border-radius: 0.25rem;
-  border: 0.0625rem solid #DADADA;
-  background: #fff;
+  border: 0.0625rem solid var(--color-graphite-300);
+  background: var(--color-white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -639,21 +639,21 @@ Floating-label input. Border changes state; no background change.
 }
 .checkbox-sm .checkbox { width: 1.125rem; height: 1.125rem; border-radius: 0.1875rem; }
 
-.checkbox.checked-filter { background: #015253; border-color: #015253; }
-.checkbox.checked-config  { background: #009951; border-color: #009951; }
+.checkbox.checked-filter { background: var(--color-teal); border-color: var(--color-teal); }
+.checkbox.checked-config  { background: var(--color-green); border-color: var(--color-green); }
 ```
 
 ---
 
 ### Radio Button (`.radio`)
 
-Single-select control. Active dot colour is always `#009951` (Green), not teal.
+Single-select control. Active dot colour is always `var(--color-green)` (Green), not teal.
 
 **Sizes:**
 - Default: `1.25rem × 1.25rem` (20px)
 - Small (`.radio-sm`): `1rem × 1rem` (16px)
 
-**States:** default (white, `#DADADA` border), active (`#009951` border + green dot), error (`#D42924` border), disabled (opacity 0.45, `cursor: not-allowed`)
+**States:** default (white, `var(--color-graphite-300)` border), active (`var(--color-green)` border + green dot), error (`var(--color-red)` border), disabled (opacity 0.45, `cursor: not-allowed`)
 
 **When to use:** single-select from a list (shipping method, payment type, product variant)
 **When NOT to use:** multi-select (use Checkbox)
@@ -694,7 +694,7 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
   cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
-  color: #000000;
+  color: var(--color-digital-black);
   user-select: none;
 }
 .radio-wrapper.radio-sm  { font-size: 0.875rem; }
@@ -704,8 +704,8 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  border: 0.0625rem solid #DADADA;
-  background: #ffffff;
+  border: 0.0625rem solid var(--color-graphite-300);
+  background: var(--color-white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -720,11 +720,11 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
   width: 0.8125rem;
   height: 0.8125rem;
   border-radius: 50%;
-  background: #009951;
+  background: var(--color-green);
 }
 .radio-sm .radio.active::after { width: 0.625rem; height: 0.625rem; }
-.radio.active { border-color: #009951; }
-.radio.error  { border-color: #D42924; }
+.radio.active { border-color: var(--color-green); }
+.radio.error  { border-color: var(--color-red); }
 ```
 
 ---
@@ -735,7 +735,7 @@ Single-select control. Active dot colour is always `#009951` (Green), not teal.
 
 **Color rule:** Never hardcode hex values. Always reference the token name (e.g., "Teal 500", "Red 500") in comments and use the corresponding hex only as its value.
 
-**Red on CTAs:** Red (`#D42924`, `#D42924`) is strictly forbidden on any clickable button. Red is for sale prices, error states, and the logo M-square only. It triggers purchase anxiety and must never appear on call-to-action elements.
+**Red on CTAs:** Red (`var(--color-red)`, `#D42924`) is strictly forbidden on any clickable button. Red is for sale prices, error states, and the logo M-square only. It triggers purchase anxiety and must never appear on call-to-action elements.
 
 **Dark buttons on dark backgrounds only:** `.btn-dark` and `.btn-dark-outline` are only valid on dark hero sections, full-bleed images, or teal backgrounds. On white/light surfaces they break visual hierarchy.
 

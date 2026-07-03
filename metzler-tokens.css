@@ -107,8 +107,8 @@
   --color-teal:      #015253;   /* DEFAULT — CTAs, nav, focus rings, links */
   --color-teal-500:  #015253;   /* Alias for --color-teal */
   --color-teal-600:  #014A4B;   /* Hover / pressed state */
-  --color-teal-700:  #013E3E;   /* High-contrast text on teal surfaces */
-  --color-teal-900:  #001D1D;   /* Footer background, max-contrast */
+  --color-teal-700:  #01292A;   /* Footer background, pressed/active states, high-contrast text on teal surfaces */
+  --color-teal-900:  #001D1D;   /* Darkest sections & CTA bands, max-contrast */
 
 
   /* ─────────────────────────────────────────
