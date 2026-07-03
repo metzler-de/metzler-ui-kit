@@ -11946,10 +11946,19 @@ cursor: pointer;
                       Download the kit files and add them to your Claude chat
                     </div>
                     <div style={{fontSize:T.fSm,color:T.g700,fontFamily:font,lineHeight:1.6}}>
-                      Click <strong>Download Kit</strong> (top right) and grab all 4 files — or just{' '}
-                      <strong>FOR-CLAUDE.md</strong> and <strong>SECTIONS.md</strong> for most page work. Attach or
-                      paste them into your Claude chat before asking for anything.
+                      Click <strong>Download Kit</strong> (top right). For most page or presentation work you only
+                      need <strong>FOR-CLAUDE.md</strong> and <strong>SECTIONS.md</strong> — attach or paste those
+                      into your Claude chat before asking for anything. The other two are optional extras:
                     </div>
+                    <ul style={{margin:'0.5rem 0 0',paddingLeft:'1.125rem',fontSize:T.fSm,color:T.g700,
+                      fontFamily:font,lineHeight:1.6,display:'flex',flexDirection:'column',gap:'0.25rem'}}>
+                      <li><strong>metzler-design-system.md</strong> — add it if Claude needs more detail on a
+                        specific component's exact states/variants than FOR-CLAUDE.md's condensed version gives.</li>
+                      <li><strong>metzler-tokens.css</strong> — not for reading, for shipping: give it to Claude when
+                        you want the finished page to <code style={{fontFamily:'monospace',background:T.paper,
+                        padding:'0.0625rem 0.3125rem',borderRadius:'0.1875rem'}}>&lt;link&gt;</code> the real
+                        stylesheet instead of an inlined token block.</li>
+                    </ul>
                   </div>
                 </div>
 
