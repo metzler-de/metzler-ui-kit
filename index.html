@@ -11953,7 +11953,7 @@ cursor: pointer;
                   </div>
                 </div>
 
-                {/* Step 2 — Link the live page */}
+                {/* Step 2 — No download? Give Claude the raw links */}
                 <div style={{display:'flex',gap:'0.875rem'}}>
                   <div style={{flexShrink:0,width:'1.5rem',height:'1.5rem',borderRadius:'50%',
                     background:'rgba(204,120,92,0.12)',border:'0.0625rem solid rgba(204,120,92,0.3)',
@@ -11961,17 +11961,27 @@ cursor: pointer;
                     display:'flex',alignItems:'center',justifyContent:'center'}}>2</div>
                   <div style={{flex:1}}>
                     <div style={{fontSize:T.fSm,fontWeight:700,color:T.dBlack,fontFamily:font,marginBottom:'0.25rem'}}>
-                      Give Claude the live design system link
+                      No download needed? Give Claude the raw file links instead
                     </div>
                     <div style={{fontSize:T.fSm,color:T.g700,fontFamily:font,lineHeight:1.6}}>
-                      Paste this URL into the same chat so Claude can check the rendered components directly —
-                      it also carries a hidden token block that stays in sync automatically:
+                      If Claude in your session can fetch URLs, paste these links and ask it to read them —
+                      no attachment required:
                     </div>
-                    <div style={{marginTop:'0.5rem',display:'flex',alignItems:'center',gap:'0.5rem',
-                      background:T.paper,border:`0.0625rem solid ${T.g200}`,borderRadius:T.r,
-                      padding:'0.5rem 0.75rem',fontFamily:'monospace',fontSize:T.f13,color:T.teal700,
-                      fontWeight:600,width:'fit-content'}}>
-                      https://metzler-de.github.io/metzler-ui-kit/index.html
+                    <div style={{marginTop:'0.5rem',display:'flex',flexDirection:'column',gap:'0.375rem'}}>
+                      {['FOR-CLAUDE.md','SECTIONS.md'].map(f => (
+                        <div key={f} style={{display:'flex',alignItems:'center',gap:'0.5rem',
+                          background:T.paper,border:`0.0625rem solid ${T.g200}`,borderRadius:T.r,
+                          padding:'0.5rem 0.75rem',fontFamily:'monospace',fontSize:T.f13,color:T.teal700,
+                          fontWeight:600,width:'fit-content'}}>
+                          {`https://raw.githubusercontent.com/metzler-de/metzler-ui-kit/main/${f}`}
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{fontSize:T.fXs,color:T.g600,fontFamily:font,lineHeight:1.5,marginTop:'0.5rem'}}>
+                      Note: this <strong>design system page itself</strong> is a JavaScript app — most "fetch a
+                      webpage" tools convert it to plain text without running the script, so pasting just the page
+                      URL alone often gives Claude nothing useful. The file links above always work. Use the page
+                      URL only as a visual reference (open it yourself, or point a browser-capable Claude tool at it).
                     </div>
                   </div>
                 </div>
@@ -11991,7 +12001,7 @@ cursor: pointer;
                       Either way, keep the last sentence — it's what keeps Claude inside the closed system.
                     </div>
                     {(() => {
-                      const promptText = 'Using the attached FOR-CLAUDE.md / SECTIONS.md files and the design system at metzler-de.github.io/metzler-ui-kit/index.html, build me a [page type / presentation] with [description]. Use ONLY the existing tokens, type scale, sections, and components from this design system — never invent new colours, sizes, spacing, or styles. If something I asked for isn’t covered, ask before inventing it.';
+                      const promptText = 'Using the attached FOR-CLAUDE.md and SECTIONS.md files (or fetch them from https://raw.githubusercontent.com/metzler-de/metzler-ui-kit/main/FOR-CLAUDE.md and .../SECTIONS.md if not attached), build me a [page type / presentation] with [description]. Use ONLY the existing tokens, type scale, sections, and components from this design system — never invent new colours, sizes, spacing, or styles. If something I asked for isn’t covered, ask before inventing it.';
                       const [copied, setCopied] = React.useState(false);
                       const doCopy = () => {
                         navigator.clipboard.writeText(promptText).then(() => {
@@ -13932,7 +13942,7 @@ cursor: pointer;
         'WRONG section padding: padding: 32px 0 48px  →  CORRECT: use .section (4rem 0) or .section--sm (2.5rem 0)',
         'WRONG sticky at load: <div class="hdr-compact visible">  →  CORRECT: no "visible" class in HTML; JS adds it on scroll',
         '',
-        'Forbidden font sizes (never use): 10px, 15px, 17px, 22px, 28px, 32px, 36px',
+        'Forbidden font sizes (never use): 10px, 15px, 17px, 19px, 22px, 28px, 32px, 36px',
         'Allowed sizes only: 11px(overline), 12px(caption), 13px(label), 14px(body-sm), 16px(p), 18px(h4), 20px(h3), 24px(h2), 30px(h1), 46px(display-4), 48px(display-3), 56px(display-2 max), 80px(display-1 max)',
         '',
         'Text color map:',
