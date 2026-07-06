@@ -170,9 +170,10 @@ p, .body {
 
 /* ── LABELS / OVERLINES ── */
 .overline {
-  font-size: 0.6875rem;       /* 11px */
+  font-size: 0.75rem;         /* 12px */
   font-weight: 700;
-  letter-spacing: 0.1em;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-graphite-600);        /* ALWAYS --color-graphite-600 on white/paper; ALWAYS --color-mint on dark/teal-900 */
   font-family: var(--font-family);
@@ -1153,7 +1154,7 @@ p { color: var(--color-graphite-800); }     /* primary body text */
 | Class | Size | Use |
 |-------|------|-----|
 | `.caption` | 0.75rem (12px) | metadata, timestamps |
-| `.overline` | 0.6875rem (11px) | section kickers |
+| `.overline` | 0.75rem (12px) · ls 0.15em | section kickers |
 | `.label` / `.body-sm` | 0.8125–0.875rem (13–14px) | labels, captions |
 | `p` / `.body` | 1rem (16px) | body text |
 | `h4` | 1.125rem (18px) | small headings |

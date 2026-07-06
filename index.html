@@ -314,6 +314,7 @@
 
       { type:"group", label:"Product" },
       { type:"item",  label:"Product Cards",     id:"product-cards" },
+      { type:"item",  label:"Configurator",      id:"configurator" },
 
       { type:"group", label:"Layout" },
       { type:"item",  label:"Header",            id:"header" },
@@ -1407,6 +1408,12 @@
                 </div>
               );
             })()}
+          </ShowRow>
+          <CLbl>Feature Pills</CLbl>
+          <ShowRow label="Text-only feature tags (Graphite 100) — system type & features, as used on product cards">
+            {['IP-System','RFID','Gesichtserkennung','BUS-System','PIN-Code'].map(p=>(
+              <span key={p} style={{display:'inline-flex',alignItems:'center',padding:'0.3rem 0.8rem',borderRadius:'999px',background:T.g100,boxShadow:'inset 0 0 0 1px rgba(0,0,0,0.08)',color:T.dBlack,fontSize:'0.75rem',fontWeight:500,letterSpacing:'0.02em',fontFamily:font,lineHeight:1,whiteSpace:'nowrap'}}>{p}</span>
+            ))}
           </ShowRow>
         </div>
       );
@@ -8991,17 +8998,17 @@ cursor: pointer;
         </div>
       );
 
-      const Alert = ({v, dismissible=false, onDismiss, children}) => (
+      const Alert = ({v, dismissible=false, onDismiss, noIcon=false, children}) => (
         <div role="alert" style={{
           display:'flex', alignItems:'center', gap:'0.75rem',
           background: v.bg,
           border: `0.0625rem solid ${v.border}80`,
           borderRadius: '0.25rem',
-          padding: '0.875rem 1rem',
+          padding: noIcon ? '0.5rem 0.875rem' : '0.875rem 1rem',
           fontFamily: font,
           position: 'relative',
         }}>
-          <span style={{flexShrink:0, display:'flex'}}>{v.icon}</span>
+          {!noIcon && <span style={{flexShrink:0, display:'flex'}}>{v.icon}</span>}
           <div style={{flex:1, fontSize:'0.9375rem', color: v.color, lineHeight:1.6}}>
             {children || v.text}
           </div>
@@ -9043,6 +9050,25 @@ cursor: pointer;
   A new version of the product catalog is available. Prices have been updated.
 </div>`}>
             {variants.map(v => <Alert key={v.key} v={v}/>)}
+          </BsCard>
+
+          {/* Without icon */}
+          <BH>Without icon</BH>
+          <BD>The same four semantic variants, text-only — no contextual icon. Use when space is tight or the colour and copy already carry the meaning. Add <Chip>.alert-no-icon</Chip> to drop the icon.</BD>
+          <BsCard code={
+`<div class="alert alert-success alert-no-icon" role="alert">
+  Your changes have been saved successfully.
+</div>
+<div class="alert alert-danger alert-no-icon" role="alert">
+  Something went wrong. Please review the errors below and try again.
+</div>
+<div class="alert alert-warning alert-no-icon" role="alert">
+  Your session will expire in 5 minutes. Save your work to avoid losing changes.
+</div>
+<div class="alert alert-info alert-no-icon" role="alert">
+  A new version of the product catalog is available. Prices have been updated.
+</div>`}>
+            {variants.map(v => <Alert key={v.key} v={v} noIcon/>)}
           </BsCard>
 
           {/* With link */}
@@ -9334,11 +9360,42 @@ cursor: pointer;
     const imgProductPhotoHov  = "Pictures/Briefkasten mit VDM10/Briefkasten mit VDM10_2.png";
 
     // ── The card component — interactive ──
+    // Scrollable feature-pill row — exact port of PLP .pcard__tags + .pcard__sys/.pcard__feat.
+    // Single line; scrolls horizontally on overflow (card height never grows). One edge fade
+    // at a time: right while more pills sit ahead, left once you reach the end.
+    const PillRow = ({items}) => {
+      const ref = useRef(null);
+      const [m, setM] = useState({scroll:false, atStart:true, atEnd:true});
+      const update = () => {
+        const el = ref.current; if(!el) return;
+        const scroll = el.scrollWidth > el.clientWidth + 1;
+        const atStart = el.scrollLeft <= 1;
+        const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+        setM({scroll, atStart, atEnd});
+      };
+      useEffect(()=>{ update(); window.addEventListener('resize',update); return ()=>window.removeEventListener('resize',update); }, [items]);
+      let mask = 'none';
+      if (m.scroll && !m.atEnd) mask = 'linear-gradient(90deg,#000 0,#000 calc(100% - 26px),transparent 100%)';
+      else if (m.scroll && m.atEnd && !m.atStart) mask = 'linear-gradient(90deg,transparent 0,#000 26px,#000 100%)';
+      return (
+        <React.Fragment>
+          <style>{`.mz-pillrow::-webkit-scrollbar{display:none}`}</style>
+          <div ref={ref} onScroll={update} className="mz-pillrow"
+            style={{display:'flex',alignItems:'center',flexWrap:'nowrap',gap:'0.5rem',overflowX:'auto',scrollbarWidth:'none',WebkitMaskImage:mask,maskImage:mask}}>
+            {items.map((t,i)=>(
+              <span key={i} style={{flex:'0 0 auto',alignSelf:'center',padding:'0.3rem 0.8rem',borderRadius:'999px',background:T.g100,boxShadow:'inset 0 0 0 1px rgba(0,0,0,0.08)',color:T.dBlack,fontSize:T.fXs,fontWeight:500,letterSpacing:'0.02em',whiteSpace:'nowrap'}}>{t}</span>
+            ))}
+          </div>
+        </React.Fragment>
+      );
+    };
+
     const ProductCard = ({badge='IP-System', brand='Metzler', rating=5, reviewCount=300,
         title='Video-Türsprechanlage mit Paketbox | Anthrazit RAL 7016 | personalisiert mit Gravur | Edelstahl-Namensschild',
         priceFrom=true, price='49,99 €', originalPrice='1.289,99 €', discount='-10%',
         colors=['#505f70','rgba(0,0,0,0.75)','#b02828'],
         extraColors=['#C0A882','#2C3E50','#8B7355','#D4C5A9','#4A5568'],
+        pills=null,
       }) => {
         const [hov, setHov] = useState(false);
         const [showMore, setShowMore] = useState(false);
@@ -9364,14 +9421,17 @@ cursor: pointer;
                   style={{position:'absolute',height:'100%',width:'100%',left:0,top:0,objectFit:'contain',
                     opacity:hov?1:0,transition:'opacity 0.3s ease'}}/>
               </div>
-              {/* Badges — stacked top-left */}
-              <div style={{position:'absolute',top:'0.3125rem',left:'0.3125rem',display:'flex',flexDirection:'column',gap:'0.25rem',alignItems:'flex-start'}}>
-                <span style={{background:T.teal,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>{badge}</span>
+              {/* Badges — stacked top-left. With pills: hide the (redundant) system badge and align the sale badge flush-left with the content. */}
+              <div style={{position:'absolute',top:'0.3125rem',left: pills ? '0' : '0.3125rem',display:'flex',flexDirection:'column',gap:'0.25rem',alignItems:'flex-start'}}>
+                {!pills && <span style={{background:T.teal,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>{badge}</span>}
                 {discount && (
                   <span style={{background:T.red,borderRadius:T.rSm,padding:'0.25rem 0.5rem',display:'inline-flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.white,whiteSpace:'nowrap'}}>−15%</span>
                 )}
               </div>
             </div>
+
+            {/* ── Feature pills — scrollable row (exact PLP style) ── */}
+            {pills && <PillRow items={pills}/>}
 
             {/* ── Card content ── */}
             <div style={{display:'flex',flexDirection:'column',gap:15,width:'100%'}}>
@@ -9552,6 +9612,46 @@ cursor: pointer;
               <ProductCard/>
             </div>
           </Preview>
+
+          <SL>Variante — Feature-Pills (Graphite 100) · einzeilig scrollend mit Rand-Fade</SL>
+          <BD>
+            Neutrale Text-Pills (<Chip>.pcard__sys</Chip> / <Chip>.pcard__feat</Chip>): Graphite-100-Fill,
+            Inset-Hairline, Pill-Radius, 12px / 500. Die Reihe scrollt horizontal wenn die Pills überlaufen —
+            die Kartenhöhe bleibt konstant, ein Rand-Fade signalisiert „mehr Pills". 1:1-Port aus der PLP.
+          </BD>
+          <Preview>
+            <div style={{display:'flex',gap:24,flexWrap:'wrap',alignItems:'flex-start'}}>
+              <ProductCard pills={['IP-System','RFID','Gesichtserkennung','BUS-System','PIN-Code']}/>
+              <ProductCard pills={['BUS-System','IP-System']}/>
+            </div>
+          </Preview>
+          <CodeBlock inline lang="CSS" code={`.pcard__tags {
+  display: flex; align-items: center; flex-wrap: nowrap;
+  gap: 0.5rem; overflow-x: auto; scrollbar-width: none;
+}
+.pcard__tags::-webkit-scrollbar { display: none; }
+
+/* Rand-Fade: genau EINE Seite gleichzeitig */
+.pcard__tags.is-scroll {          /* mehr Pills rechts → rechts faden */
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
+}
+.pcard__tags.is-scroll.at-end {   /* am Ende → links faden */
+  mask-image: linear-gradient(90deg, transparent 0, #000 26px, #000 100%);
+}
+
+/* System-/Feature-Pill — Text-only */
+.pcard__sys, .pcard__feat {
+  flex: 0 0 auto; align-self: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--color-graphite-100);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  color: var(--color-digital-black);
+  font-size: 0.75rem;      /* 12px */
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}`}/>
           <CodeBlock inline lang="HTML" code={`<div class="product-card">
   <div class="product-card__image">
     <img src="product.jpg" alt="Product name" />
@@ -9726,6 +9826,77 @@ cursor: pointer;
         </div>
       );
     };
+
+    // ── CONFIGURATOR ──────────────────────────────────────────────────────────
+    // Selectable option tile. Reuses Checkbox (Configurator/green) + Counter.
+    const cfgImg = "Pictures/innenstation/metzler-intercom-innenstation-ultra-10-zoll-touchscreen-lan-poe-schwarz.webp";
+    const ConfiguratorCard = ({defaultActive=false, title, price='+279,00 €'}) => {
+      const [sel, setSel] = useState(defaultActive);
+      return (
+        <div
+          onClick={()=>setSel(s=>!s)}
+          style={{
+            width:200, boxSizing:'border-box', cursor:'pointer', background:T.white,
+            borderRadius:T.rLg,
+            border: sel ? `2px solid ${T.green}` : `1px solid ${T.g200}`,
+            padding: sel ? 15 : 16,
+            display:'flex', flexDirection:'column', gap:12,
+            transition:'border-color 0.15s, box-shadow 0.15s',
+          }}>
+          {/* Selection checkbox — green Configurator variant */}
+          <Checkbox variant="Configurator" state={sel?'Checked':'Default'} size={25}/>
+          {/* Image */}
+          <div style={{width:'100%',aspectRatio:'1/1',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <img src={cfgImg} alt={title} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/>
+          </div>
+          {/* Title */}
+          <div style={{fontFamily:font,fontSize:T.fSm,color:T.g900,lineHeight:1.45}}>{title}</div>
+          {/* Price */}
+          <div style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black}}>{price}</div>
+          {/* Control — Counter when selected, empty "0" field when not */}
+          <div onClick={e=>e.stopPropagation()} style={{width:'100%'}}>
+            {sel
+              ? <Counter track={44} btn={44} fs={'1rem'} gap={'0.75rem'} minW={'100%'}/>
+              : <div style={{height:44,border:`1px solid ${T.g300}`,borderRadius:'0.25rem',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:'1rem',color:T.g400}}>0</div>
+            }
+          </div>
+        </div>
+      );
+    };
+
+    const ConfiguratorSection = () => (
+      <div>
+        <Preview>
+          <div style={{display:'flex',gap:32,flexWrap:'wrap',alignItems:'flex-start'}}>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
+              <ConfiguratorCard defaultActive title={'Metzler Innenstation mit 7″ Touchdisplay | Weiß'}/>
+              <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Aktiv (ausgewählt)</span>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
+              <ConfiguratorCard title={'Metzler Innenstation mit 7″ Touchdisplay | Schwarz'}/>
+              <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Default</span>
+            </div>
+          </div>
+        </Preview>
+        <CodeBlock inline lang="HTML" code={`<!-- Aktiv: grüne Checkbox + grüner Rahmen + Mengenzähler -->
+<div class="config-card config-card--active">
+  <span class="checkbox checkbox--configurator checkbox--checked"></span>
+  <img src="innenstation.webp" alt="…">
+  <div class="config-card__title">Metzler Innenstation mit 7″ Touchdisplay | Weiß</div>
+  <div class="config-card__price">+279,00 €</div>
+  <div class="qty-counter">…</div>
+</div>
+
+<!-- Default: leere Checkbox + grauer Rahmen + „0"-Feld -->
+<div class="config-card">
+  <span class="checkbox checkbox--configurator"></span>
+  <img src="innenstation.webp" alt="…">
+  <div class="config-card__title">Metzler Innenstation mit 7″ Touchdisplay | Schwarz</div>
+  <div class="config-card__price">+279,00 €</div>
+  <div class="config-card__zero">0</div>
+</div>`}/>
+      </div>
+    );
 
     // ── HEADER SECTION ──
     // ── BREADCRUMBS ──────────────────────────────────────────────────────────
@@ -12662,10 +12833,10 @@ cursor: pointer;
                 {
                   label: 'Headings — page & section structure',
                   rows: [
-                    {name:'H1',  rem:'1.875rem', px:'30px', weight:700, lh:'1.25', token:'--text-h1', jsToken:'T.fH1', preview:'Aa — Helvetica Neue', use:'Page title'},
-                    {name:'H2',  rem:'1.5rem',   px:'24px', weight:700, lh:'1.3',  token:'--text-h2', jsToken:'T.fH2', preview:'Aa — Helvetica Neue', use:'Section heading'},
-                    {name:'H3',  rem:'1.25rem',  px:'20px', weight:700, lh:'1.35', token:'--text-h3', jsToken:'T.fH3', preview:'Aa — Helvetica Neue', use:'Card & drawer titles'},
-                    {name:'H4',  rem:'1.125rem', px:'18px', weight:700, lh:'1.375',token:'--text-h4', jsToken:'T.fH4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
+                    {name:'H1',  rem:'1.875rem', px:'30px', remT:'1.625rem', pxT:'26px', remM:'1.5rem',  pxM:'24px', weight:700, lh:'1.25', token:'--text-h1', cls:'.h1', jsToken:'T.fH1', preview:'Aa — Helvetica Neue', use:'Page title'},
+                    {name:'H2',  rem:'1.5rem',   px:'24px', remT:'1.375rem', pxT:'22px', remM:'1.25rem', pxM:'20px', weight:700, lh:'1.3',  token:'--text-h2', cls:'.h2', jsToken:'T.fH2', preview:'Aa — Helvetica Neue', use:'Section heading'},
+                    {name:'H3',  rem:'1.25rem',  px:'20px', remT:'1.1875rem',pxT:'19px', remM:'1.125rem',pxM:'18px', weight:700, lh:'1.35', token:'--text-h3', cls:'.h3', jsToken:'T.fH3', preview:'Aa — Helvetica Neue', use:'Card & drawer titles'},
+                    {name:'H4',  rem:'1.125rem', px:'18px', remT:'1.0625rem',pxT:'17px', remM:'1rem',    pxM:'16px', weight:700, lh:'1.375',token:'--text-h4', cls:'.h4', jsToken:'T.fH4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
                   ]
                 },
                 {
@@ -12705,11 +12876,17 @@ cursor: pointer;
                           <div style={{minWidth:210,flexShrink:0}}>
                             <div style={{fontSize:T.f13,fontWeight:600,color:T.black,fontFamily:font,marginBottom:3}}>{row.name}</div>
                             <div style={{fontSize:T.fXxs,color:T.g500,fontFamily:'monospace',lineHeight:1.7}}>
-                              <div>{row.rem}</div>
+                              {row.remT ? (
+                                <React.Fragment>
+                                  <div>{'Desktop  ' + row.rem + ' · ' + row.px}</div>
+                                  <div>{'Tablet   ' + row.remT + ' · ' + row.pxT}</div>
+                                  <div>{'Mobile   ' + row.remM + ' · ' + row.pxM}</div>
+                                </React.Fragment>
+                              ) : (<div>{row.rem}</div>)}
                               <div>{'weight ' + row.weight + ' / lh ' + row.lh}{row.ls ? ' / ls ' + row.ls : ''}</div>
                             </div>
                             <div style={{display:'flex',gap:4,marginTop:3,flexWrap:'wrap'}}>
-                              <code style={{fontSize:'0.6rem',fontFamily:'monospace',color:T.g600,background:T.g100,padding:'1px 5px',borderRadius:T.rSm,lineHeight:1.6}}>{row.token}</code>
+                              <code style={{fontSize:'0.6rem',fontFamily:'monospace',color:T.g600,background:T.g100,padding:'1px 5px',borderRadius:T.rSm,lineHeight:1.6}}>{row.cls || row.token}</code>
                               {row.jsToken && <code style={{fontSize:'0.6rem',fontFamily:'monospace',fontWeight:700,color:T.teal,background:'rgba(1,82,83,0.08)',padding:'1px 5px',borderRadius:T.rSm,lineHeight:1.6}}>{row.jsToken}</code>}
                             </div>
                           </div>
@@ -12763,11 +12940,11 @@ cursor: pointer;
                         <Var name="--display-3"           val="3rem"    px="48px · lh 1.0 · ls -0.03em"   w="700"/>
                         <Var name="--display-4"           val="2.875rem"                 px="46px · lh 1.15"                   w="700"/>
 
-                        <Group label="Headings"/>
-                        <Var name="--text-h1"             val="1.875rem" px="30px" w="700"/>
-                        <Var name="--text-h2"             val="1.5rem"   px="24px" w="700"/>
-                        <Var name="--text-h3"             val="1.25rem"  px="20px" w="700"/>
-                        <Var name="--text-h4"             val="1.125rem" px="18px" w="700"/>
+                        <Group label="Headings — .h1–.h4 · 3 sizes: Desktop / Tablet ≤991 / Mobile ≤767"/>
+                        <Var name="--text-h1"             val="1.875rem" px="30px → 26px → 24px" w="700"/>
+                        <Var name="--text-h2"             val="1.5rem"   px="24px → 22px → 20px" w="700"/>
+                        <Var name="--text-h3"             val="1.25rem"  px="20px → 19px → 18px" w="700"/>
+                        <Var name="--text-h4"             val="1.125rem" px="18px → 17px → 16px" w="700"/>
 
                         <Group label="Body 16px"/>
                         <Var name="--text-body-lg"        val="1.125rem" px="18px" w="400"/>
@@ -13250,6 +13427,11 @@ cursor: pointer;
             <SH1 id="product-cards">Product Cards</SH1>
             <Lead>Catalog page card — 340px wide, Default and Hover states. Includes product image with badge, brand, star rating, 3-line title, sale price with discount tag, and colour swatches. </Lead>
             <ProductCardsSection />
+
+            {/* CONFIGURATOR */}
+            <SH1 id="configurator">Configurator</SH1>
+            <Lead>Auswahl-Kachel für den Produkt-Konfigurator. Zwei Zustände: <strong>Default</strong> (leere Checkbox, grauer Rahmen, „0"-Feld) und <strong>Aktiv</strong> (grüne Checkbox mit Haken, grüner Rahmen, Mengenzähler mit Wert). Wiederverwendete Elemente: Checkbox (Configurator/Grün) und Quantity Counter. Klick auf die Kachel wechselt den Zustand.</Lead>
+            <ConfiguratorSection />
 
 
             {/* HEADER */}
@@ -13745,15 +13927,28 @@ cursor: pointer;
       ].join('\n');
 
       const typoLines = [
-        'h1 { font-size:' + T.fH1  + '; font-weight:700; line-height:1.25;  letter-spacing:-0.02em;  color:var(--color-digital-black); font-family:var(--font-family); }',
-        'h2 { font-size:' + T.fH2  + '; font-weight:700; line-height:1.3;   letter-spacing:-0.015em; color:var(--color-digital-black); font-family:var(--font-family); }',
-        'h3 { font-size:' + T.fH3  + '; font-weight:700; line-height:1.35;  letter-spacing:-0.01em;  color:var(--color-digital-black); font-family:var(--font-family); }',
-        'h4 { font-size:' + T.fH4  + '; font-weight:700; line-height:1.375; letter-spacing:-0.005em; color:var(--color-digital-black); font-family:var(--font-family); }',
+        'h1, .h1 { font-size:' + T.fH1  + '; font-weight:700; line-height:1.25;  letter-spacing:-0.02em;  color:var(--color-digital-black); font-family:var(--font-family); }',
+        'h2, .h2 { font-size:' + T.fH2  + '; font-weight:700; line-height:1.3;   letter-spacing:-0.015em; color:var(--color-digital-black); font-family:var(--font-family); }',
+        'h3, .h3 { font-size:' + T.fH3  + '; font-weight:700; line-height:1.35;  letter-spacing:-0.01em;  color:var(--color-digital-black); font-family:var(--font-family); }',
+        'h4, .h4 { font-size:' + T.fH4  + '; font-weight:700; line-height:1.375; letter-spacing:-0.005em; color:var(--color-digital-black); font-family:var(--font-family); }',
+        '/* Responsive heading sizes — 3 conditions: Desktop ≥992px · Tablet 768–991px · Mobile ≤767px */',
+        '@media (max-width: 991px) { /* Tablet */',
+        '  h1, .h1 { font-size: 1.625rem; }   /* 26px */',
+        '  h2, .h2 { font-size: 1.375rem; }   /* 22px */',
+        '  h3, .h3 { font-size: 1.1875rem; }  /* 19px */',
+        '  h4, .h4 { font-size: 1.0625rem; }  /* 17px */',
+        '}',
+        '@media (max-width: 767px) { /* Mobile */',
+        '  h1, .h1 { font-size: 1.5rem; }     /* 24px */',
+        '  h2, .h2 { font-size: 1.25rem; }    /* 20px */',
+        '  h3, .h3 { font-size: 1.125rem; }   /* 18px */',
+        '  h4, .h4 { font-size: 1rem; }       /* 16px */',
+        '}',
         'p  { font-size:' + T.fBody + '; font-weight:400; line-height:1.55;  color:var(--color-graphite-800);  font-family:var(--font-family); }',
         '.body-lg { font-size:' + T.fLg + '; font-weight:400; line-height:1.5; color:var(--color-graphite-800); font-family:var(--font-family); }  /* 18px lead text; --medium=500, --bold=700/lh1.375 */',
         '.body-sm  { font-size:' + T.fSm  + '; line-height:1.5;  color:var(--color-graphite-700); font-family:var(--font-family); }',
         '.caption  { font-size:' + T.fXs  + '; line-height:1.4;  color:var(--color-graphite-600); font-family:var(--font-family); }',
-        '.overline { font-size:' + T.fXxs + '; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-graphite-600); font-family:var(--font-family); }',
+        '.overline { font-size:' + T.fXs + '; font-weight:700; line-height:1.4; letter-spacing:0.15em; text-transform:uppercase; color:var(--color-graphite-600); font-family:var(--font-family); }',
         '.label    { font-size:' + T.f13  + '; font-weight:600; color:var(--color-graphite-800); font-family:var(--font-family); }',
         '.display-1 { font-size:clamp(3rem,9vw,' + T.fD1 + '); font-weight:700; line-height:0.85; letter-spacing:-0.04em; }',
         '.display-2 { font-size:clamp(3rem,7vw,' + T.fD2 + '); font-weight:700; line-height:0.92; letter-spacing:-0.04em; }',

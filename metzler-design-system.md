@@ -130,12 +130,14 @@ Never hardcode hex. Reference tokens by their **CSS variable name** — the cano
 
 ### Headings — page & section structure
 
-| Name | rem | px | Weight | Line Height | Token | Used For |
-|---|---|---|---|---|---|---|
-| H1 | `1.875rem` | 30px | 700 | 1.25 | `--text-h1` | Page title |
-| H2 | `1.5rem` | 24px | 700 | 1.3 | `--text-h2` | Section heading |
-| H3 | `1.25rem` | 20px | 700 | 1.35 | `--text-h3` | Card & drawer titles |
-| H4 | `1.125rem` | 18px | 700 | 1.375 | `--text-h4` | List items, panels |
+Use the utility classes `.h1`–`.h4` (or the element tags `h1`–`h4`). Each has **3 responsive size conditions**: Desktop ≥992px · Tablet 768–991px · Mobile ≤767px. The heading size vars are overridden per breakpoint in `metzler-tokens.css`, so classes and elements scale automatically.
+
+| Class | Desktop | Tablet | Mobile | Weight | LH | Token | Used For |
+|---|---|---|---|---|---|---|---|
+| `.h1` | `1.875rem` / 30px | `1.625rem` / 26px | `1.5rem` / 24px | 700 | 1.25 | `--text-h1` | Page title |
+| `.h2` | `1.5rem` / 24px | `1.375rem` / 22px | `1.25rem` / 20px | 700 | 1.3 | `--text-h2` | Section heading |
+| `.h3` | `1.25rem` / 20px | `1.1875rem` / 19px | `1.125rem` / 18px | 700 | 1.35 | `--text-h3` | Card & drawer titles |
+| `.h4` | `1.125rem` / 18px | `1.0625rem` / 17px | `1rem` / 16px | 700 | 1.375 | `--text-h4` | List items, panels |
 
 ### Body — reading & content
 
