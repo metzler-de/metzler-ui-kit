@@ -9002,8 +9002,8 @@ cursor: pointer;
         <div role="alert" style={{
           display:'flex', alignItems:'center', gap:'0.75rem',
           background: v.bg,
-          border: `0.0625rem solid ${v.border}80`,
-          borderRadius: '0.25rem',
+          boxShadow: `inset 0.2rem 0 0 0 ${v.border}`,
+          borderRadius: '0.5rem',
           padding: noIcon ? '0.5rem 0.875rem' : '0.875rem 1rem',
           fontFamily: font,
           position: 'relative',
@@ -9105,9 +9105,8 @@ cursor: pointer;
 </div>`}>
             <div role="alert" style={{
               background: variants[0].bg,
-              border: `0.0625rem solid ${variants[0].border}`,
-              borderLeft: `0.25rem solid ${variants[0].border}`,
-              borderRadius: '0.25rem',
+              boxShadow: `inset 0.2rem 0 0 0 ${variants[0].border}`,
+              borderRadius: '0.5rem',
               padding: '1rem 1.25rem',
               fontFamily: font,
             }}>
@@ -9830,21 +9829,35 @@ cursor: pointer;
     // ── CONFIGURATOR ──────────────────────────────────────────────────────────
     // Selectable option tile. Reuses Checkbox (Configurator/green) + Counter.
     const cfgImg = "Pictures/innenstation/metzler-intercom-innenstation-ultra-10-zoll-touchscreen-lan-poe-schwarz.webp";
-    const ConfiguratorCard = ({defaultActive=false, title, price='+279,00 €'}) => {
+    const ConfiguratorCard = ({defaultActive=false, title, price='+279,00 €', control='checkbox', info=false}) => {
       const [sel, setSel] = useState(defaultActive);
+      // Selection colour follows the control: checkbox = green (Configurator), radio = teal.
+      const activeColor = control==='radio' ? T.teal : T.green;
       return (
         <div
           onClick={()=>setSel(s=>!s)}
           style={{
             width:200, boxSizing:'border-box', cursor:'pointer', background:T.white,
-            borderRadius:T.rLg,
-            border: sel ? `2px solid ${T.green}` : `1px solid ${T.g200}`,
+            borderRadius:T.rLg, position:'relative',
+            border: sel ? `2px solid ${activeColor}` : `1px solid ${T.g200}`,
             padding: sel ? 15 : 16,
             display:'flex', flexDirection:'column', gap:12,
             transition:'border-color 0.15s, box-shadow 0.15s',
           }}>
-          {/* Selection checkbox — green Configurator variant */}
-          <Checkbox variant="Configurator" state={sel?'Checked':'Default'} size={25}/>
+          {/* Info icon — top-right corner */}
+          {info && (
+            <button onClick={e=>e.stopPropagation()} aria-label="Mehr Informationen" title="Mehr Informationen"
+              style={{position:'absolute',top: sel?14:15,right: sel?14:15,background:'none',border:'none',padding:0,cursor:'pointer',color:T.g500,display:'flex',lineHeight:0}}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+            </button>
+          )}
+          {/* Selection control — Checkbox (green Configurator) or Radio (teal) */}
+          {control==='radio'
+            ? <RadioBtn state={sel?'Active':'Default'}/>
+            : <Checkbox variant="Configurator" state={sel?'Checked':'Default'} size={25}/>
+          }
           {/* Image */}
           <div style={{width:'100%',aspectRatio:'1/1',display:'flex',alignItems:'center',justifyContent:'center'}}>
             <img src={cfgImg} alt={title} style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}/>
@@ -9866,6 +9879,7 @@ cursor: pointer;
 
     const ConfiguratorSection = () => (
       <div>
+        <div style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,color:T.g500,textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:8}}>Checkbox (grün) · Standard</div>
         <Preview>
           <div style={{display:'flex',gap:32,flexWrap:'wrap',alignItems:'flex-start'}}>
             <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
@@ -9874,6 +9888,34 @@ cursor: pointer;
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
               <ConfiguratorCard title={'Metzler Innenstation mit 7″ Touchdisplay | Schwarz'}/>
+              <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Default</span>
+            </div>
+          </div>
+        </Preview>
+
+        <div style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,color:T.g500,textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:8,marginTop:24}}>Radio-Button (teal) statt Checkbox</div>
+        <Preview>
+          <div style={{display:'flex',gap:32,flexWrap:'wrap',alignItems:'flex-start'}}>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
+              <ConfiguratorCard defaultActive control="radio" title={'Metzler Innenstation mit 7″ Touchdisplay | Weiß'}/>
+              <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Aktiv (ausgewählt)</span>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
+              <ConfiguratorCard control="radio" title={'Metzler Innenstation mit 7″ Touchdisplay | Schwarz'}/>
+              <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Default</span>
+            </div>
+          </div>
+        </Preview>
+
+        <div style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,color:T.g500,textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:8,marginTop:24}}>Mit Info-Icon (oben rechts)</div>
+        <Preview>
+          <div style={{display:'flex',gap:32,flexWrap:'wrap',alignItems:'flex-start'}}>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
+              <ConfiguratorCard defaultActive info title={'Metzler Innenstation mit 7″ Touchdisplay | Weiß'}/>
+              <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Aktiv (ausgewählt)</span>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.625rem',alignItems:'flex-start'}}>
+              <ConfiguratorCard info title={'Metzler Innenstation mit 7″ Touchdisplay | Schwarz'}/>
               <span style={{fontFamily:'monospace',fontSize:T.fXxs,color:T.g500}}>Default</span>
             </div>
           </div>
