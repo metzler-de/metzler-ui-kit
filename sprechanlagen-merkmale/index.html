@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Türsprechanlagen – Artikelnummern</title>
+<style>
+:root{
+  --teal:#015253; --teal-hover:#014A4B; --mint:#5CDBD3;
+  --bg:#F5F6FA; --surface:#FFFFFF; --ink:#1A1A1F; --body:#2E2E36; --muted:#6A737D;
+  --line:#E2E6EC; --band:#F7F9FB;
+  --chip-laser-bg:#FDF3E7; --chip-laser-tx:#8A5A1E; --chip-laser-bd:#EBD9BE;
+  --chip-paper-bg:#EAF3EC; --chip-paper-tx:#1E6B3C; --chip-paper-bd:#CDE4D4;
+  --chip-digi-bg:#E9F0FA;  --chip-digi-tx:#1E4E8A;  --chip-digi-bd:#CCDCF1;
+  --chip-digih-bg:#F3EAF6; --chip-digih-tx:#6B2E85; --chip-digih-bd:#E0CBE8;
+  --link:#015253;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0D1717; --surface:#122021; --ink:#F0F4F4; --body:#C9D4D4; --muted:#7E9292;
+    --line:#22383A; --band:#152526;
+    --chip-laser-bg:#2E2416; --chip-laser-tx:#E8BE84; --chip-laser-bd:#4A3A22;
+    --chip-paper-bg:#152A1D; --chip-paper-tx:#8FD8AC; --chip-paper-bd:#25452F;
+    --chip-digi-bg:#152234;  --chip-digi-tx:#9EC2F0;  --chip-digi-bd:#243A57;
+    --chip-digih-bg:#28182F; --chip-digih-tx:#D3A8E4; --chip-digih-bd:#432A4F;
+    --link:#5CDBD3;
+  }
+}
+:root[data-theme="light"]{
+  --teal:#015253; --teal-hover:#014A4B; --mint:#5CDBD3;
+  --bg:#F5F6FA; --surface:#FFFFFF; --ink:#1A1A1F; --body:#2E2E36; --muted:#6A737D;
+  --line:#E2E6EC; --band:#F7F9FB;
+  --chip-laser-bg:#FDF3E7; --chip-laser-tx:#8A5A1E; --chip-laser-bd:#EBD9BE;
+  --chip-paper-bg:#EAF3EC; --chip-paper-tx:#1E6B3C; --chip-paper-bd:#CDE4D4;
+  --chip-digi-bg:#E9F0FA;  --chip-digi-tx:#1E4E8A;  --chip-digi-bd:#CCDCF1;
+  --chip-digih-bg:#F3EAF6; --chip-digih-tx:#6B2E85; --chip-digih-bd:#E0CBE8;
+  --link:#015253;
+}
+:root[data-theme="dark"]{
+  --bg:#0D1717; --surface:#122021; --ink:#F0F4F4; --body:#C9D4D4; --muted:#7E9292;
+  --line:#22383A; --band:#152526;
+  --chip-laser-bg:#2E2416; --chip-laser-tx:#E8BE84; --chip-laser-bd:#4A3A22;
+  --chip-paper-bg:#152A1D; --chip-paper-tx:#8FD8AC; --chip-paper-bd:#25452F;
+  --chip-digi-bg:#152234;  --chip-digi-tx:#9EC2F0;  --chip-digi-bd:#243A57;
+  --chip-digih-bg:#28182F; --chip-digih-tx:#D3A8E4; --chip-digih-bd:#432A4F;
+  --link:#5CDBD3;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--body);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;font-size:.9375rem;line-height:1.5}
+.wrap{max-width:76rem;margin:0 auto;padding:2rem 1.25rem 4rem}
+
+/* header */
+.masthead{border-bottom:3px solid var(--teal);padding-bottom:1.25rem;margin-bottom:1.5rem}
+.eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:.09em;font-size:.6875rem;font-weight:600;margin:0 0 .4rem}
+h1{color:var(--ink);font-size:1.75rem;font-weight:700;letter-spacing:-.01em;margin:0 0 .35rem;text-wrap:balance}
+.sub{color:var(--muted);font-size:.8125rem;margin:0}
+.sub a{color:var(--link);text-decoration:none}
+.sub a:hover{text-decoration:underline}
+
+/* summary / filter chips */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 1rem}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--body);border-radius:.25rem;
+  padding:.5rem .8rem;font:inherit;font-size:.8125rem;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:border-color .15s}
+.chip:hover{border-color:var(--teal)}
+.chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.chip .n{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.chip.active{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+.chip .dot{width:.6rem;height:.6rem;border-radius:50%;flex:none}
+.dot-laser{background:var(--chip-laser-tx)} .dot-paper{background:var(--chip-paper-tx)}
+.dot-digi{background:var(--chip-digi-tx)} .dot-digih{background:var(--chip-digih-tx)}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-bottom:.75rem}
+.search{flex:1 1 16rem;max-width:24rem;position:relative}
+.search input{width:100%;padding:.55rem .8rem;border:1px solid var(--line);border-radius:.25rem;background:var(--surface);color:var(--ink);font:inherit;font-size:.875rem}
+.search input:focus{outline:2px solid var(--teal);outline-offset:-1px}
+.count{color:var(--muted);font-size:.8125rem;font-variant-numeric:tabular-nums}
+
+/* table */
+.tablebox{background:var(--surface);border:1px solid var(--line);border-radius:.5rem;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:72rem}
+thead th{background:var(--teal);color:#fff;text-align:left;font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:.65rem .75rem;white-space:nowrap;position:sticky;top:0}
+tbody td{padding:.55rem .75rem;border-top:1px solid var(--line);vertical-align:middle}
+tbody tr:nth-child(even){background:var(--band)}
+td.num,th.num{text-align:right}
+.art{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;font-size:.9375rem}
+.mdl{font-weight:600;color:var(--ink)}
+.feat{color:var(--muted);font-size:.8125rem}
+.pname{color:var(--muted);font-size:.78125rem;max-width:26rem}
+td a{color:var(--link);text-decoration:none;font-weight:600;font-size:.8125rem;white-space:nowrap}
+td a.lnk{white-space:normal;word-break:break-all;font-weight:400;font-size:.71875rem;line-height:1.35;display:block;min-width:16rem;max-width:22rem}
+.gcard a.a{color:var(--link);text-decoration:none}
+.gcard a.a:hover{text-decoration:underline}
+td a:hover{text-decoration:underline}
+.tag{display:inline-block;border-radius:.25rem;padding:.2rem .55rem;font-size:.75rem;font-weight:600;border:1px solid;white-space:nowrap}
+.tag-laser{background:var(--chip-laser-bg);color:var(--chip-laser-tx);border-color:var(--chip-laser-bd)}
+.tag-paper{background:var(--chip-paper-bg);color:var(--chip-paper-tx);border-color:var(--chip-paper-bd)}
+.tag-digi{background:var(--chip-digi-bg);color:var(--chip-digi-tx);border-color:var(--chip-digi-bd)}
+.tag-digih{background:var(--chip-digih-bg);color:var(--chip-digih-tx);border-color:var(--chip-digih-bd)}
+tr.hidden{display:none}
+.empty{padding:2rem;text-align:center;color:var(--muted);display:none}
+
+/* grouped view */
+h2{color:var(--ink);font-size:1.125rem;font-weight:700;margin:2.5rem 0 .75rem}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:.5rem;overflow:hidden}
+.gcard header{padding:.7rem .9rem;font-size:.8125rem;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:.5rem;border-bottom:1px solid var(--line)}
+.gh-laser{background:var(--chip-laser-bg);color:var(--chip-laser-tx)}
+.gh-paper{background:var(--chip-paper-bg);color:var(--chip-paper-tx)}
+.gh-digi{background:var(--chip-digi-bg);color:var(--chip-digi-tx)}
+.gh-digih{background:var(--chip-digih-bg);color:var(--chip-digih-tx)}
+.gcard header .n{font-variant-numeric:tabular-nums;font-weight:700;opacity:.85}
+.gcard ul{list-style:none;margin:0;padding:.4rem 0}
+.gcard li{padding:.32rem .9rem;display:flex;justify-content:space-between;gap:.75rem;font-size:.8125rem}
+.gcard li+li{border-top:1px solid var(--line)}
+.gcard .a{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.gcard .m{color:var(--muted);text-align:right}
+
+.footnote{margin-top:2rem;color:var(--muted);font-size:.75rem;line-height:1.6;max-width:46rem}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Metzler · edelstahl-tuerklingel.de</p>
+    <h1>Türsprechanlagen — Artikelnummern &amp; Namensschild-Optionen</h1>
+    <p class="sub">Kategorien <a href="https://edelstahl-tuerklingel.de/tuersprechanlagen" target="_blank" rel="noopener">/tuersprechanlagen</a> + Unterkategorien Audio, Briefkasten &amp; Sets · 48 Artikel · Stand 10.07.2026</p>
+  </header>
+
+  <div class="chips" id="chips" role="group" aria-label="Nach Namensschild-Typ filtern">
+    <button class="chip active" data-f="all">Alle <span class="n">48</span></button>
+    <button class="chip" data-f="laser"><span class="dot dot-laser"></span>Lasergraviertes Namensschild <span class="n">22</span></button>
+    <button class="chip" data-f="paper"><span class="dot dot-paper"></span>Namensschild mit Papiereinleger <span class="n">21</span></button>
+    <button class="chip" data-f="digi"><span class="dot dot-digi"></span>Digitales Namensschild <span class="n">4</span></button>
+    <button class="chip" data-f="digih"><span class="dot dot-digih"></span>Digitales Namensschild + Hausnummer <span class="n">1</span></button>
+  </div>
+
+  <div class="toolbar">
+    <div class="search"><input id="q" type="search" placeholder="Suchen: Artikelnummer, Modell, Produktname …" aria-label="Tabelle durchsuchen"></div>
+    <span class="count" id="count">48 von 48 Artikeln</span>
+  </div>
+
+  <div class="tablebox">
+    <table id="tbl">
+      <thead><tr>
+        <th class="num">Nr.</th><th>Art.-Nr.</th><th>Linie</th><th>Modell</th>
+        <th class="num">Taster</th><th>Namensschild-Typ</th><th>Ausführung</th><th>Produktname</th><th>Link zum Produkt</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty">Keine Treffer für diese Kombination.</div>
+  </div>
+
+  <h2>Gruppiert nach Namensschild-Typ</h2>
+  <div class="groups" id="groups"></div>
+
+  <p class="footnote">Hinweis: Die vier Namensschild-Optionen sind im Shop keine wählbaren Varianten innerhalb eines Produkts (auf den Produktseiten ist nur die Farbe/RAL wählbar), sondern kennzeichnen die Modelllinie. Lasergraviert = Colson, Kian, Niko, Dominik, Horizon sowie die Briefkasten-/Paketbox-Sets; Papiereinleger = alle Modelle „mit austauschbarem Namensschild" (Neo, Kai, Maxior); Digital = SDM10-Linie (SDM10X, SDM10S), SDM10H zusätzlich mit beleuchteter Hausnummer. Alle Artikelnummern wurden direkt von den 48 Produktseiten übernommen (Hauptkategorie /tuersprechanlagen sowie Unterkategorien /audio-tuersprechanlagen, /sprechanlage-briefkasten, /sprechanlagen-sets).</p>
+</div>
+
+<script>
+const DATA = [{"nr": 1, "line": "SDM10", "model": "SDM10X", "taster": "", "feature": "Gesichtserkennung", "nstyp": "Digitales Namensschild", "art": "40132", "name": "Türsprechanlage mit Kamera | Gesichtserkennung | Touch-Display | Live-HD-Video | Ein- und Mehrfamilien | SDM10X", "url": "https://edelstahl-tuerklingel.de/metzler-tuersprechanlage-mit-kamera-gesichtserkennung-touch-display-live-hd-video-ein-und-mehrfamilien-sdm10x"}, {"nr": 2, "line": "VDM10", "model": "Colson", "taster": "1", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "31101", "name": "VDM10 2.0 Video-Türsprechanlage | 1 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-1-klingeltaster-colson"}, {"nr": 3, "line": "XDM10", "model": "Maxior", "taster": "1", "feature": "2-Draht-BUS", "nstyp": "Namensschild mit Papiereinleger", "art": "45248", "name": "XDM10 Video-Türsprechanlage mit austauschbarem Namensschild | 2-Draht-BUS | 1 Klingeltaster | Maxior", "url": "https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-2-draht-bus-1-klingeltaster-maxior"}, {"nr": 4, "line": "VDM10", "model": "Horizon", "taster": "", "feature": "Modular", "nstyp": "Lasergraviertes Namensschild", "art": "36478", "name": "VDM10 2.0 modulare Video-Türsprechanlage | Ein- und Mehrfamilien | Horizon", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-modulare-video-tuersprechanlage-ein-und-mehrfamilien-horizon"}, {"nr": 5, "line": "SDM10", "model": "SDM10H", "taster": "", "feature": "Gesichtserkennung", "nstyp": "Digitales Namensschild + Hausnummer", "art": "42955", "name": "Türsprechanlage mit Kamera | Gesichtserkennung | Touch-Display | Hausnummer beleuchtet | Live-HD-Video | Ein- und Mehrfamilien | SDM10H", "url": "https://edelstahl-tuerklingel.de/metzler-tuersprechanlage-mit-kamera-gesichtserkennung-touch-display-hausnummer-beleuchtet-live-hd-video-ein-und-mehrfamilien-sdm10h"}, {"nr": 6, "line": "VDM10", "model": "Kian", "taster": "1", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "31086", "name": "VDM10 2.0 Video-Türsprechanlage | 1 Klingeltaster | Kian", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-1-klingeltaster-kian"}, {"nr": 7, "line": "VDM10", "model": "Niko", "taster": "1", "feature": "Fingerprint", "nstyp": "Lasergraviertes Namensschild", "art": "40484", "name": "VDM10 2.0 Video-Türsprechanlage | mit Fingerprint | 1 Klingeltaster | Niko", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-fingerprint-1-klingeltaster-niko"}, {"nr": 8, "line": "VDM10", "model": "Neo", "taster": "1", "feature": "", "nstyp": "Namensschild mit Papiereinleger", "art": "40373", "name": "VDM10 2.0 Video-Türsprechanlage mit austauschbarem Namensschild | 1 Klingeltaster | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-austauschbarem-namensschild-1-klingeltaster-neo"}, {"nr": 9, "line": "SDM10", "model": "SDM10S", "taster": "1", "feature": "Gesichtserkennung", "nstyp": "Digitales Namensschild", "art": "44643", "name": "Video-Türsprechsäule | Klingelstele mit Gesichtserkennung | Farbe wählbar | Ein- & Mehrfamilienhaus | Personalisierbar | SDM10S", "url": "https://edelstahl-tuerklingel.de/metzler-video-tuersprechsaeule-klingelstele-mit-gesichtserkennung-farbe-waehlbar-ein-mehrfamilienhaus-personalisierbar-sdm10s"}, {"nr": 10, "line": "ADM10", "model": "Dominik", "taster": "1", "feature": "Audio", "nstyp": "Lasergraviertes Namensschild", "art": "41096", "name": "ADM10 Audio-Türsprechanlage | 1 Klingeltaster | RAL 7016 Anthrazit | Dominik", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-1-klingeltaster-ral-7016-anthrazit-dominik"}, {"nr": 11, "line": "VDM10", "model": "Colson", "taster": "2", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "31122", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 2 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-2-klingeltaster-colson"}, {"nr": 12, "line": "ADM10", "model": "Kai", "taster": "1", "feature": "Audio", "nstyp": "Namensschild mit Papiereinleger", "art": "42899", "name": "ADM10 Audio-Türsprechanlage | 1 Klingeltaster | Mit austauschbarem Namensschild | Kai", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-1-klingeltaster-mit-austauschbarem-namensschild-kai"}, {"nr": 13, "line": "VDM10", "model": "Kian", "taster": "2", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "31315", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 2 Klingeltaster | Kian", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-2-klingeltaster-kian"}, {"nr": 14, "line": "VDM10", "model": "Niko", "taster": "2", "feature": "Fingerprint", "nstyp": "Lasergraviertes Namensschild", "art": "40492", "name": "VDM10 2.0 Video-Türsprechanlage | mit Fingerprint | 2 Klingeltaster | Niko", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-fingerprint-2-klingeltaster-niko"}, {"nr": 15, "line": "VDM10", "model": "Neo", "taster": "2", "feature": "", "nstyp": "Namensschild mit Papiereinleger", "art": "40380", "name": "VDM10 2.0 Video-Türsprechanlage mit austauschbarem Namensschild | 2 Klingeltaster | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-austauschbarem-namensschild-2-klingeltaster-neo"}, {"nr": 16, "line": "ADM10", "model": "Kai", "taster": "2", "feature": "Audio", "nstyp": "Namensschild mit Papiereinleger", "art": "42911", "name": "ADM10 Audio-Türsprechanlage | 2 Klingeltaster | Mit austauschbarem Namensschild | Kai", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-2-klingeltaster-mit-austauschbarem-namensschild-kai"}, {"nr": 17, "line": "XDM10", "model": "Maxior", "taster": "2", "feature": "2-Draht-BUS", "nstyp": "Namensschild mit Papiereinleger", "art": "45256", "name": "XDM10 Video-Türsprechanlage mit austauschbarem Namensschild | 2-Draht-BUS | 2 Klingeltaster | Maxior", "url": "https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-2-draht-bus-2-klingeltaster-maxior"}, {"nr": 18, "line": "VDM10", "model": "Colson", "taster": "3", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "31135", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 3 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-3-klingeltaster-colson"}, {"nr": 19, "line": "VDM10", "model": "Kian", "taster": "3", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "31321", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 3 Klingeltaster | Kian", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-3-klingeltaster-kian"}, {"nr": 20, "line": "VDM10", "model": "Niko", "taster": "3", "feature": "Fingerprint", "nstyp": "Lasergraviertes Namensschild", "art": "40501", "name": "VDM10 2.0 Video-Türsprechanlage | mit Fingerprint | 3 Klingeltaster | Niko", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-fingerprint-3-klingeltaster-niko"}, {"nr": 21, "line": "VDM10", "model": "Neo", "taster": "3", "feature": "", "nstyp": "Namensschild mit Papiereinleger", "art": "40387", "name": "VDM10 2.0 Video-Türsprechanlage mit austauschbarem Namensschild | 3 Klingeltaster | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-austauschbarem-namensschild-3-klingeltaster-neo"}, {"nr": 22, "line": "ADM10", "model": "Kai", "taster": "3", "feature": "Audio", "nstyp": "Namensschild mit Papiereinleger", "art": "42918", "name": "ADM10 Audio-Türsprechanlage | 3 Klingeltaster | Mit austauschbarem Namensschild | Kai", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-3-klingeltaster-mit-austauschbarem-namensschild-kai"}, {"nr": 23, "line": "XDM10", "model": "Maxior", "taster": "3", "feature": "2-Draht-BUS", "nstyp": "Namensschild mit Papiereinleger", "art": "45263", "name": "XDM10 Video-Türsprechanlage mit austauschbarem Namensschild | 2-Draht-BUS | 3 Klingeltaster | Maxior", "url": "https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-2-draht-bus-3-klingeltaster-maxior"}, {"nr": 24, "line": "VDM10", "model": "Colson", "taster": "4", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "38941", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 4 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-4-klingeltaster-colson"}, {"nr": 25, "line": "VDM10", "model": "Neo", "taster": "4", "feature": "", "nstyp": "Namensschild mit Papiereinleger", "art": "40394", "name": "VDM10 2.0 Video-Türsprechanlage mit austauschbarem Namensschild | 4 Klingeltaster | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-austauschbarem-namensschild-4-klingeltaster-neo"}, {"nr": 26, "line": "ADM10", "model": "Kai", "taster": "4", "feature": "Audio", "nstyp": "Namensschild mit Papiereinleger", "art": "42891", "name": "ADM10 Audio-Türsprechanlage | 4 Klingeltaster | Mit austauschbarem Namensschild | Kai", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-4-klingeltaster-mit-austauschbarem-namensschild-kai"}, {"nr": 27, "line": "VDM10", "model": "Colson", "taster": "5", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "38947", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 5 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-5-klingeltaster-colson"}, {"nr": 28, "line": "VDM10", "model": "Neo", "taster": "5", "feature": "", "nstyp": "Namensschild mit Papiereinleger", "art": "40411", "name": "VDM10 2.0 Video-Türsprechanlage mit austauschbarem Namensschild | 5 Klingeltaster | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-austauschbarem-namensschild-5-klingeltaster-neo"}, {"nr": 29, "line": "ADM10", "model": "Kai", "taster": "5", "feature": "Audio", "nstyp": "Namensschild mit Papiereinleger", "art": "42892", "name": "ADM10 Audio-Türsprechanlage | 5 Klingeltaster | Mit austauschbarem Namensschild | Kai", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-5-klingeltaster-mit-austauschbarem-namensschild-kai"}, {"nr": 30, "line": "VDM10", "model": "Colson", "taster": "6", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "38953", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 6 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-6-klingeltaster-colson"}, {"nr": 31, "line": "VDM10", "model": "Neo", "taster": "6", "feature": "", "nstyp": "Namensschild mit Papiereinleger", "art": "40418", "name": "VDM10 2.0 Video-Türsprechanlage mit austauschbarem Namensschild | 6 Klingeltaster | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-mit-austauschbarem-namensschild-6-klingeltaster-neo"}, {"nr": 32, "line": "ADM10", "model": "Kai", "taster": "6", "feature": "Audio", "nstyp": "Namensschild mit Papiereinleger", "art": "42893", "name": "ADM10 Audio-Türsprechanlage | 6 Klingeltaster | Mit austauschbarem Namensschild | Kai", "url": "https://edelstahl-tuerklingel.de/metzler-adm10-audio-tuersprechanlage-6-klingeltaster-mit-austauschbarem-namensschild-kai"}, {"nr": 33, "line": "VDM10", "model": "Colson", "taster": "7", "feature": "", "nstyp": "Lasergraviertes Namensschild", "art": "38959", "name": "VDM10 2.0 Mehrfamilien Video-Türsprechanlage | 7 Klingeltaster | Colson", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-mehrfamilien-video-tuersprechanlage-7-klingeltaster-colson"}, {"nr": 34, "line": "VDM10", "model": "Briefkasten-Set", "taster": "1", "feature": "mit Briefkasten", "nstyp": "Lasergraviertes Namensschild", "art": "39718", "name": "Briefkasten mit VDM10 2.0 Video-Türsprechanlage | 1 Klingel | RAL7016 Anthrazit", "url": "https://edelstahl-tuerklingel.de/metzler-briefkasten-mit-vdm10-20-video-tuersprechanlage-1-klingel-ral7016-anthrazit"}, {"nr": 35, "line": "VDM10", "model": "Paketbox-Set", "taster": "", "feature": "mit Paketbox", "nstyp": "Lasergraviertes Namensschild", "art": "37175", "name": "Video-Türsprechanlage mit Paketbox | Anthrazit RAL 7016 | personalisiert mit Gravur | Edelstahl-Namensschild", "url": "https://edelstahl-tuerklingel.de/metzler-video-tuersprechanlage-mit-paketbox-anthrazit-ral-7016-personalisiert-mit-gravur-edelstahl-namensschild"}, {"nr": 36, "line": "VDM10", "model": "Siebert", "taster": "", "feature": "mit Briefkasten", "nstyp": "Lasergraviertes Namensschild", "art": "36045", "name": "Briefkasten rostfrei und massiv, RAL7016 Anthrazitgrau mit Videosprechanlage VDM10 2.0, Modell Siebert", "url": "https://edelstahl-tuerklingel.de/metzler-briefkasten-rostfrei-und-massiv-ral7016-anthrazitgrau-mit-videosprechanlage-vdm10-20-modell-siebert"}, {"nr": 37, "line": "VDM10", "model": "Siebert", "taster": "", "feature": "mit Briefkasten", "nstyp": "Lasergraviertes Namensschild", "art": "36050", "name": "Standbriefkasten rostfrei und massiv, RAL7016 Anthrazitgrau mit Videosprechanlage VDM10 2.0, Modell Siebert", "url": "https://edelstahl-tuerklingel.de/metzler-standbriefkasten-rostfrei-und-massiv-ral7016-anthrazitgrau-mit-videosprechanlage-vdm10-20-modell-siebert"}, {"nr": 38, "line": "VDM10", "model": "Siebert", "taster": "", "feature": "mit Briefkasten", "nstyp": "Lasergraviertes Namensschild", "art": "36299", "name": "Videosprechanlage VDM10 2.0 in RAL7016 Anthrazit passend als Set mit dem Briefkasten Modell Siebert", "url": "https://edelstahl-tuerklingel.de/metzler-videosprechanlage-vdm10-20-in-ral7016-anthrazit-passend-als-set-mit-dem-briefkasten-modell-siebert"}, {"nr": 39, "line": "SDM10", "model": "Standbriefkasten-Set", "taster": "1", "feature": "mit Standbriefkasten, Einfamilien, Gesichtserkennung", "nstyp": "Digitales Namensschild", "art": "42329", "name": "Standbriefkasten mit Video-Türsprechanlage für Einfamilienhaus SDM10 | Touch-Display | Anthrazit RAL7016", "url": "https://edelstahl-tuerklingel.de/metzler-standbriefkasten-mit-video-tuersprechanlage-fuer-einfamilienhaus-sdm10-touch-display-anthrazit-ral7016"}, {"nr": 40, "line": "VDM10", "model": "Standbriefkasten-Set", "taster": "1", "feature": "mit Standbriefkasten, Einfamilien", "nstyp": "Lasergraviertes Namensschild", "art": "42326", "name": "Standbriefkasten mit Video-Türsprechanlage für Einfamilienhaus VDM10 | Anthrazit RAL7016", "url": "https://edelstahl-tuerklingel.de/metzler-standbriefkasten-mit-video-tuersprechanlage-fuer-einfamilienhaus-vdm10-anthrazit-ral7016"}, {"nr": 41, "line": "SDM10", "model": "Standbriefkasten-Set", "taster": "2", "feature": "mit Standbriefkasten, Zweifamilien, Gesichtserkennung", "nstyp": "Digitales Namensschild", "art": "42331", "name": "Standbriefkasten mit Video-Türsprechanlage für Zweifamilienhaus SDM10 | Touch-Display | Anthrazit RAL7016", "url": "https://edelstahl-tuerklingel.de/metzler-standbriefkasten-mit-video-tuersprechanlage-fuer-zweifamilienhaus-sdm10-touch-display-anthrazit-ral7016"}, {"nr": 42, "line": "VDM10", "model": "Standbriefkasten-Set", "taster": "2", "feature": "mit Standbriefkasten, Zweifamilien", "nstyp": "Lasergraviertes Namensschild", "art": "42274", "name": "Standbriefkasten mit Video-Türsprechanlage für Zweifamilienhaus VDM10 | Anthrazit RAL 7016", "url": "https://edelstahl-tuerklingel.de/metzler-standbriefkasten-mit-video-tuersprechanlage-fuer-zweifamilienhaus-vdm10-anthrazit-ral-7016"}, {"nr": 43, "line": "VDM10", "model": "Neo", "taster": "1", "feature": "Komplettset, Plug & Play", "nstyp": "Namensschild mit Papiereinleger", "art": "43604", "name": "VDM10 2.0 Video-Türsprechanlage | Komplettset mit austauschbarem Namensschild | 1 Klingeltaster | Plug & Play | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-komplettset-mit-austauschbarem-namensschild-1-klingeltaster-plug-play-neo"}, {"nr": 44, "line": "VDM10", "model": "Neo", "taster": "2", "feature": "Komplettset, Plug & Play", "nstyp": "Namensschild mit Papiereinleger", "art": "43612", "name": "VDM10 2.0 Video-Türsprechanlage | Komplettset mit austauschbarem Namensschild | 2 Klingeltaster | Plug & Play | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-komplettset-mit-austauschbarem-namensschild-2-klingeltaster-plug-play-neo"}, {"nr": 45, "line": "VDM10", "model": "Neo", "taster": "3", "feature": "Komplettset, Plug & Play", "nstyp": "Namensschild mit Papiereinleger", "art": "43619", "name": "VDM10 2.0 Video-Türsprechanlage | Komplettset mit austauschbarem Namensschild | 3 Klingeltaster | Plug & Play | Neo", "url": "https://edelstahl-tuerklingel.de/metzler-vdm10-20-video-tuersprechanlage-komplettset-mit-austauschbarem-namensschild-3-klingeltaster-plug-play-neo"}, {"nr": 46, "line": "XDM10", "model": "Maxior", "taster": "1", "feature": "Komplettset, 2-Draht-BUS", "nstyp": "Namensschild mit Papiereinleger", "art": "44227", "name": "XDM10 Video-Türsprechanlage mit austauschbarem Namensschild | Komplettset | 2-Draht | 1 Klingeltaster | RAL 7016 Anthrazit | Maxior", "url": "https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-komplettset-2-draht-1-klingeltaster-ral-7016-anthrazit-maxior"}, {"nr": 47, "line": "XDM10", "model": "Maxior", "taster": "2", "feature": "Komplettset, 2-Draht-BUS", "nstyp": "Namensschild mit Papiereinleger", "art": "44235", "name": "XDM10 Video-Türsprechanlage mit austauschbarem Namensschild | Komplettset | 2-Draht | 2 Klingeltaster | RAL 7016 Anthrazit | Maxior", "url": "https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-komplettset-2-draht-2-klingeltaster-ral-7016-anthrazit-maxior"}, {"nr": 48, "line": "XDM10", "model": "Maxior", "taster": "3", "feature": "Komplettset, 2-Draht-BUS", "nstyp": "Namensschild mit Papiereinleger", "art": "44243", "name": "XDM10 Video-Türsprechanlage mit austauschbarem Namensschild | Komplettset | 2-Draht | 3 Klingeltaster | RAL 7016 Anthrazit | Maxior", "url": "https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-komplettset-2-draht-3-klingeltaster-ral-7016-anthrazit-maxior"}];
+const KEY = {
+  "Lasergraviertes Namensschild": "laser",
+  "Namensschild mit Papiereinleger": "paper",
+  "Digitales Namensschild": "digi",
+  "Digitales Namensschild + Hausnummer": "digih"
+};
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const tbody = document.getElementById('tbody');
+tbody.innerHTML = DATA.map(r => {
+  const k = KEY[r.nstyp];
+  return `<tr data-k="${k}" data-s="${esc((r.art+' '+r.line+' '+r.model+' '+r.name+' '+r.nstyp+' '+r.feature).toLowerCase())}">
+    <td class="num">${r.nr}</td>
+    <td><span class="art">${r.art}</span></td>
+    <td>${r.line}</td>
+    <td><span class="mdl">${esc(r.model)}</span></td>
+    <td class="num">${r.taster||'–'}</td>
+    <td><span class="tag tag-${k}">${esc(r.nstyp)}</span></td>
+    <td><span class="feat">${esc(r.feature)||''}</span></td>
+    <td><span class="pname">${esc(r.name)}</span></td>
+    <td><a class="lnk" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.url)}</a></td>
+  </tr>`;
+}).join('');
+
+const groups = {laser:[],paper:[],digi:[],digih:[]};
+DATA.forEach(r => groups[KEY[r.nstyp]].push(r));
+const GMETA = [
+  ['laser','Lasergraviertes Namensschild'],
+  ['paper','Namensschild mit Papiereinleger'],
+  ['digi','Digitales Namensschild'],
+  ['digih','Digitales Namensschild + Hausnummer']
+];
+document.getElementById('groups').innerHTML = GMETA.map(([k,label]) => `
+  <div class="gcard">
+    <header class="gh-${k}"><span>${label}</span><span class="n">${groups[k].length}</span></header>
+    <ul>${groups[k].map(r => `<li><a class="a" href="${esc(r.url)}" target="_blank" rel="noopener">${r.art}</a><span class="m">${esc(r.model)}${r.taster ? ' · '+r.taster+' Taster' : ''}</span></li>`).join('')}</ul>
+  </div>`).join('');
+
+let filter = 'all';
+const q = document.getElementById('q'), countEl = document.getElementById('count'), emptyEl = document.getElementById('empty');
+function apply(){
+  const term = q.value.trim().toLowerCase();
+  let shown = 0;
+  for (const tr of tbody.rows){
+    const ok = (filter==='all' || tr.dataset.k===filter) && (!term || tr.dataset.s.includes(term));
+    tr.classList.toggle('hidden', !ok);
+    if (ok) shown++;
+  }
+  countEl.textContent = `${shown} von ${DATA.length} Artikeln`;
+  emptyEl.style.display = shown ? 'none' : 'block';
+}
+document.getElementById('chips').addEventListener('click', e => {
+  const btn = e.target.closest('.chip'); if (!btn) return;
+  filter = btn.dataset.f;
+  document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c===btn));
+  apply();
+});
+q.addEventListener('input', apply);
+</script>
+
+</body>
+</html>
