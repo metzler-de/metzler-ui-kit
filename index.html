@@ -72,7 +72,7 @@
       paper:'#F5F6FA', g100:'#F0F0F0', g200:'#E6E6E8', g300:'#DADADA',
       g400:'#BFBFC2', g450:'#CCCCCC',
       // Text
-      g500:'#A1A1A1', g600:'#7A7A82', g700:'#54545C', g800:'#2E2E36',
+      g500:'#A1A1A1', g600:'#6A6A6A', g700:'#54545C', g800:'#2E2E36',
       g850:'#333333', g900:'#1A1A1F',
       white:'#FFFFFF', black:'#000000',
       // Border Radius
@@ -80,7 +80,7 @@
       // Font sizes
       fD1:'5rem', fD2:'3.5rem', fD3:'3rem',
       fD4:'2.875rem', fH1:'1.875rem', fH2:'1.5rem', fH3:'1.25rem',
-      fH4:'1.125rem', fLg:'1.125rem', fBody:'1rem', fSm:'0.875rem', fXs:'0.75rem',
+      fH4:'1.125rem', fXl:'1.25rem', fLg:'1.125rem', fBody:'1rem', fSm:'0.875rem', fXs:'0.75rem',
       fXxs:'0.6875rem', f13:'0.8125rem',
     };
 
@@ -102,7 +102,7 @@
       '#5CDBD3':'--color-mint','#FFC041':'--color-star',
       '#F5F6FA':'--color-paper','#F0F0F0':'--color-graphite-100','#E6E6E8':'--color-graphite-200',
       '#DADADA':'--color-graphite-300','#BFBFC2':'--color-graphite-400','#CCCCCC':'--color-graphite-450',
-      '#A1A1A1':'--color-graphite-500','#7A7A82':'--color-graphite-600','#54545C':'--color-graphite-700',
+      '#A1A1A1':'--color-graphite-500','#6A6A6A':'--color-graphite-600','#54545C':'--color-graphite-700',
       '#2E2E36':'--color-graphite-800','#333333':'--color-graphite-850','#1A1A1F':'--color-graphite-900',
       '#FFFFFF':'--color-white','#000000':'--color-black',
     };
@@ -357,7 +357,7 @@
       {value:"#CCCCCC", label:"Graphite 450", subtitle:"Soft borders · Dividers",           role:"Soft borders, dividers, skeleton lines, disabled input outlines",                                            hex:"#CCCCCC", rgb:"204 · 204 · 204", grp:"Graphite Surfaces"},
       // ── GRAPHITE TEXT ──
       {value:"#A1A1A1", label:"Graphite 500", subtitle:"Placeholders · Disabled",          role:"Placeholder text, disabled labels, inactive icons",                                                         hex:"#A1A1A1", rgb:"161 · 161 · 161", grp:"Graphite Text"},
-      {value:"#7A7A82", label:"Graphite 600", subtitle:"Metadata · Captions",              role:"Metadata, captions, 'in stock', timestamps",                                                               hex:"#7A7A82", rgb:"122 · 122 · 130", grp:"Graphite Text"},
+      {value:"#6A6A6A", label:"Graphite 600", subtitle:"Metadata · Captions",              role:"Metadata, captions, 'in stock', timestamps",                                                               hex:"#6A6A6A", rgb:"106 · 106 · 106", grp:"Graphite Text"},
       {value:"#54545C", label:"Graphite 700", subtitle:"Secondary text",                   role:"Secondary text, helper text, secondary nav",                                                                hex:"#54545C", rgb:"84 · 84 · 92",    grp:"Graphite Text"},
       {value:"#2E2E36", label:"Graphite 800", subtitle:"Body text",                        role:"Body paragraphs, primary nav, input values",                                                                hex:"#2E2E36", rgb:"46 · 46 · 54",    grp:"Graphite Text"},
       {value:"#333333", label:"Graphite 850", subtitle:"Icons · Dark UI text",              role:"Icon fills on light surfaces, dark UI labels, secondary headings",                                           hex:"#333333", rgb:"51 · 51 · 51",    grp:"Graphite Text"},
@@ -1410,9 +1410,14 @@
             })()}
           </ShowRow>
           <CLbl>Feature Pills</CLbl>
-          <ShowRow label="Text-only feature tags (Graphite 100) — system type & features, as used on product cards">
+          <ShowRow label="Desktop size — text-only feature tags (Graphite 100), as used on product cards · 12px / padding 0.3rem 0.8rem">
             {['IP-System','RFID','Gesichtserkennung','BUS-System','PIN-Code'].map(p=>(
               <span key={p} style={{display:'inline-flex',alignItems:'center',padding:'0.3rem 0.8rem',borderRadius:'999px',background:T.g100,boxShadow:'inset 0 0 0 1px rgba(0,0,0,0.08)',color:T.dBlack,fontSize:'0.75rem',fontWeight:500,letterSpacing:'0.02em',fontFamily:font,lineHeight:1,whiteSpace:'nowrap'}}>{p}</span>
+            ))}
+          </ShowRow>
+          <ShowRow label="Mobile size — smaller padding & 11px text, used in the mobile product card · padding 0.15rem 0.5rem">
+            {['IP-System','RFID','Gesichtserkennung','BUS-System','PIN-Code'].map(p=>(
+              <span key={p} style={{display:'inline-flex',alignItems:'center',padding:'0.15rem 0.5rem',borderRadius:'999px',background:T.g100,boxShadow:'inset 0 0 0 1px rgba(0,0,0,0.08)',color:T.dBlack,fontSize:'0.6875rem',fontWeight:500,letterSpacing:'0.02em',fontFamily:font,lineHeight:1,whiteSpace:'nowrap'}}>{p}</span>
             ))}
           </ShowRow>
         </div>
@@ -5585,7 +5590,7 @@ cursor: pointer;
   margin-top: 0.3125rem;
   font-family: var(--font-family);
   font-size: 0.8125rem;
-  color: #7A7A82;
+  color: #6A6A6A;
   line-height: 1.45;
 }`}/>
               </div>
@@ -9362,7 +9367,15 @@ cursor: pointer;
     // Scrollable feature-pill row — exact port of PLP .pcard__tags + .pcard__sys/.pcard__feat.
     // Single line; scrolls horizontally on overflow (card height never grows). One edge fade
     // at a time: right while more pills sit ahead, left once you reach the end.
-    const PillRow = ({items}) => {
+    const PillRow = ({items, size='md'}) => {
+      const sm = size==='sm';
+      const pillStyle = {
+        flex:'0 0 auto', alignSelf:'center', borderRadius:'999px', background:T.g100,
+        boxShadow:'inset 0 0 0 1px rgba(0,0,0,0.08)', color:T.dBlack, fontWeight:500,
+        letterSpacing:'0.02em', whiteSpace:'nowrap',
+        padding: sm ? '0.15rem 0.5rem' : '0.3rem 0.8rem',
+        fontSize: sm ? T.fXxs : T.fXs,
+      };
       const ref = useRef(null);
       const [m, setM] = useState({scroll:false, atStart:true, atEnd:true});
       const update = () => {
@@ -9380,9 +9393,9 @@ cursor: pointer;
         <React.Fragment>
           <style>{`.mz-pillrow::-webkit-scrollbar{display:none}`}</style>
           <div ref={ref} onScroll={update} className="mz-pillrow"
-            style={{display:'flex',alignItems:'center',flexWrap:'nowrap',gap:'0.5rem',overflowX:'auto',scrollbarWidth:'none',WebkitMaskImage:mask,maskImage:mask}}>
+            style={{display:'flex',alignItems:'center',flexWrap:'nowrap',gap: sm?'0.375rem':'0.5rem',overflowX:'auto',scrollbarWidth:'none',WebkitMaskImage:mask,maskImage:mask}}>
             {items.map((t,i)=>(
-              <span key={i} style={{flex:'0 0 auto',alignSelf:'center',padding:'0.3rem 0.8rem',borderRadius:'999px',background:T.g100,boxShadow:'inset 0 0 0 1px rgba(0,0,0,0.08)',color:T.dBlack,fontSize:T.fXs,fontWeight:500,letterSpacing:'0.02em',whiteSpace:'nowrap'}}>{t}</span>
+              <span key={i} style={pillStyle}>{t}</span>
             ))}
           </div>
         </React.Fragment>
@@ -9448,8 +9461,8 @@ cursor: pointer;
 
               {/* Product title — 3-line clamp */}
               <div style={{
-                fontFamily:font,fontSize:T.fBody,fontWeight:400,color:T.black,
-                lineHeight:'22px',overflow:'hidden',
+                fontFamily:font,fontSize:'0.95rem',fontWeight:500,color:T.black,
+                lineHeight:1.3,overflow:'hidden',
                 display:'-webkit-box',WebkitLineClamp:3,WebkitBoxOrient:'vertical',
                 height:66,
                 textDecoration:hov?'underline':'none',textUnderlineOffset:'3px',
@@ -9493,14 +9506,15 @@ cursor: pointer;
         priceFrom=true, price='49,99 €', originalPrice='1.289,99 €', discount='-15%',
         colors=['#505f70','rgba(0,0,0,0.75)','#b02828'],
         extraColors=['#C0A882','#2C3E50','#8B7355'],
+        pills=null,
       }) => {
         const [showMore, setShowMore] = useState(false);
         return (
           <div style={{
-            width:'100%', borderRadius:0, border:'none',
+            width:'100%', borderRadius:T.rLg, border:`0.0625rem solid ${T.g200}`,
             background:T.white, overflow:'hidden',
             display:'flex', flexDirection:'column', gap:10,
-            padding:0, boxSizing:'border-box', position:'relative',
+            padding:12, boxSizing:'border-box', position:'relative',
           }}>
             {/* Image area + badge overlay */}
             <div style={{position:'relative',width:'100%',flexShrink:0}}>
@@ -9520,6 +9534,9 @@ cursor: pointer;
               )}
             </div>
 
+            {/* Feature pills — scrollable row (smaller on mobile) */}
+            {pills && <PillRow items={pills} size="sm"/>}
+
             {/* Card content */}
             <div style={{display:'flex',flexDirection:'column',gap:8,width:'100%'}}>
 
@@ -9536,9 +9553,9 @@ cursor: pointer;
                 )}
               </div>
 
-              {/* Title — 2-line clamp */}
+              {/* Title — 2-line clamp (same weight/colour as desktop, mobile size) */}
               <div style={{
-                fontFamily:font,fontSize:T.fXs,fontWeight:400,color:T.black,
+                fontFamily:font,fontSize:T.fXs,fontWeight:500,color:T.black,
                 lineHeight:'1.0625rem',overflow:'hidden',
                 display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',
                 height:'2.125rem',
@@ -9599,24 +9616,13 @@ cursor: pointer;
             title (clamped), price with sale tag, and color swatches.
           </BD>
 
-          <SL>Desktop — 340px · hover shadow + image swap</SL>
+          <SL>Desktop — 340px · hover shadow + image swap · Feature-Pills</SL>
           <BD>
             Width <Chip>340px</Chip>, border-radius <Chip>8px</Chip> (token <Chip>l</Chip>),
             padding <Chip>20px</Chip>, border <Chip>1px solid #DADADA</Chip>. Title underlines and
             image swaps on hover; box-shadow elevates to <Chip>0 4px 20px rgba(0,0,0,0.12)</Chip>.
-          </BD>
-          <Preview>
-            <div style={{display:'flex',gap:24,flexWrap:'wrap',alignItems:'flex-start'}}>
-              <ProductCard/>
-              <ProductCard/>
-            </div>
-          </Preview>
-
-          <SL>Variante — Feature-Pills (Graphite 100) · einzeilig scrollend mit Rand-Fade</SL>
-          <BD>
-            Neutrale Text-Pills (<Chip>.pcard__sys</Chip> / <Chip>.pcard__feat</Chip>): Graphite-100-Fill,
-            Inset-Hairline, Pill-Radius, 12px / 500. Die Reihe scrollt horizontal wenn die Pills überlaufen —
-            die Kartenhöhe bleibt konstant, ein Rand-Fade signalisiert „mehr Pills". 1:1-Port aus der PLP.
+            Feature-Pills (<Chip>.pcard__sys</Chip> / <Chip>.pcard__feat</Chip>): Graphite-100-Fill,
+            Inset-Hairline, Pill-Radius, 12px / 500 — einzeilig scrollend mit Rand-Fade.
           </BD>
           <Preview>
             <div style={{display:'flex',gap:24,flexWrap:'wrap',alignItems:'flex-start'}}>
@@ -9727,20 +9733,23 @@ cursor: pointer;
   text-decoration: underline; cursor: pointer;
 }`}/>
 
-          <SL>Mobile — 2-column grid · no hover · no border · no padding</SL>
+          <SL>Mobile — 2-column grid · same design as desktop · smaller paddings</SL>
           <BD>
-            Width <Chip>50%</Chip> per card (2-column grid), no padding, no border, no border-radius.
-            Static image (no swap), no shadow or underline on hover. Title clamped to <Chip>2 lines</Chip>.
-            Container has <Chip>15px</Chip> padding on all sides and <Chip>15px</Chip> gap between cards.
+            Width <Chip>50%</Chip> per card (2-column grid). Same design as the desktop card — border
+            (<Chip>1px graphite-200</Chip>), <Chip>--radius-lg</Chip> corners and the feature-pill row —
+            just tighter: <Chip>12px</Chip> card padding and smaller type/swatches. Static image (no hover
+            swap). Title clamped to <Chip>2 lines</Chip>. Container has <Chip>15px</Chip> padding and
+            <Chip>15px</Chip> gap between cards.
           </BD>
           <Preview style={{background:T.paper}}>
             <div style={{maxWidth:460,padding:15,boxSizing:'border-box'}}>
               <div style={{display:'flex',gap:15}}>
-                <div style={{flex:1,minWidth:0}}><ProductCardMobile/></div>
+                <div style={{flex:1,minWidth:0}}><ProductCardMobile badge={null} pills={['IP-System','RFID','Gesichtserkennung']}/></div>
                 <div style={{flex:1,minWidth:0}}><ProductCardMobile
                   badge={null}
                   discount={null}
                   showRating={false}
+                  pills={['BUS-System','IP-System']}
                   title="Metzler Paketbox AC100 | Stahl Pulverbeschichtet | Stahlgrau RAL 7016"
                   price="79,99 €"
                   originalPrice={null}
@@ -9846,7 +9855,7 @@ cursor: pointer;
           }}>
           {/* Info icon — top-right corner */}
           {info && (
-            <button onClick={e=>e.stopPropagation()} aria-label="Mehr Informationen" title="Mehr Informationen"
+            <button type="button" onClick={e=>{e.preventDefault();e.stopPropagation();}} aria-label="Mehr Informationen" title="Mehr Informationen"
               style={{position:'absolute',top: sel?14:15,right: sel?14:15,background:'none',border:'none',padding:0,cursor:'pointer',color:T.g500,display:'flex',lineHeight:0}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="8" x2="12.01" y2="8"/>
@@ -9866,13 +9875,12 @@ cursor: pointer;
           <div style={{fontFamily:font,fontSize:T.fSm,color:T.g900,lineHeight:1.45}}>{title}</div>
           {/* Price */}
           <div style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black}}>{price}</div>
-          {/* Control — Counter when selected, empty "0" field when not */}
-          <div onClick={e=>e.stopPropagation()} style={{width:'100%'}}>
-            {sel
-              ? <Counter track={44} btn={44} fs={'1rem'} gap={'0.75rem'} minW={'100%'}/>
-              : <div style={{height:44,border:`1px solid ${T.g300}`,borderRadius:'0.25rem',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:font,fontSize:'1rem',color:T.g400}}>0</div>
-            }
-          </div>
+          {/* Control — Counter appears only after selection; nothing by default */}
+          {sel && (
+            <div onClick={e=>e.stopPropagation()} style={{width:'100%'}}>
+              <Counter track={44} btn={44} fs={'1rem'} gap={'0.75rem'} minW={'100%'}/>
+            </div>
+          )}
         </div>
       );
     };
@@ -9929,13 +9937,12 @@ cursor: pointer;
   <div class="qty-counter">…</div>
 </div>
 
-<!-- Default: leere Checkbox + grauer Rahmen + „0"-Feld -->
+<!-- Default: leere Checkbox + grauer Rahmen · KEIN Mengenzähler (erscheint erst nach Auswahl) -->
 <div class="config-card">
   <span class="checkbox checkbox--configurator"></span>
   <img src="innenstation.webp" alt="…">
   <div class="config-card__title">Metzler Innenstation mit 7″ Touchdisplay | Schwarz</div>
   <div class="config-card__price">+279,00 €</div>
-  <div class="config-card__zero">0</div>
 </div>`}/>
       </div>
     );
@@ -10003,7 +10010,7 @@ cursor: pointer;
       return (
         <div>
           <BD>
-            Hierarchical navigation trail. Active (current) page in black, parent links in gray <Chip>#7A7A82</Chip> — green <Chip>#015253</Chip> with underline on hover. Separator is a <Chip>#A1A1A1</Chip> chevron. Two sizes: <Chip>sm</Chip> (12px · used on mobile), <Chip>md</Chip> (14px · default).
+            Hierarchical navigation trail. Active (current) page in black, parent links in gray <Chip>#6A6A6A</Chip> — green <Chip>#015253</Chip> with underline on hover. Separator is a <Chip>#A1A1A1</Chip> chevron. Two sizes: <Chip>sm</Chip> (12px · used on mobile), <Chip>md</Chip> (14px · default).
           </BD>
 
           <SizeLabel>Size · sm — 12px (mobile)</SizeLabel>
@@ -11787,9 +11794,9 @@ cursor: pointer;
             return (
               <div key={item.label}>
                 {item.type==='group'
-                  ? <div style={{fontSize:'0.625rem',fontWeight:700,color:T.g700,textTransform:'uppercase',
-                      letterSpacing:'0.12em',padding:'20px 22px 4px',fontFamily:font,
-                      borderTop:`0.0625rem solid ${T.g200}`,marginTop:'4px'}}>{item.label}</div>
+                  ? <div style={{fontSize:'0.6875rem',fontWeight:700,color:T.teal,textTransform:'uppercase',
+                      letterSpacing:'0.14em',padding:'10px 22px 8px',fontFamily:font,
+                      borderTop:`0.0625rem solid ${T.g300}`,marginTop:'22px'}}>{item.label}</div>
                   : <>
                       <button
                         onClick={()=>{onNavClick(item.id);if(mob)onClose();}}
@@ -12608,10 +12615,14 @@ cursor: pointer;
 
     // ── MAIN DESIGN SYSTEM COMPONENT ──
     const DesignSystem = () => {
-      const [activeId,   setActiveId]   = useState('instruction');
+      const [activeId,   setActiveId]   = useState(() => {
+        try { return localStorage.getItem('mz-ds-active') || 'introduction'; } catch(e) { return 'introduction'; }
+      });
       const [drawerOpen, setDrawerOpen] = useState(false);
       const [isMobile,   setIsMobile]   = useState(() => window.innerWidth < 769);
-      const [page, setPage] = useState('main'); // 'main' | 'icons' | 'icon-detail'
+      const [page, setPage] = useState(() => { // 'main' | 'icons' | 'sections' | 'brandbook'
+        try { const p = localStorage.getItem('mz-ds-page'); return ['main','icons','sections','brandbook'].includes(p) ? p : 'main'; } catch(e) { return 'main'; }
+      });
       const [iconDetailKey, setIconDetailKey] = useState(null);
       const contentRef = useRef(null);
 
@@ -12638,6 +12649,20 @@ cursor: pointer;
           if (el) observer.observe(el);
         });
         return () => observer.disconnect();
+      }, []);
+
+      // Persist current page + section so a reload reopens at the same place.
+      useEffect(() => { try { localStorage.setItem('mz-ds-page', page); } catch(e){} }, [page]);
+      useEffect(() => { try { localStorage.setItem('mz-ds-active', activeId); } catch(e){} }, [activeId]);
+
+      // On first mount, restore scroll to the last-viewed section (own restore, not the browser's).
+      useEffect(() => {
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        if (page !== 'main') return;
+        let id; try { id = localStorage.getItem('mz-ds-active'); } catch(e){}
+        if (id && id !== 'introduction') {
+          requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({behavior:'instant', block:'start'}));
+        }
       }, []);
 
       const navClick = (id) => {
@@ -12884,18 +12909,21 @@ cursor: pointer;
                 {
                   label: 'Body — reading & content',
                   rows: [
-                    {name:'Body LG Regular', rem:'1.125rem', px:'18px', weight:400, lh:'1.5',  token:'--text-body-lg',        jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Lead paragraphs, intros'},
-                    {name:'Body LG Medium',  rem:'1.125rem', px:'18px', weight:500, lh:'1.5',  token:'--text-body-lg-medium', jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in lead text'},
-                    {name:'Body LG Bold',    rem:'1.125rem', px:'18px', weight:700, lh:'1.375',token:'--text-body-lg-bold',   jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis, large'},
-                    {name:'Body Regular',    rem:'1rem',     px:'16px', weight:400, lh:'1.5',  token:'--text-body',           jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
-                    {name:'Body Medium',     rem:'1rem',     px:'16px', weight:500, lh:'1.5',  token:'--text-body-medium',    jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, UI text'},
-                    {name:'Body Bold',       rem:'1rem',     px:'16px', weight:700, lh:'1.375',token:'--text-body-bold',      jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis'},
-                    {name:'Body SM Regular', rem:'0.875rem', px:'14px', weight:400, lh:'1.5',  token:'--text-body-sm',        jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
-                    {name:'Body SM Medium',  rem:'0.875rem', px:'14px', weight:500, lh:'1.5',  token:'--text-body-sm-medium', jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Labels, nav items'},
-                    {name:'Body SM Bold',    rem:'0.875rem', px:'14px', weight:700, lh:'1.375',token:'--text-body-sm-bold',   jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
-                    {name:'Caption Regular', rem:'0.75rem',  px:'12px', weight:400, lh:'1.4',  token:'--text-caption',        jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
-                    {name:'Caption Medium',  rem:'0.75rem',  px:'12px', weight:500, lh:'1.4',  token:'--text-caption-medium', jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Tags, badges'},
-                    {name:'Caption Bold',    rem:'0.75rem',  px:'12px', weight:700, lh:'1.4',  token:'--text-caption-bold',   jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
+                    {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Large intro / callout copy'},
+                    {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in large intro'},
+                    {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis, XL'},
+                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Lead paragraphs, intros'},
+                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in lead text'},
+                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis, large'},
+                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
+                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, UI text'},
+                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis'},
+                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
+                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Labels, nav items'},
+                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
+                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:400, wName:'regular', lh:'1.4', token:'--font-regular', jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
+                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:600, wName:'bold',    lh:'1.4', token:'--font-bold',    jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Tags, badges'},
+                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:800, wName:'strong',  lh:'1.4', token:'--font-strong',  jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
                   ]
                 },
                 {
@@ -12924,8 +12952,8 @@ cursor: pointer;
                                   <div>{'Tablet   ' + row.remT + ' · ' + row.pxT}</div>
                                   <div>{'Mobile   ' + row.remM + ' · ' + row.pxM}</div>
                                 </React.Fragment>
-                              ) : (<div>{row.rem}</div>)}
-                              <div>{'weight ' + row.weight + ' / lh ' + row.lh}{row.ls ? ' / ls ' + row.ls : ''}</div>
+                              ) : (<div>{row.rem + ' · ' + row.px}</div>)}
+                              <div>{(row.wName ? row.wName + ' · ' + row.weight : 'weight ' + row.weight) + ' / lh ' + row.lh}{row.ls ? ' / ls ' + row.ls : ''}</div>
                             </div>
                             <div style={{display:'flex',gap:4,marginTop:3,flexWrap:'wrap'}}>
                               <code style={{fontSize:'0.6rem',fontFamily:'monospace',color:T.g600,background:T.g100,padding:'1px 5px',borderRadius:T.rSm,lineHeight:1.6}}>{row.cls || row.token}</code>
@@ -12976,6 +13004,11 @@ cursor: pointer;
                         <div style={{color:cGroup, lineHeight:'26px', marginBottom:12}}>{'/* Typography tokens — paste in :root { } */'}</div>
                         <div style={{color:cGroup, lineHeight:'26px', marginBottom:4}}>{'/* Base: 1rem = 16px (browser default)   */'}</div>
 
+                        <Group label="Font weights"/>
+                        <Var name="--font-regular"        val="400"      px="body copy"       w="400"/>
+                        <Var name="--font-bold"           val="600"      px="emphasis"        w="600"/>
+                        <Var name="--font-strong"         val="800"      px="strong emphasis" w="800"/>
+
                         <Group label="Fluid / Responsive"/>
                         <Var name="--display-1"           val="5rem"    px="80px · lh 0.85 · ls -0.04em" w="700"/>
                         <Var name="--display-2"           val="3.5rem"  px="56px · lh 0.92 · ls -0.04em"  w="700"/>
@@ -12989,6 +13022,9 @@ cursor: pointer;
                         <Var name="--text-h4"             val="1.125rem" px="18px → 17px → 16px" w="700"/>
 
                         <Group label="Body 16px"/>
+                        <Var name="--text-body-xl"        val="1.25rem"  px="20px" w="400"/>
+                        <Var name="--text-body-xl-medium" val="1.25rem"  px="20px" w="500"/>
+                        <Var name="--text-body-xl-bold"   val="1.25rem"  px="20px" w="700"/>
                         <Var name="--text-body-lg"        val="1.125rem" px="18px" w="400"/>
                         <Var name="--text-body-lg-medium" val="1.125rem" px="18px" w="500"/>
                         <Var name="--text-body-lg-bold"   val="1.125rem" px="18px" w="700"/>
@@ -13462,7 +13498,7 @@ cursor: pointer;
 
             {/* BREADCRUMBS */}
             <SH1 id="breadcrumbs">Breadcrumbs</SH1>
-            <Lead>Hierarchical navigation trail showing the user's location within the site. Active page shown in black, parent links in gray (#7A7A82) — green (#015253) with underline on hover.</Lead>
+            <Lead>Hierarchical navigation trail showing the user's location within the site. Active page shown in black, parent links in gray (#6A6A6A) — green (#015253) with underline on hover.</Lead>
             <BreadcrumbsSection />
 
             {/* PRODUCT CARDS */}
@@ -13987,6 +14023,7 @@ cursor: pointer;
         '  h4, .h4 { font-size: 1rem; }       /* 16px */',
         '}',
         'p  { font-size:' + T.fBody + '; font-weight:400; line-height:1.55;  color:var(--color-graphite-800);  font-family:var(--font-family); }',
+        '.body-xl { font-size:' + T.fXl + '; font-weight:400; line-height:1.5; color:var(--color-graphite-800); font-family:var(--font-family); }  /* 20px large intro; --medium=500, --bold=700/lh1.375 */',
         '.body-lg { font-size:' + T.fLg + '; font-weight:400; line-height:1.5; color:var(--color-graphite-800); font-family:var(--font-family); }  /* 18px lead text; --medium=500, --bold=700/lh1.375 */',
         '.body-sm  { font-size:' + T.fSm  + '; line-height:1.5;  color:var(--color-graphite-700); font-family:var(--font-family); }',
         '.caption  { font-size:' + T.fXs  + '; line-height:1.4;  color:var(--color-graphite-600); font-family:var(--font-family); }',

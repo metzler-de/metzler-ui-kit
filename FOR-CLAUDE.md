@@ -63,7 +63,7 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
 
   /* ── TEXT ── */
   --color-graphite-500:      #A1A1A1;   /* placeholder, disabled, metadata */
-  --color-graphite-600:      #7A7A82;   /* captions, secondary labels */
+  --color-graphite-600:      #6A6A6A;   /* captions, secondary labels */
   --color-graphite-700:      #54545C;   /* secondary body text */
   --color-graphite-800:      #2E2E36;   /* primary body text */
   --color-graphite-850:      #333333;   /* icon fills, dark UI labels, editorial answer text */
@@ -213,9 +213,11 @@ p, .body {
 
 **Rules:**
 - Every section (header, hero, content, footer) gets a `<div class="container">` inside it
-- Outer `<section>` / `<header>` / `<footer>` elements have NO horizontal padding of their own
-- Full-width backgrounds are on the outer element; text content is always inside `.container`
+- This applies to EVERY band without exception: header rows, breadcrumbs, tab bars / section menus (e.g. Beschreibung · Bewertungen · Downloads · Technische Details), detail sections, and the footer — same `.container`, same width, always
+- Outer `<section>` / `<header>` / `<footer>` / `<nav>` elements have NO horizontal padding of their own
+- Full-width backgrounds (and full-width border-bottoms on tab bars) are on the outer element; text content is always inside `.container`
 - All content left-edges align with the logo left-edge — achieved automatically by `.container`
+- Self-check before delivering a page: the logo, breadcrumb, first heading, tab labels, section content, and footer logo must all start on the SAME vertical line
 
 ---
 
@@ -1072,7 +1074,7 @@ Apply these on every page for the `< 768px` breakpoint:
       --color-digital-black: #1A171B; --color-metzler-rot: #D42924;
       --color-white: #FFFFFF; --color-paper: #F5F6FA;
       --color-graphite-200: #E6E6E8; --color-graphite-300: #DADADA;
-      --color-graphite-600: #7A7A82; --color-graphite-700: #54545C; --color-graphite-800: #2E2E36;
+      --color-graphite-600: #6A6A6A; --color-graphite-700: #54545C; --color-graphite-800: #2E2E36;
       --radius: 0.25rem; --radius-lg: 0.5rem;
     }
 

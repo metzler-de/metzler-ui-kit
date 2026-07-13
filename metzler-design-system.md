@@ -78,7 +78,7 @@ Never hardcode hex. Reference tokens by their **CSS variable name** — the cano
 | Token Name | Hex | RGB | Usage Rule |
 |---|---|---|---|
 | Graphite 500 | `#A1A1A1` | 161 · 161 · 161 | Placeholder text, disabled labels, inactive icons |
-| Graphite 600 | `#7A7A82` | 122 · 122 · 130 | Metadata, captions, "in stock", timestamps |
+| Graphite 600 | `#6A6A6A` | 106 · 106 · 106 | Metadata, captions, "in stock", timestamps |
 | Graphite 700 | `#54545C` | 84 · 84 · 92 | Secondary text, helper text, secondary nav |
 | Graphite 800 | `#2E2E36` | 46 · 46 · 54 | Body paragraphs, primary nav, input values |
 | Graphite 900 | `#1A1A1F` | 26 · 26 · 31 | Headings, product names, prices |

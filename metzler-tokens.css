@@ -25,6 +25,11 @@
   --font-family:         "Helvetica Neue", Helvetica, Arial, sans-serif; /* macOS / Ubuntu */
   --font-family-windows: Arial, "Helvetica Neue", Helvetica, sans-serif; /* Windows */
 
+  /* Font weights — the three body weights */
+  --font-regular: 400;   /* body copy */
+  --font-bold:    600;   /* emphasis */
+  --font-strong:  800;   /* strong emphasis */
+
   /* Display — fluid / responsive */
   --display-1-size:   clamp(3rem, 9vw, 5rem);   /* max 80px */
   --display-1-weight: 700;
@@ -68,6 +73,16 @@
 
   --text-body-bold-weight:     700;
   --text-body-bold-lh:         1.375;
+
+  /* Body XL — large intro / callout copy */
+  --text-body-xl-size:         1.25rem;   /* 20px */
+  --text-body-xl-weight:       400;
+  --text-body-xl-lh:           1.5;
+
+  --text-body-xl-medium-weight: 500;
+
+  --text-body-xl-bold-weight:   700;
+  --text-body-xl-bold-lh:       1.375;
 
   /* Body Large — lead paragraphs, intros */
   --text-body-lg-size:         1.125rem;  /* 18px */
@@ -164,7 +179,7 @@
   ───────────────────────────────────────── */
 
   --color-graphite-500:   #A1A1A1;   /* Placeholders, disabled labels */
-  --color-graphite-600:   #7A7A82;   /* Metadata, captions, timestamps */
+  --color-graphite-600:   #6A6A6A;   /* Metadata, captions, timestamps */
   --color-graphite-700:   #54545C;   /* Secondary text, helper text */
   --color-graphite-800:   #2E2E36;   /* Body paragraphs, input values */
   --color-graphite-850:   #333333;   /* Icon fills, dark UI labels */
