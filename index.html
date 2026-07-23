@@ -2051,7 +2051,7 @@ a {
               borderBottom:`0.0625rem solid ${T.g200}`,
               flexShrink:0,
             }}>
-              <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>{title}</span>
+              <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>{title}</span>
               <button
                 onClick={onClose}
                 style={{
@@ -2212,69 +2212,73 @@ a {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:'1.25rem',height:'1.25rem'}}><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>,
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:'1.25rem',height:'1.25rem'}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:'1.25rem',height:'1.25rem'}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>,
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:'1.25rem',height:'1.25rem'}}><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>,
     ];
 
-    // ── Shared contact service cards list ──
+    // ── Shared contact service cards list — exact set & order from the VDM10 page ──
     const ContactCards = () => (
       <div style={{display:'flex',flexDirection:'column',gap:'0.625rem'}}>
-        <ServiceCard title="Dokumentation & Downloads" sub="Anleitungen, häufig gestellte Fragen und Tipps." icon={contactIcons[3]}/>
+        <ServiceCard title="Häufige Fragen (FAQ)" sub="Antworten, Anleitungen & Video-Hilfe zu Sprechanlagen." icon={contactIcons[4]}/>
         <ServiceCard title="Produktberatung & Bestellung" sub="Beratung vor dem Kauf einer Sprechanlage." icon={contactIcons[0]}/>
         <ServiceCard title="Technischer Support" sub="Techniker Termin zur Einrichtung." icon={contactIcons[1]}/>
         <ServiceCard title="Metzler Partnerbetriebe" sub="Installationspartner in Ihrer Nähe." icon={contactIcons[2]}/>
       </div>
     );
 
-    // ── Contact desktop content — shared between static preview and live modal ──
+    // ── Contact desktop content — exact port of the VDM10 Experten-Kontakt modal ──
     const ContactDesktopContent = ({onClose}) => (
       <>
-        {/* Left teal panel */}
-        <div style={{flex:'0 0 38%',
+        {/* Left teal hero */}
+        <div style={{flex:'0 0 19rem',
           background:`linear-gradient(160deg, ${T.teal900} 0%, ${T.teal} 100%)`,
-          padding:'1.5rem',display:'flex',flexDirection:'column',
+          padding:'2rem',display:'flex',flexDirection:'column',
           gap:'1.375rem',boxSizing:'border-box',overflowY:'auto'}}>
           <h3 style={{margin:0,fontFamily:font,fontSize:'2.125rem',fontWeight:700,
             lineHeight:1.1,letterSpacing:'-0.01em',color:T.white}}>
-            Sprechen Sie mit einem{' '}
-            <em style={{fontStyle:'normal',color:T.mint}}>Experten.</em>
+            Sprechen Sie<br/>mit einem{' '}
+            <em style={{fontStyle:'normal',color:T.mint}}>Experten</em>
           </h3>
           <p style={{margin:0,fontFamily:font,fontSize:T.fSm,lineHeight:1.55,
             color:'rgba(255,255,255,0.78)'}}>
-            Persönliche Beratung, technischer Support und geprüfte Partnerbetriebe — alles an einem Ort.
+            Persönliche Beratung, technischer Support und Metzler Partnerbetriebe — wir sind für Sie da.
           </p>
           <div style={{height:'0.0625rem',background:'rgba(255,255,255,0.18)',marginTop:'auto'}}/>
           <div style={{display:'flex',flexDirection:'column',gap:'0.375rem'}}>
-            <span style={{fontFamily:font,fontSize:T.fXxs,fontWeight:700,
-              letterSpacing:'0.16em',textTransform:'uppercase',color:T.mint,marginBottom:'0.375rem'}}>Hotline</span>
-            <span style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
-              color:T.white,letterSpacing:'-0.01em',lineHeight:1.2,whiteSpace:'nowrap'}}>
-              +49 (0) 7121 · 317 7333
-            </span>
+            <span style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,lineHeight:1.4,
+              letterSpacing:'0.15em',textTransform:'uppercase',color:T.mint,marginBottom:'0.375rem'}}>Hotline</span>
+            <a href="tel:+4971213177333" style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
+              color:T.white,letterSpacing:'-0.01em',lineHeight:1.2,whiteSpace:'nowrap',textDecoration:'none'}}
+              onMouseEnter={e=>e.currentTarget.style.textDecoration='underline'}
+              onMouseLeave={e=>e.currentTarget.style.textDecoration='none'}>
+              +49 (0) 7121 / 317 7333
+            </a>
             <span style={{fontFamily:font,fontSize:T.fXs,color:'rgba(255,255,255,0.62)'}}>Mo–Fr · 09:00–16:00 Uhr</span>
-            <span style={{fontFamily:font,fontSize:T.fSm,color:T.white,
-              marginTop:'0.375rem',display:'inline-block'}}>
+            <a href="mailto:service@metzlergmbh.de" style={{fontFamily:font,fontSize:T.fSm,color:T.white,
+              marginTop:'0.375rem',display:'inline-block',textDecoration:'none'}}
+              onMouseEnter={e=>e.currentTarget.style.textDecoration='underline'}
+              onMouseLeave={e=>e.currentTarget.style.textDecoration='none'}>
               service@metzlergmbh.de
-            </span>
+            </a>
           </div>
         </div>
-        {/* Right white panel */}
-        <div style={{flex:1,background:T.white,display:'flex',flexDirection:'column'}}>
-          {/* Standard header bar — same style as Produktdetails (title h2 left, X right, divider) */}
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
-            padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-            <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,
-              letterSpacing:'-0.015em',color:T.dBlack}}>Kontakt &amp; Service</span>
-            <div role="button" aria-label="Schließen" onClick={onClose||undefined}
-              style={{width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',flexShrink:0,
-                color:T.g600,cursor:onClose?'pointer':'default',
-                display:'inline-flex',alignItems:'center',justifyContent:'center',
-                transition:'background 0.15s',userSelect:'none'}}
-              onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
-              onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-              <XIcon/>
-            </div>
+        {/* Right white panel — absolute close, eyebrow above heading (no header bar) */}
+        <div style={{position:'relative',flex:1,minWidth:0,minHeight:0,background:T.white,display:'flex',flexDirection:'column'}}>
+          <div role="button" aria-label="Schließen" onClick={onClose||undefined}
+            style={{position:'absolute',top:'1rem',right:'1rem',zIndex:2,
+              width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
+              color:T.g600,cursor:onClose?'pointer':'default',
+              display:'inline-flex',alignItems:'center',justifyContent:'center',
+              transition:'background 0.15s',userSelect:'none'}}
+            onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
+            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+            <XIcon/>
           </div>
           {/* Scrollable body */}
-          <div style={{overflowY:'auto',flex:1,padding:'1.5rem',display:'flex',flexDirection:'column'}}>
+          <div style={{overflowY:'auto',flex:1,minHeight:0,padding:'2.25rem 1.75rem 1.75rem',display:'flex',flexDirection:'column'}}>
+            <span style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,lineHeight:1.4,
+              letterSpacing:'0.15em',textTransform:'uppercase',color:T.teal,margin:'0 0 0.75rem'}}>
+              Kontakt &amp; Service
+            </span>
             <h3 style={{margin:'0 0 0.5rem',fontFamily:font,fontSize:T.fH3,fontWeight:700,
               color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
               Wie können wir Ihnen helfen?
@@ -2296,7 +2300,7 @@ a {
         {/* Sticky header: title + close (matches desktop) */}
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
           padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-          <span style={{fontFamily:font,fontSize:T.fH3,fontWeight:700,lineHeight:1.3,
+          <span style={{fontFamily:font,fontSize:'1.1rem',fontWeight:700,lineHeight:1.3,
             letterSpacing:'-0.015em',color:T.dBlack}}>
             Kontakt &amp; Service
           </span>
@@ -2323,17 +2327,18 @@ a {
           <div style={{marginTop:'1.375rem',paddingTop:'1.125rem',
             borderTop:`0.0625rem solid ${T.g100}`,
             display:'flex',flexDirection:'column',gap:'0.25rem'}}>
-            <span style={{fontFamily:font,fontSize:T.fXxs,fontWeight:700,
-              letterSpacing:'0.16em',textTransform:'uppercase',color:T.teal}}>Hotline</span>
+            <span style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,lineHeight:1.4,
+              letterSpacing:'0.15em',textTransform:'uppercase',color:T.teal}}>Hotline</span>
             <a href="tel:+4971213177333" style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
               color:T.black,letterSpacing:'-0.01em',lineHeight:1.2,
               textDecoration:'none',display:'inline-block'}}>
-              +49 (0) 7121 · 317 7333
+              +49 (0) 7121 / 317 7333
             </a>
             <span style={{fontFamily:font,fontSize:T.fXs,color:T.g600}}>Mo–Fr · 09:00–16:00 Uhr</span>
-            <span style={{fontFamily:font,fontSize:T.fSm,color:T.black,marginTop:'0.25rem'}}>
+            <a href="mailto:service@metzlergmbh.de" style={{fontFamily:font,fontSize:T.fSm,color:T.black,
+              marginTop:'0.25rem',textDecoration:'none',display:'inline-block'}}>
               service@metzlergmbh.de
-            </span>
+            </a>
           </div>
         </div>
       </div>
@@ -2345,7 +2350,7 @@ a {
       return (<>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
           padding:'1.25rem 1.5rem',background:T.white,borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-          <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Datenschutz-Einstellungen</span>
+          <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Datenschutz-Einstellungen</span>
           <button onClick={onClose}
             style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',borderRadius:T.r,
               border:'none',outline:'none',background:'transparent',cursor:onClose?'pointer':'default',color:T.g600,transition:'background 0.15s'}}
@@ -2452,7 +2457,7 @@ a {
           <div style={{flex: mob ? 'none' : 1, height: mob ? ph : '100%', display:'flex', flexDirection:'column', overflow:'hidden'}}>
             <div style={{display: mob ? 'none' : 'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
               padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-              <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
+              <span style={{fontFamily:font,fontSize:'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
               <button onClick={onClose}
                 style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',borderRadius:T.r,
                   border:'none',outline:'none',background:'transparent',cursor:onClose?'pointer':'default',color:T.g600,transition:'background 0.15s'}}
@@ -2483,7 +2488,7 @@ a {
         {/* Standard header */}
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
           padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-          <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
+          <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
           <button onClick={onClose}
             style={{display:'flex',alignItems:'center',justifyContent:'center',
               width:'2rem',height:'2rem',borderRadius:T.r,
@@ -2584,7 +2589,7 @@ a {
     const ContactModal = ({open, onClose}) => {
       const { mob } = useContext(MobCtx);
       return (
-        <MobSheet open={open} onClose={onClose} maxW="48rem" dir="row">
+        <MobSheet open={open} onClose={onClose} maxW="52rem" dir="row">
           {mob ? (
             /* ── MOBILE: centered card, hotline at bottom ── */
             <ContactMobileContent onClose={onClose}/>
@@ -2604,7 +2609,7 @@ a {
           {/* Header */}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
             padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-            <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Produktdetails</span>
+            <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Produktdetails</span>
             <button onClick={onClose||undefined}
               style={{display:'flex',alignItems:'center',justifyContent:'center',
                 width:'2rem',height:'2rem',borderRadius:T.r,
@@ -2615,54 +2620,73 @@ a {
               <XIcon/>
             </button>
           </div>
-          {/* 2-column body */}
-          <div style={{display:'flex',overflow:'hidden',flexGrow:1}}>
+          {/* 2-column body — exact port of the VDM10 configurator Produktdetails popup */}
+          <div style={{display:'flex',overflow:'hidden',flexGrow:1,minHeight:0,flexDirection:mob?'column':'row',overflowY:mob?'auto':'hidden'}}>
             {/* Left — white image area, contained */}
-            <div style={{flex:'0 0 50%',background:T.white,display:'flex',alignItems:'center',justifyContent:'center',padding:'2.5rem',borderRight:`0.0625rem solid ${T.g100}`}}>
+            <div style={{flex:mob?'0 0 auto':'0 0 50%',background:T.white,display:'flex',alignItems:'center',justifyContent:'center',
+              padding:mob?'1.5rem':'2.5rem',boxSizing:'border-box',
+              borderRight:mob?'none':`0.0625rem solid ${T.g100}`,
+              borderBottom:mob?`0.0625rem solid ${T.g100}`:'none'}}>
               <img src="Pictures/innenstation/metzler-intercom-innenstation-ultra-10-zoll-touchscreen-lan-poe-schwarz.webp"
                 alt="Metzler Intercom Innenstation Ultra"
-                style={{width:'100%',height:'auto',display:'block',objectFit:'contain'}}/>
+                style={{width:'100%',height:'auto',maxHeight:mob?'14rem':'24rem',display:'block',objectFit:'contain'}}/>
             </div>
             {/* Right info */}
-            <div style={{flex:'0 0 50%',padding:mob?'1.25rem':'3.5rem 2rem 2rem',overflowY:'auto',display:'flex',flexDirection:'column',gap:'1rem'}}>
-              <h4 style={{margin:0,fontSize:mob?T.fSm:T.fH4,fontWeight:700,color:T.black,fontFamily:font,lineHeight:1.35}}>
+            <div style={{flex:mob?'0 0 auto':'0 0 50%',padding:mob?'1.25rem':'2rem',overflowY:mob?'visible':'auto',display:'flex',flexDirection:'column',gap:'1rem',boxSizing:'border-box'}}>
+              {/* Product name — DS h1 style (1.875rem / 700 / lh 1.25, mobile 1.5rem) */}
+              <h1 style={{margin:0,fontSize:mob?'1.5rem':T.fH1,fontWeight:700,color:T.dBlack,fontFamily:font,lineHeight:1.25,letterSpacing:'-0.02em'}}>
                 Metzler Intercom Innenstation Ultra, 10 Zoll Touchscreen, LAN PoE, schwarz
-              </h4>
+              </h1>
+              {/* Rating — SVG stars, half via gradient */}
               <div style={{display:'flex',alignItems:'center',gap:'0.375rem'}}>
-                <span style={{color:T.star,fontSize:mob?T.fSm:T.fBody,letterSpacing:'0.04em'}}>★★★★</span>
-                <span style={{position:'relative',display:'inline-block',fontSize:mob?T.fSm:T.fBody,color:T.g200,letterSpacing:'0.04em'}}>
-                  ★<span style={{position:'absolute',left:0,top:0,width:'50%',overflow:'hidden',color:T.star,whiteSpace:'nowrap'}}>★</span>
+                <span aria-hidden="true" style={{display:'inline-flex',gap:'0.125rem'}}>
+                  {[1,2,3,4,5].map(i=>(
+                    <svg key={i} viewBox="0 0 19 19" style={{width:'1rem',height:'1rem'}}>
+                      {i===5 && <defs><linearGradient id="pdHalfStar"><stop offset="50%" stopColor={T.star}/><stop offset="50%" stopColor={T.g200}/></linearGradient></defs>}
+                      <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z"
+                        fill={i===5 ? 'url(#pdHalfStar)' : T.star}/>
+                    </svg>
+                  ))}
                 </span>
                 <span style={{fontFamily:font,fontSize:T.fSm,color:T.g600}}>4,5 (4 Bewertungen)</span>
               </div>
+              {/* Spec table — Hersteller · Maße · Artikelnummer */}
               <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,fontSize:mob?T.fSm:T.fBody,margin:'0.75rem 0'}}>
                 <tbody>
                   <tr>
-                    {[['Hersteller:','Metzler'],['Breite × Höhe × Tiefe:','25,40 × 16,60 × 2,47 cm'],['Artikelnummer:','29407']].map(([label,val],i,arr)=>{
-                      const align = i===0 ? 'left' : i===arr.length-1 ? 'right' : 'center';
-                      const pad   = i===0 ? '0.5rem 1rem 0.5rem 0' : i===arr.length-1 ? '0.5rem 0 0.5rem 1rem' : '0.5rem 1rem';
-                      const wid   = i===1 ? '46%' : '27%';   /* middle column widest so its longer text wraps to 2 rows like the others */
-                      return (
-                      <td key={label} style={{padding:pad,verticalAlign:'top',width:wid,textAlign:align,
+                    {[['Hersteller:','Metzler'],['Breite × Höhe × Tiefe:','25,40 × 16,60 × 2,47 cm'],['Artikelnummer:','29407']].map(([label,val],i,arr)=>(
+                      <td key={label} style={{
+                        padding: i===0 ? '0.5rem 1rem 0.5rem 0' : i===arr.length-1 ? '0.5rem 0 0.5rem 1rem' : '0.5rem 1rem',
+                        verticalAlign:'top',
+                        textAlign: i===0 ? 'left' : i===arr.length-1 ? 'right' : 'center',
                         borderRight: i < arr.length-1 ? `0.0625rem solid ${T.g200}` : 'none'}}>
                         <div style={{color:T.g500,marginBottom:'0.25rem'}}>{label}</div>
                         <div style={{fontWeight:700,color:T.black}}>{val}</div>
                       </td>
-                    );})}
+                    ))}
                   </tr>
                 </tbody>
               </table>
+              {/* Price */}
               <div style={{fontFamily:font}}>
                 <div style={{display:'flex',alignItems:'baseline',gap:'0.625rem'}}>
-                  <span style={{fontSize:T.fH3,fontWeight:700,color:T.black}}>381,65 €</span>
-                  <span style={{fontSize:T.fSm,color:T.g500,textDecoration:'line-through'}}>449,00 €</span>
+                  <span style={{fontSize:T.fH2,fontWeight:700,color:T.black}}>+ 449,00 €</span>
                 </div>
                 <div style={{fontSize:T.fXs,color:T.g600,marginTop:'0.125rem'}}>inkl. 19% USt. · Versandkostenfreie Lieferung</div>
               </div>
               <div style={{fontFamily:font,fontSize:T.fSm,color:T.green,fontWeight:700}}>Sofort verfügbar</div>
-              <p style={{margin:0,fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.g700,lineHeight:1.6}}>
-                Metzler Innenstation für Intercom mit Touchscreen Display und Standard POE-Netzwerkanschluss. Ideal für die Integration in moderne Smart-Home-Systeme.
-              </p>
+              {/* Description — intro + bullet list */}
+              <div style={{fontFamily:font,fontSize:mob?T.fSm:T.fBody,color:T.black,lineHeight:1.6}}>
+                <p style={{margin:'0 0 0.75rem'}}>
+                  Die <b>Ultra 10,1″</b> ist die Topausführung mit besonders großem 10-Zoll-Touchscreen für maximalen Bedienkomfort.
+                </p>
+                <ul style={{margin:'0.25rem 0 0',paddingLeft:'1.1rem',display:'flex',flexDirection:'column',gap:'0.35rem'}}>
+                  <li>10,1″ Touchscreen · großes Live-Bild</li>
+                  <li>Live-HD-Video, Gegensprechen &amp; Türöffnen</li>
+                  <li>Komfortable Bedienung aller Funktionen</li>
+                  <li>Wandmontage · Farbe: schwarz</li>
+                </ul>
+              </div>
             </div>
           </div>
         </>
@@ -2684,7 +2708,7 @@ a {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
               </svg>
             </div>
-            <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Wie wir Cookies &amp; Co nutzen</span>
+            <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Wie wir Cookies &amp; Co nutzen</span>
           </div>
           {/* Body */}
           <div style={{padding:mob?'1rem 1.25rem':'1.5rem',fontFamily:font}}>
@@ -2883,7 +2907,7 @@ a {
                 {/* Right — review content panel */}
                 <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                    <span style={{fontFamily:font,fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
+                    <span style={{fontFamily:font,fontSize:'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Kundenbewertung</span>
                     <button style={{display:'flex',alignItems:'center',justifyContent:'center',width:'2rem',height:'2rem',flexShrink:0,
                       borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}><XIcon/></button>
                   </div>
@@ -2926,7 +2950,7 @@ a {
           <p style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black,margin:'0 0 0.5rem'}}>D — Experten-Kontakt &amp; Service (Split-Panel, product page)</p>
           <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
             <div style={{padding:'2.5rem 1.5rem',background:T.paper,display:'flex',justifyContent:'center'}}>
-              <div style={{width:'100%',maxWidth:'48rem',borderRadius:T.rLg,
+              <div style={{width:'100%',maxWidth:'52rem',borderRadius:T.rLg,
                 boxShadow:'0 1.25rem 3.75rem rgba(0,0,0,0.14),0 0.25rem 1rem rgba(0,0,0,0.06)',
                 overflow:'hidden',display:'flex'}}>
                 <ContactDesktopContent/>
@@ -2934,34 +2958,34 @@ a {
             </div>
             <CodeBlock inline lang="HTML" code={
 `<div class="modal-overlay">
-  <div class="modal-dialog modal-lg" style="display:flex;flex-direction:row;">
+  <div class="modal-dialog modal-lg" style="display:flex;flex-direction:row;max-width:52rem;">
 
-    <!-- Left hero panel -->
+    <!-- Left teal hero — 19rem fixed, gradient teal-900 → teal -->
     <div class="modal-panel-hero">
-      <h3>Sprechen Sie mit einem <em>Experten.</em></h3>
-      <p>Persönliche Beratung, technischer Support …</p>
+      <h3>Sprechen Sie<br>mit einem <em>Experten</em></h3>
+      <p>Persönliche Beratung, technischer Support und Metzler Partnerbetriebe — wir sind für Sie da.</p>
       <hr class="panel-rule" />
       <div class="panel-contact">
-        <span class="label">Hotline</span>
-        <a href="tel:+4971213177333">+49 (0) 7121 · 317 7333</a>
+        <span class="label">Hotline</span>  <!-- .overline · mint -->
+        <a href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a>
         <span>Mo–Fr · 09:00–16:00 Uhr</span>
         <a href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</a>
       </div>
     </div>
 
-    <!-- Right action panel — X button overlaid -->
+    <!-- Right action panel — X overlaid top-right, eyebrow above heading -->
     <div class="modal-panel-action">
       <button class="modal-close modal-close--overlay" aria-label="Schließen">✕</button>
-      <div class="eyebrow">Kontakt &amp; Service</div>
+      <div class="eyebrow">Kontakt &amp; Service</div>  <!-- .overline · teal -->
       <h4>Wie können wir Ihnen helfen?</h4>
       <p>Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.</p>
       <div class="service-cards">
-        <a class="service-card service-card--active" href="#">
-          <span class="service-card__ico"><!-- chat SVG --></span>
-          <div><strong>Produktberatung &amp; Bestellung</strong><p>Beratung vor dem Kauf · Antwort meist in 5 Min.</p></div>
+        <a class="service-card" href="#">
+          <span class="service-card__ico"><!-- help-circle SVG --></span>
+          <div><strong>Häufige Fragen (FAQ)</strong><p>Antworten, Anleitungen &amp; Video-Hilfe zu Sprechanlagen.</p></div>
           <svg class="chevron">…</svg>
         </a>
-        <!-- repeat for Technischer Support, Partnerbetrieb, Dokumentation -->
+        <!-- repeat: Produktberatung & Bestellung · Technischer Support · Metzler Partnerbetriebe -->
       </div>
     </div>
 
@@ -2979,7 +3003,7 @@ a {
                 {/* Header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                  <span style={{fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
+                  <span style={{fontSize:'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Zahlung und Versand</span>
                   <button style={{display:'flex',alignItems:'center',justifyContent:'center',
                     width:'2rem',height:'2rem',borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}>
                     <XIcon/>
@@ -3118,7 +3142,7 @@ a {
                 {/* Standard header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`}}>
-                  <span style={{fontSize:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Anmelden</span>
+                  <span style={{fontSize:'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Anmelden</span>
                   <button style={{display:'flex',alignItems:'center',justifyContent:'center',
                     width:'2rem',height:'2rem',borderRadius:T.r,border:'none',background:'transparent',cursor:'pointer',color:T.g600}}>
                     <XIcon/>
@@ -3206,7 +3230,10 @@ a {
 }
 .modal-title {
   font-family: var(--font-family);
-  font-size: 1.5rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.015em; color: var(--color-digital-black);
+  font-size: 1.3rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.015em; color: var(--color-digital-black);
+}
+@media (max-width: 48rem) {
+  .modal-title { font-size: 1.1rem; }
 }
 
 /* Close button — same style in all modals */
@@ -3274,13 +3301,13 @@ a {
           <BD>Öffne einen echten Modal in jeder Größe direkt im Browser.</BD>
           <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
             <div style={{padding:'1.5rem',background:T.paper,display:'flex',gap:'0.75rem',flexWrap:'wrap',alignItems:'center'}}>
-              <Btn onClick={()=>setOpenFull(true)} variant="primary">XL · 1100px — Produktdetail</Btn>
-              <Btn onClick={()=>setOpenPayment(true)} variant="primary">LG · 960px — Zahlung &amp; Versand</Btn>
-              <Btn onClick={()=>{setOpenPhotoReview(true);setPhotoIdx(0);}} variant="primary">LG · 960px — Kundenfoto &amp; Bewertung</Btn>
-              <Btn onClick={()=>setOpenContact(true)} variant="primary">LG · 960px — Experten-Kontakt</Btn>
-              <Btn onClick={()=>{setOpenCookie(true);setCookieChoice(null);}} variant="primary">MD · 600px — Cookie-Banner</Btn>
-              <Btn onClick={()=>setOpenPrivacy(true)} variant="primary">MD · 600px — Datenschutz-Einstellungen</Btn>
-              <Btn onClick={()=>setOpenSm(true)} variant="primary">SM · 400px — Login</Btn>
+              <Btn onClick={()=>setOpenFull(true)} variant="primary">Produktdetail</Btn>
+              <Btn onClick={()=>setOpenPayment(true)} variant="primary">Zahlung &amp; Versand</Btn>
+              <Btn onClick={()=>{setOpenPhotoReview(true);setPhotoIdx(0);}} variant="primary">Kundenfoto &amp; Bewertung</Btn>
+              <Btn onClick={()=>setOpenContact(true)} variant="primary">Experten-Kontakt</Btn>
+              <Btn onClick={()=>{setOpenCookie(true);setCookieChoice(null);}} variant="primary">Cookie-Banner</Btn>
+              <Btn onClick={()=>setOpenPrivacy(true)} variant="primary">Datenschutz-Einstellungen</Btn>
+              <Btn onClick={()=>setOpenSm(true)} variant="primary">Login</Btn>
               {cookieChoice && <span style={{fontFamily:font,fontSize:T.fSm,color:T.g500}}>Gewählt: <strong style={{color:T.teal}}>{cookieChoice}</strong></span>}
             </div>
           </div>
@@ -3335,7 +3362,7 @@ a {
                 <PhoneCard label="Anmelden">
                   <MobCtx.Provider value={{mob:true}}>
                     <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                      <span style={{fontFamily:font,fontSize:T.fH3,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Anmelden</span>
+                      <span style={{fontFamily:font,fontSize:'1.1rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack}}>Anmelden</span>
                       <div style={{width:'1.75rem',height:'1.75rem',display:'flex',alignItems:'center',justifyContent:'center',color:T.g600}}>
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 1L1 13M1 1l12 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                       </div>
@@ -3391,7 +3418,7 @@ a {
                   background:T.white,
                   borderBottom:`0.0625rem solid ${T.g200}`,
                   flexShrink:0}}>
-                  <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Datenschutz-Einstellungen</span>
+                  <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Datenschutz-Einstellungen</span>
                   <button onClick={()=>setOpenPrivacy(false)}
                     style={{display:'flex',alignItems:'center',justifyContent:'center',
                       width:'2rem',height:'2rem',borderRadius:T.r,
@@ -3514,7 +3541,7 @@ a {
                 {/* Standard header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',
                   padding:'1.25rem 1.5rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-                  <span style={{fontSize:mob?T.fH3:T.fH2,fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Lieferinformation</span>
+                  <span style={{fontSize:mob?'1.1rem':'1.3rem',fontWeight:700,lineHeight:1.3,letterSpacing:'-0.015em',color:T.dBlack,fontFamily:font}}>Lieferinformation</span>
                   <button onClick={()=>setOpenDelivery(false)}
                     style={{display:'flex',alignItems:'center',justifyContent:'center',
                       width:'2rem',height:'2rem',borderRadius:T.r,
@@ -6579,7 +6606,7 @@ cursor: pointer;
 
             /* ── ACCESS SLIDER ── */
             .acc-stage {
-              background: ${T.dBlack}; color: ${T.white};
+              background: ${T.black}; color: ${T.white};
               border-radius: ${T.rLg}; overflow: hidden;
               padding: 2.25rem 0 2.5rem;
             }
@@ -7492,7 +7519,7 @@ cursor: pointer;
               </div>
               <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
                 <CodeBlock inline lang="CSS" code={`.acc-stage {
-  background: var(--color-digital-black); color: var(--color-white);
+  background: var(--color-black); color: var(--color-white);
   border-radius: var(--radius-lg);
   padding: 2.25rem 0 2.5rem;
 }
@@ -8588,7 +8615,7 @@ cursor: pointer;
                       </div>
                     </div>
                     <div className="abt-hero__photo-col">
-                      <img className="abt-hero__photo" src="https://sabavafa.github.io/metzler-about-us/Banner/office.png" alt="Metzler Hauptsitz in Reutlingen"/>
+                      <img className="abt-hero__photo" src="media/about-office.png" alt="Metzler Hauptsitz in Reutlingen"/>
                     </div>
                   </div>
                 </section>
@@ -8638,7 +8665,7 @@ cursor: pointer;
                     <div className="craft-chapter__inner">
                       <div className="craft-media">
                         <div className="craft-media__frame">
-                          <img src="https://sabavafa.github.io/metzler-about-us/images/metzler-paketbox-mit-briefkasten-personalisiert-mit-gravur-edelstahl-namensschild-mit-briefeinwurf-bispo-2~30.webp" alt="Metzler Paketbox mit Briefkasten und personalisierter Edelstahl-Gravur"/>
+                          <img src="media/craft-paketbox.webp" alt="Metzler Paketbox mit Briefkasten und personalisierter Edelstahl-Gravur"/>
                         </div>
                         <span className="craft-media__tag">Maßanfertigung</span>
                       </div>
@@ -8656,7 +8683,7 @@ cursor: pointer;
                     <div className="craft-chapter__inner">
                       <div className="craft-media">
                         <div className="craft-media__frame">
-                          <img src="https://sabavafa.github.io/metzler-about-us/images/image%2028.png" alt="Metzler XDM10 Video-Türsprechanlage in Anthrazit (RAL 7016) mit austauschbarem Namensschild"/>
+                          <img src="media/craft-xdm10.png" alt="Metzler XDM10 Video-Türsprechanlage in Anthrazit (RAL 7016) mit austauschbarem Namensschild"/>
                         </div>
                         <span className="craft-media__tag">Sicherheit</span>
                       </div>

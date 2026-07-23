@@ -364,7 +364,7 @@ Rules of thumb: max **one dark hero** per page; never stack two dark sections di
 
 ```css
 .acc-stage {
-  background: var(--color-digital-black); color: var(--color-white);
+  background: var(--color-black); color: var(--color-white);
   border-radius: var(--radius-lg); overflow: hidden;
   padding: 2.25rem 0 2.5rem;
 }

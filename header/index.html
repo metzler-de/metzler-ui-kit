@@ -283,6 +283,9 @@
       color: #333; display: flex; align-items: center; justify-content: center;
     }
     .hdr-mobile-btn svg { width: 22px; height: 22px; }
+    /* User + basket use tight-cropped viewBoxes (glyph fills the box) — render
+       them smaller so their visual size matches the search icon's glyph */
+    .hdr-mobile-right .hdr-mobile-btn svg { width: auto; height: 18px; }
     .hdr-mobile-logo { height: 22px; width: auto; }
 
     /* Hide desktop header rows on mobile, show mobile header */
