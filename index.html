@@ -2218,10 +2218,10 @@ a {
     // ── Shared contact service cards list — exact set & order from the VDM10 page ──
     const ContactCards = () => (
       <div style={{display:'flex',flexDirection:'column',gap:'0.625rem'}}>
-        <ServiceCard title="Häufige Fragen (FAQ)" sub="Antworten, Anleitungen & Video-Hilfe zu Sprechanlagen." icon={contactIcons[4]}/>
         <ServiceCard title="Produktberatung & Bestellung" sub="Beratung vor dem Kauf einer Sprechanlage." icon={contactIcons[0]}/>
-        <ServiceCard title="Technischer Support" sub="Techniker Termin zur Einrichtung." icon={contactIcons[1]}/>
         <ServiceCard title="Metzler Partnerbetriebe" sub="Installationspartner in Ihrer Nähe." icon={contactIcons[2]}/>
+        <ServiceCard title="Häufige Fragen (FAQ)" sub="Antworten, Anleitungen & Video-Hilfe zu Sprechanlagen." icon={contactIcons[4]}/>
+        <ServiceCard title="Technischer Support" sub="Techniker Termin zur Einrichtung." icon={contactIcons[1]}/>
       </div>
     );
 
@@ -2981,11 +2981,11 @@ a {
       <p>Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.</p>
       <div class="service-cards">
         <a class="service-card" href="#">
-          <span class="service-card__ico"><!-- help-circle SVG --></span>
-          <div><strong>Häufige Fragen (FAQ)</strong><p>Antworten, Anleitungen &amp; Video-Hilfe zu Sprechanlagen.</p></div>
+          <span class="service-card__ico"><!-- chat SVG --></span>
+          <div><strong>Produktberatung &amp; Bestellung</strong><p>Beratung vor dem Kauf einer Sprechanlage.</p></div>
           <svg class="chevron">…</svg>
         </a>
-        <!-- repeat: Produktberatung & Bestellung · Technischer Support · Metzler Partnerbetriebe -->
+        <!-- repeat: Metzler Partnerbetriebe · Häufige Fragen (FAQ) · Technischer Support -->
       </div>
     </div>
 
