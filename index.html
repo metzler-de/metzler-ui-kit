@@ -347,7 +347,7 @@
       {value:"#B52320", label:"Red 600", subtitle:"Hover · Pressed",                  role:"Hover/pressed state for any red interactive element",                                                       hex:"#B52320", rgb:"181 · 35 · 32",   grp:"Red"},
       {value:"#4D0E0D", label:"Red 900", subtitle:"Text on red backgrounds",           role:"Readable text on Red 50 alert surfaces (error messages, alert body text)",                                 hex:"#4D0E0D", rgb:"77 · 14 · 13",    grp:"Red"},
       // ── YELLOW ──
-      {value:"#FFC041", label:"Star Yellow",         subtitle:"Review stars · Rating UI",             role:"Review star fill colour on product cards, PDP rating bars, order confirmation star rating widget",  hex:"#FFC041", rgb:"255 · 192 · 65",   grp:"Yellow"},
+      {value:"#FFC041", label:"Star Yellow",         subtitle:"Review stars · Rating UI",             role:"Review star fill colour on product cards, PDP rating bars, order confirmation star rating widget",  hex:"#FFC041", rgb:"255 · 192 · 65",   grp:"Accent"},
       // ── GRAPHITE SURFACES ──
       {value:"#F5F6FA", label:"Paper White",  subtitle:"Graphite 50 · Page backgrounds",  role:"Page bg, sidebar, search bar pill",                                                                         hex:"#F5F6FA", rgb:"245 · 246 · 250", grp:"Graphite Surfaces"},
       {value:"#F0F0F0", label:"Graphite 100", subtitle:"Off-white · Row dividers",         role:"Row dividers, inactive tabs, skeleton, badges",                                                             hex:"#F0F0F0", rgb:"240 · 240 · 240", grp:"Graphite Surfaces"},
@@ -4954,107 +4954,66 @@ a {
     };
 
     // ── FILE DOWNLOAD COMPONENT ──
-    const FileDownload = ({title='Schnellstartanleitung', type='PDF', size='1,2 MB', date='03/2026', hov:hovProp, setHov, interactive=false}) => {
-      const [hovDown, setHovDown] = React.useState(false);
-      const [hovSelf, setHovSelf] = React.useState(false);
-      const hov = interactive ? hovSelf : (hovProp || false);
-      return (
-        <div
-          onMouseEnter={()=>{ if(interactive) setHovSelf(true); else setHov&&setHov(true); }}
-          onMouseLeave={()=>{ if(interactive) setHovSelf(false); else setHov&&setHov(false); }}
-          style={{
-            display:'flex', alignItems:'center', gap:14,
-            background:T.white, boxSizing:'border-box',
-            padding:'16px 18px', width:420, fontFamily:font,
-            cursor:'pointer', userSelect:'none',
-            borderRadius:T.rLg,
-            border: hov ? `1.5px solid ${T.teal}` : `1.5px solid ${T.g200}`,
-            transition:'border-color 0.15s',
-          }}>
+    // Exact 1:1 port of download-card-handoff.html (colours mapped to DS tokens).
+    // Scoped CSS is injected once by FileDownloadSection.
+    const FileDownload = ({title='Bedienungsanleitung', type='PDF', lang='Deutsch', size='4,2 MB', hov=false}) => (
+      <a className={'psx-dl__item' + (hov ? ' is-hover' : '')} href="#" onClick={e=>e.preventDefault()}>
+        <span className="psx-dl__badge">{type}</span>
+        <span className="psx-dl__text">
+          <b>{title}</b>
+          <span>{lang} · {size}</span>
+        </span>
+        <svg className="psx-dl__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
+        </svg>
+      </a>
+    );
 
-          {/* Document icon: white page with fold + teal PDF badge */}
-          <div style={{position:'relative', width:36, height:44, flexShrink:0}}>
-            {/* Page body */}
-            <svg width={36} height={44} viewBox="0 0 46 54" fill="none" style={{display:'block'}}>
-              {/* shadow / bg */}
-              <rect x={1} y={1} width={44} height={52} rx={5} fill={T.paper} stroke={T.g300} strokeWidth={1}/>
-              {/* dog-ear fold */}
-              <path d="M31 1 L45 15 L31 15 Z" fill={T.g300}/>
-              <path d="M31 1 L31 15 L45 15" fill="none" stroke={T.g300} strokeWidth={1}/>
-              {/* text lines */}
-              <rect x={8} y={22} width={20} height={2} rx={1} fill={T.g300}/>
-              <rect x={8} y={27} width={28} height={2} rx={1} fill={T.g300}/>
-              <rect x={8} y={32} width={22} height={2} rx={1} fill={T.g300}/>
-            </svg>
-            {/* PDF badge — bottom-left */}
-            <div style={{position:'absolute', bottom:0, left:0,
-              background:T.teal, borderRadius:T.r,
-              padding:'2px 5px', lineHeight:1}}>
-              <span style={{fontSize:8, fontWeight:800, color:T.white, letterSpacing:'0.06em'}}>{type}</span>
-            </div>
-          </div>
-
-          {/* Title + meta */}
-          <div style={{flex:1, minWidth:0}}>
-            <div style={{fontSize:T.fBody, fontWeight:700, color:T.teal, lineHeight:1.3,
-              whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{title}</div>
-            <div style={{fontSize:T.f13, color:T.g500, marginTop:8, lineHeight:1}}>
-              {type}
-              <span style={{margin:'0 5px', color:T.g300}}>·</span>
-              {size}
-              <span style={{margin:'0 5px', color:T.g300}}>·</span>
-              {date}
-            </div>
-          </div>
-
-          {/* Download button */}
-          <div
-            onMouseEnter={e=>{e.stopPropagation();setHovDown(true);}}
-            onMouseLeave={e=>{e.stopPropagation();setHovDown(false);}}
-            style={{
-              width:36, height:36, borderRadius:'50%', flexShrink:0,
-              background: (hovDown||hov) ? T.teal : T.g100,
-              display:'flex', alignItems:'center', justifyContent:'center',
-              transition:'background 0.15s',
-            }}>
-            <svg width={14} height={15} viewBox="0 0 14 15" fill="none">
-              <path d="M7 1v9M3 7.5L7 11.5l4-4" stroke={(hovDown||hov) ? T.white : T.g600} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
-              <line x1={1.5} y1={14} x2={12.5} y2={14} stroke={(hovDown||hov) ? T.white : T.g600} strokeWidth={1.8} strokeLinecap="round"/>
-            </svg>
-          </div>
+    // Scoped CSS — 1:1 from download-card-handoff.html (hardcoded hex → DS tokens)
+    const psxDlCSS = `
+      .psx-dl__item { position:relative; overflow:hidden; box-sizing:border-box; display:flex; align-items:center; gap:1.1rem; padding:1.15rem 1.25rem; width:26rem; max-width:100%; text-decoration:none; background:${T.white}; border:1px solid ${T.g300}; border-radius:0.75rem; font-family:${font}; cursor:pointer; transition:border-color .2s ease, box-shadow .25s ease, transform .2s ease; }
+      .psx-dl__item::after { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(130% 140% at 100% 0%, rgba(1,82,83,0.07), transparent 55%); opacity:0; transition:opacity .25s ease; }
+      .psx-dl__badge { position:relative; flex:none; display:grid; place-items:center; width:2.75rem; height:3.25rem; border-radius:0.55rem; background:linear-gradient(158deg, #ffffff 0%, ${T.teal50} 100%); border:1px solid ${T.teal75}; color:${T.teal}; font-size:${T.fXxs}; font-weight:800; letter-spacing:0.05em; box-shadow:0 3px 8px -4px rgba(1,82,83,0.35); transition:transform .2s ease; }
+      .psx-dl__badge::before { content:""; position:absolute; top:0; right:0; width:0; height:0; border-top:0.75rem solid ${T.white}; border-left:0.75rem solid transparent; border-top-right-radius:0.55rem; filter:drop-shadow(-1px 1px 1px rgba(1,82,83,0.12)); }
+      .psx-dl__text { display:flex; flex-direction:column; gap:0.15rem; min-width:0; flex:1; }
+      .psx-dl__text b { font-size:${T.fBody}; font-weight:700; line-height:1.3; color:${T.dBlack}; }
+      .psx-dl__text span { font-size:${T.f13}; color:${T.g700}; }
+      .psx-dl__icon { flex:none; box-sizing:content-box; width:1.1rem; height:1.1rem; padding:0.55rem; border-radius:50%; background:${T.teal50}; color:${T.teal}; transition:background .2s ease, color .2s ease; }
+      .psx-dl__item:hover { border-color:${T.teal}; transform:translateY(-3px); box-shadow:0 20px 34px -20px rgba(1,82,83,0.5), 0 2px 6px -3px rgba(16,24,40,0.08); }
+      .psx-dl__item:hover::after { opacity:1; }
+      .psx-dl__item:hover .psx-dl__badge { transform:translateY(-2px) rotate(-3deg); }
+      .psx-dl__item:hover .psx-dl__icon { background:${T.teal}; color:#fff; }
+      .psx-dl__item:focus-visible { outline:2px solid ${T.teal}; outline-offset:3px; }
+      @media (prefers-reduced-motion: no-preference) {
+        .psx-dl__item:hover .psx-dl__icon { animation:dl-nudge .7s ease; }
+        @keyframes dl-nudge { 0%,100%{transform:translateY(0);} 45%{transform:translateY(3px);} }
+      }
+      .psx-dl__item.is-hover { border-color:${T.teal}; transform:translateY(-3px); box-shadow:0 20px 34px -20px rgba(1,82,83,0.5), 0 2px 6px -3px rgba(16,24,40,0.08); }
+      .psx-dl__item.is-hover::after { opacity:1; }
+      .psx-dl__item.is-hover .psx-dl__badge { transform:translateY(-2px) rotate(-3deg); }
+      .psx-dl__item.is-hover .psx-dl__icon { background:${T.teal}; color:#fff; }
+    `;
+    const FileDownloadSection = () => (
+      <div style={{display:'flex', flexDirection:'column', gap:24}}>
+        <style>{psxDlCSS}</style>
+        {/* Default */}
+        <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+          <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Default</span>
+          <FileDownload title="Bedienungsanleitung" type="PDF" lang="Deutsch" size="4,2 MB"/>
         </div>
-      );
-    };
-
-    const FileDownloadSection = () => {
-      const [hov, setHov] = React.useState(false);
-      return (
-        <div style={{display:'flex', flexDirection:'column', gap:20}}>
-          <div style={{display:'flex', gap:24, flexWrap:'wrap', alignItems:'flex-start'}}>
-            {/* Default */}
-            <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-              <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Default</span>
-              <FileDownload title="Schnellstartanleitung" type="PDF" size="1,2 MB" date="03/2026" hov={false}/>
-            </div>
-            {/* Hover */}
-            <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-              <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Hover</span>
-              <FileDownload title="Schnellstartanleitung" type="PDF" size="1,2 MB" date="03/2026" hov={true}/>
-            </div>
-          </div>
-          {/* Long title example */}
-          <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-            <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Long title</span>
-            <FileDownload title="Metzler Produktkatalog 2026 — Vollständige Ausgabe" type="PDF" size="8,4 MB" date="01/2026" hov={false}/>
-          </div>
-          {/* Interactive */}
-          <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-            <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Interactive — try hovering</span>
-            <FileDownload title="Schnellstartanleitung" type="PDF" size="1,2 MB" date="03/2026" interactive/>
-          </div>
+        {/* Hover — static reference */}
+        <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+          <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Hover (static reference)</span>
+          <FileDownload title="Bedienungsanleitung" type="PDF" lang="Deutsch" size="4,2 MB" hov/>
         </div>
-      );
-    };
+        {/* Long title */}
+        <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+          <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Long title</span>
+          <FileDownload title="Metzler Produktkatalog 2026 — Vollständige Ausgabe" type="PDF" lang="Deutsch" size="8,4 MB"/>
+        </div>
+      </div>
+    );
 
 /* Reusable floating-label input — real <input class="form-control"> */
     const LiveInput = ({label, type='text', hint, submitted}) => {
@@ -9377,12 +9336,12 @@ cursor: pointer;
     // ── Star icon (filled gold) ──
     const StarIcon = () => (
       <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
-        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill="#F5A623" stroke="#F5A623" strokeWidth="0.5" strokeLinejoin="round"/>
+        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill={T.star} stroke={T.star} strokeWidth="0.5" strokeLinejoin="round"/>
       </svg>
     );
     const StarIconSm = () => (
       <svg width="12" height="12" viewBox="0 0 19 19" fill="none">
-        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill="#F5A623" stroke="#F5A623" strokeWidth="0.5" strokeLinejoin="round"/>
+        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill={T.star} stroke={T.star} strokeWidth="0.5" strokeLinejoin="round"/>
       </svg>
     );
 
@@ -10744,8 +10703,8 @@ cursor: pointer;
       const TStar = ({filled}) => (
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
           <path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"
-            fill={filled ? '#F5A623' : 'rgba(255,255,255,0.18)'}
-            stroke={filled ? '#E09000' : 'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
+            fill={filled ? T.star : 'rgba(255,255,255,0.18)'}
+            stroke={filled ? T.star : 'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
         </svg>
       );
       const ArrBtn = ({left, onClick}) => (
@@ -11188,8 +11147,8 @@ cursor: pointer;
       const TStar = ({filled}) => (
         <svg style={{flex:'1 0 0'}} width="15" height="15" viewBox="0 0 15 15" fill="none">
           <path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"
-            fill={filled?'#F5A623':'rgba(255,255,255,0.18)'}
-            stroke={filled?'#E09000':'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
+            fill={filled?T.star:'rgba(255,255,255,0.18)'}
+            stroke={filled?T.star:'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
         </svg>
       );
       // Hoverable social icon (mobile)
@@ -13423,99 +13382,80 @@ cursor: pointer;
 
             {/* FILE DOWNLOAD */}
             <SH1 id="file-download">File Download</SH1>
-            <Lead>Document attachment component used in brandbook and product pages. Shows file type, size, and date — with hover highlight and a download action button.</Lead>
+            <Lead>Document attachment component used in brandbook and product pages. Light PDF icon, dark title and language · size meta — with a teal-tint download button that fills solid teal (and a teal card border) on hover.</Lead>
             <Preview><FileDownloadSection/></Preview>
-            <CodeBlock inline lang="HTML" code={`<div class="file-download">
-
-  <!-- Teal icon block -->
-  <div class="file-download__icon">
-    <svg width="26" height="32" viewBox="0 0 26 32" fill="none">...</svg>
-    <span>PDF</span>
-  </div>
-
-  <!-- Title + meta -->
-  <div class="file-download__info">
-    <div class="file-download__title">Schnellstartanleitung</div>
-    <div class="file-download__meta">PDF · 1,2 MB · 03/2026</div>
-  </div>
-
-  <!-- Download button -->
-  <div class="file-download__btn">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 1v8M3.5 6.5L7 10l3.5-3.5"
-        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="2" y1="13" x2="12" y2="13"
-        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-</div>`}/>
-            <CodeBlock inline lang="CSS" code={`.file-download {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+            <CodeBlock inline lang="HTML" code={`<a class="psx-dl__item" href="bedienungsanleitung.pdf" download>
+  <span class="psx-dl__badge">PDF</span>
+  <span class="psx-dl__text">
+    <b>Bedienungsanleitung</b>
+    <span>Deutsch · 4,2 MB</span>
+  </span>
+  <svg class="psx-dl__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
+  </svg>
+</a>`}/>
+            <CodeBlock inline lang="CSS" code={`.psx-dl__item {
+  position: relative; overflow: hidden; box-sizing: border-box;
+  display: flex; align-items: center; gap: 1.1rem;
+  padding: 1.15rem 1.25rem; text-decoration: none;
   background: var(--color-white);
-  border: 0.0625rem solid var(--color-graphite-300);
-  border-radius: 0.5rem;             /* --radius-lg */
-  padding: 0.875rem 1rem;
-  width: 26.25rem;
-  cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  border: 1px solid var(--color-graphite-300);
+  border-radius: var(--radius-xl);       /* 12px */
+  transition: border-color .2s ease, box-shadow .25s ease, transform .2s ease;
 }
-.file-download:hover {
-  border-color: var(--color-teal);
-  box-shadow: 0 0.25rem 1rem rgba(1, 82, 83, 0.12);
-}
-
-.file-download__icon {
-  flex-shrink: 0;
-  width: 2.75rem;
-  height: 3.25rem;
-  border-radius: 0.375rem;
-  background: var(--color-teal);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.125rem;
-}
-.file-download__icon span {
-  font-size: 0.5rem;
-  font-weight: 800;
-  color: var(--color-white);
-  line-height: 1;
+/* soft teal wash fading in from the top-right on hover */
+.psx-dl__item::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(130% 140% at 100% 0%, rgba(1,82,83,0.07), transparent 55%);
+  opacity: 0; transition: opacity .25s ease;
 }
 
-.file-download__info { flex: 1; min-width: 0; }
-.file-download__title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-black);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.file-download__meta {
-  font-size: 0.8125rem;
-  color: var(--color-graphite-500);
-  margin-top: 0.1875rem;
-}
-
-.file-download__btn {
-  flex-shrink: 0;
-  width: 2.125rem;
-  height: 2.125rem;
-  border-radius: 50%;
-  background: var(--color-paper);
+/* PDF badge — document sheet with a folded top-right corner (::before) */
+.psx-dl__badge {
+  position: relative; flex: none; display: grid; place-items: center;
+  width: 2.75rem; height: 3.25rem; border-radius: 0.55rem;
+  background: linear-gradient(158deg, #fff 0%, var(--color-teal-50) 100%);
+  border: 1px solid var(--color-teal-75);
   color: var(--color-teal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, color 0.15s;
+  font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.05em;   /* --text-caption-xs */
+  box-shadow: 0 3px 8px -4px rgba(1,82,83,0.35);
+  transition: transform .2s ease;
 }
-.file-download:hover .file-download__btn {
-  background: var(--color-teal);
-  color: var(--color-white);
+.psx-dl__badge::before {
+  content: ""; position: absolute; top: 0; right: 0; width: 0; height: 0;
+  border-top: 0.75rem solid var(--color-white);
+  border-left: 0.75rem solid transparent;
+  border-top-right-radius: 0.55rem;
+  filter: drop-shadow(-1px 1px 1px rgba(1,82,83,0.12));
+}
+
+.psx-dl__text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1; }
+.psx-dl__text b    { font-size: 1rem; font-weight: 700; line-height: 1.3; color: var(--color-digital-black); }      /* --text-body */
+.psx-dl__text span { font-size: 0.8125rem; color: var(--color-graphite-700); }                                     /* --text-label */
+
+/* circular download button */
+.psx-dl__icon {
+  flex: none; box-sizing: content-box;
+  width: 1.1rem; height: 1.1rem; padding: 0.55rem; border-radius: 50%;
+  background: var(--color-teal-50); color: var(--color-teal);
+  transition: background .2s ease, color .2s ease;
+}
+
+/* hover */
+.psx-dl__item:hover {
+  border-color: var(--color-teal); transform: translateY(-3px);
+  box-shadow: 0 20px 34px -20px rgba(1,82,83,0.5), 0 2px 6px -3px rgba(16,24,40,0.08);
+}
+.psx-dl__item:hover::after         { opacity: 1; }
+.psx-dl__item:hover .psx-dl__badge { transform: translateY(-2px) rotate(-3deg); }
+.psx-dl__item:hover .psx-dl__icon  { background: var(--color-teal); color: #fff; }
+
+/* keyboard focus + arrow nudge (respects reduced-motion) */
+.psx-dl__item:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .psx-dl__item:hover .psx-dl__icon { animation: dl-nudge .7s ease; }
+  @keyframes dl-nudge { 0%,100% { transform: translateY(0); } 45% { transform: translateY(3px); } }
 }`}/>
 
             {/* MODAL */}
