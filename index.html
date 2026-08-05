@@ -5946,6 +5946,23 @@ cursor: pointer;
       {key:'plug',label:'Plug',category:'Technology',tags:['plug','power','connect','outlet','energy','installation'],style:'outline'},
       {key:'cube',label:'Cube',category:'Technology',tags:['cube','box','material','3d','package','housing'],style:'outline'},
       {key:'ruler',label:'Ruler',category:'Technology',tags:['ruler','measure','dimensions','size','length','technical'],style:'outline'},
+      // ── OPC additions (aus 18_OPC_Vorlage + 23-opc-bispo-max) ──
+      {key:'key',label:'Key',category:'Technology',tags:['key','access','unlock','schluessel','schlüssel'],style:'outline'},
+      {key:'key-alt',label:'Key alt',category:'Technology',tags:['key','access','unlock','schluessel','variant'],style:'outline'},
+      {key:'fingerprint',label:'Fingerprint',category:'Technology',tags:['fingerprint','fingerabdruck','biometric','access','scan'],style:'outline'},
+      {key:'layers',label:'Layers',category:'Technology',tags:['layers','ebenen','coating','beschichtung','stack','3d'],style:'outline'},
+      {key:'cloud-rain',label:'Cloud rain',category:'Technology',tags:['cloud','rain','weather','wetter','wetterfest','outdoor'],style:'outline'},
+      {key:'waterproof',label:'Waterproof',category:'Technology',tags:['waterproof','water','drop','wetterfest','rostfrei','outdoor','check'],style:'outline'},
+      {key:'compartments',label:'Compartments',category:'Technology',tags:['compartments','faecher','fächer','paketbox','briefkasten','mailbox'],style:'outline'},
+      {key:'align-frame',label:'Align frame',category:'Technology',tags:['align','ausrichten','position','frame','viewfinder','montage'],style:'outline'},
+      {key:'drill',label:'Drill',category:'Technology',tags:['drill','bohren','bohrmaschine','montage','tool','installation','duebel'],style:'outline'},
+      {key:'bag',label:'Bag',category:'Commerce',tags:['bag','shopping','tasche','einkaufstasche','capacity'],style:'outline'},
+      {key:'package',label:'Package',category:'Commerce',tags:['package','parcel','paket','sendung','box','shipping'],style:'outline'},
+      {key:'id-card',label:'ID card',category:'UI',tags:['id','card','nameplate','klingelschild','kontakt','profil'],style:'outline'},
+      // ── Formats (DIN-Umschlagformate, aus 18_OPC_Vorlage) ──
+      {key:'din-c4',label:'DIN C4',category:'Formats',tags:['din','c4','envelope','umschlag','format','brief','324'],style:'outline'},
+      {key:'din-c6',label:'DIN C6',category:'Formats',tags:['din','c6','envelope','umschlag','format','brief','162'],style:'outline'},
+      {key:'din-lang',label:'DIN Lang',category:'Formats',tags:['din','lang','dl','envelope','umschlag','format','brief','220'],style:'outline'},
       // ── Colorful ──
       {key:'flag-de',label:'Flag Germany',category:'Colorful',tags:['flag','germany','de','country'],style:'color'},
       {key:'badge-pdf',label:'PDF Badge',category:'Colorful',tags:['pdf','badge','document','file'],style:'color'},
@@ -5953,6 +5970,7 @@ cursor: pointer;
       {key:'star-yellow',label:'Star yellow',category:'Colorful',tags:['star','rating','review','yellow','full'],style:'color'},
       {key:'star-gray',label:'Star gray',category:'Colorful',tags:['star','rating','empty','gray'],style:'color'},
       {key:'star-half',label:'Star half',category:'Colorful',tags:['star','rating','half','partial'],style:'color'},
+      {key:'rating-stars',label:'Rating stars',category:'Colorful',tags:['rating','stars','review','bewertung','sterne','gradient'],style:'color'},
       // ── Packaging ──
       {key:'recyclable',label:'Recyclable',category:'Packaging',tags:['recycle','recyclable','eco','sustainable','loop','arrows'],style:'outline'},
       {key:'pap',label:'PAP',category:'Packaging',tags:['pap','paper','cardboard','recycle','packaging','recycling'],style:'outline'},
@@ -6065,6 +6083,18 @@ cursor: pointer;
           case 'plug':          return W(<>{sp('M9 2v6M15 2v6M5 8h14v3a7 7 0 01-14 0V8zM12 18v4')}</>);
           case 'cube':          return W(<>{sp('M12 2L3 7v10l9 5 9-5V7l-9-5z')}{sp('M3 7l9 5 9-5')}{sp('M12 22V12')}</>);
           case 'ruler':         return W(<>{sp('M21.3 8.7L8.7 21.3a1 1 0 01-1.4 0L2.7 16.7a1 1 0 010-1.4L15.3 2.7a1 1 0 011.4 0l4.6 4.6a1 1 0 010 1.4z')}{sp('M7.5 10.5l2 2')}{sp('M10.5 7.5l2 2')}{sp('M13.5 4.5l2 2')}{sp('M4.5 13.5l2 2')}</>);
+          // ── OPC additions ──
+          case 'key':           return W(<>{sp('M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5z')}</>);
+          case 'key-alt':       return W(<>{sc(15.6,8.4,5.4)}{sc(17.6,6.4,1.5)}{sp('M11.8 12.2L3.6 20.4')}{sp('M6.6 17.4l2.4 2.4')}{sp('M9 15l2.4 2.4')}</>);
+          case 'layers':        return W(<>{sp('M12 2.5l9 4.75-9 4.75-9-4.75 9-4.75z')}{sp('M3 12l9 4.75L21 12')}{sp('M3 16.75L12 21.5l9-4.75')}</>);
+          case 'cloud-rain':    return W(<>{sp('M17.5 17a4.5 4.5 0 000-9 6 6 0 00-11.6 2A3.5 3.5 0 006.5 17z')}{sp('M8 20l.6-1.4M12 21l.6-1.4M16 20l.6-1.4')}</>);
+          case 'waterproof':    return W(<>{sp('M12 3s5.5 6 5.5 9.5a5.5 5.5 0 01-11 0C6.5 9 12 3 12 3z')}{sp('M9.7 12.6l1.7 1.7 3.2-3.2')}</>);
+          case 'compartments':  return W(<>{sr(3,3,18,18,2)}{sp('M3 11.5h18')}{sp('M7.5 7.2h5')}{sp('M7.5 16h5')}</>);
+          case 'align-frame':   return W(<>{sr(8.5,8.5,7,7,1)}{sp('M3 7.5V3h4.5')}{sp('M21 7.5V3h-4.5')}{sp('M3 16.5V21h4.5')}{sp('M21 16.5V21h-4.5')}</>);
+          case 'drill':         return W(<>{sp('M3 6.5h9v6H3z')}{sp('M12 9.5h7')}{sp('M6.5 12.5v5')}</>);
+          case 'bag':           return W(<>{sp('M8.6 8h6.8l2.4 10.8a1.6 1.6 0 01-1.55 1.95H7.75a1.6 1.6 0 01-1.55-1.95L8.6 8z')}{sp('M9.6 8a2.4 2.4 0 014.8 0')}</>);
+          case 'package':       return W(<>{sp('M21 8.2v7.6a1.6 1.6 0 01-.85 1.41l-7 3.9a1.6 1.6 0 01-1.3 0l-7-3.9A1.6 1.6 0 013 15.8V8.2a1.6 1.6 0 01.85-1.41l7-3.9a1.6 1.6 0 011.3 0l7 3.9A1.6 1.6 0 0121 8.2z')}{sp('M3.3 7.3L12 12l8.7-4.7')}{sp('M12 21.5V12')}{sp('M7.6 4.9l8.7 4.85')}</>);
+          case 'id-card':       return W(<>{sr(5,3,14,18,2)}{sc(12,8.5,2.2)}{sp('M9 14h6M9 17h6')}</>);
           // Colorful
           case 'flag-de': return (
             <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -6152,6 +6182,57 @@ cursor: pointer;
               <path d="M462.2,45.2s-1,3.6-2.2,5.2c-1.1,1.5-2.4,4.1-1.4,6.3,1,2.2,4.3,3.2,6.3,1.6,2-1.6,1.8-4,1.3-5.7-.5-1.7-3.2-3.8-4-7.4Z" fill={col}/>
               <path d="M444.8,46.5s-.5,1.9-1.1,2.7c-.6.8-1.2,2.1-.7,3.3.5,1.1,2.2,1.7,3.2.8s.9-2.1.7-2.9-1.6-2-2-3.8Z" fill={col}/>
               <path d="M468.8,61c-.6-.8-1.5-1.6-2.3-2.3-.2.3-.5.6-.9.9-2.5,2.1-6.9.7-8.1-2.1-.4-1-.5-2.1-.4-3.1,0,0-.2,0-.2,0-3.4-.3-9.8-.6-15.9,3.1-6.1,3.7-7.9,8.8-7.9,8.8-.9,1.8,2.9-.5,5.8-.7,2.9-.2,5.4,1.2,5.4,1.2,0,0,2.9-1.5,6.4-1.6,6.7,0,10.9,1.6,10.9,1.6,0,0,1.5-1,3.7-1.2,2.1-.2,3.8.2,6,1,2.2.8.5-2.1-2.4-5.7Z" fill={col}/>
+            </svg>
+          );
+          // ── OPC additions (custom viewBox) ──
+          case 'fingerprint': return (
+            <svg width={size} height={size} viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M44.6875 27.5C35.211 27.5 27.5 35.211 27.5 44.6875V99.6875C27.5 101.588 29.0391 103.125 30.9375 103.125C32.8359 103.125 34.375 101.588 34.375 99.6875V44.6875C34.375 39.0008 39.0008 34.375 44.6875 34.375C50.3742 34.375 55 39.0008 55 44.6875C55 46.5859 56.5391 48.125 58.4375 48.125C60.3359 48.125 61.875 46.5859 61.875 44.6875C61.875 35.211 54.164 27.5 44.6875 27.5Z" fill={col}/>
+              <path d="M44.6875 41.25C42.7891 41.25 41.25 42.7891 41.25 44.6875V75.625C41.25 77.5234 42.7891 79.0625 44.6875 79.0625C46.5859 79.0625 48.125 77.5234 48.125 75.625V44.6875C48.125 42.7891 46.5859 41.25 44.6875 41.25Z" fill={col}/>
+              <path d="M44.6875 85.9375C42.7891 85.9375 41.25 87.4766 41.25 89.375V106.562C41.25 108.463 42.7891 110 44.6875 110C46.5859 110 48.125 108.463 48.125 106.562V89.375C48.125 87.4766 46.5859 85.9375 44.6875 85.9375Z" fill={col}/>
+              <path d="M58.4375 55C56.5391 55 55 56.5391 55 58.4375V99.6875C55 101.588 56.5391 103.125 58.4375 103.125C60.3359 103.125 61.875 101.588 61.875 99.6875V58.4375C61.875 56.5391 60.3359 55 58.4375 55Z" fill={col}/>
+              <path d="M17.1875 61.875C15.2891 61.875 13.75 63.4141 13.75 65.3125V89.375C13.75 91.2751 15.2891 92.8125 17.1875 92.8125C19.0859 92.8125 20.625 91.2751 20.625 89.375V65.3125C20.625 63.4141 19.0859 61.875 17.1875 61.875Z" fill={col}/>
+              <path d="M85.9375 55C84.0391 55 82.5 56.5391 82.5 58.4375V75.625C82.5 77.5234 84.0391 79.0625 85.9375 79.0625C87.8359 79.0625 89.375 77.5234 89.375 75.625V58.4375C89.375 56.5391 87.8359 55 85.9375 55Z" fill={col}/>
+              <path d="M68.9019 31.1961C67.1413 31.9093 66.292 33.9119 67.0035 35.6725C68.1618 38.5343 68.7491 41.5674 68.7491 44.6876V89.3751C68.7491 91.2752 70.2883 92.8126 72.1866 92.8126C74.085 92.8126 75.6241 91.2752 75.6241 89.3751V44.6876C75.6241 40.6795 74.8688 36.7786 73.3784 33.0944C72.6666 31.3355 70.6726 30.486 68.9019 31.1961Z" fill={col}/>
+              <path d="M44.6875 13.75C27.6293 13.75 13.75 27.6293 13.75 44.6875V51.5625C13.75 53.4609 15.2891 55 17.1875 55C19.0859 55 20.625 53.4609 20.625 51.5625V44.6875C20.625 31.4192 31.4192 20.625 44.6875 20.625C50.2281 20.625 55.4314 22.4529 59.7384 25.9138C61.2238 27.1004 63.3823 26.8673 64.5724 25.3868C65.7607 23.9063 65.5241 21.7428 64.0453 20.5528C58.5836 16.1653 51.7086 13.75 44.6875 13.75Z" fill={col}/>
+              <path d="M29.5519 10.0255C34.3339 7.93418 39.4263 6.875 44.6883 6.875C65.5382 6.875 82.5008 23.8376 82.5008 44.6875C82.5008 46.5859 84.0399 48.125 85.9383 48.125C87.8366 48.125 89.3758 46.5859 89.3758 44.6875C89.3758 20.046 69.3298 0 44.6883 0C38.4728 0 32.454 1.25383 26.7991 3.72453C25.0584 4.48486 24.2646 6.51256 25.0249 8.25129C25.7887 9.99195 27.8164 10.7774 29.5519 10.0255Z" fill={col}/>
+              <path d="M16.2342 14.6269C14.8176 13.358 12.6474 13.4822 11.3801 14.8955C4.04186 23.0948 0 33.6741 0 44.6883V75.6258C0 77.5241 1.53914 79.0633 3.4375 79.0633C5.33586 79.0633 6.875 77.5241 6.875 75.6258V44.6883C6.875 35.3694 10.294 26.4164 16.5028 19.4811C17.7682 18.0661 17.649 15.8925 16.2342 14.6269Z" fill={col}/>
+            </svg>
+          );
+          case 'din-c4': return (
+            <svg width={size} height={size*0.71} viewBox="0 0 136.0 96.1" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1.25" y="1.25" width="133.50" height="93.60" rx="3" fill={col} fillOpacity="0.10" stroke={col} strokeOpacity="0.55" strokeWidth="1.25"/>
+              <path d="M1.25 1.25 L68.00 55.54 L134.75 1.25 Z" fill={col} fillOpacity="0.19" stroke={col} strokeOpacity="0.55" strokeWidth="1.25" strokeLinejoin="round"/>
+              <text x="68.0" y="86.4" textAnchor="middle" fontSize="31" fontWeight="700" letterSpacing="0.02em" fill={col}>C4</text>
+            </svg>
+          );
+          case 'din-c6': return (
+            <svg width={size} height={size*0.70} viewBox="0 0 68.0 47.9" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1.25" y="1.25" width="65.50" height="45.40" rx="3" fill={col} fillOpacity="0.10" stroke={col} strokeOpacity="0.55" strokeWidth="1.25"/>
+              <path d="M1.25 1.25 L34.00 27.58 L66.75 1.25 Z" fill={col} fillOpacity="0.19" stroke={col} strokeOpacity="0.55" strokeWidth="1.25" strokeLinejoin="round"/>
+              <text x="34.0" y="42.5" textAnchor="middle" fontSize="15" fontWeight="700" letterSpacing="0.02em" fill={col}>C6</text>
+            </svg>
+          );
+          case 'din-lang': return (
+            <svg width={size} height={size*0.50} viewBox="0 0 92.3 46.1" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1.25" y="1.25" width="89.80" height="43.60" rx="3" fill={col} fillOpacity="0.10" stroke={col} strokeOpacity="0.55" strokeWidth="1.25"/>
+              <path d="M1.25 1.25 L46.15 26.54 L91.05 1.25 Z" fill={col} fillOpacity="0.19" stroke={col} strokeOpacity="0.55" strokeWidth="1.25" strokeLinejoin="round"/>
+              <text x="46.1" y="41.1" textAnchor="middle" fontSize="15" fontWeight="700" letterSpacing="0.02em" fill={col}>DL</text>
+            </svg>
+          );
+          case 'rating-stars': return (
+            <svg width={size*2} height={size*0.4} viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="mzstern-kit" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="0">
+                  <stop offset="0.94" stopColor={T.star}/>
+                  <stop offset="0.94" stopColor="#E6E6E8"/>
+                </linearGradient>
+              </defs>
+              <g fill="url(#mzstern-kit)">
+                {[0,24,48,72,96].map(tx => (
+                  <path key={tx} transform={`translate(${tx},0)`} d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                ))}
+              </g>
             </svg>
           );
           default: return <svg width={size} height={size} viewBox="0 0 24 24"/>;
@@ -6252,6 +6333,23 @@ cursor: pointer;
           case 'plug':          return W2(sp2('M9 2v6M15 2v6M5 8h14v3a7 7 0 01-14 0V8zM12 18v4'));
           case 'cube':          return W2(sp2('M12 2L3 7v10l9 5 9-5V7l-9-5z')+sp2('M3 7l9 5 9-5')+sp2('M12 22V12'));
           case 'ruler':         return W2(sp2('M21.3 8.7L8.7 21.3a1 1 0 01-1.4 0L2.7 16.7a1 1 0 010-1.4L15.3 2.7a1 1 0 011.4 0l4.6 4.6a1 1 0 010 1.4z')+sp2('M7.5 10.5l2 2')+sp2('M10.5 7.5l2 2')+sp2('M13.5 4.5l2 2')+sp2('M4.5 13.5l2 2'));
+          // ── OPC additions ──
+          case 'key':           return W2(sp2('M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5z'));
+          case 'key-alt':       return W2(sc2(15.6,8.4,5.4)+sc2(17.6,6.4,1.5)+sp2('M11.8 12.2L3.6 20.4')+sp2('M6.6 17.4l2.4 2.4')+sp2('M9 15l2.4 2.4'));
+          case 'layers':        return W2(sp2('M12 2.5l9 4.75-9 4.75-9-4.75 9-4.75z')+sp2('M3 12l9 4.75L21 12')+sp2('M3 16.75L12 21.5l9-4.75'));
+          case 'cloud-rain':    return W2(sp2('M17.5 17a4.5 4.5 0 000-9 6 6 0 00-11.6 2A3.5 3.5 0 006.5 17z')+sp2('M8 20l.6-1.4M12 21l.6-1.4M16 20l.6-1.4'));
+          case 'waterproof':    return W2(sp2('M12 3s5.5 6 5.5 9.5a5.5 5.5 0 01-11 0C6.5 9 12 3 12 3z')+sp2('M9.7 12.6l1.7 1.7 3.2-3.2'));
+          case 'compartments':  return W2(sr2(3,3,18,18,2)+sp2('M3 11.5h18')+sp2('M7.5 7.2h5')+sp2('M7.5 16h5'));
+          case 'align-frame':   return W2(sr2(8.5,8.5,7,7,1)+sp2('M3 7.5V3h4.5')+sp2('M21 7.5V3h-4.5')+sp2('M3 16.5V21h4.5')+sp2('M21 16.5V21h-4.5'));
+          case 'drill':         return W2(sp2('M3 6.5h9v6H3z')+sp2('M12 9.5h7')+sp2('M6.5 12.5v5'));
+          case 'bag':           return W2(sp2('M8.6 8h6.8l2.4 10.8a1.6 1.6 0 01-1.55 1.95H7.75a1.6 1.6 0 01-1.55-1.95L8.6 8z')+sp2('M9.6 8a2.4 2.4 0 014.8 0'));
+          case 'package':       return W2(sp2('M21 8.2v7.6a1.6 1.6 0 01-.85 1.41l-7 3.9a1.6 1.6 0 01-1.3 0l-7-3.9A1.6 1.6 0 013 15.8V8.2a1.6 1.6 0 01.85-1.41l7-3.9a1.6 1.6 0 011.3 0l7 3.9A1.6 1.6 0 0121 8.2z')+sp2('M3.3 7.3L12 12l8.7-4.7')+sp2('M12 21.5V12')+sp2('M7.6 4.9l8.7 4.85'));
+          case 'id-card':       return W2(sr2(5,3,14,18,2)+sc2(12,8.5,2.2)+sp2('M9 14h6M9 17h6'));
+          case 'fingerprint':   return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 90 110" fill="none"><path d="M44.6875 27.5C35.211 27.5 27.5 35.211 27.5 44.6875V99.6875C27.5 101.588 29.0391 103.125 30.9375 103.125C32.8359 103.125 34.375 101.588 34.375 99.6875V44.6875C34.375 39.0008 39.0008 34.375 44.6875 34.375C50.3742 34.375 55 39.0008 55 44.6875C55 46.5859 56.5391 48.125 58.4375 48.125C60.3359 48.125 61.875 46.5859 61.875 44.6875C61.875 35.211 54.164 27.5 44.6875 27.5Z" fill="currentColor"/><path d="M44.6875 41.25C42.7891 41.25 41.25 42.7891 41.25 44.6875V75.625C41.25 77.5234 42.7891 79.0625 44.6875 79.0625C46.5859 79.0625 48.125 77.5234 48.125 75.625V44.6875C48.125 42.7891 46.5859 41.25 44.6875 41.25Z" fill="currentColor"/><path d="M44.6875 85.9375C42.7891 85.9375 41.25 87.4766 41.25 89.375V106.562C41.25 108.463 42.7891 110 44.6875 110C46.5859 110 48.125 108.463 48.125 106.562V89.375C48.125 87.4766 46.5859 85.9375 44.6875 85.9375Z" fill="currentColor"/><path d="M58.4375 55C56.5391 55 55 56.5391 55 58.4375V99.6875C55 101.588 56.5391 103.125 58.4375 103.125C60.3359 103.125 61.875 101.588 61.875 99.6875V58.4375C61.875 56.5391 60.3359 55 58.4375 55Z" fill="currentColor"/><path d="M17.1875 61.875C15.2891 61.875 13.75 63.4141 13.75 65.3125V89.375C13.75 91.2751 15.2891 92.8125 17.1875 92.8125C19.0859 92.8125 20.625 91.2751 20.625 89.375V65.3125C20.625 63.4141 19.0859 61.875 17.1875 61.875Z" fill="currentColor"/><path d="M85.9375 55C84.0391 55 82.5 56.5391 82.5 58.4375V75.625C82.5 77.5234 84.0391 79.0625 85.9375 79.0625C87.8359 79.0625 89.375 77.5234 89.375 75.625V58.4375C89.375 56.5391 87.8359 55 85.9375 55Z" fill="currentColor"/><path d="M68.9019 31.1961C67.1413 31.9093 66.292 33.9119 67.0035 35.6725C68.1618 38.5343 68.7491 41.5674 68.7491 44.6876V89.3751C68.7491 91.2752 70.2883 92.8126 72.1866 92.8126C74.085 92.8126 75.6241 91.2752 75.6241 89.3751V44.6876C75.6241 40.6795 74.8688 36.7786 73.3784 33.0944C72.6666 31.3355 70.6726 30.486 68.9019 31.1961Z" fill="currentColor"/><path d="M44.6875 13.75C27.6293 13.75 13.75 27.6293 13.75 44.6875V51.5625C13.75 53.4609 15.2891 55 17.1875 55C19.0859 55 20.625 53.4609 20.625 51.5625V44.6875C20.625 31.4192 31.4192 20.625 44.6875 20.625C50.2281 20.625 55.4314 22.4529 59.7384 25.9138C61.2238 27.1004 63.3823 26.8673 64.5724 25.3868C65.7607 23.9063 65.5241 21.7428 64.0453 20.5528C58.5836 16.1653 51.7086 13.75 44.6875 13.75Z" fill="currentColor"/><path d="M29.5519 10.0255C34.3339 7.93418 39.4263 6.875 44.6883 6.875C65.5382 6.875 82.5008 23.8376 82.5008 44.6875C82.5008 46.5859 84.0399 48.125 85.9383 48.125C87.8366 48.125 89.3758 46.5859 89.3758 44.6875C89.3758 20.046 69.3298 0 44.6883 0C38.4728 0 32.454 1.25383 26.7991 3.72453C25.0584 4.48486 24.2646 6.51256 25.0249 8.25129C25.7887 9.99195 27.8164 10.7774 29.5519 10.0255Z" fill="currentColor"/><path d="M16.2342 14.6269C14.8176 13.358 12.6474 13.4822 11.3801 14.8955C4.04186 23.0948 0 33.6741 0 44.6883V75.6258C0 77.5241 1.53914 79.0633 3.4375 79.0633C5.33586 79.0633 6.875 77.5241 6.875 75.6258V44.6883C6.875 35.3694 10.294 26.4164 16.5028 19.4811C17.7682 18.0661 17.649 15.8925 16.2342 14.6269Z" fill="currentColor"/></svg>`;
+          case 'din-c4':        return `<svg xmlns="http://www.w3.org/2000/svg" width="136" height="96" viewBox="0 0 136.0 96.1"><rect x="1.25" y="1.25" width="133.50" height="93.60" rx="3" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25"/><path d="M1.25 1.25 L68.00 55.54 L134.75 1.25 Z" fill="currentColor" fill-opacity="0.19" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" stroke-linejoin="round"/><text x="68.0" y="86.4" text-anchor="middle" font-size="31" font-weight="700" letter-spacing="0.02em" fill="currentColor">C4</text></svg>`;
+          case 'din-c6':        return `<svg xmlns="http://www.w3.org/2000/svg" width="68" height="48" viewBox="0 0 68.0 47.9"><rect x="1.25" y="1.25" width="65.50" height="45.40" rx="3" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25"/><path d="M1.25 1.25 L34.00 27.58 L66.75 1.25 Z" fill="currentColor" fill-opacity="0.19" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" stroke-linejoin="round"/><text x="34.0" y="42.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing="0.02em" fill="currentColor">C6</text></svg>`;
+          case 'din-lang':      return `<svg xmlns="http://www.w3.org/2000/svg" width="92" height="46" viewBox="0 0 92.3 46.1"><rect x="1.25" y="1.25" width="89.80" height="43.60" rx="3" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25"/><path d="M1.25 1.25 L46.15 26.54 L91.05 1.25 Z" fill="currentColor" fill-opacity="0.19" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" stroke-linejoin="round"/><text x="46.1" y="41.1" text-anchor="middle" font-size="15" font-weight="700" letter-spacing="0.02em" fill="currentColor">DL</text></svg>`;
+          case 'rating-stars':  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 24" role="img" aria-label="4,7 von 5 Sternen"><defs><linearGradient id="mzstern" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="0"><stop offset="0.9400" stop-color="${T.star}"/><stop offset="0.9400" stop-color="#E6E6E8"/></linearGradient></defs><g fill="url(#mzstern)"><path transform="translate(0,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(24,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(48,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(72,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(96,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></g></svg>`;
           case 'guarantee': return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><polygon points="12,2 13.5,8.3 19.1,4.9 15.7,10.5 22,12 15.7,13.5 19.1,19.1 13.5,15.7 12,22 10.5,15.7 4.9,19.1 8.3,13.5 2,12 8.3,10.5 4.9,4.9 10.5,8.3" fill="#C09530"/><path d="M8.5 12l2.5 2.5 5-5" stroke="${T.white}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
           case 'flag-de': return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M2 9.33V5.5A1.5 1.5 0 013.5 4h17A1.5 1.5 0 0122 5.5v3.83H2z" fill="${T.dBlack}"/><rect x="2" y="9.33" width="20" height="5.34" fill="#CC0000"/><path d="M2 14.67h20v3.83A1.5 1.5 0 0120.5 20H3.5A1.5 1.5 0 012 18.5v-3.83z" fill="#FFCC00"/></svg>`;
           case 'badge-pdf': return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 2h9l5 5v14a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2z" fill="#EFEFEF"/><path d="M14 2l5 5h-4a1 1 0 01-1-1V2z" fill="#DCDCDC"/><rect x="6" y="9" width="7" height="1.2" rx="0.6" fill="#C5C5C5"/><rect x="6" y="11" width="9" height="1.2" rx="0.6" fill="#C5C5C5"/><path d="M3 15.5h18v5a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 20.5v-5z" fill="${T.teal}"/><text x="12" y="20.5" text-anchor="middle" fill="white" font-size="5.5" font-weight="700" font-family="sans-serif">PDF</text></svg>`;
@@ -8698,7 +8796,7 @@ cursor: pointer;
       );
 
       // Categories in display order
-      const categories = ['Navigation','Search','User','Commerce','Actions','Communication','Status','UI','Technology'];
+      const categories = ['Navigation','Search','User','Commerce','Actions','Communication','Status','UI','Technology','Formats'];
       const colorfulIcons = icons.filter(ic => ic.style === 'color');
 
       // ── Detail page ──
