@@ -25,15 +25,95 @@
     @keyframes drawerIn  { from { transform:translateX(-100%); } to { transform:translateX(0); } }
     @keyframes fadeIn    { from { opacity:0; } to { opacity:1; } }
 
-    /* ── Spacers ── */
-    .spacer-s { display: block; height: 1.5rem; }
-    .spacer-m { display: block; height: 3rem; }
-    .spacer-l { display: block; height: 6rem; }
+    /* ── Spacers (margin utilities: mirror the shop base; responsive in shop) ── */
+    .mt-xxs { margin-top: 0.5rem; }   .mb-xxs { margin-bottom: 0.5rem; }
+    .mt-xs  { margin-top: 1rem; }     .mb-xs  { margin-bottom: 1rem; }
+    .mt-sm  { margin-top: 2rem; }     .mb-sm  { margin-bottom: 2rem; }
+    .mt-md  { margin-top: 3.5rem; }   .mb-md  { margin-bottom: 3.5rem; }
+    .mt-lg  { margin-top: 5rem; }     .mb-lg  { margin-bottom: 5rem; }
 
     /* ── Dividers ── */
     .divider-s { border: none; border-top: 0.0625rem solid var(--color-graphite-200, #E6E6E8); margin: 1rem 0; }
     .divider-m { border: none; border-top: 0.0625rem solid var(--color-graphite-200, #E6E6E8); margin: 2rem 0; }
     .divider-l { border: none; border-top: 0.0625rem solid var(--color-graphite-200, #E6E6E8); margin: 4rem 0; }
+
+    /* ── Experten-Kontakt & Service modal (.cm-*) — ported 1:1 from ETK2022 custom.css.
+       Scoped to .cm-kit (desktop) and .cm-kit.cm-kit--m (mobile) so both variants preview on one screen. ── */
+    .cm-kit{
+      --color-teal:#015253; --color-teal-50:#F2F6F6; --color-teal-900:#001D1D; --color-mint:#5CDBD3;
+      --color-white:#FFFFFF; --color-black:#000000; --color-digital-black:#1A171B;
+      --color-graphite-100:#F0F0F0; --color-graphite-200:#E6E6E8; --color-graphite-600:#6A6A6A; --color-graphite-700:#54545C;
+      --radius-default:0.25rem; --radius-lg:0.5rem; --radius-xl:0.75rem;
+      --shadow-modal:0 1.25rem 3.75rem rgba(0,0,0,.2), 0 0.25rem 1rem rgba(0,0,0,.1);
+      --ease:cubic-bezier(.2,.7,.2,1);
+      width:100%; max-width:52rem; margin:0 auto;
+    }
+    @keyframes cm-rise{ from{opacity:0;transform:translateY(1.25rem) scale(.97);} to{opacity:1;transform:none;} }
+    @keyframes cm-in-left{ from{opacity:0;transform:translateX(-.75rem);} to{opacity:1;transform:none;} }
+    @keyframes cm-in-right{ from{opacity:0;transform:translateX(.75rem);} to{opacity:1;transform:none;} }
+    .cm-kit .cm-modal{ position:relative; margin:auto; display:grid; grid-template-columns:5fr 7fr; grid-template-rows:auto 1fr; background:var(--color-white); border-radius:var(--radius-xl); box-shadow:var(--shadow-modal); overflow:hidden; animation:cm-rise .45s cubic-bezier(.2,.8,.2,1); }
+    .cm-kit .cm-brand{ position:relative; grid-area:1/1/3/2; padding:3rem 2.75rem; background:linear-gradient(160deg, var(--color-teal-900) 0%, var(--color-teal) 100%); color:var(--color-white); display:flex; flex-direction:column; min-height:32.5rem; overflow:hidden; }
+    .cm-kit .cm-brand-head, .cm-kit .cm-brand-foot{ position:relative; z-index:1; animation:cm-in-left .5s ease .1s both; }
+    .cm-kit .cm-brand-foot{ margin-top:2rem; animation-delay:.25s; border-top:.0625rem solid rgba(255,255,255,.12); padding-top:1.375rem; display:flex; flex-direction:column; gap:.625rem; }
+    .cm-kit .cm-brand-title{ margin:0 0 1rem; font-size:1.875rem; line-height:1.25; font-weight:700; letter-spacing:-.02em; color:var(--color-white); }
+    .cm-kit .cm-brand-title em{ font-style:normal; color:var(--color-mint); font-weight:600; }
+    .cm-kit .cm-lede{ margin:0; font-size:.875rem; line-height:1.5; color:rgba(255,255,255,.72); max-width:32ch; }
+    .cm-kit .cm-label{ font-size:.75rem; font-weight:700; line-height:1.4; letter-spacing:.18em; text-transform:uppercase; color:var(--color-mint); }
+    .cm-kit .cm-phone{ font-size:1.25rem; font-weight:700; line-height:1.35; letter-spacing:-.01em; color:var(--color-white); text-decoration:none; }
+    .cm-kit .cm-metaline{ font-size:.75rem; line-height:1.4; color:rgba(255,255,255,.6); }
+    .cm-kit .cm-mail{ font-size:.875rem; line-height:1.5; color:var(--color-white); text-decoration:none; }
+    .cm-kit .cm-phone:hover, .cm-kit .cm-mail:hover{ color:var(--color-white); text-decoration:underline; }
+    .cm-kit .cm-head{ grid-area:1/2/2/3; padding:2.5rem 2.5rem 0; background:var(--color-white); }
+    .cm-kit .cm-actions{ grid-area:2/2/3/3; padding:0 2.5rem 2rem; background:var(--color-white); display:flex; flex-direction:column; }
+    .cm-kit .cm-eyebrow{ margin:0 0 .75rem; font-size:.75rem; font-weight:700; line-height:1.4; letter-spacing:.18em; text-transform:uppercase; color:var(--color-graphite-600); animation:cm-in-right .5s ease .2s both; }
+    .cm-kit .cm-h2{ margin:0 0 .375rem; font-size:1.25rem; font-weight:700; line-height:1.35; letter-spacing:-.01em; color:var(--color-digital-black); animation:cm-in-right .5s ease .25s both; }
+    .cm-kit .cm-sub{ margin:0 0 1.75rem; font-size:.875rem; line-height:1.5; color:var(--color-graphite-700); animation:cm-in-right .5s ease .28s both; }
+    .cm-kit .cm-list{ display:flex; flex-direction:column; flex:1; gap:.625rem; }
+    .cm-kit .cm-row{ position:relative; display:grid; grid-template-columns:2.5rem 1fr auto; align-items:center; gap:1rem; padding:1rem 1.625rem 1rem 1.125rem; border:.0625rem solid rgba(1,82,83,.1); border-radius:var(--radius-lg); background:var(--color-white); text-decoration:none; color:inherit; cursor:pointer; overflow:hidden; isolation:isolate; transition:border-color .45s var(--ease); animation:cm-in-right .5s ease both; }
+    .cm-kit .cm-row::before{ content:""; position:absolute; inset:0; z-index:-1; opacity:0; transition:opacity .5s var(--ease); background:linear-gradient(120deg, rgba(1,82,83,0) 0%, rgba(1,82,83,.04) 45%, rgba(92,219,211,.12) 100%); }
+    .cm-kit .cm-row::after{ content:""; position:absolute; left:0; top:0; bottom:0; width:.1875rem; background:linear-gradient(180deg, var(--color-teal) 0%, var(--color-mint) 100%); transform:scaleY(0); transition:transform .45s var(--ease); }
+    .cm-kit .cm-row:nth-child(1){ animation-delay:.30s; }
+    .cm-kit .cm-row:nth-child(2){ animation-delay:.38s; }
+    .cm-kit .cm-row:nth-child(3){ animation-delay:.46s; }
+    .cm-kit .cm-row:nth-child(4){ animation-delay:.54s; }
+    .cm-kit .cm-ico{ width:2.5rem; height:2.5rem; border-radius:.625rem; display:grid; place-items:center; color:var(--color-teal); background:rgba(1,82,83,.08); transition:transform .35s var(--ease), background .25s ease; }
+    .cm-kit .cm-ico svg{ width:1.25rem; height:1.25rem; stroke-width:1.8; }
+    .cm-kit .cm-body{ min-width:0; display:flex; flex-direction:column; gap:.1875rem; transition:transform .45s var(--ease); }
+    .cm-kit .cm-rowlabel{ font-size:1rem; font-weight:700; line-height:1.375; letter-spacing:-.008em; color:var(--color-digital-black); transition:color .25s ease; }
+    .cm-kit .cm-rowmeta{ font-size:.75rem; line-height:1.4; color:var(--color-graphite-600); letter-spacing:.005em; }
+    .cm-kit .cm-arrow{ display:grid; place-items:center; color:var(--color-teal); }
+    .cm-kit .cm-arrow svg{ width:1.25rem; height:1.25rem; stroke-width:1.8; transition:transform .35s var(--ease); }
+    .cm-kit .cm-row:hover, .cm-kit .cm-row:focus-visible{ border-color:rgba(1,82,83,.35); }
+    .cm-kit .cm-row:hover::before, .cm-kit .cm-row:focus-visible::before{ opacity:1; }
+    .cm-kit .cm-row:hover::after, .cm-kit .cm-row:focus-visible::after{ transform:scaleY(1); }
+    .cm-kit .cm-row:hover .cm-body, .cm-kit .cm-row:focus-visible .cm-body{ transform:translateX(.25rem); }
+    .cm-kit .cm-row:hover .cm-rowlabel, .cm-kit .cm-row:focus-visible .cm-rowlabel{ color:var(--color-teal); }
+    .cm-kit .cm-row:hover .cm-ico, .cm-kit .cm-row:focus-visible .cm-ico{ transform:scale(1.06); background:rgba(1,82,83,.12); }
+    .cm-kit .cm-row:hover .cm-arrow svg, .cm-kit .cm-row:focus-visible .cm-arrow svg{ transform:translateX(.1875rem); }
+    .cm-kit .cm-close{ position:absolute; top:1.25rem; right:1.25rem; z-index:2; width:2.25rem; height:2.25rem; padding:0; border:0; border-radius:var(--radius-default); background:transparent; color:var(--color-graphite-600); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:background .15s ease, color .15s ease; }
+    .cm-kit .cm-close svg{ width:1.125rem; height:1.125rem; }
+    .cm-kit .cm-close:hover{ color:var(--color-digital-black); background:var(--color-graphite-100); }
+    /* Mobile bottom-sheet variant */
+    .cm-kit.cm-kit--m{ max-width:26rem; }
+    .cm-kit--m .cm-modal{ display:flex; flex-direction:column; grid-template-columns:none; grid-template-rows:none; max-width:100%; min-width:0; width:100%; border-radius:var(--radius-lg) var(--radius-lg) 0 0; box-shadow:0 -.25rem 2rem rgba(0,0,0,.18); }
+    .cm-kit--m .cm-head{ order:1; position:sticky; top:0; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.125rem 1.25rem; border-bottom:.0625rem solid var(--color-graphite-200); background:var(--color-white); }
+    .cm-kit--m .cm-eyebrow{ margin:0; font-size:1.1rem; line-height:1.3; letter-spacing:-.015em; text-transform:none; color:var(--color-digital-black); animation:none; }
+    .cm-kit--m .cm-actions{ order:2; padding:0 1.25rem; }
+    .cm-kit--m .cm-h2{ margin:1.25rem 0 .375rem; font-size:1.125rem; line-height:1.3; }
+    .cm-kit--m .cm-sub{ margin:0 0 1rem; color:var(--color-graphite-600); }
+    .cm-kit--m .cm-list{ flex:0 0 auto; margin:0 0 1.375rem; }
+    .cm-kit--m .cm-row{ padding:1rem 1.125rem; gap:1rem; border-color:var(--color-graphite-200); }
+    .cm-kit--m .cm-rowlabel{ font-size:.875rem; line-height:1.3; }
+    .cm-kit--m .cm-rowmeta{ line-height:1.45; }
+    .cm-kit--m .cm-brand{ order:3; flex:0 0 auto; min-height:auto; padding:0 1.25rem 1.75rem; background:var(--color-white); color:var(--color-digital-black); }
+    .cm-kit--m .cm-brand-head{ display:none; }
+    .cm-kit--m .cm-brand-foot{ margin-top:0; padding-top:1.125rem; gap:.25rem; border-top:.0625rem solid var(--color-graphite-100); }
+    .cm-kit--m .cm-label{ color:var(--color-teal); letter-spacing:.15em; }
+    .cm-kit--m .cm-phone{ font-size:1.125rem; line-height:1.2; color:var(--color-black); }
+    .cm-kit--m .cm-metaline{ color:var(--color-graphite-600); }
+    .cm-kit--m .cm-mail{ margin-top:.25rem; color:var(--color-black); }
+    .cm-kit--m .cm-phone:hover, .cm-kit--m .cm-mail:hover{ color:var(--color-black); }
+    .cm-kit--m .cm-close{ position:static; flex:0 0 auto; width:2rem; height:2rem; }
   </style>
 </head>
 <body>
@@ -51,9 +131,7 @@
     const f = n => Math.round(n * S);
     const _ua   = typeof navigator !== 'undefined' ? navigator.userAgent : '';
     const _isWin = /Win/.test(_ua) && !/Macintosh/.test(_ua);
-    const font  = _isWin
-      ? "Arial, 'Helvetica Neue', Helvetica, sans-serif"
-      : "'Helvetica Neue', Helvetica, Arial, sans-serif";
+    const font  = "Arial, 'Helvetica Neue', Helvetica, sans-serif";
 
     // ── DESIGN TOKENS (JS) ──
     const T = {
@@ -347,7 +425,7 @@
       {value:"#B52320", label:"Red 600", subtitle:"Hover · Pressed",                  role:"Hover/pressed state for any red interactive element",                                                       hex:"#B52320", rgb:"181 · 35 · 32",   grp:"Red"},
       {value:"#4D0E0D", label:"Red 900", subtitle:"Text on red backgrounds",           role:"Readable text on Red 50 alert surfaces (error messages, alert body text)",                                 hex:"#4D0E0D", rgb:"77 · 14 · 13",    grp:"Red"},
       // ── YELLOW ──
-      {value:"#FFC041", label:"Star Yellow",         subtitle:"Review stars · Rating UI",             role:"Review star fill colour on product cards, PDP rating bars, order confirmation star rating widget",  hex:"#FFC041", rgb:"255 · 192 · 65",   grp:"Accent"},
+      {value:"#FFC041", label:"Star Yellow",         subtitle:"Review stars · Rating UI",             role:"Review star fill colour on product cards, PDP rating bars, order confirmation star rating widget",  hex:"#FFC041", rgb:"255 · 192 · 65",   grp:"Yellow"},
       // ── GRAPHITE SURFACES ──
       {value:"#F5F6FA", label:"Paper White",  subtitle:"Graphite 50 · Page backgrounds",  role:"Page bg, sidebar, search bar pill",                                                                         hex:"#F5F6FA", rgb:"245 · 246 · 250", grp:"Graphite Surfaces"},
       {value:"#F0F0F0", label:"Graphite 100", subtitle:"Off-white · Row dividers",         role:"Row dividers, inactive tabs, skeleton, badges",                                                             hex:"#F0F0F0", rgb:"240 · 240 · 240", grp:"Graphite Surfaces"},
@@ -982,9 +1060,11 @@
           textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:'0.5rem'}}>{children}</div>
       );
       const spacers = [
-        { label:'S', token:'spacer-s', height:'1.5rem',  px:'24px'  },
-        { label:'M', token:'spacer-m', height:'3rem',    px:'48px'  },
-        { label:'L', token:'spacer-l', height:'6rem',    px:'96px'  },
+        { label:'xxs', token:'mb-xxs', height:'0.5rem', px:'8px'  },
+        { label:'xs',  token:'mb-xs',  height:'1rem',   px:'16px' },
+        { label:'sm',  token:'mb-sm',  height:'2rem',   px:'32px' },
+        { label:'md',  token:'mb-md',  height:'3.5rem', px:'56px' },
+        { label:'lg',  token:'mb-lg',  height:'5rem',   px:'80px' },
       ];
       const dividers = [
         { label:'S', token:'divider-s', margin:'1rem',   px:'16px'  },
@@ -998,9 +1078,9 @@
       return (
         <div style={{display:'flex',flexDirection:'column',gap:'3rem'}}>
 
-          {/* ── Empty Spacers ── */}
+          {/* ── Margin Utilities (spacers) ── */}
           <div>
-            <SizeLabel>Empty Spacers — vertical breathing room between sections</SizeLabel>
+            <SizeLabel>Margin utilities (mb- / mt-) — vertical spacing, responsive</SizeLabel>
             <div style={{background:T.white,border:`1px solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
               {/* Table header */}
               <div style={{display:'grid',gridTemplateColumns:'4rem 5rem 5rem 1fr',
@@ -1030,13 +1110,15 @@
                 </div>
               ))}
             </div>
-            <CodeBlock inline lang="HTML" code={`<!-- HTML — add a named class to any block element -->
-<div class="spacer-s"></div>   <!-- 24px -->
-<div class="spacer-m"></div>   <!-- 48px -->
-<div class="spacer-l"></div>   <!-- 96px -->`}/>
-            <CodeBlock inline lang="CSS" code={`.spacer-s { display: block; height: 1.5rem; }
-.spacer-m { display: block; height: 3rem; }
-.spacer-l { display: block; height: 6rem; }`}/>
+            <CodeBlock inline lang="HTML" code={`<!-- HTML — margin utility on any element (mt-* mirrors mb-*) -->
+<h2 class="mb-sm">Überschrift</h2>
+<section class="mb-lg">…</section>`}/>
+            <CodeBlock inline lang="CSS" code={`.mb-xxs { margin-bottom: 0.5rem; }
+.mb-xs  { margin-bottom: 1rem; }
+.mb-sm  { margin-bottom: 2rem; }
+.mb-md  { margin-bottom: 3.5rem; }
+.mb-lg  { margin-bottom: 5rem; }
+/* mt-* mirror these; scale down at ≤991 / ≤767 / ≤575px */`}/>
           </div>
 
           {/* ── HR Dividers ── */}
@@ -2218,130 +2300,69 @@ a {
     // ── Shared contact service cards list — exact set & order from the VDM10 page ──
     const ContactCards = () => (
       <div style={{display:'flex',flexDirection:'column',gap:'0.625rem'}}>
-        <ServiceCard title="Produktberatung & Bestellung" sub="Beratung vor dem Kauf einer Sprechanlage." icon={contactIcons[0]}/>
-        <ServiceCard title="Metzler Partnerbetriebe" sub="Installationspartner in Ihrer Nähe." icon={contactIcons[2]}/>
         <ServiceCard title="Häufige Fragen (FAQ)" sub="Antworten, Anleitungen & Video-Hilfe zu Sprechanlagen." icon={contactIcons[4]}/>
+        <ServiceCard title="Produktberatung & Bestellung" sub="Beratung vor dem Kauf einer Sprechanlage." icon={contactIcons[0]}/>
         <ServiceCard title="Technischer Support" sub="Techniker Termin zur Einrichtung." icon={contactIcons[1]}/>
+        <ServiceCard title="Metzler Partnerbetriebe" sub="Installationspartner in Ihrer Nähe." icon={contactIcons[2]}/>
       </div>
     );
 
-    // ── Contact desktop content — exact port of the VDM10 Experten-Kontakt modal ──
+    // ── Experten-Kontakt & Service modal — 1:1 port of the ETK2022 .cm-* modal (custom.css) ──
+    const ContactModalBody = ({onClose}) => (
+      <div className="cm-modal">
+        <div className="cm-head">
+          <p className="cm-eyebrow">Kontakt &amp; Service</p>
+          <button className="cm-close" type="button" onClick={onClose||undefined} aria-label="Schließen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <aside className="cm-brand">
+          <div className="cm-brand-head">
+            <h2 className="cm-brand-title">Sprechen Sie<br/>mit einem <em>Experten</em></h2>
+            <p className="cm-lede">Persönliche Beratung, technischer Support und Metzler Partnerbetriebe – wir sind für Sie da.</p>
+          </div>
+          <div className="cm-brand-foot">
+            <span className="cm-label">Hotline</span>
+            <a className="cm-phone" href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a>
+            <span className="cm-metaline">Mo–Fr · 09:00–16:00 Uhr</span>
+            <a className="cm-mail" href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</a>
+          </div>
+        </aside>
+        <section className="cm-actions">
+          <h3 className="cm-h2">Wie können wir Ihnen helfen?</h3>
+          <p className="cm-sub">Wählen Sie Ihr Anliegen – wir helfen Ihnen gerne weiter.</p>
+          <div className="cm-list">
+            <a className="cm-row" href="#">
+              <span className="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+              <span className="cm-body"><span className="cm-rowlabel">Produktberatung &amp; Bestellung</span><span className="cm-rowmeta">Beratung vor dem Kauf einer Sprechanlage.</span></span>
+              <span className="cm-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+            </a>
+            <a className="cm-row" href="#">
+              <span className="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <span className="cm-body"><span className="cm-rowlabel">Metzler Partnerbetriebe</span><span className="cm-rowmeta">Installationspartner in Ihrer Nähe.</span></span>
+              <span className="cm-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+            </a>
+            <a className="cm-row" href="#">
+              <span className="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+              <span className="cm-body"><span className="cm-rowlabel">Häufige Fragen (FAQ)</span><span className="cm-rowmeta">Antworten, Anleitungen &amp; Video-Hilfe zu Sprechanlagen.</span></span>
+              <span className="cm-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+            </a>
+            <a className="cm-row" href="#">
+              <span className="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+              <span className="cm-body"><span className="cm-rowlabel">Technischer Support</span><span className="cm-rowmeta">Techniker Termin zur Einrichtung.</span></span>
+              <span className="cm-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+            </a>
+          </div>
+        </section>
+      </div>
+    );
     const ContactDesktopContent = ({onClose}) => (
-      <>
-        {/* Left teal hero */}
-        <div style={{flex:'0 0 19rem',
-          background:`linear-gradient(160deg, ${T.teal900} 0%, ${T.teal} 100%)`,
-          padding:'2rem',display:'flex',flexDirection:'column',
-          gap:'1.375rem',boxSizing:'border-box',overflowY:'auto'}}>
-          <h3 style={{margin:0,fontFamily:font,fontSize:'2.125rem',fontWeight:700,
-            lineHeight:1.1,letterSpacing:'-0.01em',color:T.white}}>
-            Sprechen Sie<br/>mit einem{' '}
-            <em style={{fontStyle:'normal',color:T.mint}}>Experten</em>
-          </h3>
-          <p style={{margin:0,fontFamily:font,fontSize:T.fSm,lineHeight:1.55,
-            color:'rgba(255,255,255,0.78)'}}>
-            Persönliche Beratung, technischer Support und Metzler Partnerbetriebe — wir sind für Sie da.
-          </p>
-          <div style={{height:'0.0625rem',background:'rgba(255,255,255,0.18)',marginTop:'auto'}}/>
-          <div style={{display:'flex',flexDirection:'column',gap:'0.375rem'}}>
-            <span style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,lineHeight:1.4,
-              letterSpacing:'0.15em',textTransform:'uppercase',color:T.mint,marginBottom:'0.375rem'}}>Hotline</span>
-            <a href="tel:+4971213177333" style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
-              color:T.white,letterSpacing:'-0.01em',lineHeight:1.2,whiteSpace:'nowrap',textDecoration:'none'}}
-              onMouseEnter={e=>e.currentTarget.style.textDecoration='underline'}
-              onMouseLeave={e=>e.currentTarget.style.textDecoration='none'}>
-              +49 (0) 7121 / 317 7333
-            </a>
-            <span style={{fontFamily:font,fontSize:T.fXs,color:'rgba(255,255,255,0.62)'}}>Mo–Fr · 09:00–16:00 Uhr</span>
-            <a href="mailto:service@metzlergmbh.de" style={{fontFamily:font,fontSize:T.fSm,color:T.white,
-              marginTop:'0.375rem',display:'inline-block',textDecoration:'none'}}
-              onMouseEnter={e=>e.currentTarget.style.textDecoration='underline'}
-              onMouseLeave={e=>e.currentTarget.style.textDecoration='none'}>
-              service@metzlergmbh.de
-            </a>
-          </div>
-        </div>
-        {/* Right white panel — absolute close, eyebrow above heading (no header bar) */}
-        <div style={{position:'relative',flex:1,minWidth:0,minHeight:0,background:T.white,display:'flex',flexDirection:'column'}}>
-          <div role="button" aria-label="Schließen" onClick={onClose||undefined}
-            style={{position:'absolute',top:'1rem',right:'1rem',zIndex:2,
-              width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
-              color:T.g600,cursor:onClose?'pointer':'default',
-              display:'inline-flex',alignItems:'center',justifyContent:'center',
-              transition:'background 0.15s',userSelect:'none'}}
-            onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
-            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-            <XIcon/>
-          </div>
-          {/* Scrollable body */}
-          <div style={{overflowY:'auto',flex:1,minHeight:0,padding:'2.25rem 1.75rem 1.75rem',display:'flex',flexDirection:'column'}}>
-            <span style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,lineHeight:1.4,
-              letterSpacing:'0.15em',textTransform:'uppercase',color:T.teal,margin:'0 0 0.75rem'}}>
-              Kontakt &amp; Service
-            </span>
-            <h3 style={{margin:'0 0 0.5rem',fontFamily:font,fontSize:T.fH3,fontWeight:700,
-              color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
-              Wie können wir Ihnen helfen?
-            </h3>
-            <p style={{margin:'0 0 1.375rem',fontFamily:font,fontSize:T.fSm,
-              lineHeight:1.5,color:T.g600}}>
-              Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.
-            </p>
-            <ContactCards/>
-          </div>
-        </div>
-      </>
+      <div className="cm-kit"><ContactModalBody onClose={onClose}/></div>
     );
 
-    // ── Contact Modal — separate component so it can read MobCtx independently ──
-    // Contact mobile content — shared between live mobile modal and Mobile-Popups preview
+    // Contact mobile content — same modal body, mobile bottom-sheet variant (.cm-kit--m)
     const ContactMobileContent = ({onClose}) => (
-      <div style={{display:'flex',flexDirection:'column',background:T.white}}>
-        {/* Sticky header: title + close (matches desktop) */}
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'1rem',
-          padding:'1.125rem 1.25rem',borderBottom:`0.0625rem solid ${T.g200}`,flexShrink:0}}>
-          <span style={{fontFamily:font,fontSize:'1.1rem',fontWeight:700,lineHeight:1.3,
-            letterSpacing:'-0.015em',color:T.dBlack}}>
-            Kontakt &amp; Service
-          </span>
-          <div role="button" aria-label="Schließen" onClick={onClose}
-            style={{width:'2rem',height:'2rem',borderRadius:T.r,background:'transparent',
-              color:T.g600,cursor:onClose?'pointer':'default',display:'inline-flex',alignItems:'center',
-              justifyContent:'center',transition:'background 0.15s',userSelect:'none'}}
-            onMouseEnter={e=>e.currentTarget.style.background=onClose?T.g100:'transparent'}
-            onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-            <XIcon/>
-          </div>
-        </div>
-        {/* Scrollable body */}
-        <div style={{overflowY:'auto',padding:'1.25rem 1.25rem 1.75rem',display:'flex',flexDirection:'column'}}>
-          <h4 style={{margin:'0 0 0.375rem',fontFamily:font,fontSize:T.fH4,fontWeight:700,
-            color:T.dBlack,lineHeight:1.3,letterSpacing:'-0.01em'}}>
-            Wie können wir Ihnen helfen?
-          </h4>
-          <p style={{margin:'0 0 1rem',fontFamily:font,fontSize:T.fSm,lineHeight:1.5,color:T.g600}}>
-            Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.
-          </p>
-          <ContactCards/>
-          {/* Hotline — below service cards */}
-          <div style={{marginTop:'1.375rem',paddingTop:'1.125rem',
-            borderTop:`0.0625rem solid ${T.g100}`,
-            display:'flex',flexDirection:'column',gap:'0.25rem'}}>
-            <span style={{fontFamily:font,fontSize:T.fXs,fontWeight:700,lineHeight:1.4,
-              letterSpacing:'0.15em',textTransform:'uppercase',color:T.teal}}>Hotline</span>
-            <a href="tel:+4971213177333" style={{fontFamily:font,fontSize:'1.125rem',fontWeight:700,
-              color:T.black,letterSpacing:'-0.01em',lineHeight:1.2,
-              textDecoration:'none',display:'inline-block'}}>
-              +49 (0) 7121 / 317 7333
-            </a>
-            <span style={{fontFamily:font,fontSize:T.fXs,color:T.g600}}>Mo–Fr · 09:00–16:00 Uhr</span>
-            <a href="mailto:service@metzlergmbh.de" style={{fontFamily:font,fontSize:T.fSm,color:T.black,
-              marginTop:'0.25rem',textDecoration:'none',display:'inline-block'}}>
-              service@metzlergmbh.de
-            </a>
-          </div>
-        </div>
-      </div>
+      <div className="cm-kit cm-kit--m"><ContactModalBody onClose={onClose}/></div>
     );
 
     // Privacy settings content — shared between live modal and Mobile-Popups preview
@@ -2950,11 +2971,7 @@ a {
           <p style={{fontFamily:font,fontSize:T.fSm,fontWeight:700,color:T.black,margin:'0 0 0.5rem'}}>D — Experten-Kontakt &amp; Service (Split-Panel, product page)</p>
           <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
             <div style={{padding:'2.5rem 1.5rem',background:T.paper,display:'flex',justifyContent:'center'}}>
-              <div style={{width:'100%',maxWidth:'52rem',borderRadius:T.rLg,
-                boxShadow:'0 1.25rem 3.75rem rgba(0,0,0,0.14),0 0.25rem 1rem rgba(0,0,0,0.06)',
-                overflow:'hidden',display:'flex'}}>
-                <ContactDesktopContent/>
-              </div>
+              <ContactDesktopContent/>
             </div>
             <CodeBlock inline lang="HTML" code={
 `<div class="modal-overlay">
@@ -2981,11 +2998,11 @@ a {
       <p>Wählen Sie Ihr Anliegen — wir helfen Ihnen gerne weiter.</p>
       <div class="service-cards">
         <a class="service-card" href="#">
-          <span class="service-card__ico"><!-- chat SVG --></span>
-          <div><strong>Produktberatung &amp; Bestellung</strong><p>Beratung vor dem Kauf einer Sprechanlage.</p></div>
+          <span class="service-card__ico"><!-- help-circle SVG --></span>
+          <div><strong>Häufige Fragen (FAQ)</strong><p>Antworten, Anleitungen &amp; Video-Hilfe zu Sprechanlagen.</p></div>
           <svg class="chevron">…</svg>
         </a>
-        <!-- repeat: Metzler Partnerbetriebe · Häufige Fragen (FAQ) · Technischer Support -->
+        <!-- repeat: Produktberatung & Bestellung · Technischer Support · Metzler Partnerbetriebe -->
       </div>
     </div>
 
@@ -3878,7 +3895,7 @@ a {
           <BH>Unordered</BH>
           <BD>Teal dash marker. Nested lists use a smaller teal circle.</BD>
           <Card code={
-`<ul class="list-metzler">
+`<ul class="list-dash">
   <li>Lorem ipsum dolor sit amet</li>
   <li>Nulla volutpat aliquam velit
     <ul>
@@ -3894,7 +3911,7 @@ a {
           <BH>Ordered</BH>
           <BD>Two-digit teal counter. Clear hierarchy for step-by-step content.</BD>
           <Card code={
-`<ol class="list-metzler-ordered">
+`<ol class="list-numbered">
   <li>Lorem ipsum dolor sit amet</li>
   <li>Consectetur adipiscing elit</li>
   <li>Integer molestie lorem at massa</li>
@@ -3905,7 +3922,7 @@ a {
           <BH>Checklist</BH>
           <BD>Use for feature lists, benefit summaries, and comparison tables.</BD>
           <Card code={
-`<ul class="list-metzler-check">
+`<ul class="list-check">
   <li>Lorem ipsum dolor sit amet</li>
   <li>Consectetur adipiscing elit</li>
 </ul>`}>
@@ -3925,48 +3942,48 @@ a {
           <BH>CSS definitions</BH>
           <CodeBlock inline lang="CSS" code={
 `/* Unordered — teal dash */
-.list-metzler { list-style: none; padding: 0; margin: 0; }
-.list-metzler > li {
+.list-dash { list-style: none; padding: 0; margin: 0; }
+.list-dash > li {
   display: flex; align-items: center; gap: 0.75rem;
   padding: 0.3rem 0; font-size: 1rem; line-height: 1.5;
 }
 
-.list-metzler > li::before {
+.list-dash > li::before {
   content: ''; flex-shrink: 0;
   width: 0.375rem; height: 0.125rem;
   background: var(--color-teal); border-radius: var(--radius-sm); margin-top: 0.6rem;
 }
 /* Nested */
-.list-metzler ul { list-style: none; padding: 0 0 0 1.25rem; margin: 0.25rem 0; }
-.list-metzler ul li { display: flex; align-items: center; gap: 0.75rem; padding: 0.25rem 0; font-size: 0.9375rem; color: #54545C; }
-.list-metzler ul li::before {
+.list-dash ul { list-style: none; padding: 0 0 0 1.25rem; margin: 0.25rem 0; }
+.list-dash ul li { display: flex; align-items: center; gap: 0.75rem; padding: 0.25rem 0; font-size: 0.9375rem; color: #54545C; }
+.list-dash ul li::before {
   content: ''; flex-shrink: 0;
   width: 0.25rem; height: 0.25rem; border-radius: 50%;
   border: 0.09375rem solid var(--color-teal); margin-top: 0.45rem;
 }
 
 /* Ordered — two-digit teal counter */
-.list-metzler-ordered { list-style: none; padding: 0; margin: 0; counter-reset: metz; }
-.list-metzler-ordered > li {
+.list-numbered { list-style: none; padding: 0; margin: 0; counter-reset: metz; }
+.list-numbered > li {
   display: flex; align-items: center; gap: 0.875rem;
   padding: 0.3rem 0; font-size: 1rem; line-height: 1.5;
   counter-increment: metz;
 }
 
-.list-metzler-ordered > li::before {
+.list-numbered > li::before {
   content: counter(metz, decimal-leading-zero);
   flex-shrink: 0; min-width: 1.5rem;
   font-family: monospace; font-size: 0.8125rem; font-weight: 700; color: var(--color-teal);
 }
 
 /* Checklist — teal circle tick */
-.list-metzler-check { list-style: none; padding: 0; margin: 0; }
-.list-metzler-check > li {
+.list-check { list-style: none; padding: 0; margin: 0; }
+.list-check > li {
   display: flex; align-items: center; gap: 0.75rem;
   padding: 0.35rem 0; font-size: 1rem; line-height: 1.5;
 }
 
-.list-metzler-check > li::before {
+.list-check > li::before {
   content: '';  flex-shrink: 0;
   width: 1.125rem; height: 1.125rem; border-radius: 50%;
   background: rgba(1,82,83,0.1);
@@ -4439,17 +4456,17 @@ a {
   gap: 0.5rem;
   height: 2.625rem;
   padding: .7rem 1.2rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-default);
   font-family: var(--font-family);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: var(--font-bold);
   white-space: nowrap;
   line-height: 1.2;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
-.btn-lg    { font-size: 1.1rem; font-weight: 600; }
-.btn-sm    { font-size: 0.9rem; font-weight: 400; }
+.btn-lg    { font-size: 1.1rem; font-weight: var(--font-bold); }
+.btn-sm    { font-size: 0.9rem; font-weight: var(--font-regular); }
 .btn-block {
   display: flex;
   text-align: center;
@@ -4476,7 +4493,7 @@ a {
 .btn-dark,
 .btn-dark-outline {
   padding: 0.875rem 1.75rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-default);
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -4953,67 +4970,99 @@ a {
       );
     };
 
-    // ── FILE DOWNLOAD COMPONENT ──
-    // Exact 1:1 port of download-card-handoff.html (colours mapped to DS tokens).
-    // Scoped CSS is injected once by FileDownloadSection.
-    const FileDownload = ({title='Bedienungsanleitung', type='PDF', lang='Deutsch', size='4,2 MB', hov=false}) => (
-      <a className={'psx-dl__item' + (hov ? ' is-hover' : '')} href="#" onClick={e=>e.preventDefault()}>
-        <span className="psx-dl__badge">{type}</span>
-        <span className="psx-dl__text">
-          <b>{title}</b>
-          <span>{lang} · {size}</span>
-        </span>
-        <svg className="psx-dl__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
-        </svg>
-      </a>
-    );
+    // ── FILE DOWNLOAD COMPONENT (psx-dl — ETK2022 product-page download row) ──
+    const FileDownload = ({title='Schnellstartanleitung', type='PDF', lang='Deutsch', size='1,2 MB', hov:hovProp, setHov, interactive=false}) => {
+      const [hovSelf, setHovSelf] = React.useState(false);
+      const hov = interactive ? hovSelf : (hovProp || false);
+      const meta = [lang, size].filter(Boolean).join(' · ');
+      return (
+        <a
+          onMouseEnter={()=>{ if(interactive) setHovSelf(true); else setHov&&setHov(true); }}
+          onMouseLeave={()=>{ if(interactive) setHovSelf(false); else setHov&&setHov(false); }}
+          style={{
+            position:'relative', overflow:'hidden',
+            display:'flex', alignItems:'center', gap:'1.1rem',
+            background:T.white, boxSizing:'border-box',
+            padding:'1.15rem 1.25rem', width:420, fontFamily:font,
+            cursor:'pointer', userSelect:'none', textDecoration:'none',
+            borderRadius:T.rLg,
+            border: `1px solid ${hov ? T.teal : T.g300}`,
+            transform: hov ? 'translateY(-3px)' : 'none',
+            boxShadow: hov ? '0 4px 12px -8px rgba(1,82,83,0.28)' : 'none',
+            transition:'border-color 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease',
+          }}>
 
-    // Scoped CSS — 1:1 from download-card-handoff.html (hardcoded hex → DS tokens)
-    const psxDlCSS = `
-      .psx-dl__item { position:relative; overflow:hidden; box-sizing:border-box; display:flex; align-items:center; gap:1.1rem; padding:1.15rem 1.25rem; width:26rem; max-width:100%; text-decoration:none; background:${T.white}; border:1px solid ${T.g300}; border-radius:0.75rem; font-family:${font}; cursor:pointer; transition:border-color .2s ease, box-shadow .25s ease, transform .2s ease; }
-      .psx-dl__item::after { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(130% 140% at 100% 0%, rgba(1,82,83,0.07), transparent 55%); opacity:0; transition:opacity .25s ease; }
-      .psx-dl__badge { position:relative; flex:none; display:grid; place-items:center; width:2.75rem; height:3.25rem; border-radius:0.55rem; background:linear-gradient(158deg, #ffffff 0%, ${T.teal50} 100%); border:1px solid ${T.teal75}; color:${T.teal}; font-size:${T.fXxs}; font-weight:800; letter-spacing:0.05em; box-shadow:0 3px 8px -4px rgba(1,82,83,0.35); transition:transform .2s ease; }
-      .psx-dl__badge::before { content:""; position:absolute; top:0; right:0; width:0; height:0; border-top:0.75rem solid ${T.white}; border-left:0.75rem solid transparent; border-top-right-radius:0.55rem; filter:drop-shadow(-1px 1px 1px rgba(1,82,83,0.12)); }
-      .psx-dl__text { display:flex; flex-direction:column; gap:0.15rem; min-width:0; flex:1; }
-      .psx-dl__text b { font-size:${T.fBody}; font-weight:700; line-height:1.3; color:${T.dBlack}; }
-      .psx-dl__text span { font-size:${T.f13}; color:${T.g700}; }
-      .psx-dl__icon { flex:none; box-sizing:content-box; width:1.1rem; height:1.1rem; padding:0.55rem; border-radius:50%; background:${T.teal50}; color:${T.teal}; transition:background .2s ease, color .2s ease; }
-      .psx-dl__item:hover { border-color:${T.teal}; transform:translateY(-3px); box-shadow:0 20px 34px -20px rgba(1,82,83,0.5), 0 2px 6px -3px rgba(16,24,40,0.08); }
-      .psx-dl__item:hover::after { opacity:1; }
-      .psx-dl__item:hover .psx-dl__badge { transform:translateY(-2px) rotate(-3deg); }
-      .psx-dl__item:hover .psx-dl__icon { background:${T.teal}; color:#fff; }
-      .psx-dl__item:focus-visible { outline:2px solid ${T.teal}; outline-offset:3px; }
-      @media (prefers-reduced-motion: no-preference) {
-        .psx-dl__item:hover .psx-dl__icon { animation:dl-nudge .7s ease; }
-        @keyframes dl-nudge { 0%,100%{transform:translateY(0);} 45%{transform:translateY(3px);} }
-      }
-      .psx-dl__item.is-hover { border-color:${T.teal}; transform:translateY(-3px); box-shadow:0 20px 34px -20px rgba(1,82,83,0.5), 0 2px 6px -3px rgba(16,24,40,0.08); }
-      .psx-dl__item.is-hover::after { opacity:1; }
-      .psx-dl__item.is-hover .psx-dl__badge { transform:translateY(-2px) rotate(-3deg); }
-      .psx-dl__item.is-hover .psx-dl__icon { background:${T.teal}; color:#fff; }
-    `;
-    const FileDownloadSection = () => (
-      <div style={{display:'flex', flexDirection:'column', gap:24}}>
-        <style>{psxDlCSS}</style>
-        {/* Default */}
-        <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-          <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Default</span>
-          <FileDownload title="Bedienungsanleitung" type="PDF" lang="Deutsch" size="4,2 MB"/>
+          {/* soft teal wash that fades in from the top-right on hover */}
+          <span style={{position:'absolute', inset:0, borderRadius:'inherit', pointerEvents:'none',
+            background:'radial-gradient(130% 140% at 100% 0%, rgba(1,82,83,0.07), transparent 55%)',
+            opacity: hov ? 1 : 0, transition:'opacity 0.25s ease'}}/>
+
+          {/* PDF badge — document sheet with a folded top-right corner */}
+          <span style={{position:'relative', flexShrink:0, display:'grid', placeItems:'center',
+            width:44, height:52, borderRadius:T.rLg,
+            background:`linear-gradient(158deg, ${T.white} 0%, ${T.teal50} 100%)`,
+            border:`1px solid ${T.teal75}`, color:T.teal,
+            fontSize:12, fontWeight:800, letterSpacing:'0.05em',
+            boxShadow:'0 1px 3px -2px rgba(1,82,83,0.25)',
+            transform: hov ? 'translateY(-2px) rotate(-3deg)' : 'none', transition:'transform 0.2s ease'}}>
+            {type}
+            <span style={{position:'absolute', top:0, right:0, width:0, height:0,
+              borderTop:`12px solid ${T.white}`, borderLeft:'12px solid transparent',
+              borderTopRightRadius:9, filter:'drop-shadow(-1px 1px 1px rgba(1,82,83,0.12))'}}/>
+          </span>
+
+          {/* Title + meta (language · size) */}
+          <span style={{display:'flex', flexDirection:'column', gap:2, flex:1, minWidth:0}}>
+            <b style={{fontSize:14, fontWeight:700, color:T.dBlack, lineHeight:1.3,
+              whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{title}</b>
+            {meta && <span style={{fontSize:12, color:T.g700}}>{meta}</span>}
+          </span>
+
+          {/* Circular download button — arrow nudges down on hover */}
+          <span style={{
+            flexShrink:0, width:34, height:34, borderRadius:'50%',
+            display:'grid', placeItems:'center',
+            background: hov ? T.teal : T.teal50, color: hov ? T.white : T.teal,
+            transition:'background 0.2s ease, color 0.2s ease',
+          }}>
+            <svg width={14} height={15} viewBox="0 0 14 15" fill="none">
+              <path d="M7 1v9M3 7.5L7 11.5l4-4" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+              <line x1={1.5} y1={14} x2={12.5} y2={14} stroke="currentColor" strokeWidth={1.8} strokeLinecap="round"/>
+            </svg>
+          </span>
+        </a>
+      );
+    };
+
+    const FileDownloadSection = () => {
+      const [hov, setHov] = React.useState(false);
+      return (
+        <div style={{display:'flex', flexDirection:'column', gap:20}}>
+          <div style={{display:'flex', gap:24, flexWrap:'wrap', alignItems:'flex-start'}}>
+            {/* Default */}
+            <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+              <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Default</span>
+              <FileDownload title="Schnellstartanleitung" type="PDF" size="1,2 MB" date="03/2026" hov={false}/>
+            </div>
+            {/* Hover */}
+            <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+              <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Hover</span>
+              <FileDownload title="Schnellstartanleitung" type="PDF" size="1,2 MB" date="03/2026" hov={true}/>
+            </div>
+          </div>
+          {/* Long title example */}
+          <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+            <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Long title</span>
+            <FileDownload title="Metzler Produktkatalog 2026 — Vollständige Ausgabe" type="PDF" size="8,4 MB" date="01/2026" hov={false}/>
+          </div>
+          {/* Interactive */}
+          <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
+            <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Interactive — try hovering</span>
+            <FileDownload title="Schnellstartanleitung" type="PDF" size="1,2 MB" date="03/2026" interactive/>
+          </div>
         </div>
-        {/* Hover — static reference */}
-        <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-          <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Hover (static reference)</span>
-          <FileDownload title="Bedienungsanleitung" type="PDF" lang="Deutsch" size="4,2 MB" hov/>
-        </div>
-        {/* Long title */}
-        <div style={{display:'flex', flexDirection:'column', gap:8, alignItems:'flex-start'}}>
-          <span style={{fontSize:T.fXxs, fontWeight:600, color:T.g500, fontFamily:font, textTransform:'uppercase', letterSpacing:'0.08em'}}>Long title</span>
-          <FileDownload title="Metzler Produktkatalog 2026 — Vollständige Ausgabe" type="PDF" lang="Deutsch" size="8,4 MB"/>
-        </div>
-      </div>
-    );
+      );
+    };
 
 /* Reusable floating-label input — real <input class="form-control"> */
     const LiveInput = ({label, type='text', hint, submitted}) => {
@@ -5946,23 +5995,6 @@ cursor: pointer;
       {key:'plug',label:'Plug',category:'Technology',tags:['plug','power','connect','outlet','energy','installation'],style:'outline'},
       {key:'cube',label:'Cube',category:'Technology',tags:['cube','box','material','3d','package','housing'],style:'outline'},
       {key:'ruler',label:'Ruler',category:'Technology',tags:['ruler','measure','dimensions','size','length','technical'],style:'outline'},
-      // ── OPC additions (aus 18_OPC_Vorlage + 23-opc-bispo-max) ──
-      {key:'key',label:'Key',category:'Technology',tags:['key','access','unlock','schluessel','schlüssel'],style:'outline'},
-      {key:'key-alt',label:'Key alt',category:'Technology',tags:['key','access','unlock','schluessel','variant'],style:'outline'},
-      {key:'fingerprint',label:'Fingerprint',category:'Technology',tags:['fingerprint','fingerabdruck','biometric','access','scan'],style:'outline'},
-      {key:'layers',label:'Layers',category:'Technology',tags:['layers','ebenen','coating','beschichtung','stack','3d'],style:'outline'},
-      {key:'cloud-rain',label:'Cloud rain',category:'Technology',tags:['cloud','rain','weather','wetter','wetterfest','outdoor'],style:'outline'},
-      {key:'waterproof',label:'Waterproof',category:'Technology',tags:['waterproof','water','drop','wetterfest','rostfrei','outdoor','check'],style:'outline'},
-      {key:'compartments',label:'Compartments',category:'Technology',tags:['compartments','faecher','fächer','paketbox','briefkasten','mailbox'],style:'outline'},
-      {key:'align-frame',label:'Align frame',category:'Technology',tags:['align','ausrichten','position','frame','viewfinder','montage'],style:'outline'},
-      {key:'drill',label:'Drill',category:'Technology',tags:['drill','bohren','bohrmaschine','montage','tool','installation','duebel'],style:'outline'},
-      {key:'bag',label:'Bag',category:'Commerce',tags:['bag','shopping','tasche','einkaufstasche','capacity'],style:'outline'},
-      {key:'package',label:'Package',category:'Commerce',tags:['package','parcel','paket','sendung','box','shipping'],style:'outline'},
-      {key:'id-card',label:'ID card',category:'UI',tags:['id','card','nameplate','klingelschild','kontakt','profil'],style:'outline'},
-      // ── Formats (DIN-Umschlagformate, aus 18_OPC_Vorlage) ──
-      {key:'din-c4',label:'DIN C4',category:'Formats',tags:['din','c4','envelope','umschlag','format','brief','324'],style:'outline'},
-      {key:'din-c6',label:'DIN C6',category:'Formats',tags:['din','c6','envelope','umschlag','format','brief','162'],style:'outline'},
-      {key:'din-lang',label:'DIN Lang',category:'Formats',tags:['din','lang','dl','envelope','umschlag','format','brief','220'],style:'outline'},
       // ── Colorful ──
       {key:'flag-de',label:'Flag Germany',category:'Colorful',tags:['flag','germany','de','country'],style:'color'},
       {key:'badge-pdf',label:'PDF Badge',category:'Colorful',tags:['pdf','badge','document','file'],style:'color'},
@@ -5970,7 +6002,6 @@ cursor: pointer;
       {key:'star-yellow',label:'Star yellow',category:'Colorful',tags:['star','rating','review','yellow','full'],style:'color'},
       {key:'star-gray',label:'Star gray',category:'Colorful',tags:['star','rating','empty','gray'],style:'color'},
       {key:'star-half',label:'Star half',category:'Colorful',tags:['star','rating','half','partial'],style:'color'},
-      {key:'rating-stars',label:'Rating stars',category:'Colorful',tags:['rating','stars','review','bewertung','sterne','gradient'],style:'color'},
       // ── Packaging ──
       {key:'recyclable',label:'Recyclable',category:'Packaging',tags:['recycle','recyclable','eco','sustainable','loop','arrows'],style:'outline'},
       {key:'pap',label:'PAP',category:'Packaging',tags:['pap','paper','cardboard','recycle','packaging','recycling'],style:'outline'},
@@ -6083,18 +6114,6 @@ cursor: pointer;
           case 'plug':          return W(<>{sp('M9 2v6M15 2v6M5 8h14v3a7 7 0 01-14 0V8zM12 18v4')}</>);
           case 'cube':          return W(<>{sp('M12 2L3 7v10l9 5 9-5V7l-9-5z')}{sp('M3 7l9 5 9-5')}{sp('M12 22V12')}</>);
           case 'ruler':         return W(<>{sp('M21.3 8.7L8.7 21.3a1 1 0 01-1.4 0L2.7 16.7a1 1 0 010-1.4L15.3 2.7a1 1 0 011.4 0l4.6 4.6a1 1 0 010 1.4z')}{sp('M7.5 10.5l2 2')}{sp('M10.5 7.5l2 2')}{sp('M13.5 4.5l2 2')}{sp('M4.5 13.5l2 2')}</>);
-          // ── OPC additions ──
-          case 'key':           return W(<>{sp('M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5z')}</>);
-          case 'key-alt':       return W(<>{sc(15.6,8.4,5.4)}{sc(17.6,6.4,1.5)}{sp('M11.8 12.2L3.6 20.4')}{sp('M6.6 17.4l2.4 2.4')}{sp('M9 15l2.4 2.4')}</>);
-          case 'layers':        return W(<>{sp('M12 2.5l9 4.75-9 4.75-9-4.75 9-4.75z')}{sp('M3 12l9 4.75L21 12')}{sp('M3 16.75L12 21.5l9-4.75')}</>);
-          case 'cloud-rain':    return W(<>{sp('M17.5 17a4.5 4.5 0 000-9 6 6 0 00-11.6 2A3.5 3.5 0 006.5 17z')}{sp('M8 20l.6-1.4M12 21l.6-1.4M16 20l.6-1.4')}</>);
-          case 'waterproof':    return W(<>{sp('M12 3s5.5 6 5.5 9.5a5.5 5.5 0 01-11 0C6.5 9 12 3 12 3z')}{sp('M9.7 12.6l1.7 1.7 3.2-3.2')}</>);
-          case 'compartments':  return W(<>{sr(3,3,18,18,2)}{sp('M3 11.5h18')}{sp('M7.5 7.2h5')}{sp('M7.5 16h5')}</>);
-          case 'align-frame':   return W(<>{sr(8.5,8.5,7,7,1)}{sp('M3 7.5V3h4.5')}{sp('M21 7.5V3h-4.5')}{sp('M3 16.5V21h4.5')}{sp('M21 16.5V21h-4.5')}</>);
-          case 'drill':         return W(<>{sp('M3 6.5h9v6H3z')}{sp('M12 9.5h7')}{sp('M6.5 12.5v5')}</>);
-          case 'bag':           return W(<>{sp('M8.6 8h6.8l2.4 10.8a1.6 1.6 0 01-1.55 1.95H7.75a1.6 1.6 0 01-1.55-1.95L8.6 8z')}{sp('M9.6 8a2.4 2.4 0 014.8 0')}</>);
-          case 'package':       return W(<>{sp('M21 8.2v7.6a1.6 1.6 0 01-.85 1.41l-7 3.9a1.6 1.6 0 01-1.3 0l-7-3.9A1.6 1.6 0 013 15.8V8.2a1.6 1.6 0 01.85-1.41l7-3.9a1.6 1.6 0 011.3 0l7 3.9A1.6 1.6 0 0121 8.2z')}{sp('M3.3 7.3L12 12l8.7-4.7')}{sp('M12 21.5V12')}{sp('M7.6 4.9l8.7 4.85')}</>);
-          case 'id-card':       return W(<>{sr(5,3,14,18,2)}{sc(12,8.5,2.2)}{sp('M9 14h6M9 17h6')}</>);
           // Colorful
           case 'flag-de': return (
             <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -6182,57 +6201,6 @@ cursor: pointer;
               <path d="M462.2,45.2s-1,3.6-2.2,5.2c-1.1,1.5-2.4,4.1-1.4,6.3,1,2.2,4.3,3.2,6.3,1.6,2-1.6,1.8-4,1.3-5.7-.5-1.7-3.2-3.8-4-7.4Z" fill={col}/>
               <path d="M444.8,46.5s-.5,1.9-1.1,2.7c-.6.8-1.2,2.1-.7,3.3.5,1.1,2.2,1.7,3.2.8s.9-2.1.7-2.9-1.6-2-2-3.8Z" fill={col}/>
               <path d="M468.8,61c-.6-.8-1.5-1.6-2.3-2.3-.2.3-.5.6-.9.9-2.5,2.1-6.9.7-8.1-2.1-.4-1-.5-2.1-.4-3.1,0,0-.2,0-.2,0-3.4-.3-9.8-.6-15.9,3.1-6.1,3.7-7.9,8.8-7.9,8.8-.9,1.8,2.9-.5,5.8-.7,2.9-.2,5.4,1.2,5.4,1.2,0,0,2.9-1.5,6.4-1.6,6.7,0,10.9,1.6,10.9,1.6,0,0,1.5-1,3.7-1.2,2.1-.2,3.8.2,6,1,2.2.8.5-2.1-2.4-5.7Z" fill={col}/>
-            </svg>
-          );
-          // ── OPC additions (custom viewBox) ──
-          case 'fingerprint': return (
-            <svg width={size} height={size} viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M44.6875 27.5C35.211 27.5 27.5 35.211 27.5 44.6875V99.6875C27.5 101.588 29.0391 103.125 30.9375 103.125C32.8359 103.125 34.375 101.588 34.375 99.6875V44.6875C34.375 39.0008 39.0008 34.375 44.6875 34.375C50.3742 34.375 55 39.0008 55 44.6875C55 46.5859 56.5391 48.125 58.4375 48.125C60.3359 48.125 61.875 46.5859 61.875 44.6875C61.875 35.211 54.164 27.5 44.6875 27.5Z" fill={col}/>
-              <path d="M44.6875 41.25C42.7891 41.25 41.25 42.7891 41.25 44.6875V75.625C41.25 77.5234 42.7891 79.0625 44.6875 79.0625C46.5859 79.0625 48.125 77.5234 48.125 75.625V44.6875C48.125 42.7891 46.5859 41.25 44.6875 41.25Z" fill={col}/>
-              <path d="M44.6875 85.9375C42.7891 85.9375 41.25 87.4766 41.25 89.375V106.562C41.25 108.463 42.7891 110 44.6875 110C46.5859 110 48.125 108.463 48.125 106.562V89.375C48.125 87.4766 46.5859 85.9375 44.6875 85.9375Z" fill={col}/>
-              <path d="M58.4375 55C56.5391 55 55 56.5391 55 58.4375V99.6875C55 101.588 56.5391 103.125 58.4375 103.125C60.3359 103.125 61.875 101.588 61.875 99.6875V58.4375C61.875 56.5391 60.3359 55 58.4375 55Z" fill={col}/>
-              <path d="M17.1875 61.875C15.2891 61.875 13.75 63.4141 13.75 65.3125V89.375C13.75 91.2751 15.2891 92.8125 17.1875 92.8125C19.0859 92.8125 20.625 91.2751 20.625 89.375V65.3125C20.625 63.4141 19.0859 61.875 17.1875 61.875Z" fill={col}/>
-              <path d="M85.9375 55C84.0391 55 82.5 56.5391 82.5 58.4375V75.625C82.5 77.5234 84.0391 79.0625 85.9375 79.0625C87.8359 79.0625 89.375 77.5234 89.375 75.625V58.4375C89.375 56.5391 87.8359 55 85.9375 55Z" fill={col}/>
-              <path d="M68.9019 31.1961C67.1413 31.9093 66.292 33.9119 67.0035 35.6725C68.1618 38.5343 68.7491 41.5674 68.7491 44.6876V89.3751C68.7491 91.2752 70.2883 92.8126 72.1866 92.8126C74.085 92.8126 75.6241 91.2752 75.6241 89.3751V44.6876C75.6241 40.6795 74.8688 36.7786 73.3784 33.0944C72.6666 31.3355 70.6726 30.486 68.9019 31.1961Z" fill={col}/>
-              <path d="M44.6875 13.75C27.6293 13.75 13.75 27.6293 13.75 44.6875V51.5625C13.75 53.4609 15.2891 55 17.1875 55C19.0859 55 20.625 53.4609 20.625 51.5625V44.6875C20.625 31.4192 31.4192 20.625 44.6875 20.625C50.2281 20.625 55.4314 22.4529 59.7384 25.9138C61.2238 27.1004 63.3823 26.8673 64.5724 25.3868C65.7607 23.9063 65.5241 21.7428 64.0453 20.5528C58.5836 16.1653 51.7086 13.75 44.6875 13.75Z" fill={col}/>
-              <path d="M29.5519 10.0255C34.3339 7.93418 39.4263 6.875 44.6883 6.875C65.5382 6.875 82.5008 23.8376 82.5008 44.6875C82.5008 46.5859 84.0399 48.125 85.9383 48.125C87.8366 48.125 89.3758 46.5859 89.3758 44.6875C89.3758 20.046 69.3298 0 44.6883 0C38.4728 0 32.454 1.25383 26.7991 3.72453C25.0584 4.48486 24.2646 6.51256 25.0249 8.25129C25.7887 9.99195 27.8164 10.7774 29.5519 10.0255Z" fill={col}/>
-              <path d="M16.2342 14.6269C14.8176 13.358 12.6474 13.4822 11.3801 14.8955C4.04186 23.0948 0 33.6741 0 44.6883V75.6258C0 77.5241 1.53914 79.0633 3.4375 79.0633C5.33586 79.0633 6.875 77.5241 6.875 75.6258V44.6883C6.875 35.3694 10.294 26.4164 16.5028 19.4811C17.7682 18.0661 17.649 15.8925 16.2342 14.6269Z" fill={col}/>
-            </svg>
-          );
-          case 'din-c4': return (
-            <svg width={size} height={size*0.71} viewBox="0 0 136.0 96.1" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1.25" y="1.25" width="133.50" height="93.60" rx="3" fill={col} fillOpacity="0.10" stroke={col} strokeOpacity="0.55" strokeWidth="1.25"/>
-              <path d="M1.25 1.25 L68.00 55.54 L134.75 1.25 Z" fill={col} fillOpacity="0.19" stroke={col} strokeOpacity="0.55" strokeWidth="1.25" strokeLinejoin="round"/>
-              <text x="68.0" y="86.4" textAnchor="middle" fontSize="31" fontWeight="700" letterSpacing="0.02em" fill={col}>C4</text>
-            </svg>
-          );
-          case 'din-c6': return (
-            <svg width={size} height={size*0.70} viewBox="0 0 68.0 47.9" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1.25" y="1.25" width="65.50" height="45.40" rx="3" fill={col} fillOpacity="0.10" stroke={col} strokeOpacity="0.55" strokeWidth="1.25"/>
-              <path d="M1.25 1.25 L34.00 27.58 L66.75 1.25 Z" fill={col} fillOpacity="0.19" stroke={col} strokeOpacity="0.55" strokeWidth="1.25" strokeLinejoin="round"/>
-              <text x="34.0" y="42.5" textAnchor="middle" fontSize="15" fontWeight="700" letterSpacing="0.02em" fill={col}>C6</text>
-            </svg>
-          );
-          case 'din-lang': return (
-            <svg width={size} height={size*0.50} viewBox="0 0 92.3 46.1" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1.25" y="1.25" width="89.80" height="43.60" rx="3" fill={col} fillOpacity="0.10" stroke={col} strokeOpacity="0.55" strokeWidth="1.25"/>
-              <path d="M1.25 1.25 L46.15 26.54 L91.05 1.25 Z" fill={col} fillOpacity="0.19" stroke={col} strokeOpacity="0.55" strokeWidth="1.25" strokeLinejoin="round"/>
-              <text x="46.1" y="41.1" textAnchor="middle" fontSize="15" fontWeight="700" letterSpacing="0.02em" fill={col}>DL</text>
-            </svg>
-          );
-          case 'rating-stars': return (
-            <svg width={size*2} height={size*0.4} viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="mzstern-kit" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="0">
-                  <stop offset="0.94" stopColor={T.star}/>
-                  <stop offset="0.94" stopColor="#E6E6E8"/>
-                </linearGradient>
-              </defs>
-              <g fill="url(#mzstern-kit)">
-                {[0,24,48,72,96].map(tx => (
-                  <path key={tx} transform={`translate(${tx},0)`} d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                ))}
-              </g>
             </svg>
           );
           default: return <svg width={size} height={size} viewBox="0 0 24 24"/>;
@@ -6333,23 +6301,6 @@ cursor: pointer;
           case 'plug':          return W2(sp2('M9 2v6M15 2v6M5 8h14v3a7 7 0 01-14 0V8zM12 18v4'));
           case 'cube':          return W2(sp2('M12 2L3 7v10l9 5 9-5V7l-9-5z')+sp2('M3 7l9 5 9-5')+sp2('M12 22V12'));
           case 'ruler':         return W2(sp2('M21.3 8.7L8.7 21.3a1 1 0 01-1.4 0L2.7 16.7a1 1 0 010-1.4L15.3 2.7a1 1 0 011.4 0l4.6 4.6a1 1 0 010 1.4z')+sp2('M7.5 10.5l2 2')+sp2('M10.5 7.5l2 2')+sp2('M13.5 4.5l2 2')+sp2('M4.5 13.5l2 2'));
-          // ── OPC additions ──
-          case 'key':           return W2(sp2('M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5z'));
-          case 'key-alt':       return W2(sc2(15.6,8.4,5.4)+sc2(17.6,6.4,1.5)+sp2('M11.8 12.2L3.6 20.4')+sp2('M6.6 17.4l2.4 2.4')+sp2('M9 15l2.4 2.4'));
-          case 'layers':        return W2(sp2('M12 2.5l9 4.75-9 4.75-9-4.75 9-4.75z')+sp2('M3 12l9 4.75L21 12')+sp2('M3 16.75L12 21.5l9-4.75'));
-          case 'cloud-rain':    return W2(sp2('M17.5 17a4.5 4.5 0 000-9 6 6 0 00-11.6 2A3.5 3.5 0 006.5 17z')+sp2('M8 20l.6-1.4M12 21l.6-1.4M16 20l.6-1.4'));
-          case 'waterproof':    return W2(sp2('M12 3s5.5 6 5.5 9.5a5.5 5.5 0 01-11 0C6.5 9 12 3 12 3z')+sp2('M9.7 12.6l1.7 1.7 3.2-3.2'));
-          case 'compartments':  return W2(sr2(3,3,18,18,2)+sp2('M3 11.5h18')+sp2('M7.5 7.2h5')+sp2('M7.5 16h5'));
-          case 'align-frame':   return W2(sr2(8.5,8.5,7,7,1)+sp2('M3 7.5V3h4.5')+sp2('M21 7.5V3h-4.5')+sp2('M3 16.5V21h4.5')+sp2('M21 16.5V21h-4.5'));
-          case 'drill':         return W2(sp2('M3 6.5h9v6H3z')+sp2('M12 9.5h7')+sp2('M6.5 12.5v5'));
-          case 'bag':           return W2(sp2('M8.6 8h6.8l2.4 10.8a1.6 1.6 0 01-1.55 1.95H7.75a1.6 1.6 0 01-1.55-1.95L8.6 8z')+sp2('M9.6 8a2.4 2.4 0 014.8 0'));
-          case 'package':       return W2(sp2('M21 8.2v7.6a1.6 1.6 0 01-.85 1.41l-7 3.9a1.6 1.6 0 01-1.3 0l-7-3.9A1.6 1.6 0 013 15.8V8.2a1.6 1.6 0 01.85-1.41l7-3.9a1.6 1.6 0 011.3 0l7 3.9A1.6 1.6 0 0121 8.2z')+sp2('M3.3 7.3L12 12l8.7-4.7')+sp2('M12 21.5V12')+sp2('M7.6 4.9l8.7 4.85'));
-          case 'id-card':       return W2(sr2(5,3,14,18,2)+sc2(12,8.5,2.2)+sp2('M9 14h6M9 17h6'));
-          case 'fingerprint':   return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 90 110" fill="none"><path d="M44.6875 27.5C35.211 27.5 27.5 35.211 27.5 44.6875V99.6875C27.5 101.588 29.0391 103.125 30.9375 103.125C32.8359 103.125 34.375 101.588 34.375 99.6875V44.6875C34.375 39.0008 39.0008 34.375 44.6875 34.375C50.3742 34.375 55 39.0008 55 44.6875C55 46.5859 56.5391 48.125 58.4375 48.125C60.3359 48.125 61.875 46.5859 61.875 44.6875C61.875 35.211 54.164 27.5 44.6875 27.5Z" fill="currentColor"/><path d="M44.6875 41.25C42.7891 41.25 41.25 42.7891 41.25 44.6875V75.625C41.25 77.5234 42.7891 79.0625 44.6875 79.0625C46.5859 79.0625 48.125 77.5234 48.125 75.625V44.6875C48.125 42.7891 46.5859 41.25 44.6875 41.25Z" fill="currentColor"/><path d="M44.6875 85.9375C42.7891 85.9375 41.25 87.4766 41.25 89.375V106.562C41.25 108.463 42.7891 110 44.6875 110C46.5859 110 48.125 108.463 48.125 106.562V89.375C48.125 87.4766 46.5859 85.9375 44.6875 85.9375Z" fill="currentColor"/><path d="M58.4375 55C56.5391 55 55 56.5391 55 58.4375V99.6875C55 101.588 56.5391 103.125 58.4375 103.125C60.3359 103.125 61.875 101.588 61.875 99.6875V58.4375C61.875 56.5391 60.3359 55 58.4375 55Z" fill="currentColor"/><path d="M17.1875 61.875C15.2891 61.875 13.75 63.4141 13.75 65.3125V89.375C13.75 91.2751 15.2891 92.8125 17.1875 92.8125C19.0859 92.8125 20.625 91.2751 20.625 89.375V65.3125C20.625 63.4141 19.0859 61.875 17.1875 61.875Z" fill="currentColor"/><path d="M85.9375 55C84.0391 55 82.5 56.5391 82.5 58.4375V75.625C82.5 77.5234 84.0391 79.0625 85.9375 79.0625C87.8359 79.0625 89.375 77.5234 89.375 75.625V58.4375C89.375 56.5391 87.8359 55 85.9375 55Z" fill="currentColor"/><path d="M68.9019 31.1961C67.1413 31.9093 66.292 33.9119 67.0035 35.6725C68.1618 38.5343 68.7491 41.5674 68.7491 44.6876V89.3751C68.7491 91.2752 70.2883 92.8126 72.1866 92.8126C74.085 92.8126 75.6241 91.2752 75.6241 89.3751V44.6876C75.6241 40.6795 74.8688 36.7786 73.3784 33.0944C72.6666 31.3355 70.6726 30.486 68.9019 31.1961Z" fill="currentColor"/><path d="M44.6875 13.75C27.6293 13.75 13.75 27.6293 13.75 44.6875V51.5625C13.75 53.4609 15.2891 55 17.1875 55C19.0859 55 20.625 53.4609 20.625 51.5625V44.6875C20.625 31.4192 31.4192 20.625 44.6875 20.625C50.2281 20.625 55.4314 22.4529 59.7384 25.9138C61.2238 27.1004 63.3823 26.8673 64.5724 25.3868C65.7607 23.9063 65.5241 21.7428 64.0453 20.5528C58.5836 16.1653 51.7086 13.75 44.6875 13.75Z" fill="currentColor"/><path d="M29.5519 10.0255C34.3339 7.93418 39.4263 6.875 44.6883 6.875C65.5382 6.875 82.5008 23.8376 82.5008 44.6875C82.5008 46.5859 84.0399 48.125 85.9383 48.125C87.8366 48.125 89.3758 46.5859 89.3758 44.6875C89.3758 20.046 69.3298 0 44.6883 0C38.4728 0 32.454 1.25383 26.7991 3.72453C25.0584 4.48486 24.2646 6.51256 25.0249 8.25129C25.7887 9.99195 27.8164 10.7774 29.5519 10.0255Z" fill="currentColor"/><path d="M16.2342 14.6269C14.8176 13.358 12.6474 13.4822 11.3801 14.8955C4.04186 23.0948 0 33.6741 0 44.6883V75.6258C0 77.5241 1.53914 79.0633 3.4375 79.0633C5.33586 79.0633 6.875 77.5241 6.875 75.6258V44.6883C6.875 35.3694 10.294 26.4164 16.5028 19.4811C17.7682 18.0661 17.649 15.8925 16.2342 14.6269Z" fill="currentColor"/></svg>`;
-          case 'din-c4':        return `<svg xmlns="http://www.w3.org/2000/svg" width="136" height="96" viewBox="0 0 136.0 96.1"><rect x="1.25" y="1.25" width="133.50" height="93.60" rx="3" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25"/><path d="M1.25 1.25 L68.00 55.54 L134.75 1.25 Z" fill="currentColor" fill-opacity="0.19" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" stroke-linejoin="round"/><text x="68.0" y="86.4" text-anchor="middle" font-size="31" font-weight="700" letter-spacing="0.02em" fill="currentColor">C4</text></svg>`;
-          case 'din-c6':        return `<svg xmlns="http://www.w3.org/2000/svg" width="68" height="48" viewBox="0 0 68.0 47.9"><rect x="1.25" y="1.25" width="65.50" height="45.40" rx="3" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25"/><path d="M1.25 1.25 L34.00 27.58 L66.75 1.25 Z" fill="currentColor" fill-opacity="0.19" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" stroke-linejoin="round"/><text x="34.0" y="42.5" text-anchor="middle" font-size="15" font-weight="700" letter-spacing="0.02em" fill="currentColor">C6</text></svg>`;
-          case 'din-lang':      return `<svg xmlns="http://www.w3.org/2000/svg" width="92" height="46" viewBox="0 0 92.3 46.1"><rect x="1.25" y="1.25" width="89.80" height="43.60" rx="3" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25"/><path d="M1.25 1.25 L46.15 26.54 L91.05 1.25 Z" fill="currentColor" fill-opacity="0.19" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.25" stroke-linejoin="round"/><text x="46.1" y="41.1" text-anchor="middle" font-size="15" font-weight="700" letter-spacing="0.02em" fill="currentColor">DL</text></svg>`;
-          case 'rating-stars':  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 24" role="img" aria-label="4,7 von 5 Sternen"><defs><linearGradient id="mzstern" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="0"><stop offset="0.9400" stop-color="${T.star}"/><stop offset="0.9400" stop-color="#E6E6E8"/></linearGradient></defs><g fill="url(#mzstern)"><path transform="translate(0,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(24,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(48,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(72,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/><path transform="translate(96,0)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></g></svg>`;
           case 'guarantee': return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><polygon points="12,2 13.5,8.3 19.1,4.9 15.7,10.5 22,12 15.7,13.5 19.1,19.1 13.5,15.7 12,22 10.5,15.7 4.9,19.1 8.3,13.5 2,12 8.3,10.5 4.9,4.9 10.5,8.3" fill="#C09530"/><path d="M8.5 12l2.5 2.5 5-5" stroke="${T.white}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
           case 'flag-de': return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M2 9.33V5.5A1.5 1.5 0 013.5 4h17A1.5 1.5 0 0122 5.5v3.83H2z" fill="${T.dBlack}"/><rect x="2" y="9.33" width="20" height="5.34" fill="#CC0000"/><path d="M2 14.67h20v3.83A1.5 1.5 0 0120.5 20H3.5A1.5 1.5 0 012 18.5v-3.83z" fill="#FFCC00"/></svg>`;
           case 'badge-pdf': return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 2h9l5 5v14a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2z" fill="#EFEFEF"/><path d="M14 2l5 5h-4a1 1 0 01-1-1V2z" fill="#DCDCDC"/><rect x="6" y="9" width="7" height="1.2" rx="0.6" fill="#C5C5C5"/><rect x="6" y="11" width="9" height="1.2" rx="0.6" fill="#C5C5C5"/><path d="M3 15.5h18v5a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 20.5v-5z" fill="${T.teal}"/><text x="12" y="20.5" text-anchor="middle" fill="white" font-size="5.5" font-weight="700" font-family="sans-serif">PDF</text></svg>`;
@@ -8672,7 +8623,7 @@ cursor: pointer;
                       </div>
                     </div>
                     <div className="abt-hero__photo-col">
-                      <img className="abt-hero__photo" src="media/about-office.png" alt="Metzler Hauptsitz in Reutlingen"/>
+                      <img className="abt-hero__photo" src="https://sabavafa.github.io/metzler-about-us/Banner/office.png" alt="Metzler Hauptsitz in Reutlingen"/>
                     </div>
                   </div>
                 </section>
@@ -8722,7 +8673,7 @@ cursor: pointer;
                     <div className="craft-chapter__inner">
                       <div className="craft-media">
                         <div className="craft-media__frame">
-                          <img src="media/craft-paketbox.webp" alt="Metzler Paketbox mit Briefkasten und personalisierter Edelstahl-Gravur"/>
+                          <img src="https://sabavafa.github.io/metzler-about-us/images/metzler-paketbox-mit-briefkasten-personalisiert-mit-gravur-edelstahl-namensschild-mit-briefeinwurf-bispo-2~30.webp" alt="Metzler Paketbox mit Briefkasten und personalisierter Edelstahl-Gravur"/>
                         </div>
                         <span className="craft-media__tag">Maßanfertigung</span>
                       </div>
@@ -8740,7 +8691,7 @@ cursor: pointer;
                     <div className="craft-chapter__inner">
                       <div className="craft-media">
                         <div className="craft-media__frame">
-                          <img src="media/craft-xdm10.png" alt="Metzler XDM10 Video-Türsprechanlage in Anthrazit (RAL 7016) mit austauschbarem Namensschild"/>
+                          <img src="https://sabavafa.github.io/metzler-about-us/images/image%2028.png" alt="Metzler XDM10 Video-Türsprechanlage in Anthrazit (RAL 7016) mit austauschbarem Namensschild"/>
                         </div>
                         <span className="craft-media__tag">Sicherheit</span>
                       </div>
@@ -8796,7 +8747,7 @@ cursor: pointer;
       );
 
       // Categories in display order
-      const categories = ['Navigation','Search','User','Commerce','Actions','Communication','Status','UI','Technology','Formats'];
+      const categories = ['Navigation','Search','User','Commerce','Actions','Communication','Status','UI','Technology'];
       const colorfulIcons = icons.filter(ic => ic.style === 'color');
 
       // ── Detail page ──
@@ -9434,12 +9385,12 @@ cursor: pointer;
     // ── Star icon (filled gold) ──
     const StarIcon = () => (
       <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
-        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill={T.star} stroke={T.star} strokeWidth="0.5" strokeLinejoin="round"/>
+        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill="#F5A623" stroke="#F5A623" strokeWidth="0.5" strokeLinejoin="round"/>
       </svg>
     );
     const StarIconSm = () => (
       <svg width="12" height="12" viewBox="0 0 19 19" fill="none">
-        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill={T.star} stroke={T.star} strokeWidth="0.5" strokeLinejoin="round"/>
+        <path d="M9.5 1.5L11.68 6.74L17.5 7.27L13.25 11L14.59 16.73L9.5 13.77L4.41 16.73L5.75 11L1.5 7.27L7.32 6.74L9.5 1.5Z" fill="#F5A623" stroke="#F5A623" strokeWidth="0.5" strokeLinejoin="round"/>
       </svg>
     );
 
@@ -10801,8 +10752,8 @@ cursor: pointer;
       const TStar = ({filled}) => (
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
           <path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"
-            fill={filled ? T.star : 'rgba(255,255,255,0.18)'}
-            stroke={filled ? T.star : 'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
+            fill={filled ? '#F5A623' : 'rgba(255,255,255,0.18)'}
+            stroke={filled ? '#E09000' : 'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
         </svg>
       );
       const ArrBtn = ({left, onClick}) => (
@@ -11245,8 +11196,8 @@ cursor: pointer;
       const TStar = ({filled}) => (
         <svg style={{flex:'1 0 0'}} width="15" height="15" viewBox="0 0 15 15" fill="none">
           <path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"
-            fill={filled?T.star:'rgba(255,255,255,0.18)'}
-            stroke={filled?T.star:'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
+            fill={filled?'#F5A623':'rgba(255,255,255,0.18)'}
+            stroke={filled?'#E09000':'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
         </svg>
       );
       // Hoverable social icon (mobile)
@@ -12852,7 +12803,7 @@ cursor: pointer;
 
             {/* TYPOGRAPHY */}
             <SH1 id="typography">Typography</SH1>
-            <Lead>Font family resolves per OS — <strong>Helvetica Neue</strong> on macOS/Ubuntu, <strong>Arial</strong> on Windows. Weights, sizes, and line-heights are identical across both; only the typeface differs. Windows stack: <code style={{fontFamily:'monospace',fontSize:T.f13,background:T.paper,padding:'1px 5px',borderRadius:3}}>Arial, "Helvetica Neue", Helvetica, sans-serif</code> — Arial is first by default. Sizes in <code style={{fontFamily:'monospace',fontSize:T.f13,background:T.paper,padding:'1px 5px',borderRadius:3}}>rem</code> — base 16px = 1rem.</Lead>
+            <Lead>Brand font: <strong>Arial</strong> on all platforms — stack <code style={{fontFamily:'monospace',fontSize:T.f13,background:T.paper,padding:'1px 5px',borderRadius:3}}>Arial, "Helvetica Neue", Helvetica, sans-serif</code>. Weights: 400 Regular · Bold · 800 Strong. Sizes in <code style={{fontFamily:'monospace',fontSize:T.f13,background:T.paper,padding:'1px 5px',borderRadius:3}}>rem</code> — base 16px = 1rem.</Lead>
 
             {/* OS font detection banner */}
             {(()=>{
@@ -12861,12 +12812,8 @@ cursor: pointer;
               const isWin    = /Win/.test(ua);
               const isLinux  = /Linux/.test(ua) && !/Android/.test(ua);
               const isHelvetica = isMac || isLinux; // both use Helvetica Neue stack
-              const activeFont    = isHelvetica ? 'Helvetica Neue' : isWin ? 'Arial' : 'Helvetica Neue / Arial';
-              const activeFontCSS = isHelvetica
-                ? '"Helvetica Neue", Helvetica, Arial, sans-serif'
-                : isWin
-                  ? 'Arial, "Helvetica Neue", Helvetica, sans-serif'
-                  : '"Helvetica Neue", Helvetica, Arial, sans-serif';
+              const activeFont    = 'Arial';
+              const activeFontCSS = 'Arial, "Helvetica Neue", Helvetica, sans-serif';
               const osLabel  = isMac ? 'macOS' : isWin ? 'Windows' : isLinux ? 'Ubuntu / Linux' : 'Other';
               const dotColor = isHelvetica ? T.green : isWin ? '#3B9ADB' : T.star;
               return (
@@ -12895,7 +12842,7 @@ cursor: pointer;
                   {/* Rule note */}
                   <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:'0.375rem',flexShrink:0}}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={T.g500} strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                    <span style={{fontFamily:font,fontSize:T.fXs,color:T.g500}}>macOS · Ubuntu → Helvetica Neue · Windows → Arial · same scale</span>
+                    <span style={{fontFamily:font,fontSize:T.fXs,color:T.g500}}>Brand font: Arial on all platforms · same scale everywhere</span>
                   </div>
                 </div>
               );
@@ -12914,9 +12861,9 @@ cursor: pointer;
               {/* Header row */}
               <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',padding:'40px 48px 0',position:'relative'}}>
                 <div>
-                  <div style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:'clamp(52px,6vw,88px)',fontWeight:700,color:T.white,lineHeight:1,letterSpacing:'-0.03em',marginBottom:10}}>Helvetica</div>
+                  <div style={{fontFamily:"Arial,'Helvetica Neue',Helvetica,sans-serif",fontSize:'clamp(52px,6vw,88px)',fontWeight:700,color:T.white,lineHeight:1,letterSpacing:'-0.03em',marginBottom:10}}>Arial</div>
                   <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-                    {['Neue','Primary Typeface','Metzler Design System'].map((tag,i)=>(
+                    {['Web-safe','Primary Typeface','Metzler Design System'].map((tag,i)=>(
                       <span key={i} style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:10,fontWeight:600,color:'rgba(255,255,255,0.5)',textTransform:'uppercase',letterSpacing:'0.1em',background:'rgba(255,255,255,0.08)',padding:'3px 8px',borderRadius:T.r}}>{tag}</span>
                     ))}
                   </div>
@@ -12924,7 +12871,7 @@ cursor: pointer;
                 {/* Weight stack */}
                 <div style={{textAlign:'right',flexShrink:0,paddingTop:6}}>
                   <div style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:9,fontWeight:700,color:'rgba(255,255,255,0.35)',textTransform:'uppercase',letterSpacing:'0.14em',marginBottom:8}}>Weights</div>
-                  {[['400','Regular'],['500','Medium'],['700','Bold'],['900','Black']].map(([w,n])=>(
+                  {[['400','Regular'],['700','Bold'],['800','Strong']].map(([w,n])=>(
                     <div key={w} style={{display:'flex',gap:16,alignItems:'center',justifyContent:'flex-end',marginBottom:2}}>
                       <span style={{fontFamily:"'Helvetica Neue',Helvetica,Arial,sans-serif",fontSize:'clamp(12px,1.1vw,15px)',color:'rgba(255,255,255,0.88)',fontWeight:Number(w),letterSpacing:'-0.01em'}}>{n}</span>
                       <span style={{fontFamily:'monospace',fontSize:9,color:'rgba(255,255,255,0.28)',minWidth:28,textAlign:'right'}}>{w}</span>
@@ -12975,10 +12922,10 @@ cursor: pointer;
                 {
                   label: 'Fluid / Responsive — landing & editorial',
                   rows: [
-                    {name:'Display 1',  rem:'5rem',    px:'80px',  weight:700, lh:'0.85', token:'--display-1',   jsToken:'T.fD1',    preview:'Metzler', use:'Landing hero heading'},
-                    {name:'Display 2',  rem:'3.5rem',  px:'56px',  weight:700, lh:'0.92', token:'--display-2',   jsToken:'T.fD2',    preview:'Aa — Helvetica Neue', use:'Section feature titles'},
-                    {name:'Display 3',  rem:'3rem',    px:'48px',  weight:700, lh:'1.0',  token:'--display-3',   jsToken:'T.fD3',    preview:'Aa — Helvetica Neue', use:'Landing intro / large body'},
-                    {name:'Display 4',  rem:'2.875rem', px:'46px',      weight:700, lh:'1.15', token:'--display-4',   jsToken:'T.fD4',    preview:'Aa — Helvetica Neue', use:'Landing hero'},
+                    {name:'Display 1',  rem:'5rem',    px:'80px',  weight:700, cls:'.display-1', lh:'0.85', token:'--display-1',   jsToken:'T.fD1',    preview:'Metzler', use:'Landing hero heading'},
+                    {name:'Display 2',  rem:'3.5rem',  px:'56px',  weight:700, cls:'.display-2', lh:'0.92', token:'--display-2',   jsToken:'T.fD2',    preview:'Aa — Arial', use:'Section feature titles'},
+                    {name:'Display 3',  rem:'3rem',    px:'48px',  weight:700, cls:'.display-3', lh:'1.0',  token:'--display-3',   jsToken:'T.fD3',    preview:'Aa — Arial', use:'Landing intro / large body'},
+                    {name:'Display 4',  rem:'2.875rem', px:'46px',      weight:700, cls:'.display-4', lh:'1.15', token:'--display-4',   jsToken:'T.fD4',    preview:'Aa — Arial', use:'Landing hero'},
                   ]
                 },
                 {
@@ -12987,27 +12934,27 @@ cursor: pointer;
                     {name:'H1',  rem:'1.875rem', px:'30px', remT:'1.625rem', pxT:'26px', remM:'1.5rem',  pxM:'24px', weight:700, lh:'1.25', token:'--text-h1', cls:'.h1', jsToken:'T.fH1', preview:'Aa — Helvetica Neue', use:'Page title'},
                     {name:'H2',  rem:'1.5rem',   px:'24px', remT:'1.375rem', pxT:'22px', remM:'1.25rem', pxM:'20px', weight:700, lh:'1.3',  token:'--text-h2', cls:'.h2', jsToken:'T.fH2', preview:'Aa — Helvetica Neue', use:'Section heading'},
                     {name:'H3',  rem:'1.25rem',  px:'20px', remT:'1.1875rem',pxT:'19px', remM:'1.125rem',pxM:'18px', weight:700, lh:'1.35', token:'--text-h3', cls:'.h3', jsToken:'T.fH3', preview:'Aa — Helvetica Neue', use:'Card & drawer titles'},
-                    {name:'H4',  rem:'1.125rem', px:'18px', remT:'1.0625rem',pxT:'17px', remM:'1rem',    pxM:'16px', weight:700, lh:'1.375',token:'--text-h4', cls:'.h4', jsToken:'T.fH4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
+                    {name:'H4',  rem:'1.125rem', px:'18px', remT:'1.125rem',pxT:'18px', remM:'1rem',    pxM:'16px', weight:700, lh:'1.375',token:'--text-h4', cls:'.h4', jsToken:'T.fH4', preview:'Aa — Helvetica Neue', use:'List items, panels'},
                   ]
                 },
                 {
                   label: 'Body — reading & content',
                   rows: [
                     {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Large intro / callout copy'},
-                    {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in large intro'},
+                    {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:700, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in large intro'},
                     {name:'Body 20px', rem:'1.25rem',  px:'20px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fXl',   preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis, XL'},
-                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Lead paragraphs, intros'},
-                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in lead text'},
-                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis, large'},
-                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
-                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, UI text'},
-                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis'},
-                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:400, wName:'regular', lh:'1.5', token:'--font-regular', jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
-                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:600, wName:'bold',    lh:'1.5', token:'--font-bold',    jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Labels, nav items'},
-                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:800, wName:'strong',  lh:'1.5', token:'--font-strong',  jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
-                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:400, wName:'regular', lh:'1.4', token:'--font-regular', jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
-                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:600, wName:'bold',    lh:'1.4', token:'--font-bold',    jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Tags, badges'},
-                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:800, wName:'strong',  lh:'1.4', token:'--font-strong',  jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
+                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:400, wName:'regular', cls:'.text-body-lg', lh:'1.5', token:'--font-regular', jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Lead paragraphs, intros'},
+                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:700, wName:'bold',    cls:'.text-body-lg .fw-bold', lh:'1.5', token:'--font-bold',    jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis in lead text'},
+                    {name:'Body 18px', rem:'1.125rem', px:'18px', weight:800, wName:'strong',  cls:'.text-body-lg .fw-strong', lh:'1.5', token:'--font-strong',  jsToken:'T.fLg',   preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis, large'},
+                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:400, wName:'regular', cls:'.text-body', lh:'1.5', token:'--font-regular', jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Default everywhere'},
+                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:700, wName:'bold',    cls:'.text-body .fw-bold', lh:'1.5', token:'--font-bold',    jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Emphasis, UI text'},
+                    {name:'Body 16px', rem:'1rem',     px:'16px', weight:800, wName:'strong',  cls:'.text-body .fw-strong', lh:'1.5', token:'--font-strong',  jsToken:'T.fBody', preview:'The quick brown fox jumps over the lazy dog', use:'Strong emphasis'},
+                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:400, wName:'regular', cls:'.text-body-sm', lh:'1.5', token:'--font-regular', jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Sidebars, cards'},
+                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:700, wName:'bold',    cls:'.text-body-sm .fw-bold', lh:'1.5', token:'--font-bold',    jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Labels, nav items'},
+                    {name:'Body 14px', rem:'0.875rem', px:'14px', weight:800, wName:'strong',  cls:'.text-body-sm .fw-strong', lh:'1.5', token:'--font-strong',  jsToken:'T.fSm',   preview:'The quick brown fox jumps over the lazy dog', use:'Small labels'},
+                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:400, wName:'regular', cls:'.text-caption', lh:'1.4', token:'--font-regular', jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Helper text'},
+                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:700, wName:'bold',    cls:'.text-caption .fw-bold', lh:'1.4', token:'--font-bold',    jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Tags, badges'},
+                    {name:'Body 12px', rem:'0.75rem',  px:'12px', weight:800, wName:'strong',  cls:'.text-caption .fw-strong', lh:'1.4', token:'--font-strong',  jsToken:'T.fXs',   preview:'Helper text · metadata · timestamps · footnotes', use:'Small badges'},
                   ]
                 },
                 {
@@ -13041,7 +12988,6 @@ cursor: pointer;
                             </div>
                             <div style={{display:'flex',gap:4,marginTop:3,flexWrap:'wrap'}}>
                               <code style={{fontSize:'0.6rem',fontFamily:'monospace',color:T.g600,background:T.g100,padding:'1px 5px',borderRadius:T.rSm,lineHeight:1.6}}>{row.cls || row.token}</code>
-                              {row.jsToken && <code style={{fontSize:'0.6rem',fontFamily:'monospace',fontWeight:700,color:T.teal,background:'rgba(1,82,83,0.08)',padding:'1px 5px',borderRadius:T.rSm,lineHeight:1.6}}>{row.jsToken}</code>}
                             </div>
                           </div>
                           {/* Preview */}
@@ -13089,9 +13035,9 @@ cursor: pointer;
                         <div style={{color:cGroup, lineHeight:'26px', marginBottom:4}}>{'/* Base: 1rem = 16px (browser default)   */'}</div>
 
                         <Group label="Font weights"/>
-                        <Var name="--font-regular"        val="400"      px="body copy"       w="400"/>
-                        <Var name="--font-bold"           val="600"      px="emphasis"        w="600"/>
-                        <Var name="--font-strong"         val="800"      px="strong emphasis" w="800"/>
+                        <Var name="--font-regular"        val="400"      px=".fw-regular · body copy"       w="400"/>
+                        <Var name="--font-bold"           val="bold"     px=".fw-bold · headings, emphasis" w="700"/>
+                        <Var name="--font-strong"         val="800"      px=".fw-strong · strong emphasis" w="800"/>
 
                         <Group label="Fluid / Responsive"/>
                         <Var name="--display-1"           val="5rem"    px="80px · lh 0.85 · ls -0.04em" w="700"/>
@@ -13103,7 +13049,7 @@ cursor: pointer;
                         <Var name="--text-h1"             val="1.875rem" px="30px → 26px → 24px" w="700"/>
                         <Var name="--text-h2"             val="1.5rem"   px="24px → 22px → 20px" w="700"/>
                         <Var name="--text-h3"             val="1.25rem"  px="20px → 19px → 18px" w="700"/>
-                        <Var name="--text-h4"             val="1.125rem" px="18px → 17px → 16px" w="700"/>
+                        <Var name="--text-h4"             val="1.125rem" px="18px → 18px → 16px" w="700"/>
 
                         <Group label="Body 16px"/>
                         <Var name="--text-body-xl"        val="1.25rem"  px="20px" w="400"/>
@@ -13163,16 +13109,16 @@ cursor: pointer;
             {/* BORDER RADIUS */}
             <div style={{marginBottom:f(32)}}>
               <SH1 id="border-radius">Border Radius</SH1>
-              <Lead>5 radius tokens — base 16px. Default is <code style={{fontFamily:'monospace',fontSize:T.f13,background:'rgba(1,82,83,0.08)',color:T.teal,borderRadius:3,padding:'1px 6px'}}>border-radius</code> (4px).</Lead>
+              <Lead>4 radius tokens — base 16px. Default is <code style={{fontFamily:'monospace',fontSize:T.f13,background:'rgba(1,82,83,0.08)',color:T.teal,borderRadius:3,padding:'1px 6px'}}>--radius-default</code> (4px).</Lead>
               <div style={{background:T.white,border:`1px solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 60px 80px 110px 1fr',padding:'10px 24px',background:T.paper,borderBottom:`1px solid ${T.g200}`}}>
-                  {['CSS variable · JS token','px','rem','Preview','Used for'].map(h=><span key={h} style={{fontSize:10,fontWeight:600,color:T.g500,fontFamily:font,textTransform:'uppercase',letterSpacing:'0.06em'}}>{h}</span>)}
+                  {['CSS variable · class','px','rem','Preview','Used for'].map(h=><span key={h} style={{fontSize:10,fontWeight:600,color:T.g500,fontFamily:font,textTransform:'uppercase',letterSpacing:'0.06em'}}>{h}</span>)}
                 </div>
                 {[
-                  {cssVar:'--radius-sm',   jsToken:'T.rSm',   px:2,    rem:'0.125rem', note:'Badges'},
-                  {cssVar:'--radius',      jsToken:'T.r',     px:4,    rem:'0.25rem',  note:'Buttons, inputs, checkboxes, pagination, navigation arrows', isDefault:true},
-                  {cssVar:'--radius-lg',   jsToken:'T.rLg',   px:8,    rem:'0.5rem',   note:'Product cards, filter section, popups, modals'},
-                  {cssVar:'--radius-pill', jsToken:'T.rPill', px:9999, rem:'624.94rem',note:'Pill shape / fully rounded elements'},
+                  {cssVar:'--radius-sm',      cls:'.rounded-0',    px:2,  rem:'0.125rem', note:'Badges'},
+                  {cssVar:'--radius-default', cls:'.rounded',      px:4,  rem:'0.25rem',  note:'Buttons, inputs, checkboxes, pagination, navigation arrows', isDefault:true},
+                  {cssVar:'--radius-lg',      cls:'.rounded-4',    px:8,  rem:'0.5rem',   note:'Product cards, filter section, popups, modals'},
+                  {cssVar:'--radius-pill',    cls:'.rounded-full', px:96, rem:'6rem',     note:'Pill shape / fully rounded elements'},
                 ].map(t=>(
                   <div key={t.cssVar} style={{display:'grid',gridTemplateColumns:'1fr 60px 80px 110px 1fr',padding:'14px 24px',alignItems:'center',borderBottom:`1px solid ${T.g100}`}}>
                     <div style={{display:'flex',flexDirection:'column',gap:4}}>
@@ -13180,7 +13126,7 @@ cursor: pointer;
                         <code style={{fontSize:T.fSm,fontFamily:'monospace',fontWeight:700,color:T.g700}}>{t.cssVar}</code>
                         {t.isDefault && <span style={{fontSize:9,fontFamily:font,fontWeight:600,color:T.teal,background:'rgba(1,82,83,0.1)',borderRadius:20,padding:'1px 7px',letterSpacing:'0.04em'}}>default</span>}
                       </div>
-                      <code style={{fontSize:T.fXxs,fontFamily:'monospace',fontWeight:700,color:T.teal,background:'rgba(1,82,83,0.08)',padding:'2px 6px',borderRadius:T.rSm,display:'inline-block',width:'fit-content'}}>{t.jsToken}</code>
+                      <code style={{fontSize:T.fXxs,fontFamily:'monospace',fontWeight:700,color:T.teal,background:'rgba(1,82,83,0.08)',padding:'2px 6px',borderRadius:T.rSm,display:'inline-block',width:'fit-content'}}>{t.cls}</code>
                     </div>
                     <span style={{fontSize:T.f13,fontFamily:'monospace',color:T.g700}}>{t.px===9999?'∞':t.px+'px'}</span>
                     <span style={{fontSize:T.f13,fontFamily:'monospace',color:T.g600}}>{t.rem}</span>
@@ -13193,7 +13139,7 @@ cursor: pointer;
 
             {/* SPACERS & DIVIDERS */}
             <SH1 id="spacers">Spacers &amp; Dividers</SH1>
-            <Lead>Two primitives for vertical rhythm: <strong>empty spacers</strong> add breathing room between sections without any visible line; <strong>HR dividers</strong> combine a hairline rule with equal top &amp; bottom margin. Both come in three sizes — S, M, L.</Lead>
+            <Lead>Two primitives for vertical rhythm: <strong>margin utilities</strong> (mb-* / mt-*) add space above or below any element and scale down responsively; <strong>HR dividers</strong> combine a hairline rule with equal top &amp; bottom margin. Spacers come in five steps (xxs–lg); dividers in three sizes — S, M, L.</Lead>
             <SpacersSection/>
 
             {/* BREAKPOINTS */}
@@ -13480,81 +13426,118 @@ cursor: pointer;
 
             {/* FILE DOWNLOAD */}
             <SH1 id="file-download">File Download</SH1>
-            <Lead>Document attachment component used in brandbook and product pages. Light PDF icon, dark title and language · size meta — with a teal-tint download button that fills solid teal (and a teal card border) on hover.</Lead>
+            <Lead>Download row for product pages. A document-sheet PDF badge with a folded corner, the file title, and a <strong>language · size</strong> meta line, plus a circular download button. Hover lifts the card, adds a teal border and a soft teal wash. Rows sit in an auto-fill grid, so a single file keeps its column width.</Lead>
             <Preview><FileDownloadSection/></Preview>
-            <CodeBlock inline lang="HTML" code={`<a class="psx-dl__item" href="bedienungsanleitung.pdf" download>
-  <span class="psx-dl__badge">PDF</span>
-  <span class="psx-dl__text">
-    <b>Bedienungsanleitung</b>
-    <span>Deutsch · 4,2 MB</span>
-  </span>
-  <svg class="psx-dl__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
-  </svg>
-</a>`}/>
-            <CodeBlock inline lang="CSS" code={`.psx-dl__item {
-  position: relative; overflow: hidden; box-sizing: border-box;
-  display: flex; align-items: center; gap: 1.1rem;
-  padding: 1.15rem 1.25rem; text-decoration: none;
-  background: var(--color-white);
-  border: 1px solid var(--color-graphite-300);
-  border-radius: var(--radius-xl);       /* 12px */
-  transition: border-color .2s ease, box-shadow .25s ease, transform .2s ease;
-}
-/* soft teal wash fading in from the top-right on hover */
-.psx-dl__item::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(130% 140% at 100% 0%, rgba(1,82,83,0.07), transparent 55%);
-  opacity: 0; transition: opacity .25s ease;
+            <CodeBlock inline lang="HTML" code={`<ul class="psx-dl">
+  <li>
+    <a class="psx-dl__item" href="/media/anleitung.pdf" target="_blank">
+
+      <!-- PDF badge (folded-corner sheet via ::before) -->
+      <span class="psx-dl__badge">PDF</span>
+
+      <!-- Title + meta (language · size) -->
+      <span class="psx-dl__text">
+        <b>Schnellstartanleitung</b>
+        <span>Deutsch · 1,2 MB</span>
+      </span>
+
+      <!-- Circular download button -->
+      <svg class="psx-dl__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>
+      </svg>
+    </a>
+  </li>
+</ul>`}/>
+            <CodeBlock inline lang="CSS" code={`.psx-dl {                 /* grid of download rows */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+  grid-auto-rows: 1fr;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* PDF badge — document sheet with a folded top-right corner (::before) */
+.psx-dl__item {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-graphite-300);
+  border-radius: 0.5rem;             /* --radius-lg */
+  padding: 1.15rem 1.25rem;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+.psx-dl__item:hover {
+  border-color: var(--color-teal);
+  transform: translateY(-3px);
+  box-shadow: 0 0.25rem 0.75rem -0.5rem rgba(1, 82, 83, 0.28);
+}
+/* soft teal wash from the top-right on hover */
+.psx-dl__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(130% 140% at 100% 0%, rgba(1, 82, 83, 0.07), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.psx-dl__item:hover::after { opacity: 1; }
+
+/* PDF badge — document sheet with a folded top-right corner */
 .psx-dl__badge {
-  position: relative; flex: none; display: grid; place-items: center;
-  width: 2.75rem; height: 3.25rem; border-radius: 0.55rem;
-  background: linear-gradient(158deg, #fff 0%, var(--color-teal-50) 100%);
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 3.25rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(158deg, var(--color-white) 0%, var(--color-teal-50) 100%);
   border: 1px solid var(--color-teal-75);
   color: var(--color-teal);
-  font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.05em;   /* --text-caption-xs */
-  box-shadow: 0 3px 8px -4px rgba(1,82,83,0.35);
-  transition: transform .2s ease;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0.0625rem 0.1875rem -0.125rem rgba(1, 82, 83, 0.25);
+  transition: transform 0.2s ease;
 }
 .psx-dl__badge::before {
-  content: ""; position: absolute; top: 0; right: 0; width: 0; height: 0;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
   border-top: 0.75rem solid var(--color-white);
   border-left: 0.75rem solid transparent;
   border-top-right-radius: 0.55rem;
-  filter: drop-shadow(-1px 1px 1px rgba(1,82,83,0.12));
 }
+.psx-dl__item:hover .psx-dl__badge { transform: translateY(-0.125rem) rotate(-3deg); }
 
-.psx-dl__text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1; }
-.psx-dl__text b    { font-size: 1rem; font-weight: 700; line-height: 1.3; color: var(--color-digital-black); }      /* --text-body */
-.psx-dl__text span { font-size: 0.8125rem; color: var(--color-graphite-700); }                                     /* --text-label */
+/* Title + meta (language · size) */
+.psx-dl__text { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 0; }
+.psx-dl__text b    { font-size: 0.875rem; font-weight: 700; line-height: 1.3; color: var(--color-digital-black); }
+.psx-dl__text span { font-size: 0.75rem; color: var(--color-graphite-700); }
 
-/* circular download button */
+/* Circular download button */
 .psx-dl__icon {
-  flex: none; box-sizing: content-box;
-  width: 1.1rem; height: 1.1rem; padding: 0.55rem; border-radius: 50%;
-  background: var(--color-teal-50); color: var(--color-teal);
-  transition: background .2s ease, color .2s ease;
+  flex: none;
+  box-sizing: content-box;
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-teal-50);
+  color: var(--color-teal);
+  transition: background 0.2s ease, color 0.2s ease;
 }
-
-/* hover */
-.psx-dl__item:hover {
-  border-color: var(--color-teal); transform: translateY(-3px);
-  box-shadow: 0 20px 34px -20px rgba(1,82,83,0.5), 0 2px 6px -3px rgba(16,24,40,0.08);
-}
-.psx-dl__item:hover::after         { opacity: 1; }
-.psx-dl__item:hover .psx-dl__badge { transform: translateY(-2px) rotate(-3deg); }
-.psx-dl__item:hover .psx-dl__icon  { background: var(--color-teal); color: #fff; }
-
-/* keyboard focus + arrow nudge (respects reduced-motion) */
-.psx-dl__item:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; }
-@media (prefers-reduced-motion: no-preference) {
-  .psx-dl__item:hover .psx-dl__icon { animation: dl-nudge .7s ease; }
-  @keyframes dl-nudge { 0%,100% { transform: translateY(0); } 45% { transform: translateY(3px); } }
-}`}/>
+.psx-dl__item:hover .psx-dl__icon { background: var(--color-teal); color: var(--color-white); }`}/>
 
             {/* MODAL */}
             <SH1 id="modal">Modal</SH1>
@@ -13591,21 +13574,6 @@ cursor: pointer;
                   src="./header/preview-sticky.html"
                   style={{width:'100%', height:'64px', border:'none', display:'block'}}
                   title="Metzler Compact Sticky Header"
-                />
-              </div>
-            </div>
-
-            {/* ── Mega-Menü ── */}
-            <div style={{marginTop:24}}>
-              <div style={{padding:'0 0 10px',fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',color:T.g500,textTransform:'uppercase',fontFamily:font}}>Mega-Menü · Kategorie „Briefkästen“</div>
-              <div style={{fontSize:T.fSm,color:T.g600,fontFamily:font,marginBottom:'1rem',lineHeight:1.6}}>
-                Kategorie-Flyout der Nav-Zeile über die volle Containerbreite. Öffnet per <strong style={{color:T.black}}>Hover</strong> und per <strong style={{color:T.black}}>Tastatur-Fokus</strong>, Escape schließt. Links ein sechsspaltiges Kachelraster der Unterkategorien — Bild in weißer Karte mit Rahmen, Label zentriert darunter; im Hover wird der Rahmen Teal, Shadow-Hover kommt dazu und die Karte hebt sich um 0.125rem. Rechts eine 20rem breite Teaser-Karte auf Teal 50, über einen Stretched Link vollflächig klickbar, mit Bild-Zoom und Teal-Titel im Hover. Unter 48rem klappt das Panel per Klick auf. In dieser Vorschau ist es dauerhaft geöffnet.
-              </div>
-              <div style={{borderRadius:T.rLg,overflow:'hidden',border:`0.0625rem solid ${T.g200}`}}>
-                <iframe
-                  src="./header/preview-megamenu.html"
-                  style={{width:'100%', height:'660px', border:'none', display:'block'}}
-                  title="Metzler Mega-Menü Briefkästen"
                 />
               </div>
             </div>
