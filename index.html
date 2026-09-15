@@ -6399,6 +6399,8 @@ cursor: pointer;
       const [activeId, setActiveId] = useState('sec-support');
       const [faqOpen, setFaqOpen] = useState(null);
       const [faqOpenDark, setFaqOpenDark] = useState(0);
+      const [rvIdx, setRvIdx] = useState(0);       // aktive Bewertung im Foto-Karussell
+      const [techTab, setTechTab] = useState('abm'); // aktiver Tab in Technische Details
 
       const sectionsNav = [
         { type:'group', label:'Product Pages' },
@@ -6411,6 +6413,8 @@ cursor: pointer;
         { type:'item',  id:'sec-hero',          label:'Product Hero' },
         { type:'item',  id:'sec-feature-detail', label:'Feature Detail' },
         { type:'item',  id:'sec-feature-duo',    label:'Feature Duo' },
+        { type:'item',  id:'sec-reviews',        label:'Kundenbewertungen' },
+        { type:'item',  id:'sec-tech-tabs',      label:'Technische Details (Tabs)' },
         { type:'group', label:'2-Draht-BUS · XDM10' },
         { type:'item',  id:'sec-xdm-hero',  label:'XDM10 Hero (dark)' },
         { type:'item',  id:'sec-xdm-steps', label:'In drei Schritten' },
@@ -8723,6 +8727,264 @@ cursor: pointer;
                   </article>
                 </div>
               </div>
+            </div>
+
+            {/* ── Kundenbewertungen — Summary + Foto-Karussell (VDM10 / Prototyp #sx-bewertungen) ── */}
+            <div id="sec-reviews" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>Section 15</div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>Kundenbewertungen — Summary &amp; Foto-Karussell</h2>
+              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>Zweigeteilt: links die Bewertungs-Zusammenfassung (Ø-Note, Sterne-Verteilung, CTA), rechts eine hervorgehobene Bewertung mit Kundenfoto. Pfeile und Thumbnails wechseln die Foto-Bewertung mit sanfter Überblendung. Stapelt ab ≤1024px.</p>
+              {(() => {
+                const reviews = [
+                  {img:'https://sabavafa.github.io/metzler-pdp-prototype/Reviews/review-1.webp', title:'Formschön und schlicht', text:'Einfach zu handhaben und mit der Kopplung aufs Handy eine super Lösung, wenn man mal nicht zu Hause ist.', author:'Simone L.', date:'3. Dezember 2025'},
+                  {img:'https://sabavafa.github.io/metzler-pdp-prototype/Reviews/review-2.webp', title:'Hochwertige Verarbeitung', text:'Die Verarbeitung wirkt hochwertig und stabil. Die Sprachqualität ist klar und deutlich – ohne Rauschen oder Verzerrungen.', author:'Gast', date:'16. Februar 2026'},
+                  {img:'https://sabavafa.github.io/metzler-pdp-prototype/Reviews/review-3.webp', title:'Fügt sich perfekt ein', text:'Fügt sich optisch gut ins Gesamtbild ein und die Bedienung ist sehr einfach. Ein echter Blickfang am Eingang.', author:'Philip W.', date:'5. April 2026'},
+                  {img:'https://sabavafa.github.io/metzler-pdp-prototype/Reviews/review-4.webp', title:'Wir sehen, wer klingelt', text:'Jetzt sehen wir direkt, wer vor unserem Tor steht. Der Empfang reicht bis zu unserem Haus. Tolles Produkt.', author:'Gast', date:'14. Januar 2025'},
+                  {img:'https://sabavafa.github.io/metzler-pdp-prototype/Reviews/review-5.webp', title:'Einfache Installation', text:'Die Installation war einfacher als gedacht, und die Bildqualität ist wirklich hervorragend – sogar bei Nacht.', author:'Gast', date:'20. Dezember 2024'},
+                ];
+                const dist = [{s:'5 Sterne',n:45},{s:'4 Sterne',n:12},{s:'3 Sterne',n:4},{s:'2 Sterne',n:1},{s:'1 Stern',n:1}];
+                const total = dist.reduce((a,b)=>a+b.n,0);
+                const cur = reviews[rvIdx];
+                const Star = ({sz='1.35rem'}) => (<svg viewBox="0 0 24 24" fill="currentColor" style={{width:sz,height:sz,display:'block'}}><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>);
+                return (
+                  <div style={{overflow:'hidden'}}>
+                    <style>{`
+                      .rvsx{display:grid;grid-template-columns:minmax(0,0.8fr) minmax(0,1.6fr);align-items:stretch;background:${T.white};border:1px solid ${T.g200};border-radius:${T.rLg};box-shadow:0 1px 3px rgba(0,0,0,0.04),0 12px 32px rgba(0,0,0,0.06);overflow:hidden;font-family:${font};}
+                      .rvsx__summary{display:flex;flex-direction:column;justify-content:center;gap:1.35rem;padding:clamp(1.5rem,3vw,2.25rem);background:${T.teal50};}
+                      .rvsx__score{text-align:center;}
+                      .rvsx__num{font-size:clamp(2.25rem,3.5vw,3rem);font-weight:800;letter-spacing:-0.03em;line-height:1;color:${T.dBlack};}
+                      .rvsx__stars{display:inline-flex;gap:2px;color:${T.star};justify-content:center;margin:0.65rem 0 0.5rem;}
+                      .rvsx__count{margin:0;font-size:1rem;color:${T.g700};}
+                      .rvsx__count b{color:${T.dBlack};font-weight:800;}
+                      .rvsx__dist{display:flex;flex-direction:column;gap:0.55rem;padding:1.25rem 0;border-top:1px solid ${T.g200};border-bottom:1px solid ${T.g200};}
+                      .rvsx__row{display:grid;grid-template-columns:4.75rem 1fr 2rem;align-items:center;gap:0.7rem;}
+                      .rvsx__rl{font-size:0.875rem;font-weight:700;color:${T.g700};white-space:nowrap;}
+                      .rvsx__bar{height:0.5rem;background:${T.white};border:1px solid ${T.g200};border-radius:999px;overflow:hidden;}
+                      .rvsx__bar i{display:block;height:100%;border-radius:999px;background:${T.star};}
+                      .rvsx__rv{font-size:0.8125rem;font-weight:700;color:${T.g500};text-align:right;}
+                      .rvsx__cta{display:flex;width:100%;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.4rem;font-size:0.875rem;font-weight:700;text-decoration:none;color:${T.teal};background:${T.white};border:1px solid ${T.g200};border-radius:${T.rLg};transition:background 0.16s,border-color 0.16s;cursor:pointer;}
+                      .rvsx__cta:hover{background:${T.teal50};border-color:${T.teal};}
+                      .rvsx__car{position:relative;display:flex;flex-direction:column;gap:clamp(1rem,2vw,1.5rem);padding:clamp(1.25rem,2.5vw,1.75rem);}
+                      .rvsx__card{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);gap:clamp(1rem,2vw,1.5rem);align-items:stretch;}
+                      .rvsx__media{position:relative;border-radius:${T.r};overflow:hidden;background:${T.paper};aspect-ratio:1/1;align-self:center;}
+                      .rvsx__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.2s;}
+                      .rvsx__cam{position:absolute;left:0.75rem;bottom:0.75rem;display:inline-flex;align-items:center;gap:0.35rem;font-size:0.75rem;font-weight:700;color:${T.white};background:rgba(20,22,26,0.55);backdrop-filter:blur(6px);padding:0.32rem 0.65rem;border-radius:999px;}
+                      .rvsx__body{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:0.7rem;}
+                      .rvsx__head{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+                      .rvsx__ttl{margin:0;font-size:clamp(1.2rem,2vw,1.5rem);font-weight:700;letter-spacing:-0.015em;line-height:1.2;color:${T.dBlack};}
+                      .rvsx__txt{margin:0;font-size:1rem;line-height:1.6;color:${T.g700};}
+                      .rvsx__foot{display:flex;flex-direction:column;line-height:1.25;margin-top:0.25rem;}
+                      .rvsx__foot b{font-size:0.8125rem;font-weight:700;color:${T.dBlack};}
+                      .rvsx__foot time{font-size:0.8125rem;color:${T.g500};}
+                      .rvsx__nav{display:flex;flex-direction:column;gap:0.65rem;}
+                      .rvsx__navlabel{margin:0;text-align:center;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:${T.g600};}
+                      .rvsx__navrow{display:flex;align-items:center;gap:0.75rem;}
+                      .rvsx__arrow{flex:0 0 auto;display:grid;place-items:center;width:2.5rem;height:2.5rem;cursor:pointer;background:${T.white};color:${T.dBlack};border:1px solid ${T.g300};border-radius:${T.r};transition:background 0.15s,color 0.15s,border-color 0.15s;}
+                      .rvsx__arrow:hover{background:${T.teal};color:${T.white};border-color:${T.teal};}
+                      .rvsx__thumbs{flex:1 1 0;min-width:0;display:flex;justify-content:center;flex-wrap:wrap;gap:0.6rem;}
+                      .rvsx__thumb{width:3.5rem;height:3.5rem;padding:0;cursor:pointer;overflow:hidden;background:${T.white};border:1px solid ${T.g200};border-radius:${T.r};opacity:0.6;transition:opacity 0.18s,transform 0.18s,border-color 0.18s;}
+                      .rvsx__thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+                      .rvsx__thumb:hover{opacity:1;transform:translateY(-2px);}
+                      .rvsx__thumb[aria-current="true"]{opacity:1;border-color:${T.teal};}
+                      @media (max-width:1024px){.rvsx{grid-template-columns:minmax(0,1fr);}}
+                      @media (max-width:768px){.rvsx__card{grid-template-columns:minmax(0,1fr);}.rvsx__thumbs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;}}
+                    `}</style>
+                    <div className="rvsx">
+                      <div className="rvsx__summary">
+                        <div className="rvsx__score">
+                          <div className="rvsx__num">4,5</div>
+                          <div className="rvsx__stars">
+                            {[0,1,2,3].map(i=><span key={i} style={{color:T.star}}><Star/></span>)}
+                            <span style={{position:'relative',display:'inline-block'}}>
+                              <span style={{color:T.g300}}><Star/></span>
+                              <span style={{position:'absolute',inset:0,width:'50%',overflow:'hidden',color:T.star}}><Star/></span>
+                            </span>
+                          </div>
+                          <p className="rvsx__count">Basierend auf <b>{total}</b> Bewertungen</p>
+                        </div>
+                        <div className="rvsx__dist">
+                          {dist.map((d,i)=>(
+                            <div key={i} className="rvsx__row">
+                              <span className="rvsx__rl">{d.s}</span>
+                              <span className="rvsx__bar"><i style={{width:`${(d.n/total*100).toFixed(1)}%`}}/></span>
+                              <span className="rvsx__rv">{d.n}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <a href="#sec-reviews" className="rvsx__cta" onClick={e=>e.preventDefault()}>
+                          Alle {total} Bewertungen ansehen
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+                        </a>
+                      </div>
+                      <div className="rvsx__car">
+                        <article className="rvsx__card">
+                          <figure className="rvsx__media" style={{margin:0}}>
+                            <img src={cur.img} alt={`Kundenfoto – ${cur.author}`}/>
+                            <figcaption className="rvsx__cam">
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                              Kundenfoto
+                            </figcaption>
+                          </figure>
+                          <div className="rvsx__body">
+                            <div className="rvsx__head">
+                              <span style={{display:'inline-flex',gap:2,color:T.star}}>{[0,1,2,3,4].map(i=><Star key={i} sz="1.5rem"/>)}</span>
+                              <svg width="40" height="40" viewBox="0 0 24 24" fill={T.teal50} style={{flex:'0 0 auto'}}><path d="M9.5 6C6.5 7.5 5 10 5 13v5h5v-5H7.5c0-2 1-3.5 3-4.5L9.5 6zm9 0c-3 1.5-4.5 4-4.5 7v5h5v-5h-2.5c0-2 1-3.5 3-4.5L18.5 6z"/></svg>
+                            </div>
+                            <h3 className="rvsx__ttl">{cur.title}</h3>
+                            <p className="rvsx__txt">{cur.text}</p>
+                            <div className="rvsx__foot"><b>{cur.author}</b><time>{cur.date}</time></div>
+                            <div className="rvsx__nav">
+                              <p className="rvsx__navlabel">Weitere Bewertungen mit Foto</p>
+                              <div className="rvsx__navrow">
+                                <button type="button" className="rvsx__arrow" aria-label="Vorherige" onClick={()=>setRvIdx(i=>(i-1+reviews.length)%reviews.length)}>
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 6 9 12 15 18"/></svg>
+                                </button>
+                                <div className="rvsx__thumbs">
+                                  {reviews.map((r,i)=>(
+                                    <button key={i} type="button" className="rvsx__thumb" aria-current={i===rvIdx} onClick={()=>setRvIdx(i)}>
+                                      <img src={r.img} alt=""/>
+                                    </button>
+                                  ))}
+                                </div>
+                                <button type="button" className="rvsx__arrow" aria-label="Weitere" onClick={()=>setRvIdx(i=>(i+1)%reviews.length)}>
+                                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* ── Technische Details — Tab-Umschalter mit Diagramm-Kacheln (VDM10 / Prototyp #sx-technik) ── */}
+            <div id="sec-tech-tabs" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+              <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>Section 16</div>
+              <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,margin:'0 0 0.25rem',letterSpacing:'-0.01em'}}>Technische Details — Tab-Umschalter</h2>
+              <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>Linke Tab-Leiste (Teal-Verlauf) schaltet zwischen Themen um: Abmessungen, Anschluss 2-Draht, Anschluss LAN und Datenblatt. Rechts Maßzeichnungen und Anschlussvarianten als Kacheln, das Datenblatt als PDF-Download. Auf Mobile wird die Leiste zur horizontalen Scroll-Zeile.</p>
+              {(() => {
+                const B = 'https://sabavafa.github.io/metzler-pdp-prototype/';
+                const icoRuler = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M15.3 2.7l6 6a1 1 0 0 1 0 1.4L9.4 22a1 1 0 0 1-1.4 0l-6-6a1 1 0 0 1 0-1.4L13.9 2.7a1 1 0 0 1 1.4 0z"/><path d="M8 8l1.5 1.5M11 5l2 2M5 11l2 2"/></svg>;
+                const ico2d = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M9 2v6M15 2v6M8 8h8v3a4 4 0 0 1-8 0zM12 15v7"/></svg>;
+                const icoLan = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4M5 16v-2h14v2"/></svg>;
+                const icoDoc = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>;
+                const tabs = [
+                  {key:'abm', ico:icoRuler, label:'Abmessungen / Größe', sub:'Maße & Montage', count:'2'},
+                  {key:'2d',  ico:ico2d,    label:'Anschluss 2-Draht',   sub:'2-Draht IP',   count:'4'},
+                  {key:'lan', ico:icoLan,   label:'Anschluss LAN',       sub:'LAN / PoE',    count:'4'},
+                  {key:'db',  ico:icoDoc,   label:'Datenblatt',          sub:'Außeneinheit / Türstation', count:'PDF'},
+                ];
+                const panels = {
+                  abm:{title:'Abmessungen & Montage', desc:'Maße der Außenstation und die empfohlene Montagehöhe.', shots:[
+                    {img:B+'Technik/abmessungen/massskizze.jpg', cap:'Maßzeichnung (Aufputz)'},
+                    {img:B+'Technik/abmessungen/montagehoehe.jpg', cap:'Empfohlene Montagehöhe'}]},
+                  '2d':{title:'Anschluss 2-Draht IP', desc:'Vier Anschlussvarianten für die 2-Draht-IP-Verkabelung.', shots:[
+                    {img:B+'Technik/anschluss/2draht-standard.jpg', cap:'Anschluss 2-Draht IP'},
+                    {img:B+'Technik/anschluss/2draht-wlan.jpg', cap:'Anschluss 2-Draht IP mit Router und WLAN-Innenstation'},
+                    {img:B+'Technik/anschluss/2draht-2tuerstationen.jpg', cap:'Anschluss 2-Draht IP mit 2 Türstationen'},
+                    {img:B+'Technik/anschluss/2draht-wlan-2tuerstationen.jpg', cap:'Anschluss 2-Draht IP mit Router, WLAN-Innenstation und 2 Türstationen'}]},
+                  lan:{title:'Anschluss LAN / PoE', desc:'Vier Anschlussvarianten für die LAN- bzw. PoE-Verkabelung.', shots:[
+                    {img:B+'Technik/lan/lan-poeswitch.jpg', cap:'Anschluss über PoE-Switch'},
+                    {img:B+'Technik/lan/lan-poeswitch-wlan.jpg', cap:'PoE-Switch mit WLAN-Innenstation'},
+                    {img:B+'Technik/lan/lan-poeswitch-2ts.jpg', cap:'PoE-Switch mit 2 Türstationen'},
+                    {img:B+'Technik/lan/lan-poeswitch-wlan-2ts.jpg', cap:'PoE-Switch mit WLAN-Innenstation und 2 Türstationen'}]},
+                };
+                const p = panels[techTab];
+                return (
+                  <div style={{overflow:'hidden'}}>
+                    <style>{`
+                      .tms{display:grid;grid-template-columns:16.5rem 1fr;border:1px solid ${T.g200};border-radius:${T.rLg};overflow:hidden;font-family:${font};background:${T.white};}
+                      .tms__rail{display:flex;flex-direction:column;gap:0.2rem;padding:0.85rem 0.7rem;background:radial-gradient(1100px 500px at 50% -80px,rgba(92,219,211,0.16) 0%,transparent 60%),linear-gradient(180deg,${T.teal} 0%,${T.teal700} 100%);}
+                      .tms__tab{display:flex;align-items:center;gap:0.7rem;padding:0.65rem 0.75rem;border:0;border-radius:${T.r};background:transparent;text-align:left;cursor:pointer;color:rgba(255,255,255,0.72);transition:background 0.18s,color 0.18s;}
+                      .tms__tab:hover{color:${T.white};background:rgba(255,255,255,0.10);}
+                      .tms__tab.on{color:${T.teal};background:${T.white};}
+                      .tms__ico{flex:0 0 auto;display:grid;place-items:center;width:1.4rem;height:1.4rem;color:currentColor;}
+                      .tms__ico svg{width:1.3rem;height:1.3rem;}
+                      .tms__tt{min-width:0;flex:1 1 0;}
+                      .tms__lab{display:block;font-size:0.875rem;font-weight:600;line-height:1.3;}
+                      .tms__tab.on .tms__lab{font-weight:700;}
+                      .tms__sub{display:block;font-size:0.6875rem;opacity:0.72;margin-top:1px;}
+                      .tms__cnt{flex:0 0 auto;font-size:0.75rem;font-weight:700;}
+                      .tms__panel{padding:clamp(1.25rem,2.5vw,2rem);}
+                      .tms__phead{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:0.4rem 1rem;margin:0 0 1.35rem;}
+                      .tms__ptitle{margin:0 0 0.25rem;font-size:clamp(1.1rem,1.7vw,1.3rem);font-weight:700;letter-spacing:-0.01em;color:${T.dBlack};}
+                      .tms__pdesc{margin:0;font-size:0.875rem;line-height:1.5;color:${T.g600};}
+                      .tms__phint{display:inline-flex;align-items:center;gap:0.35rem;margin-top:0.15rem;font-size:0.75rem;font-weight:600;color:${T.g500};}
+                      .tms__phint svg{width:1rem;height:1rem;color:${T.teal};}
+                      .tms__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2vw,1.35rem);}
+                      .tms__item{display:flex;flex-direction:column;gap:0.7rem;min-width:0;}
+                      .tms__shot{position:relative;display:block;width:100%;padding:clamp(0.75rem,2vw,1.25rem);cursor:zoom-in;background:${T.white};border:1px solid ${T.g200};border-radius:${T.rLg};overflow:hidden;transition:border-color 0.2s,box-shadow 0.25s,transform 0.2s;}
+                      .tms__shot img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;}
+                      .tms__shot:hover{border-color:${T.teal};transform:translateY(-2px);box-shadow:0 8px 18px -14px rgba(1,82,83,0.28);}
+                      .tms__zoom{position:absolute;top:0.7rem;right:0.7rem;width:2.1rem;height:2.1rem;display:grid;place-items:center;border-radius:50%;background:rgba(1,82,83,0.92);color:${T.white};opacity:0;transform:scale(0.85);transition:opacity 0.2s,transform 0.2s;}
+                      .tms__shot:hover .tms__zoom{opacity:1;transform:scale(1);}
+                      .tms__cap{font-size:0.875rem;font-weight:600;line-height:1.4;color:${T.g700};}
+                      .tms__dl{display:flex;align-items:center;gap:1.1rem;padding:1.25rem 1.35rem;text-decoration:none;background:${T.white};border:1px solid ${T.g200};border-radius:${T.rLg};transition:border-color 0.2s,box-shadow 0.25s,transform 0.2s;cursor:pointer;}
+                      .tms__dl:hover{border-color:${T.teal};transform:translateY(-2px);box-shadow:0 8px 18px -14px rgba(1,82,83,0.28);}
+                      .tms__dlbadge{flex:0 0 auto;display:grid;place-items:center;width:2.75rem;height:3.25rem;border-radius:${T.rLg};background:linear-gradient(158deg,${T.white},${T.teal50});border:1px solid ${T.teal100};color:${T.teal};font-size:0.75rem;font-weight:800;letter-spacing:0.05em;}
+                      .tms__dlbody{display:flex;flex-direction:column;gap:0.2rem;min-width:0;flex:1 1 0;}
+                      .tms__dlbody b{font-size:0.875rem;font-weight:700;color:${T.dBlack};}
+                      .tms__dlbody span{font-size:0.75rem;color:${T.g600};}
+                      .tms__dlico{flex:0 0 auto;width:1.1rem;height:1.1rem;padding:0.55rem;border-radius:50%;background:${T.teal50};color:${T.teal};}
+                      @media (max-width:768px){.tms{grid-template-columns:minmax(0,1fr);}.tms__rail{flex-direction:row;overflow-x:auto;}.tms__tab{flex:0 0 auto;white-space:nowrap;}.tms__sub{display:none;}.tms__grid{grid-template-columns:minmax(0,1fr);}}
+                    `}</style>
+                    <div className="tms">
+                      <div className="tms__rail" role="tablist" aria-label="Technische Details">
+                        {tabs.map(t=>(
+                          <button key={t.key} type="button" role="tab" aria-selected={techTab===t.key}
+                            className={`tms__tab${techTab===t.key?' on':''}`} onClick={()=>setTechTab(t.key)}>
+                            <span className="tms__ico">{t.ico}</span>
+                            <span className="tms__tt"><span className="tms__lab">{t.label}</span><span className="tms__sub">{t.sub}</span></span>
+                            <span className="tms__cnt">{t.count}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="tms__panel" role="tabpanel">
+                        {techTab==='db' ? (
+                          <>
+                            <div className="tms__phead"><div>
+                              <h3 className="tms__ptitle">Datenblatt</h3>
+                              <p className="tms__pdesc">Alle technischen Kennzahlen der Türstation als PDF.</p>
+                            </div></div>
+                            <a className="tms__dl" href="#sec-tech-tabs" onClick={e=>e.preventDefault()}>
+                              <span className="tms__dlbadge">PDF</span>
+                              <span className="tms__dlbody"><b>Technisches Datenblatt – Außeneinheit / Türstation</b><span>Maße, Anschlusswerte und Kennzahlen der VDM10&nbsp;2.0 Türstation.</span></span>
+                              <span className="tms__dlico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span>
+                            </a>
+                          </>
+                        ) : (
+                          <>
+                            <div className="tms__phead">
+                              <div>
+                                <h3 className="tms__ptitle">{p.title}</h3>
+                                <p className="tms__pdesc">{p.desc}</p>
+                              </div>
+                              <span className="tms__phint">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                                zum Vergrößern anklicken
+                              </span>
+                            </div>
+                            <ul className="tms__grid">
+                              {p.shots.map((s,i)=>(
+                                <li key={i} className="tms__item">
+                                  <button type="button" className="tms__shot" aria-label={`${s.cap} vergrößern`}>
+                                    <img src={s.img} alt={s.cap} loading="lazy"/>
+                                    <span className="tms__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+                                  </button>
+                                  <span className="tms__cap">{s.cap}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
           </div>
