@@ -8943,6 +8943,7 @@ cursor: pointer;
 
     // ── ALERTS SECTION ──
     const AlertsSection = () => {
+      const [noticeOpen, setNoticeOpen] = useState(false);
       const BH = ({children}) => (
         <h2 style={{fontSize:'1.875rem',fontWeight:700,color:T.black,fontFamily:font,marginTop:'2.5rem',marginBottom:'0.375rem'}}>{children}</h2>
       );
@@ -9090,6 +9091,71 @@ cursor: pointer;
   A new version of the product catalog is available. Prices have been updated.
 </div>`}>
             {variants.map(v => <Alert key={v.key} v={v}/>)}
+          </BsCard>
+
+          {/* Notice — Abwesenheit / Öffnungszeiten (real use: Kontaktseite + Footer) */}
+          <BH>Hinweis · Abwesenheit</BH>
+          <BD>Realer Anwendungsfall (Kontaktseite &amp; Footer): temporäre Nichterreichbarkeit einer Abteilung. Nutzt die <Chip>alert-warning</Chip>-Variante — fettes Datum vorangestellt, danach der Fließtext im selben Body. Keine neue Komponente, keine neuen Farben.</BD>
+          <BsCard code={
+`<div class="alert alert-warning" role="alert">
+  <!-- warning icon -->
+  <strong>16.–18.09.2026 nicht besetzt</strong> – ab 21.09. wieder erreichbar.
+</div>`}>
+            <Alert v={variants.find(x=>x.key==='warning')}>
+              <strong>16.&ndash;18.09.2026 nicht besetzt</strong> &ndash; ab 21.09. wieder erreichbar.
+            </Alert>
+          </BsCard>
+
+          {/* Notice — aufklappbar per Statusbutton (real use: VDM10-Produktseite, obere Leiste) */}
+          <BH>Hinweis · aufklappbar</BH>
+          <BD>Gleicher Hinweis, aber platzsparend in der oberen Leiste: ein <strong>gewöhnlicher Sekundär-Button</strong> (<Chip>.btn-secondary .btn-sm</Chip>, kein CTA) zeigt den Status kompakt an; ein Klick klappt die <Chip>alert-warning</Chip>-Meldung darunter auf. Chevron rotiert 180°, Panel öffnet mit <Chip>max-height</Chip>-Transition. Keine neue Komponente, keine neuen Farben &ndash; nur ein bestehender Button + der bestehende Alert.</BD>
+          <BsCard code={
+`<button class="btn btn-secondary btn-sm" aria-expanded="false"
+        onclick="toggleNotice()">
+  16.–18.09. nicht besetzt
+  <svg class="chev" ...><path d="M4 6l4 4 4-4"/></svg>
+</button>
+
+<div class="alert alert-warning" role="alert" hidden>
+  <strong>16.–18.09.2026 nicht besetzt</strong> – ab 21.09. wieder erreichbar.
+</div>`}>
+            {(() => {
+              const w = variants.find(x=>x.key==='warning');
+              return (
+                <div style={{fontFamily:font}}>
+                  <button
+                    type="button"
+                    aria-expanded={noticeOpen}
+                    onClick={()=>setNoticeOpen(o=>!o)}
+                    style={{
+                      display:'inline-flex', alignItems:'center', gap:'0.5rem',
+                      height:'2.25rem', padding:'0 0.875rem',
+                      background:'transparent', color:T.teal,
+                      border:`0.125rem solid ${T.teal}`, borderRadius:T.r,
+                      fontFamily:font, fontSize:'0.9rem', fontWeight:400,
+                      lineHeight:1.2, whiteSpace:'nowrap', cursor:'pointer',
+                      transition:'background 0.15s ease',
+                    }}
+                    onMouseEnter={e=>e.currentTarget.style.background=T.teal100}
+                    onMouseLeave={e=>e.currentTarget.style.background='transparent'}
+                  >
+                    16.&ndash;18.09. nicht besetzt
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+                      style={{transform:noticeOpen?'rotate(180deg)':'rotate(0deg)', transition:'transform 0.25s ease', flexShrink:0}}>
+                      <path d="M4 6l4 4 4-4" stroke={T.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                  <div style={{
+                    maxHeight:noticeOpen?'8rem':'0', overflow:'hidden',
+                    transition:'max-height 0.3s ease', marginTop:noticeOpen?'0.625rem':'0',
+                  }}>
+                    <Alert v={w}>
+                      <strong>16.&ndash;18.09.2026 nicht besetzt</strong> &ndash; ab 21.09. wieder erreichbar.
+                    </Alert>
+                  </div>
+                </div>
+              );
+            })()}
           </BsCard>
 
           {/* Without icon */}
