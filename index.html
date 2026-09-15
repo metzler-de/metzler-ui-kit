@@ -8944,6 +8944,24 @@ cursor: pointer;
     // ── ALERTS SECTION ──
     const AlertsSection = () => {
       const [noticeOpen, setNoticeOpen] = useState(false);
+      // Abwesenheits-Hinweis — Wortlaut & Aufbau 1:1 von edelstahl-tuerklingel.de/kontakt
+      const noticeMarkup = (
+        <section className="hp-alert" role="region" aria-label="Abteilung Sprechanlagen & Sicherheitstechnik nicht erreichbar: 16.–18.09.2026">
+          <p className="hp-alert__title">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 2L1 18h18L10 2z" stroke="#E07B00" strokeWidth="1.6" strokeLinejoin="round"/>
+              <path d="M10 8v4M10 14.5v.5" stroke="#E07B00" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+            Abteilung Sprechanlagen &amp; Sicherheitstechnik nicht erreichbar: 16.&ndash;18.09.2026
+          </p>
+          <p>Liebe Kundinnen und Kunden,</p>
+          <p>vom <strong>16.09. bis einschließlich 18.09.2026</strong> befindet sich unsere Abteilung Sprechanlagen und Sicherheitstechnik in einer internen Schulung, um unser technisches Know-how für Sie weiter auszubauen und zu vertiefen.</p>
+          <p>In diesem Zeitraum ist unsere Telefonhotline nicht erreichbar, und eingehende Support-Tickets können leider nicht bearbeitet werden.</p>
+          <p><strong>Ab dem 21.09.2026</strong> sind wir wie gewohnt für Sie da und kümmern uns umgehend um Ihre Anliegen.</p>
+          <p>Wir bitten um Ihr Verständnis und danken für Ihre Geduld.</p>
+          <p className="hp-alert__sig">Ihr Metzler-Team</p>
+        </section>
+      );
       const BH = ({children}) => (
         <h2 style={{fontSize:'1.875rem',fontWeight:700,color:T.black,fontFamily:font,marginTop:'2.5rem',marginBottom:'0.375rem'}}>{children}</h2>
       );
@@ -9093,22 +9111,35 @@ cursor: pointer;
             {variants.map(v => <Alert key={v.key} v={v}/>)}
           </BsCard>
 
-          {/* Notice — Abwesenheit / Öffnungszeiten (real use: Kontaktseite + Footer) */}
+          {/* Notice — Abwesenheit (1:1 wie Kontaktseite + Footer: edelstahl-tuerklingel.de/kontakt) */}
+          <style>{`
+            .hp-alert{padding:1rem 1.375rem;border-radius:0.75rem;background:#FFF3E4;border:0.0625rem solid rgba(224,123,0,0.28);font-family:${font};}
+            .hp-alert__title{display:flex;align-items:flex-start;gap:0.5rem;margin:0.0625rem 0 0.5rem;font-size:1.0625rem;font-weight:700;letter-spacing:-0.01em;line-height:1.35;color:${T.dBlack};}
+            .hp-alert__title svg{flex:0 0 auto;width:20px;height:20px;margin-top:1px;color:#E07B00;}
+            .hp-alert p{margin:0 0 0.375rem;font-size:0.9375rem;line-height:1.5;color:${T.g800};}
+            .hp-alert p:last-child{margin-bottom:0;}
+            .hp-alert strong{color:${T.dBlack};font-weight:700;}
+            .hp-alert__sig{font-weight:700;color:${T.dBlack};}
+          `}</style>
           <BH>Hinweis · Abwesenheit</BH>
-          <BD>Realer Anwendungsfall (Kontaktseite &amp; Footer): temporäre Nichterreichbarkeit einer Abteilung. Nutzt die <Chip>alert-warning</Chip>-Variante — fettes Datum vorangestellt, danach der Fließtext im selben Body. Keine neue Komponente, keine neuen Farben.</BD>
+          <BD>1:1 wie auf der <strong>Kontaktseite &amp; im Footer</strong> (edelstahl-tuerklingel.de/kontakt): temporäre Nichterreichbarkeit einer Abteilung. Eigenständiges <Chip>.hp-alert</Chip>-Muster — voller Rahmen in Orange, <Chip>--radius-xl</Chip>, Titelzeile mit Icon, mehrzeiliger Fließtext und Signatur.</BD>
           <BsCard code={
-`<div class="alert alert-warning" role="alert">
-  <!-- warning icon -->
-  <strong>16.–18.09.2026 nicht besetzt</strong> – ab 21.09. wieder erreichbar.
-</div>`}>
-            <Alert v={variants.find(x=>x.key==='warning')}>
-              <strong>16.&ndash;18.09.2026 nicht besetzt</strong> &ndash; ab 21.09. wieder erreichbar.
-            </Alert>
+`<section class="hp-alert" role="region"
+  aria-label="Abteilung Sprechanlagen & Sicherheitstechnik nicht erreichbar: 16.–18.09.2026">
+  <p class="hp-alert__title"><!-- warning icon -->Abteilung Sprechanlagen &amp; Sicherheitstechnik nicht erreichbar: 16.–18.09.2026</p>
+  <p>Liebe Kundinnen und Kunden,</p>
+  <p>vom <strong>16.09. bis einschließlich 18.09.2026</strong> befindet sich unsere Abteilung Sprechanlagen und Sicherheitstechnik in einer internen Schulung, um unser technisches Know-how für Sie weiter auszubauen und zu vertiefen.</p>
+  <p>In diesem Zeitraum ist unsere Telefonhotline nicht erreichbar, und eingehende Support-Tickets können leider nicht bearbeitet werden.</p>
+  <p><strong>Ab dem 21.09.2026</strong> sind wir wie gewohnt für Sie da und kümmern uns umgehend um Ihre Anliegen.</p>
+  <p>Wir bitten um Ihr Verständnis und danken für Ihre Geduld.</p>
+  <p class="hp-alert__sig">Ihr Metzler-Team</p>
+</section>`}>
+            {noticeMarkup}
           </BsCard>
 
           {/* Notice — aufklappbar per Statusbutton (real use: VDM10-Produktseite, obere Leiste) */}
           <BH>Hinweis · aufklappbar</BH>
-          <BD>Gleicher Hinweis, aber platzsparend in der oberen Leiste: ein <strong>gewöhnlicher Sekundär-Button</strong> (<Chip>.btn-secondary .btn-sm</Chip>, kein CTA) zeigt den Status kompakt an; ein Klick klappt die <Chip>alert-warning</Chip>-Meldung darunter auf. Chevron rotiert 180°, Panel öffnet mit <Chip>max-height</Chip>-Transition. Keine neue Komponente, keine neuen Farben &ndash; nur ein bestehender Button + der bestehende Alert.</BD>
+          <BD>Gleicher Hinweis, aber platzsparend in der oberen Leiste: ein <strong>gewöhnlicher Sekundär-Button</strong> (<Chip>.btn-secondary .btn-sm</Chip>, kein CTA) zeigt den Status kompakt an; ein Klick klappt die vollständige <Chip>.hp-alert</Chip>-Meldung darunter auf. Chevron rotiert 180°, Panel öffnet mit <Chip>max-height</Chip>-Transition.</BD>
           <BsCard code={
 `<button class="btn btn-secondary btn-sm" aria-expanded="false"
         onclick="toggleNotice()">
@@ -9116,46 +9147,40 @@ cursor: pointer;
   <svg class="chev" ...><path d="M4 6l4 4 4-4"/></svg>
 </button>
 
-<div class="alert alert-warning" role="alert" hidden>
-  <strong>16.–18.09.2026 nicht besetzt</strong> – ab 21.09. wieder erreichbar.
-</div>`}>
-            {(() => {
-              const w = variants.find(x=>x.key==='warning');
-              return (
-                <div style={{fontFamily:font}}>
-                  <button
-                    type="button"
-                    aria-expanded={noticeOpen}
-                    onClick={()=>setNoticeOpen(o=>!o)}
-                    style={{
-                      display:'inline-flex', alignItems:'center', gap:'0.5rem',
-                      height:'2.25rem', padding:'0 0.875rem',
-                      background:'transparent', color:T.teal,
-                      border:`0.125rem solid ${T.teal}`, borderRadius:T.r,
-                      fontFamily:font, fontSize:'0.9rem', fontWeight:400,
-                      lineHeight:1.2, whiteSpace:'nowrap', cursor:'pointer',
-                      transition:'background 0.15s ease',
-                    }}
-                    onMouseEnter={e=>e.currentTarget.style.background=T.teal100}
-                    onMouseLeave={e=>e.currentTarget.style.background='transparent'}
-                  >
-                    16.&ndash;18.09. nicht besetzt
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
-                      style={{transform:noticeOpen?'rotate(180deg)':'rotate(0deg)', transition:'transform 0.25s ease', flexShrink:0}}>
-                      <path d="M4 6l4 4 4-4" stroke={T.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                  <div style={{
-                    maxHeight:noticeOpen?'8rem':'0', overflow:'hidden',
-                    transition:'max-height 0.3s ease', marginTop:noticeOpen?'0.625rem':'0',
-                  }}>
-                    <Alert v={w}>
-                      <strong>16.&ndash;18.09.2026 nicht besetzt</strong> &ndash; ab 21.09. wieder erreichbar.
-                    </Alert>
-                  </div>
-                </div>
-              );
-            })()}
+<section class="hp-alert" role="region" hidden>
+  … vollständige Abwesenheits-Meldung …
+</section>`}>
+            <div style={{fontFamily:font}}>
+              <button
+                type="button"
+                aria-expanded={noticeOpen}
+                onClick={()=>setNoticeOpen(o=>!o)}
+                style={{
+                  display:'inline-flex', alignItems:'center', gap:'0.5rem',
+                  height:'2.25rem', padding:'0 0.875rem',
+                  background:'transparent', color:T.teal,
+                  border:`0.125rem solid ${T.teal}`, borderRadius:T.r,
+                  fontFamily:font, fontSize:'0.9rem', fontWeight:400,
+                  lineHeight:1.2, whiteSpace:'nowrap', cursor:'pointer',
+                  transition:'background 0.15s ease',
+                }}
+                onMouseEnter={e=>e.currentTarget.style.background=T.teal100}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}
+              >
+                16.&ndash;18.09. nicht besetzt
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"
+                  style={{transform:noticeOpen?'rotate(180deg)':'rotate(0deg)', transition:'transform 0.25s ease', flexShrink:0}}>
+                  <path d="M4 6l4 4 4-4" stroke={T.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <div style={{
+                display:'grid',
+                gridTemplateRows:noticeOpen?'1fr':'0fr',
+                transition:'grid-template-rows 0.3s ease', marginTop:noticeOpen?'0.625rem':'0',
+              }}>
+                <div style={{overflow:'hidden',minHeight:0}}>{noticeMarkup}</div>
+              </div>
+            </div>
           </BsCard>
 
           {/* Without icon */}
