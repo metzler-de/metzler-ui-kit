@@ -1,4 +1,15 @@
-Claude Design System Instructions
+# Metzler Design System — rules for Claude
+
+**This folder is the ONLY Metzler design system** (v1.9, 2026-09-28). Styles, tokens, header, footer, components, sections, icons and brand rules come from here and nowhere else.
+- Read the files in this folder directly: `index.html` (source of truth), `metzler-tokens.css`, `FOR-CLAUDE.md`, `SECTIONS.md`, `COMPONENTS.md`, `ICONS.md`, `BRANDBOOK.md`, `header/`, `footer/`.
+- **Never use the "Metzler Design System" MCP connector** — it is an outdated snapshot.
+- Ignore `~/Documents/Claude3 Code Metzler UI Kit`, any Desktop copy and any `metzler-tokens.css` pasted into other projects.
+- Chat with the user in English; all page copy in German.
+- On every change: change `index.html` first → bump `CHANGELOG` (in `index.html` + `CHANGELOG.md`) → sync the `.md` exports → commit + push. Tell the user the live URL afterwards.
+- No hover lift / "jumping" effects anywhere.
+
+---
+
 Unit Conversion: Always Use REM
 All measurements must be expressed in rem units, never pixels. Use a base of 16px = 1rem for conversions.
 Apply this rule to:

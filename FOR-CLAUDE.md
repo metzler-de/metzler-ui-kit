@@ -1,6 +1,8 @@
 # Metzler Design System — Claude Page Brief
 
-Paste this file into Claude when asking it to build any Metzler page, section, or component.
+> Kit-Version **v1.9** · 2026-09-28 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
+
+Claude reads this file directly from the kit folder (`~/Documents/Claude/Projects/Metzler UI Kit`) before building any Metzler page, section or component. No pasting needed.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.
 
 > **Companion file:** ready-made page sections (heroes, feature grids, sliders, FAQ, spec layouts …) live in **`SECTIONS.md`** — always check there first before designing a new section from scratch. This file covers tokens, primitives (buttons, forms, cards), header/footer, and page scaffolding.
@@ -743,231 +745,235 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
 
 ## 14 · Footer
 
-> ⚠️ **The block below is a SIMPLIFIED footer (4 columns only).** The canonical production footer is the `FooterSection` component in **`index.html`** + the image assets in **`footer/`**. Its background is **`var(--color-teal-700)` (#01292A)** — both versions below use this token. The real footer also has: a **5th column** ("Follow us" social icons + "Qualität" award badges), a **payment row** (Versandpartner DPD/DHL/GoGreen + "Einfach bezahlen" SEPA/Visa/PayPal/Klarna/Mastercard/Apple Pay/Google Pay/SEPA/Vorkasse) + a **Trusted Shops rating pill**, **10 legal links** (Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Impressum · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen), and the copyright line "Alle Preise inkl. gesetzliche MwSt., zzgl. Versand © 2013 - 2026 | Metzler GmbH". **For real pages, reproduce that full component + copy the `footer/` assets** (a working static version is in `../tst/index.html`). The simplified block below is for quick mockups only.
+> **Canonical source:** the `FooterSection` (desktop) and `MobileFooterSection` (< 48rem) components in **`index.html`**; link data lives in `FOOTER_INFO_LINKS`, `FOOTER_SERVICE_LINKS` and `FOOTER_LEGAL_LINKS`. The block below is their **1:1 static export**: use it for every real page. Content matches the live shop **edelstahl-tuerklingel.de as of 28 Sep 2026**.
+>
+> **Assets are linked, never copied:** every logo and badge loads from `https://metzler-de.github.io/metzler-ui-kit/footer/` (the kit's `footer/` folder).
 
-**Contact values are exact (used in both versions). Do not invent columns, headings, or links.**
-
-The simplified footer has 4 columns on desktop, stacks to 1 on mobile:
-- **Col 1:** Logo + company tagline
-- **Col 2:** Kontakt (exact phone/email — copy these values)
-- **Col 3:** Informationen (exact link list)
-- **Col 4:** Service (exact link list)
+**Fixed content. Do not invent, rename, reorder or drop anything:**
+- **5 columns:** Logo + tagline + „Mehr erfahren“ | Kontakt (exact phone numbers and hours) | Informationen (7 links) | Service (5 links) | Follow us (5 social icons) + Qualität (4 TopShop badges)
+- **Row 2:** „Unsere Versandpartner:“ DPD · DHL · Hasenauer & Koch; „Einfach bezahlen:“ SEPA · Amex · Visa · Amazon Pay · Klarna · PayPal · Mastercard · Apple Pay · Google Pay · Vorkasse; rating pill (the shop loads the live score; 4,71 / 36.705 is the value on 28 Sep 2026)
+- **Row 3:** 13 legal links **plus the „Vertrag widerrufen“ button** (the legally required Widerrufsbutton; never remove it)
+- **Row 4:** „inkl. gesetzliche MwSt., zzgl. Versand © 2013 - <current year> | Metzler GmbH“
+- Background always `var(--color-teal-700)`; links on dark always `var(--color-mint)`, or white at 50 % opacity.
 
 ```html
 <footer class="site-footer">
   <div class="container">
 
-    <div class="footer-grid">
-
-      <!-- Col 1: Logo + tagline -->
+    <!-- Row 1: 5 columns -->
+    <div class="footer-top">
       <div class="footer-col footer-col--brand">
-        <!-- Metzler Logo — white version -->
-        <a href="/" class="footer-logo" aria-label="Metzler">
-          <svg width="120" height="28" viewBox="0 0 184.3 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- M-square icon -->
-            <rect width="40" height="40" rx="2" fill="#D42924"/>
-            <path fill="#fff" d="M15.2 7.5l4.1 7.2-2.1 3.6L11 7.5h4.2zm0.02 16.1l-5.1-8.8v18.6H6.5V7.5H10l7.2 12.4 10.6-19.3h4.2L18.3 27.2l-2.1-3.6.02-.02zM33.1 33.4h-3.6V14.6l-7.2 12.5h-4.2l11.3-19.6h3.6v25.9z"/>
-            <!-- METZLER wordmark -->
-            <text x="50" y="30" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="22" font-weight="800" letter-spacing="3" fill="#FFFFFF">METZLER</text>
-          </svg>
-        </a>
-        <p class="footer-tagline">
-          Edelstahl-Tuerklingel.de ist ein Unternehmen der
-          <a href="https://metzlergmbh.de" class="footer-mint-link">Metzler Gruppe</a>
-        </p>
-        <p class="footer-tagline" style="font-weight:700; color:var(--color-white); margin-top:0.75rem;">
-          Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
-        </p>
+        <a href="https://edelstahl-tuerklingel.de/" class="footer-logo"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Metzler_Logo_footer.svg" alt="Metzler"></a>
+        <p class="footer-muted">Edelstahl-Tuerklingel.de ist ein Unternehmen der <a class="footer-mint" href="https://metzlergmbh.de">Metzler Gruppe</a></p>
+        <p class="footer-claim">Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.</p>
+        <a class="footer-more" href="https://edelstahl-tuerklingel.de/ueber-uns">Mehr erfahren</a>
       </div>
 
-      <!-- Col 2: Contact — EXACT values, do not change -->
-      <div class="footer-col">
-        <p class="footer-col-heading">Kontakt</p>
-
-        <div class="footer-contact-block">
-          <p class="footer-contact-label">Allgemeine Hotline:</p>
-          <a href="tel:+4971213177310" class="footer-mint-link">+49 (0) 7121 / 317 7310</a>
-          <p class="footer-contact-hours">Mo–Fr: 09:00–16:00 Uhr</p>
-        </div>
-
-        <div class="footer-contact-block">
-          <p class="footer-contact-label">Sprechanlagen Hotline:</p>
-          <a href="tel:+4971213177333" class="footer-mint-link">+49 (0) 7121 / 317 7333</a>
-          <p class="footer-contact-hours">Mo–Fr: 09:00–16:00 Uhr</p>
-        </div>
-
-        <div class="footer-contact-block">
-          <p class="footer-contact-label">E-Mail Support:</p>
-          <a href="mailto:service@metzlergmbh.de" class="footer-mint-link">service@metzlergmbh.de</a>
-        </div>
-
-        <div class="footer-contact-block">
-          <p class="footer-contact-label">Kontaktformular:</p>
-          <a href="https://edelstahl-tuerklingel.de/Kontakt" class="footer-mint-link">Zum Kontaktformular</a>
-        </div>
+      <div class="footer-col footer-col--contact">
+        <div class="footer-contact"><p class="footer-head">Allgemeine Hotline:</p><a class="footer-mint" href="tel:+4971213177310">+49 (0) 7121 / 317 7310</a><span class="footer-hours">(Mo-Fr: 09:00-16:00 Uhr)</span></div>
+        <div class="footer-contact"><p class="footer-head">Sprechanlagen Hotline:</p><a class="footer-mint" href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a><span class="footer-hours">(Mo-Fr: 09:00-16:00 Uhr)</span></div>
+        <div class="footer-contact"><p class="footer-head">E-Mail Support:</p><a class="footer-mint" href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</a></div>
+        <div class="footer-contact"><p class="footer-head">Kontaktformular:</p><a class="footer-mint" href="https://edelstahl-tuerklingel.de/Kontakt">Zum Kontaktformular</a></div>
       </div>
 
-      <!-- Col 3: Informationen — EXACT links, do not change -->
-      <div class="footer-col">
-        <p class="footer-col-heading">Informationen</p>
+      <details class="footer-col footer-acc" open>
+        <summary class="footer-head">Informationen</summary>
         <ul class="footer-links">
-          <li><a href="#">Auszeichnungen</a></li>
-          <li><a href="#">Fotowettbewerb</a></li>
-          <li><a href="#">Kundenbilder</a></li>
-          <li><a href="#">Stellenangebote</a></li>
-          <li><a href="#">News</a></li>
-          <li><a href="#">Zahlung und Versand</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/auszeichnungen">Auszeichnungen</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/metzler-geschenkgutschein">Geschenkgutschein</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/tuerklingel-galerie">Kundenbilder</a></li>
+          <li><a href="https://www.metzlergmbh.de/jobs/">Stellenangebote</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/ueber-uns">Wir über uns</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/News">News</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a></li>
         </ul>
-      </div>
+      </details>
 
-      <!-- Col 4: Service — EXACT links, do not change -->
-      <div class="footer-col">
-        <p class="footer-col-heading">Service</p>
+      <details class="footer-col footer-acc" open>
+        <summary class="footer-head">Service</summary>
         <ul class="footer-links">
-          <li><a href="#">Begriffserklärung</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Geschäftskunden</a></li>
-          <li><a href="#">Newsletter</a></li>
-          <li><a href="#">VDM10 FAQ</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/begriffserklaerung">Begriffserklärung</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/faq">FAQ</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/b2b">Geschäftskunden</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/newsletter">Newsletter</a></li>
+          <li><a href="https://edelstahl-tuerklingel.de/faq/sprechanlagen">VDM10 FAQ</a></li>
         </ul>
-      </div>
+      </details>
 
-    </div><!-- /.footer-grid -->
-
-    <!-- Legal row — EXACT links, do not change -->
-    <div class="footer-legal">
-      <span>© 2026 Metzler GmbH</span>
-      <div class="footer-legal-links">
-        <a href="#">Datenschutz</a>
-        <a href="#">AGB</a>
-        <a href="#">Impressum</a>
-        <a href="#">Widerrufsrecht</a>
-        <a href="#">Sitemap</a>
-        <a href="#">Cookie-Einstellungen</a>
+      <div class="footer-col footer-col--social">
+        <p class="footer-head">Follow us</p>
+        <div class="footer-social">
+          <a href="https://www.pinterest.de/METZLERGmBH/" aria-label="Pinterest"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=Pinterest.svg" alt=""></a>
+          <a href="https://www.facebook.com/MetzlerGmbHDE" aria-label="Facebook"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=Facebook.svg" alt=""></a>
+          <a href="https://www.instagram.com/metzlergmbh/?hl=de" aria-label="Instagram"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=VaInstagram.svg" alt=""></a>
+          <a href="https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos" aria-label="YouTube"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=Youtube.svg" alt=""></a>
+          <a href="https://twitter.com/metzlerklingeln?lang=de" aria-label="X / Twitter"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=X.svg" alt=""></a>
+        </div>
+        <p class="footer-head">Qualität</p>
+        <div class="footer-topshop">
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/2023.png" alt="TopShop 2023"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/2024.png" alt="TopShop 2024"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/2025.png" alt="TopShop 2025"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/3jahre.png" alt="TopShop 3 Jahre"></a>
+        </div>
       </div>
     </div>
 
-  </div><!-- /.container -->
+    <!-- Row 2: shipping, payment, rating -->
+    <div class="footer-mid">
+      <div class="footer-logos">
+        <span class="footer-label">Unsere Versandpartner:</span>
+        <ul class="footer-badges">
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=dpd.svg" alt="DPD" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=dhl.svg" alt="DHL" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=hasenauer-koch.svg" alt="Hasenauer &amp; Koch" width="53" height="30"></li>
+        </ul>
+      </div>
+      <div class="footer-logos footer-logos--pay">
+        <span class="footer-label">Einfach bezahlen:</span>
+        <ul class="footer-badges">
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=sepa.svg" alt="SEPA Lastschrift" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=amex.svg" alt="American Express" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=visa.svg" alt="Visa" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=pay.svg" alt="Amazon Pay" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=klarna.svg" alt="Klarna" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=paypal.svg" alt="PayPal" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=mastercard.svg" alt="Mastercard" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=apple.svg" alt="Apple Pay" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=google.svg" alt="Google Pay" width="53" height="30"></li>
+          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=vorkasse.svg" alt="Vorkasse" width="53" height="30"></li>
+        </ul>
+      </div>
+      <a class="footer-rating" href="https://www.trustedshops.de/bewertung/info_XAC423DA09B591A4D639343B80266EF70.html">
+        <img src="https://metzler-de.github.io/metzler-ui-kit/footer/Property%201=all.svg" alt="" width="30" height="30">
+        <span class="footer-rating-body">
+          <span class="footer-stars"><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg></span>
+          <span class="footer-rating-text">4,71 Sehr gut <span class="footer-mint">36.705 Bewertungen</span></span>
+        </span>
+      </a>
+    </div>
+
+    <!-- Row 3: legal links + Widerrufsbutton -->
+    <nav class="footer-legal" aria-label="Rechtliches">
+      <a href="https://edelstahl-tuerklingel.de/kundenbewertungen">Geprüfte Kundenbewertungen</a>
+      <a href="https://edelstahl-tuerklingel.de/metzler-garantieerklaerung">Metzler Garantieerklärung</a>
+      <a href="https://edelstahl-tuerklingel.de/datenschutz">Datenschutz</a>
+      <a href="https://edelstahl-tuerklingel.de/AGB">AGB</a>
+      <a href="https://edelstahl-tuerklingel.de/Sitemap">Sitemap</a>
+      <a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a>
+      <a href="https://edelstahl-tuerklingel.de/impressum">Impressum</a>
+      <a href="https://edelstahl-tuerklingel.de/gesetzliche-gewaehrleistung">Gesetzliche Gewährleistung</a>
+      <a href="https://edelstahl-tuerklingel.de/barrierefreiheit">Barrierefreiheit</a>
+      <a href="https://edelstahl-tuerklingel.de/Batterieentsorgungsgesetz">Batterieentsorgungsgesetz</a>
+      <a href="https://edelstahl-tuerklingel.de/Widerrufsrecht">Widerrufsrecht</a>
+      <a href="https://edelstahl-tuerklingel.de/elektroaltgeraeteentsorgung">Hinweise zur Elektroaltgeräteentsorgung</a>
+      <a href="#">Cookie-Einstellungen</a>
+    </nav>
+    <div class="footer-withdraw">
+      <a class="footer-withdraw-btn" href="https://edelstahl-tuerklingel.de/online-widerrufsformular">Vertrag widerrufen</a>
+    </div>
+
+    <!-- Row 4: copyright -->
+    <p class="footer-copy">inkl. gesetzliche MwSt., zzgl. <a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Versand</a> © 2013 - 2026 | Metzler GmbH</p>
+
+  </div>
 </footer>
+
+<script>
+  /* Informationen / Service: open on desktop, collapsed accordions on mobile */
+  (function () {
+    var mq = window.matchMedia('(min-width: 48rem)');
+    function sync() { document.querySelectorAll('.footer-acc').forEach(function (d) { d.open = mq.matches; }); }
+    sync(); mq.addEventListener('change', sync);
+  })();
+</script>
 ```
 
 ```css
-/* ── FOOTER — do not customise, use exactly as written ── */
-.site-footer {
-  background: var(--color-teal-700);   /* #01292A — same token as the production FooterSection */
-  color: var(--color-white);
-  padding: 3.5rem 0 2rem;
-  margin-top: 5rem;
-  font-family: var(--font-family);
-}
+/* ── FOOTER: tokens only, rem only. Copy exactly. ── */
+.site-footer { background: var(--color-teal-700); color: var(--color-white); font-family: var(--font-family); }
+.site-footer a { text-decoration: none; }
+.site-footer .container { padding-top: 1.875rem; }
 
-.footer-logo { display: inline-block; margin-bottom: 1.25rem; }
+.footer-top { display: grid; grid-template-columns: 17.5rem 12rem 1fr 1fr auto; gap: 1.25rem;
+  padding-bottom: 2.5rem; border-bottom: 0.0625rem solid rgba(255,255,255,0.1); }
+.footer-col { display: flex; flex-direction: column; gap: 1.5625rem; min-width: 0; }
+.footer-col--contact, .footer-col--social { gap: 1.875rem; }
+.footer-logo img { height: 2.5rem; width: auto; display: block; }
+.footer-head { margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.2; color: var(--color-white); list-style: none; }
+.footer-acc { gap: 0; }
+.footer-acc > summary { cursor: default; margin-bottom: 1.875rem; }
+.footer-acc > summary::-webkit-details-marker { display: none; }
+.footer-muted { margin: 0; font-size: 1rem; line-height: 1.375rem; color: rgba(255,255,255,0.5); }
+.footer-claim { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.3; color: var(--color-white); }
+.footer-more { font-size: 1rem; font-weight: 700; color: var(--color-white); }
+.footer-mint { color: var(--color-mint); }
+.footer-mint:hover, .footer-more:hover { text-decoration: underline; }
+.footer-contact { display: flex; flex-direction: column; gap: 0.3125rem; }
+.footer-hours { font-size: 0.875rem; line-height: 1rem; color: rgba(255,255,255,0.5); }
+.footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+.footer-links a { font-size: 1rem; line-height: 1.125rem; color: rgba(255,255,255,0.5); transition: color 0.15s; }
+.footer-links a:hover { color: var(--color-white); }
+.footer-social { display: flex; gap: 0.625rem; }
+.footer-social a { width: 2.1875rem; height: 2.1875rem; border-radius: var(--radius-pill); background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+.footer-social a:hover { background: rgba(255,255,255,0.2); }
+.footer-social img { width: 1.25rem; height: 1.25rem; object-fit: contain; }
+.footer-topshop { display: flex; gap: 0.625rem; align-items: flex-end; }
+.footer-topshop img { height: 4.5rem; width: auto; display: block; }
 
-.footer-tagline {
-  font-size: 0.9375rem;
-  color: rgba(255,255,255,0.5);
-  line-height: 1.55;
-  margin: 0 0 0.5rem;
-  font-family: var(--font-family);
-}
+.footer-mid { display: flex; align-items: flex-start; gap: 1.25rem; padding: 1.25rem 0;
+  border-bottom: 0.0625rem solid rgba(255,255,255,0.1); }
+.footer-logos { display: flex; flex-direction: column; gap: 0.625rem; flex-shrink: 0; }
+.footer-logos--pay { flex: 1 1 auto; min-width: 0; }
+.footer-label { font-size: 0.875rem; line-height: 1.25rem; color: var(--color-white); }
+.footer-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.9375rem; }
+.footer-badges img { width: 3.3125rem; height: 1.875rem; display: block; }
+.footer-rating { display: flex; align-items: center; gap: 0.625rem; flex-shrink: 0; padding: 0.625rem 0.9375rem;
+  background: rgba(255,255,255,0.08); border-radius: var(--radius-pill); color: var(--color-white); }
+.footer-rating-body { display: flex; flex-direction: column; gap: 0.1875rem; }
+.footer-stars { display: flex; gap: 0.125rem; }
+.footer-stars svg { width: 0.9375rem; height: 0.9375rem; fill: var(--color-star); }
+.footer-rating-text { font-size: 0.75rem; line-height: 0.875rem; white-space: nowrap; }
 
-.footer-mint-link {
-  color: var(--color-mint);
-  text-decoration: none;
-  font-family: var(--font-family);
-  font-size: 0.9375rem;
-  transition: opacity 0.14s;
-}
-.footer-mint-link:hover { opacity: 0.8; }
+.footer-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.25rem; padding: 1.25rem 0 0.75rem; }
+.footer-legal a { font-size: 0.875rem; line-height: 1rem; color: rgba(255,255,255,0.5); white-space: nowrap; transition: color 0.15s; }
+.footer-legal a:hover { color: rgba(255,255,255,0.9); }
+.footer-withdraw { display: flex; justify-content: center; padding-bottom: 1.25rem;
+  border-bottom: 0.0625rem solid rgba(255,255,255,0.1); }
+.footer-withdraw-btn { display: inline-flex; align-items: center; background: var(--color-teal); color: var(--color-white);
+  border-radius: var(--radius); font-size: 0.875rem; font-weight: 600; line-height: 1; padding: 0.5rem 0.875rem; }
+.footer-withdraw-btn:hover { background: var(--color-teal-600); }
+.footer-copy { margin: 0; padding: 1rem 0; text-align: center; font-size: 0.875rem; line-height: 1rem; color: var(--color-white); }
+.footer-copy a { color: rgba(255,255,255,0.5); text-decoration: underline; }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.8fr 1.4fr 1fr 1fr;
-  gap: 2.5rem;
-  padding-bottom: 2.5rem;
-  border-bottom: 0.0625rem solid rgba(255,255,255,0.1);
-  margin-bottom: 1.5rem;
+/* ≤ 75rem: Follow us + Qualität move under the brand column */
+@media (max-width: 75rem) {
+  .footer-top { grid-template-columns: 16.8rem 14.5rem 1fr 1fr; }
+  .footer-col--social { grid-column: 1; grid-row: 2; }
+  .footer-mid { flex-wrap: wrap; }
 }
-
-.footer-col-heading {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-white);
-  margin: 0 0 1.25rem;
-  font-family: var(--font-family);
-}
-
-.footer-contact-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1875rem;
-  margin-bottom: 1.25rem;
-}
-.footer-contact-label {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--color-white);
-  margin: 0;
-  font-family: var(--font-family);
-}
-.footer-contact-hours {
-  font-size: 0.875rem;
-  color: rgba(255,255,255,0.5);
-  margin: 0;
-  font-family: var(--font-family);
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0; margin: 0;
-  display: flex; flex-direction: column; gap: 1rem;
-}
-.footer-links a {
-  font-size: 0.9375rem;
-  color: rgba(255,255,255,0.72);
-  text-decoration: none;
-  font-family: var(--font-family);
-  transition: color 0.14s;
-}
-.footer-links a:hover { color: var(--color-mint); }
-
-.footer-legal {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.8125rem;
-  color: rgba(255,255,255,0.45);
-  font-family: var(--font-family);
-}
-.footer-legal-links {
-  display: flex; gap: 1.5rem; flex-wrap: wrap;
-}
-.footer-legal a,
-.footer-legal-links a {
-  color: rgba(255,255,255,0.45);
-  text-decoration: none;
-  font-size: 0.8125rem;
-  font-family: var(--font-family);
-  transition: color 0.14s;
-}
-.footer-legal a:hover,
-.footer-legal-links a:hover { color: var(--color-white); }
-
-/* Mobile */
-@media (max-width: 64rem) {
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-}
-@media (max-width: 48rem) {
-  .site-footer { padding: 2.5rem 0 1.5rem; }
-  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .footer-legal { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
-  .footer-legal-links { gap: 1rem; }
+/* < 48rem: mobile, stacked; Informationen / Service collapse into accordions */
+@media (max-width: 47.99rem) {
+  .footer-top { grid-template-columns: 1fr; gap: 0.9375rem; padding-bottom: 0; border-bottom: 0; }
+  .footer-col--social { grid-column: auto; grid-row: auto; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .footer-col--social .footer-head, .footer-topshop { display: none; }
+  .footer-acc { border-top: 0.0625rem solid rgba(255,255,255,0.2); gap: 0; }
+  .footer-acc > summary { margin: 0; padding: 0.9375rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .footer-acc > summary::after { content: ""; width: 0.5rem; height: 0.5rem; border-right: 0.125rem solid var(--color-white);
+    border-bottom: 0.125rem solid var(--color-white); transform: rotate(45deg); transition: transform 0.2s; }
+  .footer-acc[open] > summary::after { transform: rotate(-135deg); }
+  .footer-acc .footer-links { gap: 0.625rem; padding-bottom: 0.9375rem; }
+  .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.7); }
+  .footer-mid { flex-direction: column; gap: 1.25rem; border-top: 0.0625rem solid rgba(255,255,255,0.2); }
+  .footer-badges { gap: 0.3125rem; }
+  .footer-badges img { width: 3.125rem; height: 1.75rem; }
+  .footer-rating { width: 100%; box-sizing: border-box; }
+  .footer-legal { gap: 0.3125rem 0.9375rem; }
+  .footer-legal a { font-size: 0.6875rem; line-height: 0.875rem; text-decoration: underline; }
+  .footer-copy { font-size: 0.6875rem; line-height: 0.875rem; }
 }
 ```
-
----
 
 ## 15 · Mobile Rules
 
@@ -1044,7 +1050,7 @@ Apply these on every page for the `< 768px` breakpoint:
 5. **No padding on `<header>` / `<footer>` outer tags** — padding lives inside `.container` only
 6. **Header two-state:** not sticky at page load; `.is-sticky` class added via JS on first scroll
 7. **Breadcrumbs always left-aligned** — never centered
-8. **Footer always `var(--color-teal-700)` (#01292A) background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 4 columns: logo+tagline | Kontakt (with exact phone numbers) | Informationen | Service. The column headings and link texts are fixed — do not change them.
+8. **Footer always `var(--color-teal-700)` (#01292A) background** — never a custom dark color. Always copy the exact footer from Section 14 — never invent columns, headings, or links. The footer has 5 columns: logo+tagline | Kontakt (exact phone numbers) | Informationen | Service | Follow us + Qualität, then the shipping/payment/rating row, 13 legal links, the „Vertrag widerrufen“ button and the copyright line. Headings, link texts and order are fixed — do not change them.
 9. **Cards always `var(--radius-lg)` (0.5rem) radius** — never sharp corners, never pill-radius
 10. **Arrows / carousel controls never show step numbers** — navigation arrows are controls only
 11. **No external icon libraries** — use inline `<svg>` with `stroke="currentColor"`, `stroke-width: 1.8–2`, `stroke-linecap: round`, `stroke-linejoin: round`, `fill: none`; icon container is 2.5rem × 2.5rem with `border-radius: var(--radius-lg)` (0.5rem = 8px) for the generic `.card-icon`; the feature-grid `.nfs-card-icon` is the one exception at 0.625rem (10px)
@@ -1264,12 +1270,13 @@ section { padding: 10px 0; }
   </div>
 </footer>
 
-<!-- CORRECT — copy Section 14 verbatim with these exact 4 columns and content:
-     Col 1: logo + company tagline (fixed text)
-     Col 2: Kontakt — exact phones: +49 (0) 7121 / 317 7310 and +49 (0) 7121 / 317 7333, email: service@metzlergmbh.de
-     Col 3: Informationen — exact links: Auszeichnungen, Fotowettbewerb, Kundenbilder, Stellenangebote, News, Zahlung und Versand
-     Col 4: Service — exact links: Begriffserklärung, FAQ, Geschäftskunden, Newsletter, VDM10 FAQ
-     Legal: Datenschutz | AGB | Impressum | Widerrufsrecht | Sitemap | Cookie-Einstellungen
+<!-- CORRECT — copy Section 14 verbatim (5 columns, exact content):
+     Col 1: logo + tagline + „Mehr erfahren“
+     Col 2: Kontakt — +49 (0) 7121 / 317 7310, +49 (0) 7121 / 317 7333, service@metzlergmbh.de, Kontaktformular
+     Col 3: Informationen — Auszeichnungen, Geschenkgutschein, Kundenbilder, Stellenangebote, Wir über uns, News, Zahlung und Versand
+     Col 4: Service — Begriffserklärung, FAQ, Geschäftskunden, Newsletter, VDM10 FAQ
+     Col 5: Follow us (5 icons) + Qualität (4 TopShop badges)
+     Then: Versandpartner + Bezahlen + rating, 13 legal links, „Vertrag widerrufen“ button, copyright
 -->
 ```
 

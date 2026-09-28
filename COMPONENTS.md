@@ -1,6 +1,6 @@
 # Metzler Design System — Component Catalog (COMPONENTS.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-07-21, Kit-Version v1.8.
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-28, Kit-Version v1.9.
 > Vollständige Komponenten-Doku der ComponentsPage: alle 31 Kapitel mit Regeln, HTML-Beispielen und CSS-Definitionen.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 
@@ -10,7 +10,7 @@
 ### One source of truth for all Metzler digital products
 A complete library of design tokens, reusable components, and interaction patterns that keep every Metzler product consistent, accessible, and fast to build.
 
-`Copy` `#015253` - metzler-design-system.md — add it if Claude needs more detail on a specific component's exact states/variants than FOR-CLAUDE.md's condensed version gives.
+`Copy` `#015253` - COMPONENTS.md — add it if Claude needs more detail on a specific component's exact states/variants than FOR-CLAUDE.md's condensed version gives.
 - metzler-tokens.css — not for reading, for shipping: give it to Claude when you want the finished page to <link> the real stylesheet instead of an inlined token block.
 
 ## Favicon
@@ -2770,31 +2770,16 @@ Width 50% per card (2-column grid). Same design as the desktop card — border (
 ```
 
 ## Footer
-Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe
+**Code:** full static HTML + CSS export in `FOR-CLAUDE.md` §14 (use that for real pages). Live component: `FooterSection` in `index.html`. Synced with edelstahl-tuerklingel.de on 2026-09-28.
 
-Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
-
-Follow us
-
-Qualität
-
-Allgemeine Hotline:
-
-Sprechanlagen Hotline:
-
-E-Mail Support:
-
-Kontaktformular:
-
-Informationen
-
-Service
+- **Col 1:** Logo · „Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe“ · „Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.“ · „Mehr erfahren“
+- **Col 2:** Allgemeine Hotline +49 (0) 7121 / 317 7310 · Sprechanlagen Hotline +49 (0) 7121 / 317 7333 (je Mo-Fr: 09:00-16:00 Uhr) · E-Mail Support service@metzlergmbh.de · Kontaktformular
+- **Informationen:** Auszeichnungen · Geschenkgutschein · Kundenbilder · Stellenangebote · Wir über uns · News · Zahlung und Versand
+- **Service:** Begriffserklärung · FAQ · Geschäftskunden · Newsletter · VDM10 FAQ
+- **Follow us:** Pinterest · Facebook · Instagram · YouTube · X — **Qualität:** TopShop 2023 · 2024 · 2025 · 3 Jahre
+- **Unsere Versandpartner:** DPD · DHL · Hasenauer & Koch — **Einfach bezahlen:** SEPA · Amex · Visa · Amazon Pay · Klarna · PayPal · Mastercard · Apple Pay · Google Pay · Vorkasse — Bewertungs-Slider (Alle / Trusted Shops / Google / Trustpilot)
+- **Rechtliches (13):** Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Zahlung und Versand · Impressum · Gesetzliche Gewährleistung · Barrierefreiheit · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen — plus Button **„Vertrag widerrufen“**
+- **Copyright:** inkl. gesetzliche MwSt., zzgl. Versand © 2013 - <aktuelles Jahr> | Metzler GmbH
 
 ## Footer · Mobile
-Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
-
-Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe
-
-Alle Preise inkl. gesetzliche MwSt., zzgl. Versand
-
-© 2013 - 2024 | Metzler GmbH
+Same content, stacked (< 48rem): brand block → Kontakt → Informationen / Service as accordions → Versandpartner → Bezahlen → Bewertungs-Slider → Social icons → Rechtliches + „Vertrag widerrufen“ → „* inkl. gesetzliche MwSt., zzgl. Versand“ / „© 2013 - <aktuelles Jahr> | Metzler GmbH“. Live component: `MobileFooterSection` in `index.html`.

@@ -1,5 +1,7 @@
 # Metzler Design System — Section Catalog (SECTIONS.md)
 
+> Kit-Version **v1.9** · 2026-09-28 (sections unchanged since v1.8).
+
 > **Companion to `FOR-CLAUDE.md`.** That file defines tokens, primitives (buttons, forms, cards), header/footer and page scaffolding. **This file is the catalog of ready-made page sections.** When building a page: pick sections from here, stack them per the blueprints below, and only design something new when no existing section fits.
 >
 > **Source of truth:** the rendered **SectionsPage** in `index.html` (open the kit → "Sections"). This file is the static HTML/CSS export of exactly those sections. If this file and the kit ever disagree, the kit's rendered preview wins — then this file must be re-synced (see "Maintenance" at the end).

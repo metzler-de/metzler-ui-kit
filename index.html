@@ -187,9 +187,13 @@
 
     // ── CHANGELOG — update this on every push ──
     const CHANGELOG = {
-      version: '1.8',
-      date: '2026-07-02',
+      version: '1.9',
+      date: '2026-09-28',
       entries: [
+        { type: 'improved', text: 'Footer (desktop + mobile) synced 1:1 with the live shop: Geschenkgutschein + Wir über uns, „Mehr erfahren“, Hasenauer & Koch instead of GoGreen, 13 legal links + „Vertrag widerrufen“ button, real hrefs everywhere, copyright year automatic, rating values of 28 Sep 2026' },
+        { type: 'improved', text: 'FOR-CLAUDE.md §14 now holds the full 5-column static footer export (was a simplified 4-column mockup); COMPONENTS.md footer chapter updated' },
+        { type: 'improved', text: 'Kit cleaned up: only the design system remains (pages, old prompt docs, duplicate logo and unused Babel files removed; see CHANGELOG.md)' },
+        { type: 'improved', text: 'One version everywhere: kit, metzler-tokens.css and all .md exports say v1.9' },
         {
           type: 'new',
           text: 'SECTIONS.md — static HTML/CSS catalog of all 14 sections + page blueprints + maintenance protocol, synced with the SectionsPage'
@@ -11068,25 +11072,81 @@ cursor: pointer;
 
     // ── Trusted Shops slide data (shared between desktop + mobile footer) ──
     const tsSlides = [
-      { stars:5, score:'4,72', label:'Sehr gut', sub:'32.780 Bewertungen', img:"./footer/Property 1=all.svg" },
-      { stars:5, score:'4,74', label:'Sehr gut', sub:'29.573 Bewertungen', img:"./footer/Property 1=e.svg"   },
-      { stars:5, score:'4,74', label:'Sehr gut', sub:'2.518 Bewertungen',  img:"./footer/Property 1=g.svg"   },
-      { stars:5, score:'4,74', label:'Sehr gut', sub:'689 Bewertungen',    img:"./footer/Property 1=t.svg"   },
+      // Values as on edelstahl-tuerklingel.de, 28 Sep 2026 (live shop loads them dynamically)
+      { stars:5, score:'4,71', label:'Sehr gut', sub:'36.705 Bewertungen', img:"./footer/Property 1=all.svg" },
+      { stars:5, score:'4,73', label:'Sehr gut', sub:'32.400 Bewertungen', img:"./footer/Property 1=e.svg"   },
+      { stars:5, score:'4,63', label:'Sehr gut', sub:'3.179 Bewertungen',  img:"./footer/Property 1=g.svg"   },
+      { stars:4, score:'4,42', label:'Gut',      sub:'1.126 Bewertungen',  img:"./footer/Property 1=t.svg"   },
     ];
+
+    // ── Footer link data (shared by desktop + mobile footer) — matches the live shop, 28 Sep 2026 ──
+    const ETK = 'https://edelstahl-tuerklingel.de';
+    const FOOTER_INFO_LINKS = [
+      { l:'Auszeichnungen',      h:ETK+'/auszeichnungen' },
+      { l:'Geschenkgutschein',   h:ETK+'/metzler-geschenkgutschein' },
+      { l:'Kundenbilder',        h:ETK+'/tuerklingel-galerie' },
+      { l:'Stellenangebote',     h:'https://www.metzlergmbh.de/jobs/' },
+      { l:'Wir über uns',        h:ETK+'/ueber-uns' },
+      { l:'News',                h:ETK+'/News' },
+      { l:'Zahlung und Versand', h:ETK+'/zahlung-und-versand' },
+    ];
+    const FOOTER_SERVICE_LINKS = [
+      { l:'Begriffserklärung', h:ETK+'/begriffserklaerung' },
+      { l:'FAQ',               h:ETK+'/faq' },
+      { l:'Geschäftskunden',   h:ETK+'/b2b' },
+      { l:'Newsletter',        h:ETK+'/newsletter' },
+      { l:'VDM10 FAQ',         h:ETK+'/faq/sprechanlagen' },
+    ];
+    const FOOTER_LEGAL_LINKS = [
+      { l:'Geprüfte Kundenbewertungen',             h:ETK+'/kundenbewertungen' },
+      { l:'Metzler Garantieerklärung',              h:ETK+'/metzler-garantieerklaerung' },
+      { l:'Datenschutz',                            h:ETK+'/datenschutz' },
+      { l:'AGB',                                    h:ETK+'/AGB' },
+      { l:'Sitemap',                                h:ETK+'/Sitemap' },
+      { l:'Zahlung und Versand',                    h:ETK+'/zahlung-und-versand' },
+      { l:'Impressum',                              h:ETK+'/impressum' },
+      { l:'Gesetzliche Gewährleistung',             h:ETK+'/gesetzliche-gewaehrleistung' },
+      { l:'Barrierefreiheit',                       h:ETK+'/barrierefreiheit' },
+      { l:'Batterieentsorgungsgesetz',              h:ETK+'/Batterieentsorgungsgesetz' },
+      { l:'Widerrufsrecht',                         h:ETK+'/Widerrufsrecht' },
+      { l:'Hinweise zur Elektroaltgeräteentsorgung', h:ETK+'/elektroaltgeraeteentsorgung' },
+      { l:'Cookie-Einstellungen',                   h:'#' },
+    ];
+    // Legally required button (Widerrufsbutton), shown centred under the legal links
+    const FOOTER_WITHDRAW = { l:'Vertrag widerrufen', h:ETK+'/online-widerrufsformular' };
+    const FOOTER_ABOUT    = { l:'Mehr erfahren',      h:ETK+'/ueber-uns' };
+    const FOOTER_SOCIAL = {
+      pinterest:'https://www.pinterest.de/METZLERGmBH/',
+      facebook: 'https://www.facebook.com/MetzlerGmbHDE',
+      instagram:'https://www.instagram.com/metzlergmbh/?hl=de',
+      youtube:  'https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos',
+      x:        'https://twitter.com/metzlerklingeln?lang=de',
+    };
+    const FOOTER_YEAR = new Date().getFullYear();
+
+    // "Vertrag widerrufen" button — teal, small, centred
+    const WithdrawButton = ({small}) => (
+      <a href={FOOTER_WITHDRAW.h} target="_blank" rel="noopener noreferrer"
+        style={{display:'inline-flex',alignItems:'center',justifyContent:'center',
+          background:T.teal, color:T.white, borderRadius:'0.25rem', textDecoration:'none',
+          fontFamily:"'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight:600,
+          fontSize: small ? T.fXxs : T.fSm, lineHeight:1, padding: small ? '0.4375rem 0.75rem' : '0.5rem 0.875rem',
+          whiteSpace:'nowrap'}}>{FOOTER_WITHDRAW.l}</a>
+    );
 
     // ── Shared footer font and trusted image (used by FootLink and TrustedSlider) ──
     const footerFf = "'Helvetica Neue', Helvetica, Arial, sans-serif";
     const footerImgTrusted = "./footer/Property 1=all.svg";
 
-    const FootLink = ({children}) => {
+    const FootLink = ({children, href}) => {
       const [hov,setHov] = useState(false);
       return (
-        <div
-          style={{fontFamily:footerFf,fontSize:T.fBody,fontWeight:400,lineHeight:'18px',cursor:'pointer',
+        <a href={href || '#'} target={href && href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
+          style={{display:'block',textDecoration:'none',fontFamily:footerFf,fontSize:T.fBody,fontWeight:400,lineHeight:'18px',cursor:'pointer',
             color: hov ? T.white : 'rgba(255,255,255,0.5)', transition:'color 0.15s'}}
           onMouseEnter={()=>setHov(true)}
           onMouseLeave={()=>setHov(false)}
-        >{children}</div>
+        >{children}</a>
       );
     };
 
@@ -11214,7 +11274,7 @@ cursor: pointer;
       const imgBadge4     = "./footer/3jahre.png";
       const imgDpd        = "./footer/Choice=dpd.svg";
       const imgDhlVector  = "./footer/Choice=dhl.svg";
-      const imgGoGreen    = "./footer/Choice=gogreen.svg";
+      const imgHasenauer  = "./footer/Choice=hasenauer-koch.svg";
       const imgSepa       = "./footer/Choice=sepa.svg";
       const imgAmex       = "./footer/Choice=amex.svg";
       const imgVisa       = "./footer/Choice=visa.svg";
@@ -11230,10 +11290,10 @@ cursor: pointer;
       const ColHead = ({children}) => (
         <p style={{fontFamily:ff,fontSize:T.fBody,fontWeight:700,color:T.white,lineHeight:'normal',margin:0,whiteSpace:'nowrap'}}>{children}</p>
       );
-      const SocialBtn = ({src, iw, ih}) => {
+      const SocialBtn = ({src, iw, ih, href, label}) => {
         const [hov, setHov] = useState(false);
         return (
-          <div style={{width:35,height:35,borderRadius:70,
+          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} style={{width:35,height:35,borderRadius:70,
             background: hov ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
             display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0,
             transform: hov ? 'scale(1.1)' : 'scale(1)',
@@ -11241,24 +11301,22 @@ cursor: pointer;
             onMouseEnter={()=>setHov(true)}
             onMouseLeave={()=>setHov(false)}>
             <img src={src} alt="" style={{width:iw,height:ih,objectFit:'contain'}} />
-          </div>
+          </a>
         );
       };
 
-      const infoLinks    = ['Auszeichnungen','Fotowettbewerb','Kundenbilder','Stellenangebote','News','Zahlung und Versand'];
-      const serviceLinks = ['Begriffserklärung','FAQ','Geschäftskunden','Newsletter','VDM10 FAQ'];
-      const legalLinks   = ['Geprüfte Kundenbewertungen','Metzler Garantieerklärung','Datenschutz','AGB','Sitemap',
-                            'Impressum','Batterieentsorgungsgesetz','Widerrufsrecht',
-                            'Hinweise zur Elektroaltgeräteentsorgung','Cookie-Einstellungen'];
+      const infoLinks    = FOOTER_INFO_LINKS;
+      const serviceLinks = FOOTER_SERVICE_LINKS;
+      const legalLinks   = FOOTER_LEGAL_LINKS;
 
       // Shared Follow us + Qualität block (inlined to avoid hooks in dynamic components)
       const socialRow = (
         <div style={{display:'flex',gap:10,alignItems:'center'}}>
-          <SocialBtn src={imgSocPin} iw={17} ih={22} />
-          <SocialBtn src={imgSocFb}  iw={11} ih={20} />
-          <SocialBtn src={imgSocIg}  iw={22} ih={21} />
-          <SocialBtn src={imgSocYt}  iw={25} ih={18} />
-          <SocialBtn src={imgSocX}   iw={19} ih={19} />
+          <SocialBtn src={imgSocPin} iw={17} ih={22} href={FOOTER_SOCIAL.pinterest} label="Pinterest" />
+          <SocialBtn src={imgSocFb}  iw={11} ih={20} href={FOOTER_SOCIAL.facebook}  label="Facebook" />
+          <SocialBtn src={imgSocIg}  iw={22} ih={21} href={FOOTER_SOCIAL.instagram} label="Instagram" />
+          <SocialBtn src={imgSocYt}  iw={25} ih={18} href={FOOTER_SOCIAL.youtube}   label="YouTube" />
+          <SocialBtn src={imgSocX}   iw={19} ih={19} href={FOOTER_SOCIAL.x}         label="X / Twitter" />
         </div>
       );
       const qualityRow = (
@@ -11295,6 +11353,10 @@ cursor: pointer;
                 <p style={{fontFamily:ff,fontSize:T.fH4,fontWeight:700,color:T.white,lineHeight:'normal',margin:0}}>
                   Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
                 </p>
+                <a href={FOOTER_ABOUT.h} target="_blank" rel="noopener noreferrer"
+                  style={{fontFamily:ff,fontSize:T.fBody,fontWeight:700,color:T.white,textDecoration:'none',lineHeight:'normal'}}>
+                  {FOOTER_ABOUT.l}
+                </a>
                 {/* Tablet only: Follow us + Qualität stacked under tagline in Col 1 */}
                 {narrow && <>
                   <div style={{display:'flex',flexDirection:'column',gap:30}}>
@@ -11314,12 +11376,12 @@ cursor: pointer;
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Allgemeine Hotline:</ColHead>
                   <MintLink href="tel:+4971213177310">+49 (0) 7121 / 317 7310</MintLink>
-                  <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                  <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr: 09:00-16:00 Uhr)</span>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>Sprechanlagen Hotline:</ColHead>
                   <MintLink href="tel:+4971213177333">+49 (0) 7121 / 317 7333</MintLink>
-                  <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                  <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr: 09:00-16:00 Uhr)</span>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:5}}>
                   <ColHead>E-Mail Support:</ColHead>
@@ -11338,7 +11400,7 @@ cursor: pointer;
                 <div style={{display:'flex',flexDirection:'column',gap: narrow ? 30 : 20}}>
                   <ColHead>Informationen</ColHead>
                   <div style={{display:'flex',flexDirection:'column',gap: veryNarrow ? 12 : 20}}>
-                    {infoLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                    {infoLinks.map(l => <FootLink key={l.l} href={l.h}>{l.l}</FootLink>)}
                   </div>
                 </div>
                 {/* Tablet only (768–899px): Service merged into Col 3 */}
@@ -11346,7 +11408,7 @@ cursor: pointer;
                   <div style={{display:'flex',flexDirection:'column',gap:30}}>
                     <ColHead>Service</ColHead>
                     <div style={{display:'flex',flexDirection:'column',gap:12}}>
-                      {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                      {serviceLinks.map(l => <FootLink key={l.l} href={l.h}>{l.l}</FootLink>)}
                     </div>
                   </div>
                 )}
@@ -11357,7 +11419,7 @@ cursor: pointer;
                 <div style={{display:'flex',flexDirection:'column',gap:30,flexShrink:0,minWidth:140}}>
                   <ColHead>Service</ColHead>
                   <div style={{display:'flex',flexDirection:'column',gap:20}}>
-                    {serviceLinks.map(l => <FootLink key={l}>{l}</FootLink>)}
+                    {serviceLinks.map(l => <FootLink key={l.l} href={l.h}>{l.l}</FootLink>)}
                   </div>
                 </div>
               )}
@@ -11387,11 +11449,11 @@ cursor: pointer;
                 padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
                 {/* Versandpartners — fixed left */}
                 <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
-                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartner:</span>
                   <div style={{display:'flex',gap:15,alignItems:'center'}}>
                     <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
                     <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgGoGreen}   alt="GoGreen" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgHasenauer} alt="Hasenauer & Koch" style={{width:53,height:30,flexShrink:0}} />
                   </div>
                 </div>
                 {/* Bezahlen — grows to fill available space so TrustedSlider always fits */}
@@ -11421,11 +11483,11 @@ cursor: pointer;
                 padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
                 <div style={{display:'flex',alignItems:'flex-end',flexWrap:'nowrap',gap:30}}>
                   <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
-                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartner:</span>
                     <div style={{display:'flex',gap:15,alignItems:'center'}}>
                       <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
                       <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgGoGreen}   alt="GoGreen" style={{width:53,height:30,flexShrink:0}} />
+                      <img src={imgHasenauer} alt="Hasenauer & Koch" style={{width:53,height:30,flexShrink:0}} />
                     </div>
                   </div>
                   <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
@@ -11453,11 +11515,11 @@ cursor: pointer;
               <div style={{display:'flex',flexDirection:'column',gap:30,
                 padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
                 <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartners:</span>
+                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartner:</span>
                   <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
                     <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
                     <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgGoGreen}   alt="GoGreen" style={{width:53,height:30,flexShrink:0}} />
+                    <img src={imgHasenauer} alt="Hasenauer & Koch" style={{width:53,height:30,flexShrink:0}} />
                   </div>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:10}}>
@@ -11485,20 +11547,24 @@ cursor: pointer;
             <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',borderBottom:'1px solid rgba(255,255,255,0.1)',
               padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'8px 20px',alignItems:'center',justifyContent:'center'}}>
               {legalLinks.map(l => (
-                <span key={l}
-                  style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px',cursor:'pointer',whiteSpace:'nowrap'}}
+                <a key={l.l} href={l.h} target={l.h.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
+                  style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px',cursor:'pointer',whiteSpace:'nowrap',textDecoration:'none'}}
                   onMouseEnter={e=>e.currentTarget.style.color='rgba(255,255,255,0.9)'}
                   onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.5)'}
-                >{l}</span>
+                >{l.l}</a>
               ))}
+              <div style={{flexBasis:'100%',display:'flex',justifyContent:'center',paddingTop:4}}>
+                <WithdrawButton />
+              </div>
             </div>
 
             {/* ══ ROW 4: Copyright ══ */}
             <div style={{display:'flex',justifyContent:'center',alignItems:'center',padding:'16px 0'}}>
               <span style={{fontFamily:ff,fontSize:T.fSm,color:T.white,lineHeight:'16px'}}>
-                Alle Preise inkl. gesetzliche MwSt., zzgl.{' '}
-                <span style={{color:'rgba(255,255,255,0.5)',textDecoration:'underline',cursor:'pointer'}}>Versand</span>
-                {'   '}© 2013 - 2024 | Metzler GmbH
+                inkl. gesetzliche MwSt., zzgl.{' '}
+                <a href={ETK+'/zahlung-und-versand'} target="_blank" rel="noopener noreferrer"
+                  style={{color:'rgba(255,255,255,0.5)',textDecoration:'underline',cursor:'pointer'}}>Versand</a>
+                {' '}© 2013 - {FOOTER_YEAR} | Metzler GmbH
               </span>
             </div>
 
@@ -11523,7 +11589,7 @@ cursor: pointer;
       // Shipping logos — complete badge SVGs (shell + logo)
       const imgMobDpd     = "./footer/Choice=dpd.svg";
       const imgMobDhl     = "./footer/Choice=dhl.svg";
-      const imgMobGoGreen = "./footer/Choice=gogreen.svg";
+      const imgMobHasenauer = "./footer/Choice=hasenauer-koch.svg";
       // Payment logos — complete badge SVGs (shell + logo)
       const imgMobSepa    = "./footer/Choice=sepa.svg";
       const imgMobAmex    = "./footer/Choice=amex.svg";
@@ -11549,11 +11615,9 @@ cursor: pointer;
 
       const mobSlide = tsSlides[mobIdx];
 
-      const infoLinks    = ['Auszeichnungen','Fotowettbewerb','Kundenbilder','Stellenangebote','News','Zahlung und Versand'];
-      const serviceLinks = ['Begriffserklärung','FAQ','Geschäftskunden','Newsletter','VDM10 FAQ'];
-      const legalLinks   = ['AGB','Geprüfte Kundenbewertungen','Widerrufsrecht','Datenschutz',
-        'Metzler Garantieerklärung','Cookie-Einstellungen','Sitemap','Impressum',
-        'Batterieentsorgungsgesetz','Hinweise zur Elektroaltgeräteentsorgung'];
+      const infoLinks    = FOOTER_INFO_LINKS;
+      const serviceLinks = FOOTER_SERVICE_LINKS;
+      const legalLinks   = FOOTER_LEGAL_LINKS;
 
       // Payment badge — fixed 50×28px, 4px radius, never stretches
       const MB = ({src, alt}) => (
@@ -11570,26 +11634,27 @@ cursor: pointer;
         </svg>
       );
       // Hoverable social icon (mobile)
-      const MobSocBtn = ({src, alt, iw, ih}) => {
+      const MobSocBtn = ({src, alt, iw, ih, href}) => {
         const [hov, setHov] = React.useState(false);
         return (
-          <div style={{width:'1.375rem', height:'1.375rem', display:'flex', alignItems:'center', justifyContent:'center',
+          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={alt} style={{width:'1.375rem', height:'1.375rem', display:'flex', alignItems:'center', justifyContent:'center',
             cursor:'pointer', transform: hov ? 'scale(1.15)' : 'scale(1)', transition:'transform 0.15s',
             opacity: hov ? 1 : 0.7}}
             onMouseEnter={()=>setHov(true)}
             onMouseLeave={()=>setHov(false)}>
             <img src={src} alt={alt} style={{width:iw, height:ih, objectFit:'contain'}} />
-          </div>
+          </a>
         );
       };
       // Hoverable link item inside accordion
-      const MobLink = ({label}) => {
+      const MobLink = ({label, href}) => {
         const [hov, setHov] = React.useState(false);
         return (
-          <span style={{fontFamily:ff, fontSize:T.fSm, color: hov ? T.white : 'rgba(255,255,255,0.7)',
-            cursor:'pointer', lineHeight:'1.25rem', transition:'color 0.15s'}}
+          <a href={href || '#'} target={href && href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
+            style={{fontFamily:ff, fontSize:T.fSm, color: hov ? T.white : 'rgba(255,255,255,0.7)',
+            cursor:'pointer', lineHeight:'1.25rem', transition:'color 0.15s', textDecoration:'none'}}
             onMouseEnter={()=>setHov(true)}
-            onMouseLeave={()=>setHov(false)}>{label}</span>
+            onMouseLeave={()=>setHov(false)}>{label}</a>
         );
       };
       // Collapsible menu item
@@ -11606,7 +11671,7 @@ cursor: pointer;
           </button>
           {open && (
             <div style={{display:'flex', flexDirection:'column', gap:'0.625rem', paddingBottom:'0.9375rem'}}>
-              {links.map(l => <MobLink key={l} label={l} />)}
+              {links.map(l => <MobLink key={l.l} label={l.l} href={l.h} />)}
             </div>
           )}
         </div>
@@ -11628,6 +11693,10 @@ cursor: pointer;
                 {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
                 <MintLink href="https://metzlergmbh.de" fontSize={T.fXs} lineHeight="0.875rem">Metzler Gruppe</MintLink>
               </p>
+              <a href={FOOTER_ABOUT.h} target="_blank" rel="noopener noreferrer"
+                style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, textDecoration:'none', lineHeight:'1rem'}}>
+                {FOOTER_ABOUT.l}
+              </a>
             </div>
 
             {/* ── Section 2: Contact info ── */}
@@ -11639,7 +11708,7 @@ cursor: pointer;
                 <div key={c.label} style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
                   <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, lineHeight:'normal'}}>{c.label}</span>
                   <MintLink href={c.href} fontSize={T.fSm} lineHeight="1rem">{c.phone}</MintLink>
-                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'1.625rem'}}>(Mo-Fr.: 09:00-16:00 Uhr)</span>
+                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'1.625rem'}}>(Mo-Fr: 09:00-16:00 Uhr)</span>
                 </div>
               ))}
               <div style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
@@ -11664,12 +11733,12 @@ cursor: pointer;
                 {/* Versandpartners — fixed 50px badges, wrap naturally */}
                 <div style={{display:'flex', flexDirection:'column', gap:'0.625rem'}}>
                   <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:400, color:T.white, lineHeight:'1.25rem'}}>
-                    Unsere Versandpartners:
+                    Unsere Versandpartner:
                   </span>
                   <div style={{display:'flex', gap:'0.3125rem', flexWrap:'wrap'}}>
                     <MB src={imgMobDpd}     alt="DPD" />
                     <MB src={imgMobDhl}     alt="DHL" />
-                    <MB src={imgMobGoGreen} alt="GoGreen" />
+                    <MB src={imgMobHasenauer} alt="Hasenauer & Koch" />
                   </div>
                 </div>
 
@@ -11745,32 +11814,37 @@ cursor: pointer;
 
             {/* ── Section 4: Social icons ── */}
             <div style={{display:'flex', gap:'2.125rem', alignItems:'center', justifyContent:'center', padding:'0.3125rem 0'}}>
-              <MobSocBtn src={imgMobSocPin} alt="Pinterest" iw="0.9375rem" ih="1.1875rem" />
-              <MobSocBtn src={imgMobSocFb}  alt="Facebook"  iw="0.625rem"  ih="1.125rem" />
-              <MobSocBtn src={imgMobSocIg}  alt="Instagram" iw="1.1875rem" ih="1.1875rem" />
-              <MobSocBtn src={imgMobSocYt}  alt="YouTube"   iw="1.375rem"  ih="1rem" />
-              <MobSocBtn src={imgMobSocX}   alt="X"         iw="1.0625rem" ih="1.0625rem" />
+              <MobSocBtn src={imgMobSocPin} alt="Pinterest" href={FOOTER_SOCIAL.pinterest} iw="0.9375rem" ih="1.1875rem" />
+              <MobSocBtn src={imgMobSocFb}  alt="Facebook" href={FOOTER_SOCIAL.facebook}  iw="0.625rem"  ih="1.125rem" />
+              <MobSocBtn src={imgMobSocIg}  alt="Instagram" href={FOOTER_SOCIAL.instagram} iw="1.1875rem" ih="1.1875rem" />
+              <MobSocBtn src={imgMobSocYt}  alt="YouTube" href={FOOTER_SOCIAL.youtube}   iw="1.375rem"  ih="1rem" />
+              <MobSocBtn src={imgMobSocX}   alt="X" href={FOOTER_SOCIAL.x}         iw="1.0625rem" ih="1.0625rem" />
             </div>
 
             {/* ── Section 5: Legal links ── */}
             <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', paddingTop:'0.9375rem', width:'100%',
               display:'flex', flexWrap:'wrap', gap:'0.3125rem 0.9375rem', justifyContent:'center'}}>
               {legalLinks.map(l => (
-                <span key={l} style={{fontFamily:ff, fontSize:T.fXxs, color:'rgba(255,255,255,0.5)',
+                <a key={l.l} href={l.h} target={l.h.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
+                  style={{fontFamily:ff, fontSize:T.fXxs, color:'rgba(255,255,255,0.5)',
                   lineHeight:'0.875rem', textDecoration:'underline', cursor:'pointer', whiteSpace:'nowrap'}}>
-                  {l}
-                </span>
+                  {l.l}
+                </a>
               ))}
+              <div style={{flexBasis:'100%', display:'flex', justifyContent:'center', paddingTop:'0.3125rem'}}>
+                <WithdrawButton small />
+              </div>
             </div>
 
             {/* ── Section 6: Copyright ── */}
             <div style={{textAlign:'center'}}>
               <p style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem', margin:'0 0 0.125rem'}}>
-                Alle Preise inkl. gesetzliche MwSt., zzgl.{' '}
-                <span style={{color:'rgba(255,255,255,0.5)', textDecoration:'underline', cursor:'pointer'}}>Versand</span>
+                * inkl. gesetzliche MwSt., zzgl.{' '}
+                <a href={ETK+'/zahlung-und-versand'} target="_blank" rel="noopener noreferrer"
+                  style={{color:'rgba(255,255,255,0.5)', textDecoration:'underline', cursor:'pointer'}}>Versand</a>
               </p>
               <p style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem', margin:0}}>
-                © 2013 - 2024 | Metzler GmbH
+                © 2013 - {FOOTER_YEAR} | Metzler GmbH
               </p>
             </div>
 
@@ -11783,7 +11857,7 @@ cursor: pointer;
     const KIT_FILES = [
       { name: 'FOR-CLAUDE.md',            desc: 'Paste-in brief: tokens, primitives, header/footer, page scaffolding' },
       { name: 'SECTIONS.md',              desc: 'Ready-made page sections + page blueprints + maintenance protocol' },
-      { name: 'metzler-design-system.md', desc: 'Full component reference: colors, typography, states, rules' },
+      { name: 'COMPONENTS.md',            desc: 'Full component catalog: rules, HTML and CSS for every component' },
       { name: 'metzler-tokens.css',       desc: 'The actual CSS custom properties — link this in production pages' },
     ];
 
@@ -12576,7 +12650,7 @@ cursor: pointer;
                     </div>
                     <ul style={{margin:'0.5rem 0 0',paddingLeft:'1.125rem',fontSize:T.fSm,color:T.g700,
                       fontFamily:font,lineHeight:1.6,display:'flex',flexDirection:'column',gap:'0.25rem'}}>
-                      <li><strong>metzler-design-system.md</strong> — add it if Claude needs more detail on a
+                      <li><strong>COMPONENTS.md</strong> — add it if Claude needs more detail on a
                         specific component's exact states/variants than FOR-CLAUDE.md's condensed version gives.</li>
                       <li><strong>metzler-tokens.css</strong> — not for reading, for shipping: give it to Claude when
                         you want the finished page to <code style={{fontFamily:'monospace',background:T.paper,
@@ -14341,7 +14415,7 @@ cursor: pointer;
 
             <div style={{marginTop:60,paddingTop:40,borderTop:`1px solid ${T.g200}`}}>
               <div style={{fontSize:T.fXs,color:T.g500,fontFamily:font}}>
-                Metzler Design System v1.0 · Last updated April 2026 
+                Metzler Design System v{CHANGELOG.version} · Last updated {CHANGELOG.date} 
               </div>
             </div>
 
@@ -14557,23 +14631,28 @@ cursor: pointer;
         'MANDATORY: Use this exact structure and content on every page. Do not create a custom footer.',
         'background:var(--color-teal-700); padding:3.5rem 0 2rem; margin-top:5rem; font-family:var(--font-family)',
         '',
-        'EXACT FOOTER STRUCTURE (4 columns on desktop, 2-col at 64rem, 1-col at 48rem):',
+        'EXACT FOOTER STRUCTURE (5 columns on desktop, stacked with accordions below 48rem). Full HTML + CSS: FOR-CLAUDE.md section 14.',
         '',
-        'COL 1 — Brand: Metzler logo + tagline "Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe" + "Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern."',
+        'COL 1 — Brand: Metzler logo + "Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe" + "Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern." + link "Mehr erfahren" (/ueber-uns)',
         '',
         'COL 2 — Kontakt (exact values, do not change):',
-        '  Allgemeine Hotline: +49 (0) 7121 / 317 7310 (Mo-Fr: 09:00-16:00)',
-        '  Sprechanlagen Hotline: +49 (0) 7121 / 317 7333 (Mo-Fr: 09:00-16:00)',
+        '  Allgemeine Hotline: +49 (0) 7121 / 317 7310 (Mo-Fr: 09:00-16:00 Uhr)',
+        '  Sprechanlagen Hotline: +49 (0) 7121 / 317 7333 (Mo-Fr: 09:00-16:00 Uhr)',
         '  E-Mail Support: service@metzlergmbh.de',
         '  Kontaktformular: https://edelstahl-tuerklingel.de/Kontakt',
         '',
         'COL 3 — Informationen (exact links, do not change):',
-        '  Auszeichnungen | Fotowettbewerb | Kundenbilder | Stellenangebote | News | Zahlung und Versand',
+        '  Auszeichnungen | Geschenkgutschein | Kundenbilder | Stellenangebote | Wir über uns | News | Zahlung und Versand',
         '',
         'COL 4 — Service (exact links, do not change):',
         '  Begriffserklärung | FAQ | Geschäftskunden | Newsletter | VDM10 FAQ',
         '',
-        'LEGAL ROW: © 2026 Metzler GmbH | Datenschutz | AGB | Impressum | Widerrufsrecht | Sitemap | Cookie-Einstellungen',
+        'COL 5 — Follow us (Pinterest, Facebook, Instagram, YouTube, X) + Qualität (TopShop 2023, 2024, 2025, 3 Jahre)',
+        '',
+        'ROW 2: Unsere Versandpartner: DPD, DHL, Hasenauer & Koch | Einfach bezahlen: SEPA, Amex, Visa, Amazon Pay, Klarna, PayPal, Mastercard, Apple Pay, Google Pay, Vorkasse | rating pill',
+        '',
+        'LEGAL ROW (13): Geprüfte Kundenbewertungen | Metzler Garantieerklärung | Datenschutz | AGB | Sitemap | Zahlung und Versand | Impressum | Gesetzliche Gewährleistung | Barrierefreiheit | Batterieentsorgungsgesetz | Widerrufsrecht | Hinweise zur Elektroaltgeräteentsorgung | Cookie-Einstellungen',
+        'Then the button "Vertrag widerrufen" (legally required) and: inkl. gesetzliche MwSt., zzgl. Versand © 2013 - <current year> | Metzler GmbH',
         '',
         'CSS: .footer-col-heading { font-size:1rem; font-weight:700; color:var(--color-white); margin:0 0 1.25rem; }',
         '.footer-links a { font-size:0.9375rem; color:rgba(255,255,255,0.72); } :hover → var(--color-mint)',
