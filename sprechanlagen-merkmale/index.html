@@ -13,6 +13,7 @@
   --chip-paper-bg:#EAF3EC; --chip-paper-tx:#1E6B3C; --chip-paper-bd:#CDE4D4;
   --chip-digi-bg:#E9F0FA;  --chip-digi-tx:#1E4E8A;  --chip-digi-bd:#CCDCF1;
   --chip-digih-bg:#F3EAF6; --chip-digih-tx:#6B2E85; --chip-digih-bd:#E0CBE8;
+  --chip-disp-bg:#E6EEEE;  --chip-disp-tx:#01292A;  --chip-disp-bd:#015253;
   --link:#015253;
 }
 @media (prefers-color-scheme: dark){
@@ -23,6 +24,7 @@
     --chip-paper-bg:#152A1D; --chip-paper-tx:#8FD8AC; --chip-paper-bd:#25452F;
     --chip-digi-bg:#152234;  --chip-digi-tx:#9EC2F0;  --chip-digi-bd:#243A57;
     --chip-digih-bg:#28182F; --chip-digih-tx:#D3A8E4; --chip-digih-bd:#432A4F;
+  --chip-disp-bg:#01292A;  --chip-disp-tx:#5CDBD3;  --chip-disp-bd:#015253;
     --link:#5CDBD3;
   }
 }
@@ -34,6 +36,7 @@
   --chip-paper-bg:#EAF3EC; --chip-paper-tx:#1E6B3C; --chip-paper-bd:#CDE4D4;
   --chip-digi-bg:#E9F0FA;  --chip-digi-tx:#1E4E8A;  --chip-digi-bd:#CCDCF1;
   --chip-digih-bg:#F3EAF6; --chip-digih-tx:#6B2E85; --chip-digih-bd:#E0CBE8;
+  --chip-disp-bg:#E6EEEE;  --chip-disp-tx:#01292A;  --chip-disp-bd:#015253;
   --link:#015253;
 }
 :root[data-theme="dark"]{
@@ -43,6 +46,7 @@
   --chip-paper-bg:#152A1D; --chip-paper-tx:#8FD8AC; --chip-paper-bd:#25452F;
   --chip-digi-bg:#152234;  --chip-digi-tx:#9EC2F0;  --chip-digi-bd:#243A57;
   --chip-digih-bg:#28182F; --chip-digih-tx:#D3A8E4; --chip-digih-bd:#432A4F;
+  --chip-disp-bg:#01292A;  --chip-disp-tx:#5CDBD3;  --chip-disp-bd:#015253;
   --link:#5CDBD3;
 }
 *{box-sizing:border-box}
@@ -97,6 +101,7 @@ td a:hover{text-decoration:underline}
 .tag-paper{background:var(--chip-paper-bg);color:var(--chip-paper-tx);border-color:var(--chip-paper-bd)}
 .tag-digi{background:var(--chip-digi-bg);color:var(--chip-digi-tx);border-color:var(--chip-digi-bd)}
 .tag-digih{background:var(--chip-digih-bg);color:var(--chip-digih-tx);border-color:var(--chip-digih-bd)}
+.tag-disp{background:var(--chip-disp-bg);color:var(--chip-disp-tx);border-color:var(--chip-disp-bd)}
 tr.hidden{display:none}
 .empty{padding:2rem;text-align:center;color:var(--muted);display:none}
 
@@ -146,7 +151,7 @@ h2{color:var(--ink);font-size:1.125rem;font-weight:700;margin:2.5rem 0 .75rem}
     <table id="tbl">
       <thead><tr>
         <th class="num">Nr.</th><th>Art.-Nr.</th><th>Linie</th><th>Modell</th>
-        <th class="num">Taster</th><th>Namensschild-Typ</th><th>Ausführung</th><th>Produktname</th><th>Link zum Produkt</th>
+        <th class="num">Taster</th><th>Namensschild-Typ</th><th>Display</th><th>Produktname</th><th>Link zum Produkt</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -172,14 +177,15 @@ const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','
 const tbody = document.getElementById('tbody');
 tbody.innerHTML = DATA.map(r => {
   const k = KEY[r.nstyp];
-  return `<tr data-k="${k}" data-s="${esc((r.art+' '+r.line+' '+r.model+' '+r.name+' '+r.nstyp+' '+r.feature).toLowerCase())}">
+  const disp = (k==='digi'||k==='digih') ? 'Touch-Display' : '';
+  return `<tr data-k="${k}" data-s="${esc((r.art+' '+r.line+' '+r.model+' '+r.name+' '+r.nstyp+' '+r.feature+' '+disp).toLowerCase())}">
     <td class="num">${r.nr}</td>
     <td><span class="art">${r.art}</span></td>
     <td>${r.line}</td>
     <td><span class="mdl">${esc(r.model)}</span></td>
     <td class="num">${r.taster||'–'}</td>
     <td><span class="tag tag-${k}">${esc(r.nstyp)}</span></td>
-    <td><span class="feat">${esc(r.feature)||''}</span></td>
+    <td>${disp ? `<span class="tag tag-disp">${disp}</span>` : `<span class="feat">–</span>`}</td>
     <td><span class="pname">${esc(r.name)}</span></td>
     <td><a class="lnk" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.url)}</a></td>
   </tr>`;
