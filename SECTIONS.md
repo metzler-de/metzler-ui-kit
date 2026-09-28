@@ -947,7 +947,7 @@ Same markup wrapped in a dark gradient stage; colors invert to mint/white:
       </div>
     </div>
     <div class="xh-product">
-      <img src="xdm10-hero.webp" alt="Metzler XDM10 Video-Türsprechanlage"/>
+      <img src="media/xdm10-hero.webp" alt="Metzler XDM10 Video-Türsprechanlage"/>
     </div>
   </div>
 </section>
@@ -1089,7 +1089,7 @@ Same markup wrapped in a dark gradient stage; colors invert to mint/white:
         <!-- Repeat .spec-item--left × 4 -->
       </div>
       <figure class="spec-figure">
-        <img src="xdm10-detail.webp" alt="Metzler XDM10 Detail"/>
+        <img src="media/xdm10-detail.webp" alt="Metzler XDM10 Detail"/>
       </figure>
       <div>
         <div class="spec-item">
