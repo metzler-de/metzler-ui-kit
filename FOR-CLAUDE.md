@@ -305,7 +305,7 @@ Every page must follow this exact structure:
 
 ## 7 · Header
 
-> ⚠️ **The block below is a SIMPLIFIED single-row header.** The canonical production header is the full multi-row component in **`header/preview.html`**: green trust-bar (`.hdr-row1`) + logo/search/icons (`.hdr-row2`) + category nav (`.nav` with `.nav-cat`) + sticky compact bar (`.hdr-compact`) + mobile bar (`.hdr-mobile`) + side drawer (`.side-menu`), `position: fixed` with `body { padding-top: 158px }` (78px mobile). **For real pages, copy `header/preview.html` verbatim** — use the simplified template below only for a quick mockup.
+> ⚠️ **The block below is a SIMPLIFIED single-row header.** The canonical production header is the full multi-row component in **`header/preview.html`**: green trust-bar (`.hdr-row1`) + logo/search/icons (`.hdr-row2`) + category nav (`.nav` with `.nav-cat`) + sticky compact bar (`.hdr-compact`) + mobile bar (`.hdr-mobile`) + side drawer (`.side-menu`), `position: fixed` with `body { padding-top: 151px }` (36 trust bar + 70 logo row + 45 menu, as on the live shop) (78px mobile). **For real pages, copy `header/preview.html` verbatim** — use the simplified template below only for a quick mockup.
 
 ### Desktop (≥ 768px) — 4rem (64px) tall
 

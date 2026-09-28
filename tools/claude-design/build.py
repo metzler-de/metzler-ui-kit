@@ -133,7 +133,7 @@ def style(name, pre, sample, use, extra=None):
     return s
 tokens = {
     'name': 'Metzler Design System', 'version': 1,
-    'meta': {'source': 'github', 'repo': 'metzler-de/metzler-ui-kit', 'ref': 'main@' + os.popen(f'git -C "{KIT}" rev-parse --short HEAD').read().strip(),
+    'meta': {'source': 'local', 'note': 'Built from the local Metzler UI Kit folder. The GitHub repo is private: do not try to browse it, everything is in this system.', 'repo': 'metzler-de/metzler-ui-kit (private)', 'ref': 'main@' + os.popen(f'git -C "{KIT}" rev-parse --short HEAD').read().strip(),
              'kitVersion': '1.9', 'paths': {'tokens': ['metzler-tokens.css'], 'docs': ['FOR-CLAUDE.md', 'SECTIONS.md', 'COMPONENTS.md', 'ICONS.md', 'BRANDBOOK.md'],
              'assets': ['header/', 'footer/', 'media/', 'Pictures/', 'subcategory_photos/']}, 'synced': NOW[:10]},
     'color': {'themes': [{'id': 'light', 'name': 'Light'}], 'note': 'One light theme. Dark bands are sections (teal-700 / teal-900 / gradient-brand), not a theme.', 'tokens': color},
@@ -402,7 +402,7 @@ README = f"""Metzler GmbH makes stainless-steel outdoor hardware — video inter
 ## Building a page
 
 1. Start from a page blueprint (Sections and page blueprints chapter) and stack ready-made **Sections** (SupportKontakt, NeueFeatures, FAQ, ProductHero, XDM10Hero, SpecCallouts …) before designing anything new.
-2. Always use the canonical **Header** and **Footer** components exactly as they are.
+2. **Header and Footer are fixed.** Copy the markup, CSS and script of `components/Header/preview.html` (plus `HeaderSticky`, `HeaderMobile`, `HeaderMegaMenu`) and `components/Footer/preview.html` **1:1** into every page, with their images from the Logos, Navigation, Payment & Shipping, Social and Awards & Reviews assets. Never redraw or re-implement them as a new component (no „SiteHeader“), never change their texts, links, order, sizes or colors. They match the live shop edelstahl-tuerklingel.de (checked 28 Sep 2026). There is nothing else to look up: do not browse GitHub.
 3. Build everything else from the components (Button, FormElements, ProductCards, Tabs, Breadcrumbs, Alerts, Modal …) and `components/bundle.css` classes. Reuse the closest existing token or component; if something truly does not exist, ask instead of inventing a value.
 4. Check: rem only, tokens only, container 100rem, German copy, no hover lift, one dark hero per page at most, FAQ is the last content section before the footer.
 """
