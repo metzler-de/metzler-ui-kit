@@ -1447,7 +1447,7 @@ Add .alert-dismissible and an × close button. Clicking removes the alert from t
   z-index: 1;
 }
 .pdp-stepper-step.active {
-  background: var(--color-teal-dark);  /* Teal 700 — #01292A */
+  background: var(--color-teal-700);  /* Teal 700 — #01292A */
   color: #fff;
   clip-path: polygon(
     0 0,

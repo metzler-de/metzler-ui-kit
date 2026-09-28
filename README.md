@@ -3,7 +3,7 @@
 **The only design system for Metzler web work** — styles, tokens, header, footer, components, sections, icons and brand rules.
 Current version: **v1.9 · 2026-09-28** (history in [`CHANGELOG.md`](CHANGELOG.md)).
 
-- Live kit: https://metzler-de.github.io/metzler-ui-kit/
+- Claude Design: https://claude.ai/artifact/GmM9m9zSAbikHUorc4dJ3H
 - Repo: https://github.com/metzler-de/metzler-ui-kit
 - Local: `~/Documents/Claude/Projects/Metzler UI Kit`
 
@@ -26,10 +26,11 @@ Current version: **v1.9 · 2026-09-28** (history in [`CHANGELOG.md`](CHANGELOG.m
 
 ## Use it on a page
 
-```html
-<link rel="stylesheet" href="https://metzler-de.github.io/metzler-ui-kit/metzler-tokens.css">
-```
-Header: copy `header/preview.html`. Footer: copy `FOR-CLAUDE.md` §14 (assets load from `…/metzler-ui-kit/footer/`).
+Link `metzler-tokens.css` from this kit (the repo is private, GitHub Pages is off). Header: copy `header/preview.html` (thumbnails in `header/pictures/nav/`). Footer: copy `FOR-CLAUDE.md` §14 with the `footer/` assets.
+
+## Claude Design
+
+This kit is mirrored as the **Metzler Design System** in Claude Design: https://claude.ai/artifact/GmM9m9zSAbikHUorc4dJ3H — tokens, brand book, 40 components and sections, header, footer and 193 assets. After changing the kit, re-sync it: ask Claude to "sync the Claude Design system" (`tools/claude-design/build.py` rebuilds the files; `staged.json` holds the uploaded asset ids).
 
 ## Change it
 

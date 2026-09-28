@@ -1,0 +1,1546 @@
+[
+ {
+  "group": "Logos",
+  "name": "metzler-logo.svg",
+  "src": "header/logo.svg",
+  "size": 2118,
+  "type": "image/svg+xml",
+  "blob": "7571f0aa062f0dd89e0d4d38444d52d1"
+ },
+ {
+  "group": "Logos",
+  "name": "metzler-logo-white.svg",
+  "src": "footer/Metzler_Logo_footer.svg",
+  "size": 2332,
+  "type": "image/svg+xml",
+  "blob": "00e352c031dd37f861481f13d08ac329"
+ },
+ {
+  "group": "Logos",
+  "name": "favicon.svg",
+  "src": "favicon.svg",
+  "size": 415,
+  "type": "image/svg+xml",
+  "blob": "89bbd1cc92f3f50f7b90f88390076afe"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-menu.svg",
+  "src": "ICONS.md#menu",
+  "size": 237,
+  "type": "image/svg+xml",
+  "blob": "fb3c3a2af3ee73de142e7af3ba53966a"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-close.svg",
+  "src": "ICONS.md#close",
+  "size": 234,
+  "type": "image/svg+xml",
+  "blob": "18c0696857d32b93a5f3d4878a9ae6c6"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-chevron-right.svg",
+  "src": "ICONS.md#chevron-right",
+  "size": 226,
+  "type": "image/svg+xml",
+  "blob": "e34298ada274482441c0167d9e50673e"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-chevron-left.svg",
+  "src": "ICONS.md#chevron-left",
+  "size": 228,
+  "type": "image/svg+xml",
+  "blob": "3a411442f66371fdf263965224aaaec0"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-arrow-right.svg",
+  "src": "ICONS.md#arrow-right",
+  "size": 235,
+  "type": "image/svg+xml",
+  "blob": "63e97fd0a965a692a8785aed518c26c0"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-arrow-left.svg",
+  "src": "ICONS.md#arrow-left",
+  "size": 237,
+  "type": "image/svg+xml",
+  "blob": "51470c0a51c7cb6d30eead7bf72872c6"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-arrow-up.svg",
+  "src": "ICONS.md#arrow-up",
+  "size": 234,
+  "type": "image/svg+xml",
+  "blob": "12b441f024ea3ebd2767fcddd6f8df60"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-arrow-down.svg",
+  "src": "ICONS.md#arrow-down",
+  "size": 235,
+  "type": "image/svg+xml",
+  "blob": "fcc1ba8111c549dac6bb3b715d207c9a"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-search.svg",
+  "src": "ICONS.md#search",
+  "size": 362,
+  "type": "image/svg+xml",
+  "blob": "9cb8fb21cef4c9e66b0e8b4c5d526bc3"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-filter.svg",
+  "src": "ICONS.md#filter",
+  "size": 247,
+  "type": "image/svg+xml",
+  "blob": "132c963629251e239817558b492ba25c"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-sliders.svg",
+  "src": "ICONS.md#sliders",
+  "size": 636,
+  "type": "image/svg+xml",
+  "blob": "c3ff69fd898a29268d86318b8bb512e5"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-user.svg",
+  "src": "ICONS.md#user",
+  "size": 365,
+  "type": "image/svg+xml",
+  "blob": "7fe40a1aa51dd25bbf077275bf70c408"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-users.svg",
+  "src": "ICONS.md#users",
+  "size": 659,
+  "type": "image/svg+xml",
+  "blob": "3f85cab349ca37dac6256bf5ecc108a0"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-basket.svg",
+  "src": "ICONS.md#basket",
+  "size": 401,
+  "type": "image/svg+xml",
+  "blob": "925e878e33f65a60e1ebb2d0449f255f"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-heart.svg",
+  "src": "ICONS.md#heart",
+  "size": 346,
+  "type": "image/svg+xml",
+  "blob": "e2bbe15df9991ee45fb23a8eeb3d7b64"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-tag.svg",
+  "src": "ICONS.md#tag",
+  "size": 421,
+  "type": "image/svg+xml",
+  "blob": "36ec8ec3fbca39e9ab20b99376adbc99"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-truck.svg",
+  "src": "ICONS.md#truck",
+  "size": 662,
+  "type": "image/svg+xml",
+  "blob": "0bf08b6b7fbef56badf9f5c6a351ed4b"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-delivery.svg",
+  "src": "ICONS.md#delivery",
+  "size": 866,
+  "type": "image/svg+xml",
+  "blob": "6d7c0688d9674f2b2e8ac6caa3d8cc6b"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-calendar.svg",
+  "src": "ICONS.md#calendar",
+  "size": 498,
+  "type": "image/svg+xml",
+  "blob": "fe8116187831641ea6ff49b5b008b34f"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-download-circle.svg",
+  "src": "ICONS.md#download-circle",
+  "size": 494,
+  "type": "image/svg+xml",
+  "blob": "b49c9b70a1352aa645c7f9d88b5a36c2"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-edit.svg",
+  "src": "ICONS.md#edit",
+  "size": 267,
+  "type": "image/svg+xml",
+  "blob": "1013464710f275c2d5171847c453821e"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-bin.svg",
+  "src": "ICONS.md#bin",
+  "size": 403,
+  "type": "image/svg+xml",
+  "blob": "63e1f00cc4ca0aecd7337e8d49114af2"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-plus.svg",
+  "src": "ICONS.md#plus",
+  "size": 230,
+  "type": "image/svg+xml",
+  "blob": "b0fc30e198acc44ef4a98dda498537f0"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-minus.svg",
+  "src": "ICONS.md#minus",
+  "size": 222,
+  "type": "image/svg+xml",
+  "blob": "0cc5c82f890d8bf9bcf41318dd23f47d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-share.svg",
+  "src": "ICONS.md#share",
+  "size": 499,
+  "type": "image/svg+xml",
+  "blob": "7dbcd520c5016303dd794754916e4c7d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-download.svg",
+  "src": "ICONS.md#download",
+  "size": 469,
+  "type": "image/svg+xml",
+  "blob": "607a7a73d1228c32b30fc94ec28c9130"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-upload.svg",
+  "src": "ICONS.md#upload",
+  "size": 501,
+  "type": "image/svg+xml",
+  "blob": "2734840f29763c8d80d91ba30792bcc2"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-link.svg",
+  "src": "ICONS.md#link",
+  "size": 440,
+  "type": "image/svg+xml",
+  "blob": "73136bab2c5a829f8f567e44c16bd4f9"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-copy.svg",
+  "src": "ICONS.md#copy",
+  "size": 414,
+  "type": "image/svg+xml",
+  "blob": "6f20d6e0c496c076f65c8c3b0cc300b9"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-document.svg",
+  "src": "ICONS.md#document",
+  "size": 516,
+  "type": "image/svg+xml",
+  "blob": "ea93810eb330dd10b1aa17f04ee70dfa"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-mail.svg",
+  "src": "ICONS.md#mail",
+  "size": 379,
+  "type": "image/svg+xml",
+  "blob": "475850553991eee66b07028665d4f0c5"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-phone.svg",
+  "src": "ICONS.md#phone",
+  "size": 374,
+  "type": "image/svg+xml",
+  "blob": "23565ad7edf3cf1ec88495aefc2a2436"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-notification.svg",
+  "src": "ICONS.md#notification",
+  "size": 393,
+  "type": "image/svg+xml",
+  "blob": "0c4c524a9844a8bebc466401707b191d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-chat.svg",
+  "src": "ICONS.md#chat",
+  "size": 270,
+  "type": "image/svg+xml",
+  "blob": "2f6f66c5728b26289ea9a52439fb892d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-headset.svg",
+  "src": "ICONS.md#headset",
+  "size": 769,
+  "type": "image/svg+xml",
+  "blob": "9fd01c1fe8d942bc515f0b8f32136a8d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-review.svg",
+  "src": "ICONS.md#review",
+  "size": 611,
+  "type": "image/svg+xml",
+  "blob": "05734b82985bee4d8a6d75748e2ef9cd"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-check.svg",
+  "src": "ICONS.md#check",
+  "size": 229,
+  "type": "image/svg+xml",
+  "blob": "620e3ba72d47b9264d56095a58107816"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-check-circle.svg",
+  "src": "ICONS.md#check-circle",
+  "size": 362,
+  "type": "image/svg+xml",
+  "blob": "45a94d776bd5d45b57714ea1ccc05721"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-info.svg",
+  "src": "ICONS.md#info",
+  "size": 366,
+  "type": "image/svg+xml",
+  "blob": "25011c04f849812e80a98e8592dfa1c4"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-warning.svg",
+  "src": "ICONS.md#warning",
+  "size": 427,
+  "type": "image/svg+xml",
+  "blob": "95f1a2a51cd92f8720df9181fc71508e"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-settings.svg",
+  "src": "ICONS.md#settings",
+  "size": 935,
+  "type": "image/svg+xml",
+  "blob": "a2cd2da4e1ddc4d0d44a9da72221d0b2"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-lock.svg",
+  "src": "ICONS.md#lock",
+  "size": 387,
+  "type": "image/svg+xml",
+  "blob": "4737556c5139a23254c3ecb38e7b73f5"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-eye.svg",
+  "src": "ICONS.md#eye",
+  "size": 392,
+  "type": "image/svg+xml",
+  "blob": "c14d79b29e9af1332d6ffdeea0720328"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-eye-off.svg",
+  "src": "ICONS.md#eye-off",
+  "size": 592,
+  "type": "image/svg+xml",
+  "blob": "8bb065c862872642e2e3dd93cdc4981d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-image.svg",
+  "src": "ICONS.md#image",
+  "size": 518,
+  "type": "image/svg+xml",
+  "blob": "5b95194e5c9530cb20e9c1ce37c40eaa"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-home.svg",
+  "src": "ICONS.md#home",
+  "size": 384,
+  "type": "image/svg+xml",
+  "blob": "0054a1b0ae8e5de1207d37a0685626ef"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-wrench.svg",
+  "src": "ICONS.md#wrench",
+  "size": 358,
+  "type": "image/svg+xml",
+  "blob": "7690a0b7e907f1689a424ca9ef91f980"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-book-open.svg",
+  "src": "ICONS.md#book-open",
+  "size": 403,
+  "type": "image/svg+xml",
+  "blob": "7407f40d4163143b87d2c2aee164b09b"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-help-circle.svg",
+  "src": "ICONS.md#help-circle",
+  "size": 546,
+  "type": "image/svg+xml",
+  "blob": "4d69940ba37f20b5551d1bb04df7e67c"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-monitor.svg",
+  "src": "ICONS.md#monitor",
+  "size": 379,
+  "type": "image/svg+xml",
+  "blob": "1b7f9db29487653ccc7512be10f51acd"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-smartphone.svg",
+  "src": "ICONS.md#smartphone",
+  "size": 374,
+  "type": "image/svg+xml",
+  "blob": "affe59b051df24891a926ec28977981d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-wi-fi.svg",
+  "src": "ICONS.md#wi-fi",
+  "size": 651,
+  "type": "image/svg+xml",
+  "blob": "d3047240a435a80aba5b5a92ec5e330c"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-bolt.svg",
+  "src": "ICONS.md#bolt",
+  "size": 245,
+  "type": "image/svg+xml",
+  "blob": "7f958aac0d4718bd020660b02d2b6eca"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-shield-check.svg",
+  "src": "ICONS.md#shield-check",
+  "size": 383,
+  "type": "image/svg+xml",
+  "blob": "497bd5d138d0e1144fa5f6db03bdfb24"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-camera.svg",
+  "src": "ICONS.md#camera",
+  "size": 522,
+  "type": "image/svg+xml",
+  "blob": "1e90eefab09aeaa0e55c6263864cadbf"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-cpu.svg",
+  "src": "ICONS.md#cpu",
+  "size": 454,
+  "type": "image/svg+xml",
+  "blob": "af12507ba43316345c1244e33df02639"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-sun.svg",
+  "src": "ICONS.md#sun",
+  "size": 462,
+  "type": "image/svg+xml",
+  "blob": "44e93d47b9526a840d3d125fce2769e9"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-face-id.svg",
+  "src": "ICONS.md#face-id",
+  "size": 775,
+  "type": "image/svg+xml",
+  "blob": "069b882094aaa9590903aa587696c5a2"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-database.svg",
+  "src": "ICONS.md#database",
+  "size": 573,
+  "type": "image/svg+xml",
+  "blob": "da9a46434ad6abe071f2720518258460"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-moon.svg",
+  "src": "ICONS.md#moon",
+  "size": 257,
+  "type": "image/svg+xml",
+  "blob": "89d8b50643c133138902f01252892a5a"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-grid.svg",
+  "src": "ICONS.md#grid",
+  "size": 697,
+  "type": "image/svg+xml",
+  "blob": "5cf879596d04b5ff3588193109953287"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-clock.svg",
+  "src": "ICONS.md#clock",
+  "size": 360,
+  "type": "image/svg+xml",
+  "blob": "5b1ab9487c4ea61f328916ff32058965"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-door-lock.svg",
+  "src": "ICONS.md#door-lock",
+  "size": 668,
+  "type": "image/svg+xml",
+  "blob": "6d715e53583bd5adbf60ac7eb58096a5"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-video-cam.svg",
+  "src": "ICONS.md#video-cam",
+  "size": 386,
+  "type": "image/svg+xml",
+  "blob": "c61fe0e5ee42cc09e2448e745ebdecb4"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-router.svg",
+  "src": "ICONS.md#router",
+  "size": 513,
+  "type": "image/svg+xml",
+  "blob": "2bff0eca52be289bac9bf82cbf991ce3"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-cable.svg",
+  "src": "ICONS.md#cable",
+  "size": 633,
+  "type": "image/svg+xml",
+  "blob": "7d364c883109a17184a1a7ef3e4ab165"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-plug.svg",
+  "src": "ICONS.md#plug",
+  "size": 261,
+  "type": "image/svg+xml",
+  "blob": "e6e58ae83b8449e0d30fdb92d8378707"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-cube.svg",
+  "src": "ICONS.md#cube",
+  "size": 489,
+  "type": "image/svg+xml",
+  "blob": "d4265a3ca7ae29f7d44633bf93528f55"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-ruler.svg",
+  "src": "ICONS.md#ruler",
+  "size": 820,
+  "type": "image/svg+xml",
+  "blob": "204817674a8cabbba37d51d698097171"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-flag-germany.svg",
+  "src": "ICONS.md#flag-germany",
+  "size": 453,
+  "type": "image/svg+xml",
+  "blob": "d0749712b2db5270d49f9479488ea0cc"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-pdf-badge.svg",
+  "src": "ICONS.md#pdf-badge",
+  "size": 629,
+  "type": "image/svg+xml",
+  "blob": "aac588201fddcbd151cdba8e5de044b9"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-guarantee.svg",
+  "src": "ICONS.md#guarantee",
+  "size": 398,
+  "type": "image/svg+xml",
+  "blob": "bd2caaf7e9e7fac901e8b1c48726df92"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-star-yellow.svg",
+  "src": "ICONS.md#star-yellow",
+  "size": 222,
+  "type": "image/svg+xml",
+  "blob": "9c465ad54e232fccb4c2a3258c8bcd32"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-star-gray.svg",
+  "src": "ICONS.md#star-gray",
+  "size": 222,
+  "type": "image/svg+xml",
+  "blob": "fadc4b140c14e3668c0426135c64fa37"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-star-half.svg",
+  "src": "ICONS.md#star-half",
+  "size": 315,
+  "type": "image/svg+xml",
+  "blob": "e9aa235dbdf2cd06b3c917120615b6ca"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-recyclable.svg",
+  "src": "ICONS.md#recyclable",
+  "size": 1307,
+  "type": "image/svg+xml",
+  "blob": "5dce0d26e2ff54290a9cbcda92b85d5d"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-pap.svg",
+  "src": "ICONS.md#pap",
+  "size": 1069,
+  "type": "image/svg+xml",
+  "blob": "87dd801d48487f20718f1db0646cb951"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-fragile.svg",
+  "src": "ICONS.md#fragile",
+  "size": 434,
+  "type": "image/svg+xml",
+  "blob": "72b8f4b2372f936580c3a25f8ef3648e"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-handle-with-care.svg",
+  "src": "ICONS.md#handle-with-care",
+  "size": 1068,
+  "type": "image/svg+xml",
+  "blob": "b94691b131329eac5bb5b1323081ba59"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-this-way-up.svg",
+  "src": "ICONS.md#this-way-up",
+  "size": 439,
+  "type": "image/svg+xml",
+  "blob": "1b873b83c27c1cf1e0245686c3af4fd4"
+ },
+ {
+  "group": "Icons",
+  "name": "icon-keep-dry.svg",
+  "src": "ICONS.md#keep-dry",
+  "size": 884,
+  "type": "image/svg+xml",
+  "blob": "c8ab43d1416a199fa7e1b9ced3c51270"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "ship-dpd.svg",
+  "src": "footer/Choice=dpd.svg",
+  "size": 2068,
+  "type": "image/svg+xml",
+  "blob": "c28e33d007ed306a67527af19bf30108"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "ship-dhl.svg",
+  "src": "footer/Choice=dhl.svg",
+  "size": 1534,
+  "type": "image/svg+xml",
+  "blob": "b479f4f779b3d7c8badd254d8f9d92ec"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "ship-hasenauer-koch.svg",
+  "src": "footer/Choice=hasenauer-koch.svg",
+  "size": 11273,
+  "type": "image/svg+xml",
+  "blob": "256bef7024ac74432835769a6a712d35"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-sepa.svg",
+  "src": "footer/Choice=sepa.svg",
+  "size": 10217,
+  "type": "image/svg+xml",
+  "blob": "136a6f013185e388274f6dd1562a2e13"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-amex.svg",
+  "src": "footer/Choice=amex.svg",
+  "size": 1913,
+  "type": "image/svg+xml",
+  "blob": "892735c64c2f81083cfa37121ccd5641"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-visa.svg",
+  "src": "footer/Choice=visa.svg",
+  "size": 2506,
+  "type": "image/svg+xml",
+  "blob": "b5469757d3bdcd789831311fbc32ac68"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-amazon-pay.svg",
+  "src": "footer/Choice=pay.svg",
+  "size": 3508,
+  "type": "image/svg+xml",
+  "blob": "e44bcbc98e6d8982f987285a8b0a6623"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-klarna.svg",
+  "src": "footer/Choice=klarna.svg",
+  "size": 1858,
+  "type": "image/svg+xml",
+  "blob": "480d996d0c0606778fc74ecc0c4a327d"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-paypal.svg",
+  "src": "footer/Choice=paypal.svg",
+  "size": 5431,
+  "type": "image/svg+xml",
+  "blob": "d12691ef0856559307b7cdfb38004270"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-mastercard.svg",
+  "src": "footer/Choice=mastercard.svg",
+  "size": 6022,
+  "type": "image/svg+xml",
+  "blob": "d2fa3499de098fa8e550f4eb771ce3ec"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-apple.svg",
+  "src": "footer/Choice=apple.svg",
+  "size": 2239,
+  "type": "image/svg+xml",
+  "blob": "42f2ff30342ad621f22e59c58045396c"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-google.svg",
+  "src": "footer/Choice=google.svg",
+  "size": 2827,
+  "type": "image/svg+xml",
+  "blob": "6de74cca96a937a27f4082e59da3f916"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "pay-vorkasse.svg",
+  "src": "footer/Choice=vorkasse.svg",
+  "size": 19179,
+  "type": "image/svg+xml",
+  "blob": "b2b6f7a5646daa7002193d09c0d76363"
+ },
+ {
+  "group": "Social",
+  "name": "social-pinterest.svg",
+  "src": "footer/Icon=Pinterest.svg",
+  "size": 722,
+  "type": "image/svg+xml",
+  "blob": "5c49e57ba10b977e5dcaeb1faf5a103e"
+ },
+ {
+  "group": "Social",
+  "name": "social-facebook.svg",
+  "src": "footer/Icon=Facebook.svg",
+  "size": 377,
+  "type": "image/svg+xml",
+  "blob": "a06acc8301a5802d4b927c0cd1293bdd"
+ },
+ {
+  "group": "Social",
+  "name": "social-instagram.svg",
+  "src": "footer/Icon=VaInstagram.svg",
+  "size": 2236,
+  "type": "image/svg+xml",
+  "blob": "616ceabe3db78be8a0863b2502e2a59a"
+ },
+ {
+  "group": "Social",
+  "name": "social-youtube.svg",
+  "src": "footer/Icon=Youtube.svg",
+  "size": 1080,
+  "type": "image/svg+xml",
+  "blob": "68c796b15fffd83c8d4c219d492a0e00"
+ },
+ {
+  "group": "Social",
+  "name": "social-x.svg",
+  "src": "footer/Icon=X.svg",
+  "size": 294,
+  "type": "image/svg+xml",
+  "blob": "c60e66d00ce29edbab92710450637073"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "topshop-2023.png",
+  "src": "footer/2023.png",
+  "size": 6847,
+  "type": "image/png",
+  "blob": "027cc47eff558af97039f2d9ed6025e9"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "topshop-2024.png",
+  "src": "footer/2024.png",
+  "size": 6766,
+  "type": "image/png",
+  "blob": "f3edae686f71d77fe7a4ef0e123dd515"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "topshop-2025.png",
+  "src": "footer/2025.png",
+  "size": 6871,
+  "type": "image/png",
+  "blob": "fdfb54a26225e7529d55db1be1029243"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "topshop-3-jahre.png",
+  "src": "footer/3jahre.png",
+  "size": 9804,
+  "type": "image/png",
+  "blob": "8e501e77a595cb996238338ef3ec49be"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "rating-all.svg",
+  "src": "footer/Property 1=all.svg",
+  "size": 359,
+  "type": "image/svg+xml",
+  "blob": "2640b2db30a68350bcf2d342d5b63fda"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "rating-trustedshops.svg",
+  "src": "footer/Property 1=e.svg",
+  "size": 365446,
+  "type": "image/svg+xml",
+  "blob": "ba934701c227218f84614aa93d014087"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "rating-google.svg",
+  "src": "footer/Property 1=g.svg",
+  "size": 1003,
+  "type": "image/svg+xml",
+  "blob": "ff3a321ca0b503054acd025a38c0b61c"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "rating-trustpilot.svg",
+  "src": "footer/Property 1=t.svg",
+  "size": 355,
+  "type": "image/svg+xml",
+  "blob": "349df7187dcdd6be08f27d4601e8a69c"
+ },
+ {
+  "group": "Navigation",
+  "name": "akku-solar-kameraleuchten.jpg",
+  "src": "header/pictures/nav/akku-solar-kameraleuchten.jpg",
+  "size": 6439,
+  "type": "image/jpeg",
+  "blob": "db1c8770154edfe4df86f35a1d8891ac"
+ },
+ {
+  "group": "Navigation",
+  "name": "alarmanlagen.jpg",
+  "src": "header/pictures/nav/alarmanlagen.jpg",
+  "size": 3028,
+  "type": "image/jpeg",
+  "blob": "be0770c4ea01c6152ba6115d5df21563"
+ },
+ {
+  "group": "Navigation",
+  "name": "anschlussdosen-zubehoer.jpg",
+  "src": "header/pictures/nav/anschlussdosen-zubehoer.jpg",
+  "size": 5321,
+  "type": "image/jpeg",
+  "blob": "ddba362641e0091ab8b1f9b5309f595f"
+ },
+ {
+  "group": "Navigation",
+  "name": "aufbewahrungen.jpg",
+  "src": "header/pictures/nav/aufbewahrungen.jpg",
+  "size": 12122,
+  "type": "image/jpeg",
+  "blob": "d33c8068e09134a1a30015a736b09f81"
+ },
+ {
+  "group": "Navigation",
+  "name": "beleuchtete-hausnummern.jpg",
+  "src": "header/pictures/nav/beleuchtete-hausnummern.jpg",
+  "size": 7911,
+  "type": "image/jpeg",
+  "blob": "b1f7e37c2f1c04df5446039768ebd16f"
+ },
+ {
+  "group": "Navigation",
+  "name": "dual-objektiv-kameras.jpg",
+  "src": "header/pictures/nav/dual-objektiv-kameras.jpg",
+  "size": 3022,
+  "type": "image/jpeg",
+  "blob": "c0702af7d60f55da50a28dc17767afaf"
+ },
+ {
+  "group": "Navigation",
+  "name": "easylink.jpg",
+  "src": "header/pictures/nav/easylink.jpg",
+  "size": 6395,
+  "type": "image/jpeg",
+  "blob": "842e076af185784cc25db5c1778a9b8c"
+ },
+ {
+  "group": "Navigation",
+  "name": "hausnummer-zubehoer.jpg",
+  "src": "header/pictures/nav/hausnummer-zubehoer.jpg",
+  "size": 11819,
+  "type": "image/jpeg",
+  "blob": "3107a667e5c584e19c0b2f84e2bdace4"
+ },
+ {
+  "group": "Navigation",
+  "name": "hausnummern-einzelne-ziffern.jpg",
+  "src": "header/pictures/nav/hausnummern-einzelne-ziffern.jpg",
+  "size": 13750,
+  "type": "image/jpeg",
+  "blob": "b260aa9eea2a52389ac80effdf0c9c93"
+ },
+ {
+  "group": "Navigation",
+  "name": "hausnummernleuchten.jpg",
+  "src": "header/pictures/nav/hausnummernleuchten.jpg",
+  "size": 11053,
+  "type": "image/jpeg",
+  "blob": "5badb0034daf67e1c0ec1d67488afd6c"
+ },
+ {
+  "group": "Navigation",
+  "name": "hausnummernschilder.jpg",
+  "src": "header/pictures/nav/hausnummernschilder.jpg",
+  "size": 10065,
+  "type": "image/jpeg",
+  "blob": "639b55dd6d9d0955f1d482617500c3d4"
+ },
+ {
+  "group": "Navigation",
+  "name": "hochbeet.jpg",
+  "src": "header/pictures/nav/hochbeet.jpg",
+  "size": 13041,
+  "type": "image/jpeg",
+  "blob": "18d38a181ddce1029afad51b3d331f5e"
+ },
+ {
+  "group": "Navigation",
+  "name": "ip-kamera-sets.png",
+  "src": "header/pictures/nav/ip-kamera-sets.png",
+  "size": 25326,
+  "type": "image/png",
+  "blob": "f3f0f775fc1c398b9645489f15d52000"
+ },
+ {
+  "group": "Navigation",
+  "name": "ip-kameras.jpg",
+  "src": "header/pictures/nav/ip-kameras.jpg",
+  "size": 3904,
+  "type": "image/jpeg",
+  "blob": "c8dd445105d0c20a904fec06c913ba6e"
+ },
+ {
+  "group": "Navigation",
+  "name": "maehrobotergaragen.jpg",
+  "src": "header/pictures/nav/maehrobotergaragen.jpg",
+  "size": 13077,
+  "type": "image/jpeg",
+  "blob": "a6f5aad1a72b711f0b74e8287760cd73"
+ },
+ {
+  "group": "Navigation",
+  "name": "metzler-24v-lichtsystem.jpg",
+  "src": "header/pictures/nav/metzler-24v-lichtsystem.jpg",
+  "size": 3192,
+  "type": "image/jpeg",
+  "blob": "b43c9c493db6c214616d3e86a13860eb"
+ },
+ {
+  "group": "Navigation",
+  "name": "namensschilder.jpg",
+  "src": "header/pictures/nav/namensschilder.jpg",
+  "size": 6799,
+  "type": "image/jpeg",
+  "blob": "c489e03d32dcc7d2373e87e98447ef86"
+ },
+ {
+  "group": "Navigation",
+  "name": "plug-shine.jpg",
+  "src": "header/pictures/nav/plug-shine.jpg",
+  "size": 35338,
+  "type": "image/jpeg",
+  "blob": "6f1d048645e2d33a36acaf77989c0a85"
+ },
+ {
+  "group": "Navigation",
+  "name": "schriftzuege.jpg",
+  "src": "header/pictures/nav/schriftzuege.jpg",
+  "size": 9933,
+  "type": "image/jpeg",
+  "blob": "c6bbe004c874ccfc25847846153deaf7"
+ },
+ {
+  "group": "Navigation",
+  "name": "sensoren-zubehoer.jpg",
+  "src": "header/pictures/nav/sensoren-zubehoer.jpg",
+  "size": 6544,
+  "type": "image/jpeg",
+  "blob": "3e77164f2ae198c64b50d30f50adb170"
+ },
+ {
+  "group": "Navigation",
+  "name": "steckdosensaeulen.jpg",
+  "src": "header/pictures/nav/steckdosensaeulen.jpg",
+  "size": 4332,
+  "type": "image/jpeg",
+  "blob": "60d1d6dd7aa715d7c0877d794d630d79"
+ },
+ {
+  "group": "Navigation",
+  "name": "strahler-spots-wegeleuchten.jpg",
+  "src": "header/pictures/nav/strahler-spots-wegeleuchten.jpg",
+  "size": 5637,
+  "type": "image/jpeg",
+  "blob": "73366697e4dc3f88523d5298e24a786f"
+ },
+ {
+  "group": "Navigation",
+  "name": "videorekorder.jpg",
+  "src": "header/pictures/nav/videorekorder.jpg",
+  "size": 4324,
+  "type": "image/jpeg",
+  "blob": "5ae1072e4719612a8b4a87b8b521ce20"
+ },
+ {
+  "group": "Navigation",
+  "name": "wand-deckenleuchten.jpg",
+  "src": "header/pictures/nav/wand-deckenleuchten.jpg",
+  "size": 3728,
+  "type": "image/jpeg",
+  "blob": "2d4f4d24dc55a17e222206441e0ced84"
+ },
+ {
+  "group": "Navigation",
+  "name": "wlan-kameras.jpg",
+  "src": "header/pictures/nav/wlan-kameras.jpg",
+  "size": 3906,
+  "type": "image/jpeg",
+  "blob": "e0a4e5baf38e6d92a871486009402a6b"
+ },
+ {
+  "group": "Navigation",
+  "name": "01-einfamilien-briefkasten.webp",
+  "src": "header/megamenu/01-einfamilien-briefkasten.webp",
+  "size": 66108,
+  "type": "image/webp",
+  "blob": "b24e1c31e4edb8207ee753ca2f9a72e9"
+ },
+ {
+  "group": "Navigation",
+  "name": "02-briefkasten-ohne-gravur.webp",
+  "src": "header/megamenu/02-briefkasten-ohne-gravur.webp",
+  "size": 78214,
+  "type": "image/webp",
+  "blob": "3ab8f4c7db05093f1d855b798b8bb337"
+ },
+ {
+  "group": "Navigation",
+  "name": "03-standbriefkasten.webp",
+  "src": "header/megamenu/03-standbriefkasten.webp",
+  "size": 18288,
+  "type": "image/webp",
+  "blob": "b2bb3c0fbac653c9243b388ede96b828"
+ },
+ {
+  "group": "Navigation",
+  "name": "04b-klingel-signal.webp",
+  "src": "header/megamenu/04b-klingel-signal.webp",
+  "size": 53742,
+  "type": "image/webp",
+  "blob": "8cbfe6d0386996a779c302ec53110ca3"
+ },
+ {
+  "group": "Navigation",
+  "name": "05-mehrfamilien-briefkasten.webp",
+  "src": "header/megamenu/05-mehrfamilien-briefkasten.webp",
+  "size": 192046,
+  "type": "image/webp",
+  "blob": "33ce4108b7204d57f1bcd0bc3a523722"
+ },
+ {
+  "group": "Navigation",
+  "name": "06-unterputz-briefkasten.webp",
+  "src": "header/megamenu/06-unterputz-briefkasten.webp",
+  "size": 33758,
+  "type": "image/webp",
+  "blob": "68e4bcf1b9e7061b7d1195a952b05657"
+ },
+ {
+  "group": "Navigation",
+  "name": "07-paketbox.webp",
+  "src": "header/megamenu/07-paketbox.webp",
+  "size": 31002,
+  "type": "image/webp",
+  "blob": "e6da8d220fd7ed1551a0621c553c5048"
+ },
+ {
+  "group": "Navigation",
+  "name": "08-briefkastenanlagen-konfigurator.webp",
+  "src": "header/megamenu/08-briefkastenanlagen-konfigurator.webp",
+  "size": 136234,
+  "type": "image/webp",
+  "blob": "d03b9ab52850f2cd23d6219c5483435d"
+ },
+ {
+  "group": "Navigation",
+  "name": "09-briefkastenschild.webp",
+  "src": "header/megamenu/09-briefkastenschild.webp",
+  "size": 72136,
+  "type": "image/webp",
+  "blob": "920a63d04df958ccd14b7ef0d5d5e5bb"
+ },
+ {
+  "group": "Navigation",
+  "name": "10-briefkastenstaender.webp",
+  "src": "header/megamenu/10-briefkastenstaender.webp",
+  "size": 9560,
+  "type": "image/webp",
+  "blob": "eb2027bfdd00a1355f9a886fbcf14808"
+ },
+ {
+  "group": "Navigation",
+  "name": "11-ersatzteile-zubehoer.webp",
+  "src": "header/megamenu/11-ersatzteile-zubehoer.webp",
+  "size": 86100,
+  "type": "image/webp",
+  "blob": "0cff4027d64d5cdb91e08ef07623d865"
+ },
+ {
+  "group": "Navigation",
+  "name": "promo-einfamilien-briefkasten-wand-1x1.webp",
+  "src": "header/megamenu/promo-einfamilien-briefkasten-wand-1x1.webp",
+  "size": 238164,
+  "type": "image/webp",
+  "blob": "145d7e5b38aa6317536cccc5c7fd20ef"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-briefkastenanlage_configurator.png",
+  "src": "subcategory_photos/briefkasten/Briefkastenanlage_configurator.png",
+  "size": 52673,
+  "type": "image/png",
+  "blob": "e5bfe18606f52a4ee26be036f60264c4"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-briefkasten_mit_klingel.png",
+  "src": "subcategory_photos/briefkasten/briefkasten_mit_klingel.png",
+  "size": 33463,
+  "type": "image/png",
+  "blob": "6832cad0fabdc5f121cef0ab7e8fd4c0"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-briefkasten_ohne_gravur.png",
+  "src": "subcategory_photos/briefkasten/briefkasten_ohne_gravur.png",
+  "size": 40299,
+  "type": "image/png",
+  "blob": "37056dd315035c6015d20f6138b39b2e"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-briefkastenschilder.png",
+  "src": "subcategory_photos/briefkasten/briefkastenschilder.png",
+  "size": 61332,
+  "type": "image/png",
+  "blob": "65f47b16d6651d200ad6ea3cf1b8e7d6"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-briefkastenstaender.png",
+  "src": "subcategory_photos/briefkasten/briefkastenstaender.png",
+  "size": 12280,
+  "type": "image/png",
+  "blob": "30d2c4185a2d204ff17b1bf5cff9794c"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-einfamilien_briefkasten.png",
+  "src": "subcategory_photos/briefkasten/einfamilien_briefkasten.png",
+  "size": 40785,
+  "type": "image/png",
+  "blob": "bb52b203d26b130ab5b0ed62e9110864"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-ersatzteile.png",
+  "src": "subcategory_photos/briefkasten/ersatzteile.png",
+  "size": 45985,
+  "type": "image/png",
+  "blob": "04c12058d00f9aead52684f4f1ae9ad8"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-mehrfamilien_briefkaesten.png",
+  "src": "subcategory_photos/briefkasten/mehrfamilien_briefkaesten.png",
+  "size": 34634,
+  "type": "image/png",
+  "blob": "81b71a52c029ec9efce1d59b7453f7a5"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-paketboxen.png",
+  "src": "subcategory_photos/briefkasten/paketboxen.png",
+  "size": 28185,
+  "type": "image/png",
+  "blob": "2dae557aa0aea60f967e9e4af0fc25f2"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-standbriefkaesten.png",
+  "src": "subcategory_photos/briefkasten/standbriefkaesten.png",
+  "size": 34333,
+  "type": "image/png",
+  "blob": "56d065a7662247d4d0dd62f5278506ea"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-briefkasten-unterputz_briefkaesten.png",
+  "src": "subcategory_photos/briefkasten/unterputz_briefkaesten.png",
+  "size": 31824,
+  "type": "image/png",
+  "blob": "d3fb90d73a298cf5e64aeef15c20f809"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-paketboxen-ersatzteile.png",
+  "src": "subcategory_photos/paketboxen/ersatzteile.png",
+  "size": 47592,
+  "type": "image/png",
+  "blob": "5db613a4b5abc1326674b12d5c0e2d14"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-paketboxen-paketboxen.png",
+  "src": "subcategory_photos/paketboxen/paketboxen.png",
+  "size": 28185,
+  "type": "image/png",
+  "blob": "137b8111aab96cffb10dbd3448e40dd7"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-paketboxen-paketboxen_beleuchtet.png",
+  "src": "subcategory_photos/paketboxen/paketboxen_beleuchtet.png",
+  "size": 55121,
+  "type": "image/png",
+  "blob": "a5a35373872184cb19c934f0aedd8d3a"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-paketboxen-paketboxen_mit_klingel.png",
+  "src": "subcategory_photos/paketboxen/paketboxen_mit_klingel.png",
+  "size": 38096,
+  "type": "image/png",
+  "blob": "ce9dd4ec0d63a4ce891e0abfe416eee8"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-paketboxen-paketboxen_ohne_gravur.png",
+  "src": "subcategory_photos/paketboxen/paketboxen_ohne_gravur.png",
+  "size": 21559,
+  "type": "image/png",
+  "blob": "637ee7af71757c86208b9fffee543e58"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-audio_sprechanlagen.png",
+  "src": "subcategory_photos/sprechanlagen/audio_sprechanlagen.png",
+  "size": 29342,
+  "type": "image/png",
+  "blob": "20e9fdf7b802964e7c5e57b5b2f6a50d"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-ersatz_namensschilder.png",
+  "src": "subcategory_photos/sprechanlagen/ersatz_namensschilder.png",
+  "size": 32997,
+  "type": "image/png",
+  "blob": "2e96fff1df0540885c148c12a2ca5caa"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-erweiterungen_zubehoer.png",
+  "src": "subcategory_photos/sprechanlagen/erweiterungen_zubehoer.png",
+  "size": 35454,
+  "type": "image/png",
+  "blob": "2f96ca3bfef15c194d7ae2f17dccf9c8"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-innenstationen.png",
+  "src": "subcategory_photos/sprechanlagen/innenstationen.png",
+  "size": 39701,
+  "type": "image/png",
+  "blob": "68654c2f2dfa6681cd6e2368488c676b"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-sprechanlagen_sets.png",
+  "src": "subcategory_photos/sprechanlagen/sprechanlagen_sets.png",
+  "size": 40121,
+  "type": "image/png",
+  "blob": "d4240b9c60af15c8284e2abaeacd8322"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-video_sprechanlagen.png",
+  "src": "subcategory_photos/sprechanlagen/video_sprechanlagen.png",
+  "size": 27992,
+  "type": "image/png",
+  "blob": "c58ba30c6074a64c2d14cad1d6dcdb84"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-sprechanlagen-video_sprechanlagen_mit_briefkasten.png",
+  "src": "subcategory_photos/sprechanlagen/video_sprechanlagen_mit_briefkasten.png",
+  "size": 36891,
+  "type": "image/png",
+  "blob": "f44f5078c37da56070109180b2179169"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-aufputz_tuerklingeln.png",
+  "src": "subcategory_photos/tuerklingeln/aufputz_tuerklingeln.png",
+  "size": 34042,
+  "type": "image/png",
+  "blob": "22857ee9cfb96ca7cea33ef4e1e28550"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-ersatzteile_zubehoer.png",
+  "src": "subcategory_photos/tuerklingeln/ersatzteile_zubehoer.png",
+  "size": 62874,
+  "type": "image/png",
+  "blob": "abca0f23a0eb63df9f3c896ecccc9744"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-funkklingeln.png",
+  "src": "subcategory_photos/tuerklingeln/funkklingeln.png",
+  "size": 57931,
+  "type": "image/png",
+  "blob": "a219fb95ebe06d1138bc418bf99b04ce"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-mehrfamilien_klingel.png",
+  "src": "subcategory_photos/tuerklingeln/mehrfamilien_klingel.png",
+  "size": 36643,
+  "type": "image/png",
+  "blob": "455d82e105dc3f3731067101ac72538e"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-tuergongs.png",
+  "src": "subcategory_photos/tuerklingeln/tuergongs.png",
+  "size": 50336,
+  "type": "image/png",
+  "blob": "ccd6dfe3231d36777e8243f65d206470"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-tuerklingel_weiterleitung.png",
+  "src": "subcategory_photos/tuerklingeln/tuerklingel_weiterleitung.png",
+  "size": 39103,
+  "type": "image/png",
+  "blob": "6456e7110a8d27cf3e6c14dbc8c4055d"
+ },
+ {
+  "group": "Navigation",
+  "name": "sub-tuerklingeln-unterputz_tuerklingeln.png",
+  "src": "subcategory_photos/tuerklingeln/unterputz_tuerklingeln.png",
+  "size": 39116,
+  "type": "image/png",
+  "blob": "9e8980915a0ab170957ab2775e6db967"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-about-office.png",
+  "src": "media/about-office.png",
+  "size": 856565,
+  "type": "image/png",
+  "blob": "163d63fdcdae6dc660503ff6b1bf991c"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-craft-paketbox.webp",
+  "src": "media/craft-paketbox.webp",
+  "size": 84960,
+  "type": "image/webp",
+  "blob": "c8d1504161b698f97d5ed39efaba1f8d"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-craft-xdm10.png",
+  "src": "media/craft-xdm10.png",
+  "size": 1655615,
+  "type": "image/png",
+  "blob": "ab194dad1787c803c22d8d9a3ed6e4b7"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-ebenhard-gravur.webp",
+  "src": "media/ebenhard gravur.webp",
+  "size": 6998,
+  "type": "image/webp",
+  "blob": "e48e1f1ea2f2b86a833dcb090114dca8"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-ebenhard-neue-farben.png",
+  "src": "media/ebenhard neue farben.png",
+  "size": 94151,
+  "type": "image/png",
+  "blob": "ddca97f216942f44319b5ed01d02920b"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-rgb-taster-4zu3.mp4",
+  "src": "media/rgb-taster-4zu3.mp4",
+  "size": 7565556,
+  "type": "video/mp4",
+  "blob": "81515ab7931256088ed8ead292bd2f0f"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-xdm10-detail.webp",
+  "src": "media/xdm10-detail.webp",
+  "size": 28238,
+  "type": "image/webp",
+  "blob": "37b3424e420f2af238429e348923fde9"
+ },
+ {
+  "group": "Product imagery",
+  "name": "media-xdm10-hero.webp",
+  "src": "media/xdm10-hero.webp",
+  "size": 8764,
+  "type": "image/webp",
+  "blob": "57a05938bfb6c108df5173cb238b89ce"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-briefkasten-mit-vdm10-briefkasten-mit-vdm10_1.png",
+  "src": "Pictures/Briefkasten mit VDM10/Briefkasten mit VDM10_1.png",
+  "size": 133505,
+  "type": "image/png",
+  "blob": "1412a63ee4f22af12eec06a5f9e980ae"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-briefkasten-mit-vdm10-briefkasten-mit-vdm10_2.png",
+  "src": "Pictures/Briefkasten mit VDM10/Briefkasten mit VDM10_2.png",
+  "size": 567972,
+  "type": "image/png",
+  "blob": "6b8d971bb66356502c906a499f0490bb"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-metzler-vdm10-2.0-1122.png",
+  "src": "Pictures/Metzler VDM10 2.0/1122.png",
+  "size": 153933,
+  "type": "image/png",
+  "blob": "993cab35b2c7f694b6ce7e72e69bd2f5"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-metzler-vdm10-2.0-1123.png",
+  "src": "Pictures/Metzler VDM10 2.0/1123.png",
+  "size": 511416,
+  "type": "image/png",
+  "blob": "484478da19560c49035a8a4342dcfd60"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-innenstation-metzler-intercom-innenstation-ultra-10-zoll-touchscreen-lan-poe-schwarz.webp",
+  "src": "Pictures/innenstation/metzler-intercom-innenstation-ultra-10-zoll-touchscreen-lan-poe-schwarz.webp",
+  "size": 47326,
+  "type": "image/webp",
+  "blob": "8550ea50880189dfbe628f922fd0fc7c"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-reviews-1.webp",
+  "src": "Pictures/reviews/1.webp",
+  "size": 131486,
+  "type": "image/webp",
+  "blob": "ac6cd91c003a588bd17067fbbeff5f75"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-reviews-2.webp",
+  "src": "Pictures/reviews/2.webp",
+  "size": 151964,
+  "type": "image/webp",
+  "blob": "4f0622ba9f6b827badbf868eb186d3a7"
+ },
+ {
+  "group": "Product imagery",
+  "name": "pictures-reviews-3.webp",
+  "src": "Pictures/reviews/3.webp",
+  "size": 50644,
+  "type": "image/webp",
+  "blob": "82248a2cc62ad89d26c7fd689df518df"
+ }
+]

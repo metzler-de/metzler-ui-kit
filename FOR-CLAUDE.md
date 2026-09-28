@@ -747,7 +747,7 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
 
 > **Canonical source:** the `FooterSection` (desktop) and `MobileFooterSection` (< 48rem) components in **`index.html`**; link data lives in `FOOTER_INFO_LINKS`, `FOOTER_SERVICE_LINKS` and `FOOTER_LEGAL_LINKS`. The block below is their **1:1 static export**: use it for every real page. Content matches the live shop **edelstahl-tuerklingel.de as of 28 Sep 2026**.
 >
-> **Assets are linked, never copied:** every logo and badge loads from `https://metzler-de.github.io/metzler-ui-kit/footer/` (the kit's `footer/` folder).
+> **Assets:** every logo and badge comes from the kit's `footer/` folder (paths below are relative to the kit root). In Claude Design they are in the Payment & Shipping, Social, Awards & Reviews and Logos asset groups.
 
 **Fixed content. Do not invent, rename, reorder or drop anything:**
 - **5 columns:** Logo + tagline + „Mehr erfahren“ | Kontakt (exact phone numbers and hours) | Informationen (7 links) | Service (5 links) | Follow us (5 social icons) + Qualität (4 TopShop badges)
@@ -763,7 +763,7 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
     <!-- Row 1: 5 columns -->
     <div class="footer-top">
       <div class="footer-col footer-col--brand">
-        <a href="https://edelstahl-tuerklingel.de/" class="footer-logo"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Metzler_Logo_footer.svg" alt="Metzler"></a>
+        <a href="https://edelstahl-tuerklingel.de/" class="footer-logo"><img src="footer/Metzler_Logo_footer.svg" alt="Metzler"></a>
         <p class="footer-muted">Edelstahl-Tuerklingel.de ist ein Unternehmen der <a class="footer-mint" href="https://metzlergmbh.de">Metzler Gruppe</a></p>
         <p class="footer-claim">Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.</p>
         <a class="footer-more" href="https://edelstahl-tuerklingel.de/ueber-uns">Mehr erfahren</a>
@@ -803,18 +803,18 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
       <div class="footer-col footer-col--social">
         <p class="footer-head">Follow us</p>
         <div class="footer-social">
-          <a href="https://www.pinterest.de/METZLERGmBH/" aria-label="Pinterest"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=Pinterest.svg" alt=""></a>
-          <a href="https://www.facebook.com/MetzlerGmbHDE" aria-label="Facebook"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=Facebook.svg" alt=""></a>
-          <a href="https://www.instagram.com/metzlergmbh/?hl=de" aria-label="Instagram"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=VaInstagram.svg" alt=""></a>
-          <a href="https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos" aria-label="YouTube"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=Youtube.svg" alt=""></a>
-          <a href="https://twitter.com/metzlerklingeln?lang=de" aria-label="X / Twitter"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Icon=X.svg" alt=""></a>
+          <a href="https://www.pinterest.de/METZLERGmBH/" aria-label="Pinterest"><img src="footer/Icon=Pinterest.svg" alt=""></a>
+          <a href="https://www.facebook.com/MetzlerGmbHDE" aria-label="Facebook"><img src="footer/Icon=Facebook.svg" alt=""></a>
+          <a href="https://www.instagram.com/metzlergmbh/?hl=de" aria-label="Instagram"><img src="footer/Icon=VaInstagram.svg" alt=""></a>
+          <a href="https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos" aria-label="YouTube"><img src="footer/Icon=Youtube.svg" alt=""></a>
+          <a href="https://twitter.com/metzlerklingeln?lang=de" aria-label="X / Twitter"><img src="footer/Icon=X.svg" alt=""></a>
         </div>
         <p class="footer-head">Qualität</p>
         <div class="footer-topshop">
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/2023.png" alt="TopShop 2023"></a>
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/2024.png" alt="TopShop 2024"></a>
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/2025.png" alt="TopShop 2025"></a>
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="https://metzler-de.github.io/metzler-ui-kit/footer/3jahre.png" alt="TopShop 3 Jahre"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/2023.png" alt="TopShop 2023"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/2024.png" alt="TopShop 2024"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/2025.png" alt="TopShop 2025"></a>
+          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/3jahre.png" alt="TopShop 3 Jahre"></a>
         </div>
       </div>
     </div>
@@ -824,28 +824,28 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
       <div class="footer-logos">
         <span class="footer-label">Unsere Versandpartner:</span>
         <ul class="footer-badges">
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=dpd.svg" alt="DPD" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=dhl.svg" alt="DHL" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=hasenauer-koch.svg" alt="Hasenauer &amp; Koch" width="53" height="30"></li>
+          <li><img src="footer/Choice=dpd.svg" alt="DPD" width="53" height="30"></li>
+          <li><img src="footer/Choice=dhl.svg" alt="DHL" width="53" height="30"></li>
+          <li><img src="footer/Choice=hasenauer-koch.svg" alt="Hasenauer &amp; Koch" width="53" height="30"></li>
         </ul>
       </div>
       <div class="footer-logos footer-logos--pay">
         <span class="footer-label">Einfach bezahlen:</span>
         <ul class="footer-badges">
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=sepa.svg" alt="SEPA Lastschrift" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=amex.svg" alt="American Express" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=visa.svg" alt="Visa" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=pay.svg" alt="Amazon Pay" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=klarna.svg" alt="Klarna" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=paypal.svg" alt="PayPal" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=mastercard.svg" alt="Mastercard" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=apple.svg" alt="Apple Pay" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=google.svg" alt="Google Pay" width="53" height="30"></li>
-          <li><img src="https://metzler-de.github.io/metzler-ui-kit/footer/Choice=vorkasse.svg" alt="Vorkasse" width="53" height="30"></li>
+          <li><img src="footer/Choice=sepa.svg" alt="SEPA Lastschrift" width="53" height="30"></li>
+          <li><img src="footer/Choice=amex.svg" alt="American Express" width="53" height="30"></li>
+          <li><img src="footer/Choice=visa.svg" alt="Visa" width="53" height="30"></li>
+          <li><img src="footer/Choice=pay.svg" alt="Amazon Pay" width="53" height="30"></li>
+          <li><img src="footer/Choice=klarna.svg" alt="Klarna" width="53" height="30"></li>
+          <li><img src="footer/Choice=paypal.svg" alt="PayPal" width="53" height="30"></li>
+          <li><img src="footer/Choice=mastercard.svg" alt="Mastercard" width="53" height="30"></li>
+          <li><img src="footer/Choice=apple.svg" alt="Apple Pay" width="53" height="30"></li>
+          <li><img src="footer/Choice=google.svg" alt="Google Pay" width="53" height="30"></li>
+          <li><img src="footer/Choice=vorkasse.svg" alt="Vorkasse" width="53" height="30"></li>
         </ul>
       </div>
       <a class="footer-rating" href="https://www.trustedshops.de/bewertung/info_XAC423DA09B591A4D639343B80266EF70.html">
-        <img src="https://metzler-de.github.io/metzler-ui-kit/footer/Property%201=all.svg" alt="" width="30" height="30">
+        <img src="footer/Property%201=all.svg" alt="" width="30" height="30">
         <span class="footer-rating-body">
           <span class="footer-stars"><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg></span>
           <span class="footer-rating-text">4,71 Sehr gut <span class="footer-mint">36.705 Bewertungen</span></span>
