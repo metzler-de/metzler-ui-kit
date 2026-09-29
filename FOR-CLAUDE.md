@@ -1,6 +1,6 @@
 # Metzler Design System — Claude Page Brief
 
-> Kit-Version **v1.10** · 2026-09-29 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
+> Kit-Version **v1.11** · 2026-09-29 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
 
 Claude reads this file directly from the kit folder (`~/Documents/Claude/Projects/Metzler UI Kit`) before building any Metzler page, section or component. No pasting needed.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.

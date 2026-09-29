@@ -2,6 +2,10 @@
 
 The kit (`index.html`) is the source of truth. Bump `CHANGELOG.version` in `index.html` and add a section here on every change.
 
+## v1.11 · 2026-09-29
+- **New: Section 04c · FAQ · Split („Frage zum Artikel")** from the PDP prototype (Version B, `#sx-frage`): sticky Beratung card („Zum Kundensupport" + Sprechanlagen-Hotline +49 (0) 7121 / 317 7333, Mo–Fr 09:00–16:00 Uhr) next to a flat FAQ list on Paper; FAQ first below 56.25rem. Built from existing tokens only (title H1, card title + number H2, open row Teal 50, 0.25rem accent bar, answer line-height 1.7); chevron = Icons page `chevron-right` rotated, link arrow = `arrow-right`. Exported to SECTIONS.md; PDP blueprint notes 04c as the alternative to 01 + 04.
+- Version v1.11 everywhere (kit, tokens, .md exports).
+
 ## v1.10 · 2026-09-29
 - **Typography — font per OS:** Helvetica Neue on macOS, iOS and Linux (`"Helvetica Neue", Helvetica, Arial, sans-serif`), Arial on Windows (`Arial, "Helvetica Neue", Helvetica, sans-serif`). Replaces the wrong "Arial on all platforms" note. The kit detects the OS (now incl. iOS) and shows the active typeface in the OS banner, the typeface showcase and the Display previews. `metzler-tokens.css`: `html.os-windows { --font-family: var(--font-family-windows); }` plus a one-line detection script; FOR-CLAUDE.md §1/§2 and COMPONENTS.md updated.
 - **Colors:** group „GRAPHITE · OVERLAYS" renamed to „BASE · BLACK & WHITE" (True Black, Pure White, White 50 % are not graphite tones; matches „COLORS — BASE" in `metzler-tokens.css`).

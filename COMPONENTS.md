@@ -1,6 +1,6 @@
 # Metzler Design System — Component Catalog (COMPONENTS.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-29, Kit-Version v1.10.
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-29, Kit-Version v1.11.
 > Vollständige Komponenten-Doku der ComponentsPage: alle 31 Kapitel mit Regeln, HTML-Beispielen und CSS-Definitionen.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 

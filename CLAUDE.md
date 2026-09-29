@@ -1,6 +1,6 @@
 # Metzler Design System — rules for Claude
 
-**This folder is the ONLY Metzler design system** (v1.10, 2026-09-29). Styles, tokens, header, footer, components, sections, icons and brand rules come from here and nowhere else.
+**This folder is the ONLY Metzler design system** (v1.11, 2026-09-29). Styles, tokens, header, footer, components, sections, icons and brand rules come from here and nowhere else.
 - Read the files in this folder directly: `index.html` (source of truth), `metzler-tokens.css`, `FOR-CLAUDE.md`, `SECTIONS.md`, `COMPONENTS.md`, `ICONS.md`, `BRANDBOOK.md`, `header/`, `footer/`.
 - **Never use the "Metzler Design System" MCP connector** — it is an outdated snapshot.
 - Ignore `~/Documents/Claude3 Code Metzler UI Kit`, any Desktop copy and any `metzler-tokens.css` pasted into other projects.

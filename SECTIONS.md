@@ -1,12 +1,12 @@
 # Metzler Design System — Section Catalog (SECTIONS.md)
 
-> Kit-Version **v1.10** · 2026-09-29 (sections unchanged since v1.8).
+> Kit-Version **v1.11** · 2026-09-29 (new: Section 04c · FAQ · Split).
 
 > **Companion to `FOR-CLAUDE.md`.** That file defines tokens, primitives (buttons, forms, cards), header/footer and page scaffolding. **This file is the catalog of ready-made page sections.** When building a page: pick sections from here, stack them per the blueprints below, and only design something new when no existing section fits.
 >
 > **Source of truth:** the rendered **SectionsPage** in `index.html` (open the kit → "Sections"). This file is the static HTML/CSS export of exactly those sections. If this file and the kit ever disagree, the kit's rendered preview wins — then this file must be re-synced (see "Maintenance" at the end).
 
-**Version:** synced with kit SectionsPage, 2026-07-02 (14 sections + 1 variant).
+**Version:** synced with kit SectionsPage, 2026-09-29 (14 sections + 2 variants).
 
 ---
 
@@ -64,7 +64,7 @@ Breadcrumbs
 12  Technische Daten spec-callouts    (white)
     Specs table                       (FOR-CLAUDE.md §20 — full data)
 01  Support & Kontakt                 (white)
-04  FAQ (light)                       (white)
+04  FAQ (light)                       (white — or 04c split on Paper, replaces 01 + 04)
     CTA band                          (teal-900, FOR-CLAUDE.md)
 Footer (canonical)
 ```
@@ -421,7 +421,7 @@ Rules of thumb: max **one dark hero** per page; never stack two dark sections di
 
 ---
 
-## Section 04 · FAQ accordion (`faq-`) — light + 04b dark variant
+## Section 04 · FAQ accordion (`faq-`) — light + 04b dark + 04c split variant
 
 **What:** Card-based accordion, centered header (eyebrow "FAQ" + Display-4 heading). Chevron icon rotates 180°; open item gets teal border + 0.25rem left accent bar + white→paper gradient. Only one item open at a time.
 **When:** Last content section of every product/landing page. Use the **dark variant** on dark campaign pages (e.g. XDM10).
@@ -539,6 +539,130 @@ Same markup wrapped in a dark gradient stage; colors invert to mint/white:
 ```
 
 *Note:* `#01696A` is the shared ambient-glow color of all dark gradient stages (also in Section 01 primary card) — intentional non-token accent, only ever inside `radial-gradient` glows.
+
+### 04c · Split variant — „Frage zum Artikel" (`fza-`)
+
+**What:** PDP end-of-page block on a Paper background: left a sticky **Beratung card** (title, text, full-width primary button „Zum Kundensupport", white hotline box with teal number + hours), right eyebrow „Frage zum Artikel" + H1 „Häufige Fragen" + a **flat** accordion (rows separated by Graphite 300 hairlines, no cards). Open row: Teal 50 fill, 0.25rem teal bar grows in on the left, question turns teal, chevron flips up. Only one item open at a time.
+**When:** Product detail pages, where the FAQ is about this one article and a consultation offer belongs next to it. Replaces the 01 Support & Kontakt + 04 FAQ pair at the end of the PDP. Use 04 (light) for landing pages.
+**Layout:** grid `1fr 1.6fr`, gap 4rem, card sticky at `top: 7.5rem`. Below 56.25rem: one column, FAQ first, card underneath (not sticky). Inside the page's standard `.container` (100rem).
+**Key rules:** question = H4 (1.125rem/700); answer 1rem / 1.7 / Graphite 700; chevron = Icons page `chevron-right` rotated 90° (points down, flips up when open); link arrow = Icons page `arrow-right`; hotline is a `tel:` link. Tokens only — no custom tints.
+**Source:** PDP prototype „Version B" (`#sx-frage`), sizes snapped to kit tokens (title H1 instead of 2.25rem, card title + number H2 instead of 1.375rem, Teal 50 instead of a 2.4 % teal tint).
+
+```html
+<!-- Section 04c · FAQ · Split (Frage zum Artikel) — PDP -->
+<section class="fza-section" id="frage-zum-artikel">
+  <div class="container">
+    <div class="fza-inner">
+
+      <!-- Left: Beratung card (sticky on desktop, below the FAQ on mobile) -->
+      <aside class="fza-support">
+        <h3 class="fza-support-title">Beratung gewünscht?</h3>
+        <p class="fza-support-text">Unser Fachteam beantwortet Ihre Frage zum Artikel persönlich – zu Anschluss, Montage und Konfiguration. Kostenlos und unverbindlich.</p>
+        <a class="btn btn-primary btn-block fza-cta" href="#">Zum Kundensupport</a>
+        <div class="fza-phone">
+          <span class="fza-phone-label">Sprechanlagen-Hotline</span>
+          <a class="fza-phone-number" href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a>
+          <span class="fza-phone-hours">Mo–Fr · 09:00–16:00 Uhr</span>
+        </div>
+      </aside>
+
+      <!-- Right: eyebrow + title + accordion -->
+      <div>
+        <p class="fza-eyebrow">Frage zum Artikel</p>
+        <h2 class="fza-title">Häufige Fragen</h2>
+        <ul class="fza-list">
+          <li class="fza-item is-open">
+            <button class="fza-btn" aria-expanded="true" onclick="toggleFza(this)">
+              <span class="fza-q">Kann ich mehr als eine Türstation anschließen (z. B. für einen Nebeneingang)?</span>
+              <span class="fza-icon" aria-hidden="true"><!-- Icons page: chevron-right (rotated by CSS) --></span>
+            </button>
+            <div class="fza-body is-open">
+              <div class="fza-body-inner">
+                <p class="fza-answer">Ja, es können mehrere Türstationen in das System integriert werden. …</p>
+              </div>
+            </div>
+          </li>
+          <!-- Repeat <li class="fza-item"> for each question.
+               Link inside an answer:
+               <a class="fza-link" href="…">Linktext [Icons page: arrow-right svg]</a> -->
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  // One item open at a time
+  function toggleFza(btn) {
+    const item = btn.closest('.fza-item');
+    const wasOpen = item.classList.contains('is-open');
+    item.parentElement.querySelectorAll('.fza-item').forEach(li => {
+      li.classList.remove('is-open');
+      li.querySelector('.fza-btn').setAttribute('aria-expanded', 'false');
+      li.querySelector('.fza-body').classList.remove('is-open');
+    });
+    if (!wasOpen) {
+      item.classList.add('is-open');
+      btn.setAttribute('aria-expanded', 'true');
+      item.querySelector('.fza-body').classList.add('is-open');
+    }
+  }
+</script>
+```
+
+```css
+.fza-section { background: var(--color-paper); padding: 4rem 0; }
+.fza-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start; }
+
+/* Beratung card */
+.fza-support { background: var(--color-paper); border: 0.0625rem solid var(--color-graphite-300); border-radius: var(--radius-lg); padding: 2rem; position: sticky; top: 7.5rem; }
+.fza-support-title { margin: 0; font-family: var(--font-family); font-size: var(--text-h2-size); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; color: var(--color-digital-black); }
+.fza-support-text { margin: 0.75rem 0 0; font-size: 0.875rem; line-height: 1.6; color: var(--color-graphite-700); }
+.fza-cta { margin-top: 1.5rem; } /* .btn .btn-primary .btn-block from the Buttons page */
+.fza-phone { margin-top: 1.5rem; padding: 1.25rem; background: var(--color-white); border: 0.0625rem solid var(--color-graphite-300); border-radius: var(--radius); }
+.fza-phone-label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-graphite-600); }
+.fza-phone-number { display: block; margin-top: 0.5rem; font-size: var(--text-h2-size); font-weight: 700; letter-spacing: -0.01em; color: var(--color-teal); text-decoration: none; }
+.fza-phone-hours { display: block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 700; color: var(--color-graphite-600); }
+
+/* FAQ column */
+.fza-eyebrow { margin: 0 0 0.75rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; line-height: 1.4; text-transform: uppercase; color: var(--color-graphite-600); }
+.fza-title { margin: 0 0 1.25rem; font-size: var(--text-h1-size); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--color-digital-black); }
+.fza-list { list-style: none; margin: 0; padding: 0; }
+.fza-item { position: relative; border-bottom: 0.0625rem solid var(--color-graphite-300); transition: background 0.18s ease; }
+.fza-item:first-child { border-top: 0.0625rem solid var(--color-graphite-300); }
+.fza-item.is-open { background: var(--color-teal-50); }
+.fza-item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 0.25rem; background: var(--color-teal); transform: scaleY(0); transition: transform 0.25s ease; }
+.fza-item.is-open::before { transform: scaleY(1); }
+.fza-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1.5rem 1.25rem; background: none; border: none; cursor: pointer; text-align: left; font-family: inherit; }
+.fza-q { font-size: var(--text-h4-size); font-weight: 700; line-height: 1.3; color: var(--color-digital-black); transition: color 0.18s ease; }
+.fza-item.is-open .fza-q { color: var(--color-teal); }
+.fza-icon { flex: 0 0 auto; width: 1.5rem; height: 1.5rem; display: grid; place-items: center; color: var(--color-graphite-600); transition: color 0.2s ease; }
+.fza-icon svg { width: 1.5rem; height: 1.5rem; transform: rotate(90deg); transition: transform 0.2s ease; } /* chevron-right → points down */
+.fza-btn:hover .fza-icon, .fza-item.is-open .fza-icon { color: var(--color-teal); }
+.fza-item.is-open .fza-icon svg { transform: rotate(-90deg); } /* points up when open */
+.fza-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 400ms cubic-bezier(.22,1,.36,1); }
+.fza-body.is-open { grid-template-rows: 1fr; }
+.fza-body-inner { overflow: hidden; min-height: 0; }
+.fza-answer { margin: 0; padding: 0 1.25rem 1.5rem; font-size: 1rem; line-height: 1.7; color: var(--color-graphite-700); }
+.fza-link { color: var(--color-teal); font-weight: 700; text-decoration: underline 0.0625rem; text-underline-offset: 0.22em; transition: color 0.15s ease; }
+.fza-link svg { display: inline-block; width: 1rem; height: 1rem; margin-left: 0.375rem; vertical-align: -0.15em; }
+.fza-link:hover { color: var(--color-teal-600); }
+
+/* Tablet + mobile: FAQ first, Beratung card below, not sticky */
+@media (max-width: 56.25rem) {
+  .fza-inner { display: flex; flex-direction: column; gap: 3rem; }
+  .fza-inner > :first-child { order: 2; }
+  .fza-support { position: static; padding: 1.5rem; }
+}
+@media (max-width: 48rem) {
+  .fza-section { padding: 2.5rem 0; }
+  .fza-title { font-size: var(--text-h2-size); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fza-item::before, .fza-icon svg, .fza-body { transition: none; }
+}
+```
 
 ---
 

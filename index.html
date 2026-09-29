@@ -193,9 +193,10 @@
 
     // ── CHANGELOG — update this on every push ──
     const CHANGELOG = {
-      version: '1.10',
+      version: '1.11',
       date: '2026-09-29',
       entries: [
+        { type: 'new', text: 'Section 04c · FAQ · Split ("Frage zum Artikel") from the PDP prototype: sticky Beratung card (Zum Kundensupport + Sprechanlagen-Hotline) next to a flat FAQ list on Paper; FAQ first on tablet/mobile. Built from existing tokens only; chevron = Icons page chevron-right rotated, link arrow = arrow-right. Exported to SECTIONS.md' },
         { type: 'fix', text: 'Typography: brand font now follows the OS automatically — Helvetica Neue on macOS, iOS and Linux, Arial on Windows (was "Arial on all platforms"). Kit, OS banner (now detects iOS), typeface showcase and scale previews show the active font; metzler-tokens.css switches --font-family via html.os-windows' },
         { type: 'improved', text: 'Colors: group "GRAPHITE · OVERLAYS" renamed to "BASE · BLACK & WHITE" (True Black, Pure White, White 50 % are not graphite tones), matching "COLORS — BASE" in metzler-tokens.css' },
         { type: 'improved', text: 'Footer (desktop + mobile) synced 1:1 with the live shop: Geschenkgutschein + Wir über uns, „Mehr erfahren“, Hasenauer & Koch instead of GoGreen, 13 legal links + „Vertrag widerrufen“ button, real hrefs everywhere, copyright year automatic, rating values of 28 Sep 2026' },
@@ -6039,6 +6040,118 @@ cursor: pointer;
       {key:'keep-dry',label:'Keep dry',category:'Packaging',tags:['keep-dry','water','plant','dry','protection','shipping'],style:'outline'},
     ];
 
+    // ── Section 04c · FAQ · Split — static export (also in SECTIONS.md) ──
+    const FZA_HTML = `<!-- Section 04c · FAQ · Split (Frage zum Artikel) — PDP -->
+<section class="fza-section" id="frage-zum-artikel">
+  <div class="container">
+    <div class="fza-inner">
+
+      <!-- Left: Beratung card (sticky on desktop, below the FAQ on mobile) -->
+      <aside class="fza-support">
+        <h3 class="fza-support-title">Beratung gewünscht?</h3>
+        <p class="fza-support-text">Unser Fachteam beantwortet Ihre Frage zum Artikel persönlich – zu Anschluss, Montage und Konfiguration. Kostenlos und unverbindlich.</p>
+        <a class="btn btn-primary btn-block fza-cta" href="#">Zum Kundensupport</a>
+        <div class="fza-phone">
+          <span class="fza-phone-label">Sprechanlagen-Hotline</span>
+          <a class="fza-phone-number" href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a>
+          <span class="fza-phone-hours">Mo–Fr · 09:00–16:00 Uhr</span>
+        </div>
+      </aside>
+
+      <!-- Right: eyebrow + title + accordion -->
+      <div>
+        <p class="fza-eyebrow">Frage zum Artikel</p>
+        <h2 class="fza-title">Häufige Fragen</h2>
+        <ul class="fza-list">
+          <li class="fza-item is-open">
+            <button class="fza-btn" aria-expanded="true" onclick="toggleFza(this)">
+              <span class="fza-q">Kann ich mehr als eine Türstation anschließen (z. B. für einen Nebeneingang)?</span>
+              <span class="fza-icon" aria-hidden="true"><!-- Icons page: chevron-right (rotated by CSS) --></span>
+            </button>
+            <div class="fza-body is-open">
+              <div class="fza-body-inner">
+                <p class="fza-answer">Ja, es können mehrere Türstationen in das System integriert werden. …</p>
+              </div>
+            </div>
+          </li>
+          <!-- Repeat <li class="fza-item"> for each question.
+               Link inside an answer:
+               <a class="fza-link" href="…">Linktext [Icons page: arrow-right svg]</a> -->
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  // One item open at a time
+  function toggleFza(btn) {
+    const item = btn.closest('.fza-item');
+    const wasOpen = item.classList.contains('is-open');
+    item.parentElement.querySelectorAll('.fza-item').forEach(li => {
+      li.classList.remove('is-open');
+      li.querySelector('.fza-btn').setAttribute('aria-expanded', 'false');
+      li.querySelector('.fza-body').classList.remove('is-open');
+    });
+    if (!wasOpen) {
+      item.classList.add('is-open');
+      btn.setAttribute('aria-expanded', 'true');
+      item.querySelector('.fza-body').classList.add('is-open');
+    }
+  }
+<\/script>`;
+    const FZA_CSS = `.fza-section { background: var(--color-paper); padding: 4rem 0; }
+.fza-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start; }
+
+/* Beratung card */
+.fza-support { background: var(--color-paper); border: 0.0625rem solid var(--color-graphite-300); border-radius: var(--radius-lg); padding: 2rem; position: sticky; top: 7.5rem; }
+.fza-support-title { margin: 0; font-family: var(--font-family); font-size: var(--text-h2-size); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; color: var(--color-digital-black); }
+.fza-support-text { margin: 0.75rem 0 0; font-size: 0.875rem; line-height: 1.6; color: var(--color-graphite-700); }
+.fza-cta { margin-top: 1.5rem; } /* .btn .btn-primary .btn-block from the Buttons page */
+.fza-phone { margin-top: 1.5rem; padding: 1.25rem; background: var(--color-white); border: 0.0625rem solid var(--color-graphite-300); border-radius: var(--radius); }
+.fza-phone-label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-graphite-600); }
+.fza-phone-number { display: block; margin-top: 0.5rem; font-size: var(--text-h2-size); font-weight: 700; letter-spacing: -0.01em; color: var(--color-teal); text-decoration: none; }
+.fza-phone-hours { display: block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: 700; color: var(--color-graphite-600); }
+
+/* FAQ column */
+.fza-eyebrow { margin: 0 0 0.75rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; line-height: 1.4; text-transform: uppercase; color: var(--color-graphite-600); }
+.fza-title { margin: 0 0 1.25rem; font-size: var(--text-h1-size); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--color-digital-black); }
+.fza-list { list-style: none; margin: 0; padding: 0; }
+.fza-item { position: relative; border-bottom: 0.0625rem solid var(--color-graphite-300); transition: background 0.18s ease; }
+.fza-item:first-child { border-top: 0.0625rem solid var(--color-graphite-300); }
+.fza-item.is-open { background: var(--color-teal-50); }
+.fza-item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 0.25rem; background: var(--color-teal); transform: scaleY(0); transition: transform 0.25s ease; }
+.fza-item.is-open::before { transform: scaleY(1); }
+.fza-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1.5rem 1.25rem; background: none; border: none; cursor: pointer; text-align: left; font-family: inherit; }
+.fza-q { font-size: var(--text-h4-size); font-weight: 700; line-height: 1.3; color: var(--color-digital-black); transition: color 0.18s ease; }
+.fza-item.is-open .fza-q { color: var(--color-teal); }
+.fza-icon { flex: 0 0 auto; width: 1.5rem; height: 1.5rem; display: grid; place-items: center; color: var(--color-graphite-600); transition: color 0.2s ease; }
+.fza-icon svg { width: 1.5rem; height: 1.5rem; transform: rotate(90deg); transition: transform 0.2s ease; } /* chevron-right → points down */
+.fza-btn:hover .fza-icon, .fza-item.is-open .fza-icon { color: var(--color-teal); }
+.fza-item.is-open .fza-icon svg { transform: rotate(-90deg); } /* points up when open */
+.fza-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 400ms cubic-bezier(.22,1,.36,1); }
+.fza-body.is-open { grid-template-rows: 1fr; }
+.fza-body-inner { overflow: hidden; min-height: 0; }
+.fza-answer { margin: 0; padding: 0 1.25rem 1.5rem; font-size: 1rem; line-height: 1.7; color: var(--color-graphite-700); }
+.fza-link { color: var(--color-teal); font-weight: 700; text-decoration: underline 0.0625rem; text-underline-offset: 0.22em; transition: color 0.15s ease; }
+.fza-link svg { display: inline-block; width: 1rem; height: 1rem; margin-left: 0.375rem; vertical-align: -0.15em; }
+.fza-link:hover { color: var(--color-teal-600); }
+
+/* Tablet + mobile: FAQ first, Beratung card below, not sticky */
+@media (max-width: 56.25rem) {
+  .fza-inner { display: flex; flex-direction: column; gap: 3rem; }
+  .fza-inner > :first-child { order: 2; }
+  .fza-support { position: static; padding: 1.5rem; }
+}
+@media (max-width: 48rem) {
+  .fza-section { padding: 2.5rem 0; }
+  .fza-title { font-size: var(--text-h2-size); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fza-item::before, .fza-icon svg, .fza-body { transition: none; }
+}`;
+
     // ── Module-level renderIcon ──
     const renderIcon = (key, col, size) => {
         col = col||T.dBlack; size = size||24;
@@ -6411,6 +6524,7 @@ cursor: pointer;
       const [activeId, setActiveId] = useState('sec-support');
       const [faqOpen, setFaqOpen] = useState(null);
       const [faqOpenDark, setFaqOpenDark] = useState(0);
+      const [faqOpenSplit, setFaqOpenSplit] = useState(0);
       const [rvIdx, setRvIdx] = useState(0);       // aktive Bewertung im Foto-Karussell
       const [techTab, setTechTab] = useState('abm'); // aktiver Tab in Technische Details
 
@@ -6807,6 +6921,77 @@ cursor: pointer;
             .faq-dark .faq-answer { color: rgba(255,255,255,0.72); }
             @media (max-width: 35rem) {
               .faq-dark-section { padding: 2rem 1.25rem 2.5rem; }
+            }
+
+            /* ── FAQ · SPLIT VARIANT (04c) — Beratung card + FAQ list, PDP "Frage zum Artikel" ── */
+            .fza-section { background: ${T.paper}; padding: 4rem 3rem; }
+            .fza-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start; }
+            .fza-support {
+              background: ${T.paper}; border: 0.0625rem solid ${T.g300}; border-radius: ${T.rLg};
+              padding: 2rem; position: sticky; top: 7.5rem;
+            }
+            .fza-support-title { margin: 0; font-family: ${font}; font-size: ${T.fH2}; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; color: ${T.dBlack}; }
+            .fza-support-text { margin: 0.75rem 0 0; font-family: ${font}; font-size: ${T.fSm}; line-height: 1.6; color: ${T.g700}; }
+            .fza-cta {
+              display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.5rem;
+              height: 2.625rem; margin-top: 1.5rem; padding: 0 1.25rem;
+              font-family: ${font}; font-size: ${T.fBody}; font-weight: 700; line-height: 1.2;
+              color: ${T.white}; background: ${T.teal}; border-radius: ${T.r}; text-decoration: none;
+              transition: background 0.15s ease;
+            }
+            .fza-cta:hover { background: ${T.teal600}; }
+            .fza-cta:active { background: ${T.teal700}; }
+            .fza-phone {
+              margin-top: 1.5rem; padding: 1.25rem; background: ${T.white};
+              border: 0.0625rem solid ${T.g300}; border-radius: ${T.r};
+            }
+            .fza-phone-label { display: block; font-family: ${font}; font-size: ${T.fXs}; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: ${T.g600}; }
+            .fza-phone-number { display: block; margin-top: 0.5rem; font-family: ${font}; font-size: ${T.fH2}; font-weight: 700; letter-spacing: -0.01em; color: ${T.teal}; text-decoration: none; }
+            .fza-phone-hours { display: block; margin-top: 0.5rem; font-family: ${font}; font-size: ${T.fXs}; font-weight: 700; color: ${T.g600}; }
+            .fza-eyebrow { margin: 0 0 0.75rem; font-family: ${font}; font-size: ${T.fXs}; font-weight: 700; letter-spacing: 0.15em; line-height: 1.4; text-transform: uppercase; color: ${T.g600}; }
+            .fza-title { margin: 0 0 1.25rem; font-family: ${font}; font-size: ${T.fH1}; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: ${T.dBlack}; }
+            .fza-list { list-style: none !important; margin: 0; padding: 0; }
+            .fza-item { position: relative; border-bottom: 0.0625rem solid ${T.g300}; transition: background 0.18s ease; }
+            .fza-item:first-child { border-top: 0.0625rem solid ${T.g300}; }
+            .fza-item.is-open { background: ${T.teal50}; }
+            .fza-item::before {
+              content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 0.25rem;
+              background: ${T.teal}; transform: scaleY(0); transition: transform 0.25s ease;
+            }
+            .fza-item.is-open::before { transform: scaleY(1); }
+            .fza-btn {
+              width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+              padding: 1.5rem 1.25rem; background: none; border: none; cursor: pointer; text-align: left;
+            }
+            .fza-q { font-family: ${font}; font-size: ${T.fH4}; font-weight: 700; line-height: 1.3; color: ${T.dBlack}; transition: color 0.18s ease; }
+            .fza-item.is-open .fza-q { color: ${T.teal}; }
+            .fza-icon { flex: 0 0 auto; width: 1.5rem; height: 1.5rem; display: grid; place-items: center; color: ${T.g600}; transition: color 0.2s ease; }
+            .fza-icon svg { width: 1.5rem; height: 1.5rem; transform: rotate(90deg); transition: transform 0.2s ease; }
+            .fza-btn:hover .fza-icon, .fza-item.is-open .fza-icon { color: ${T.teal}; }
+            .fza-item.is-open .fza-icon svg { transform: rotate(-90deg); }
+            .fza-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 400ms cubic-bezier(.22,1,.36,1); }
+            .fza-body.is-open { grid-template-rows: 1fr; }
+            .fza-body-inner { overflow: hidden; min-height: 0; }
+            .fza-answer { margin: 0; padding: 0 1.25rem 1.5rem; font-family: ${font}; font-size: ${T.fBody}; line-height: 1.7; color: ${T.g700}; }
+            .fza-link { color: ${T.teal}; font-weight: 700; text-decoration: underline 0.0625rem; text-underline-offset: 0.22em; transition: color 0.15s ease; }
+            .fza-link svg { display: inline-block; width: 1rem; height: 1rem; margin-left: 0.375rem; vertical-align: -0.15em; }
+            .fza-link:hover { color: ${T.teal600}; }
+            .fza-inner.is-mob { display: flex; flex-direction: column; gap: 3rem; }
+            .fza-inner.is-mob > :first-child { order: 2; }
+            .fza-inner.is-mob .fza-support { position: static; padding: 1.5rem; }
+            .fza-section.is-mob { padding: 2.5rem 1.5rem; }
+            .fza-section.is-mob .fza-title { font-size: ${T.fH2}; }
+            @media (max-width: 56.25rem) {
+              .fza-inner { display: flex; flex-direction: column; gap: 3rem; }
+              .fza-inner > :first-child { order: 2; }
+              .fza-support { position: static; padding: 1.5rem; }
+            }
+            @media (max-width: 48rem) {
+              .fza-section { padding: 2.5rem 1.5rem; }
+              .fza-title { font-size: ${T.fH2}; }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .fza-item::before, .fza-icon svg, .fza-body { transition: none; }
             }
 
             /* ── FACE RECOGNITION PROCESS STEPS ── */
@@ -7793,6 +7978,79 @@ cursor: pointer;
                   <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
                     <CodeBlock inline lang="CSS" code={faqCss}/>
                   </div>
+                </>
+              );
+            })()}
+
+            {/* ── FAQ · SPLIT VARIANT (04c) — Beratung card + FAQ list ("Frage zum Artikel", PDP) ── */}
+            {(() => {
+              const faqsSplit = [
+                { q:'Kann ich mehr als eine Türstation anschließen (z. B. für einen Nebeneingang)?',
+                  a:<>Ja, es können mehrere Türstationen in das System integriert werden. Details finden Sie in der Anleitung Ihrer Anlage. Insgesamt können bis zu 16 Nebentürstationen pro Installation (=Haupttürstation) eingesetzt werden.</> },
+                { q:'Gibt es Unterschiede bei der Bedienung der Innenstationen?',
+                  a:<>Nein, alle angebotenen Innenstationen bieten identischen Funktionsumfang. Lediglich die Innenstationen der Pro Serie bieten zusätzlich eine Türöffner Taste mit integrierter Beleuchtung.</> },
+                { q:'Welche Kameras kann ich zusätzlich einbinden?',
+                  a:<>Alle HiLook by HIKVISION Kameras, welche Sie in unserem Überwachungskamera Bereich finden, können in das System eingebunden werden. Es können nur LAN/PoE Kameras eingebunden werden (Keine WiFi).</> },
+                { q:'Sie kommen nicht weiter – gibt es persönliche Unterstützung?',
+                  a:<>Ja – buchen Sie einen persönlichen Online-Support-Termin mit unseren Sprechanlagen-Technikern:{' '}
+                    <a className="fza-link" href="https://www.edelstahl-tuerklingel.de/faq/support-termin" target="_blank" rel="noopener">Sprechanlagen Online Support Termin{renderIcon('arrow-right','currentColor',16)}</a></> },
+              ];
+              return (
+                <>
+                <div id="sec-faq-split" style={{marginBottom:'3rem',scrollMarginTop:'1.5rem'}}>
+                  <div style={{fontSize:T.fXxs,fontWeight:700,letterSpacing:'0.08em',
+                    color:T.g600,textTransform:'uppercase',fontFamily:font,marginBottom:'0.375rem'}}>
+                    Section 04 · c
+                  </div>
+                  <h2 style={{fontSize:'1.75rem',fontWeight:700,color:T.dBlack,fontFamily:font,
+                    margin:'0 0 0.5rem',letterSpacing:'-0.01em'}}>FAQ · Split (Frage zum Artikel)</h2>
+                  <p style={{fontSize:T.fSm,color:T.g600,fontFamily:font,margin:'0 0 1.75rem',lineHeight:1.5}}>
+                    PDP variant: Beratung card (sticky on desktop) next to a flat FAQ list on a Paper background. Below 56.25rem the FAQ comes first and the card moves underneath. Only one item open at a time.
+                  </p>
+                  <section className={`fza-section${mob?' is-mob':''}`}>
+                    <div className={`fza-inner${mob?' is-mob':''}`}>
+                      <aside className="fza-support">
+                        <h3 className="fza-support-title">Beratung gewünscht?</h3>
+                        <p className="fza-support-text">Unser Fachteam beantwortet Ihre Frage zum Artikel persönlich – zu Anschluss, Montage und Konfiguration. Kostenlos und unverbindlich.</p>
+                        <a className="fza-cta" href="#" onClick={e=>e.preventDefault()}>Zum Kundensupport</a>
+                        <div className="fza-phone">
+                          <span className="fza-phone-label">Sprechanlagen-Hotline</span>
+                          <a className="fza-phone-number" href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a>
+                          <span className="fza-phone-hours">Mo–Fr · 09:00–16:00 Uhr</span>
+                        </div>
+                      </aside>
+                      <div>
+                        <p className="fza-eyebrow">Frage zum Artikel</p>
+                        <h3 className="fza-title">Häufige Fragen</h3>
+                        <ul className="fza-list">
+                          {faqsSplit.map((item, i) => {
+                            const isOpen = faqOpenSplit === i;
+                            return (
+                              <li key={i} className={`fza-item${isOpen ? ' is-open' : ''}`}>
+                                <button className="fza-btn" aria-expanded={isOpen}
+                                  onClick={() => setFaqOpenSplit(isOpen ? null : i)}>
+                                  <span className="fza-q">{item.q}</span>
+                                  <span className="fza-icon" aria-hidden="true">{renderIcon('chevron-right','currentColor',24)}</span>
+                                </button>
+                                <div className={`fza-body${isOpen ? ' is-open' : ''}`}>
+                                  <div className="fza-body-inner">
+                                    <p className="fza-answer">{item.a}</p>
+                                  </div>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </div>
+                  </section>
+                  <div style={{marginTop:'1.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                    <CodeBlock inline lang="HTML" code={FZA_HTML}/>
+                  </div>
+                  <div style={{marginTop:'0.5rem',border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden'}}>
+                    <CodeBlock inline lang="CSS" code={FZA_CSS}/>
+                  </div>
+                </div>
                 </>
               );
             })()}
@@ -14765,7 +15023,7 @@ cursor: pointer;
         'This block covers tokens and primitives only. Ready-made, copy-paste page SECTIONS (full HTML+CSS) live in a companion file:',
         'https://raw.githubusercontent.com/metzler-de/metzler-ui-kit/main/SECTIONS.md',
         'Fetch that file before building any page with more than one content section. It contains, with exact markup and CSS:',
-        '01 Support & Kontakt · 02 Neue Features grid · 03 Türöffnungsmöglichkeiten slider · 04 FAQ (+ 04b dark variant) · 05 Gesichtserkennung process · 06 Editorial Q&A · 07 Product Hero · 08 Feature Detail · 09 Feature Duo · 10 XDM10 Hero (dark) · 11 In drei Schritten · 12 Technische Daten spec-callouts · 13 About Hero (split) · 14 Craft Story (image/text)',
+        '01 Support & Kontakt · 02 Neue Features grid · 03 Türöffnungsmöglichkeiten slider · 04 FAQ (+ 04b dark, 04c split with Beratung card) · 05 Gesichtserkennung process · 06 Editorial Q&A · 07 Product Hero · 08 Feature Detail · 09 Feature Duo · 10 XDM10 Hero (dark) · 11 In drei Schritten · 12 Technische Daten spec-callouts · 13 About Hero (split) · 14 Craft Story (image/text)',
         'It also defines page blueprints (which sections stack, in which order, for a PDP vs. a campaign landing page vs. an Über-uns page) and a maintenance protocol. Pick sections from there instead of inventing new ones; only design a new section if nothing there fits.',
       ].join('\n');
     })();
