@@ -1,7 +1,7 @@
 /**
  * Metzler Design System — Design Tokens
- * Version: 1.9 (kit version; history in CHANGELOG.md)
- * Font: Helvetica Neue (system stack — no custom @font-face required)
+ * Version: 1.10 (kit version; history in CHANGELOG.md)
+ * Font: Helvetica Neue on macOS / iOS / Linux, Arial on Windows (system stacks — no @font-face)
  * Base: 16px = 1rem
  *
  * Usage in any project:
@@ -17,12 +17,14 @@
 
   /*
    * Font rule — same weights, sizes, and line-heights on all systems:
-   * macOS / Ubuntu  → "Helvetica Neue", Helvetica, Arial, sans-serif
-   * Windows         → Arial, "Helvetica Neue", Helvetica, sans-serif  (Arial first = default)
+   * macOS / iOS / Linux → "Helvetica Neue", Helvetica, Arial, sans-serif
+   * Windows             → Arial, "Helvetica Neue", Helvetica, sans-serif  (Arial first)
    *
-   * Use the stack below as-is; the browser resolves to the correct typeface automatically.
+   * Always use var(--font-family). On Windows it switches to the Arial stack
+   * automatically once <html> carries the class "os-windows" (see bottom of file):
+   *   <script>if (/Windows|Win32|Win64/.test(navigator.userAgent)) document.documentElement.classList.add('os-windows');</script>
    */
-  --font-family:         "Helvetica Neue", Helvetica, Arial, sans-serif; /* macOS / Ubuntu */
+  --font-family:         "Helvetica Neue", Helvetica, Arial, sans-serif; /* macOS / iOS / Linux */
   --font-family-windows: Arial, "Helvetica Neue", Helvetica, sans-serif; /* Windows */
 
   /* Font weights — the three body weights */
@@ -317,4 +319,14 @@
     --text-h3-size: 1.125rem;    /* 18px */
     --text-h4-size: 1rem;        /* 16px */
   }
+}
+
+
+/* ─────────────────────────────────────────
+   OS FONT SWITCH — Windows uses Arial first
+   (class set by the one-line script in the TYPOGRAPHY comment above)
+───────────────────────────────────────── */
+
+html.os-windows {
+  --font-family: var(--font-family-windows);
 }

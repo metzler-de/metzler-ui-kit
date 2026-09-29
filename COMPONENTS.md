@@ -1,6 +1,6 @@
 # Metzler Design System — Component Catalog (COMPONENTS.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-28, Kit-Version v1.9.
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-29, Kit-Version v1.10.
 > Vollständige Komponenten-Doku der ComponentsPage: alle 31 Kapitel mit Regeln, HTML-Beispielen und CSS-Definitionen.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 
@@ -29,7 +29,7 @@ Self-contained Variante — inline Data-URI, kein externes Asset nötig (empfohl
 ## Colors
 `T.red` `--color-metzler-rot` `T.dBlack` `--color-digital-black` `T.teal50` `--color-teal-50` `T.teal75` `--color-teal-75` `T.teal100` `--color-teal-100` `T.teal` `--color-teal` `T.teal600` `--color-teal-600` `T.teal700` `--color-teal-700` `T.teal900` `--color-teal-900` `T.green` `--color-green` `T.green` `--color-green` `T.red50` `--color-red-50` `T.red` `--color-metzler-rot` `T.red600` `--color-red-600` `T.red900` `--color-red-900` `T.paper` `--color-paper` `T.g100` `--color-graphite-100` `T.g200` `--color-graphite-200` `T.g300` `--color-graphite-300` `T.g400` `--color-graphite-400` `T.g450` `--color-graphite-450` `T.g500` `--color-graphite-500` `T.g600` `--color-graphite-600` `T.g700` `--color-graphite-700` `T.g800` `--color-graphite-800` `T.g850` `--color-graphite-850` `T.g900` `--color-graphite-900` `T.black` `--color-black` `T.white` `--color-white` `T.white` `--color-white` `T.mint` `--color-mint` 
 ## Typography
-`Arial, "Helvetica Neue", Helvetica, sans-serif` `rem` `"Helvetica Neue", Helvetica, Arial, sans-serif` `--display-1` `T.fD1` `--display-2` `T.fD2` `--display-3` `T.fD3` `--display-4` `T.fD4` 
+`"Helvetica Neue", Helvetica, Arial, sans-serif` `--font-family` `Arial, "Helvetica Neue", Helvetica, sans-serif` `--font-family-windows` `rem` `--display-1` `T.fD1` `--display-2` `T.fD2` `--display-3` `T.fD3` `--display-4` `T.fD4` 
 ```html
 Desktop 1.875rem · 30px
 Tablet 1.625rem · 26px

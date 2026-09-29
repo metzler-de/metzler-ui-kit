@@ -1,6 +1,6 @@
 # Metzler Design System — Claude Page Brief
 
-> Kit-Version **v1.9** · 2026-09-28 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
+> Kit-Version **v1.10** · 2026-09-29 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
 
 Claude reads this file directly from the kit folder (`~/Documents/Claude/Projects/Metzler UI Kit`) before building any Metzler page, section or component. No pasting needed.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.
@@ -13,10 +13,12 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
 
 - **Company:** Metzler GmbH — outdoor hardware (intercoms, mailboxes, doorbells, house numbers)
 - **Language:** German (DE) everywhere — all copy, labels, placeholders, CTAs
-- **Font:** system stack, no import needed
-  - macOS / Linux → `"Helvetica Neue", Helvetica, Arial, sans-serif`
-  - Windows → `Arial, "Helvetica Neue", Helvetica, sans-serif`
-  - Use one declaration: `font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;`
+- **Font:** system stack, no import needed — picked per OS automatically, same scale everywhere
+  - macOS / iOS / Linux → **Helvetica Neue**: `"Helvetica Neue", Helvetica, Arial, sans-serif` (`--font-family`)
+  - Windows → **Arial**: `Arial, "Helvetica Neue", Helvetica, sans-serif` (`--font-family-windows`)
+  - Always write `font-family: var(--font-family);` and add this one line in `<head>` so Windows switches to Arial:
+    `<script>if (/Windows|Win32|Win64/.test(navigator.userAgent)) document.documentElement.classList.add('os-windows');</script>`
+    (`metzler-tokens.css` then sets `html.os-windows { --font-family: var(--font-family-windows); }`)
 - **Base:** 16px = 1rem — all measurements in rem, never px
 
 ---
@@ -27,7 +29,8 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
 
 ```css
 :root {
-  --font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;           /* macOS / iOS / Linux */
+  --font-family-windows: Arial, "Helvetica Neue", Helvetica, sans-serif;   /* Windows (html.os-windows) */
 
   /* ── TEAL — primary brand ── */
   --color-teal-50:    #F2F6F6;   /* icon badge backgrounds */

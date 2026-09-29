@@ -2,6 +2,11 @@
 
 The kit (`index.html`) is the source of truth. Bump `CHANGELOG.version` in `index.html` and add a section here on every change.
 
+## v1.10 · 2026-09-29
+- **Typography — font per OS:** Helvetica Neue on macOS, iOS and Linux (`"Helvetica Neue", Helvetica, Arial, sans-serif`), Arial on Windows (`Arial, "Helvetica Neue", Helvetica, sans-serif`). Replaces the wrong "Arial on all platforms" note. The kit detects the OS (now incl. iOS) and shows the active typeface in the OS banner, the typeface showcase and the Display previews. `metzler-tokens.css`: `html.os-windows { --font-family: var(--font-family-windows); }` plus a one-line detection script; FOR-CLAUDE.md §1/§2 and COMPONENTS.md updated.
+- **Colors:** group „GRAPHITE · OVERLAYS" renamed to „BASE · BLACK & WHITE" (True Black, Pure White, White 50 % are not graphite tones; matches „COLORS — BASE" in `metzler-tokens.css`).
+- Version v1.10 everywhere (kit, tokens, .md exports).
+
 ## v1.9 · 2026-09-28
 - **Header icons**: account and cart icons replaced with the live shop's filled icons (person 20.42×21.67, shopping bag 20.37×21.58, 25px, #1A171B, teal on hover) in all header files; standalone copies `header/icon-account.svg`, `header/icon-basket.svg`.
 - **Logo** `header/logo.svg` replaced with the live shop file (Metzler_Logo-rot-schwarz.svg): red M-square #d32b25 with white M, wordmark #1b181c. Colors are now fill attributes instead of `.cls-*` classes, so an inlined copy can no longer be recolored by other SVGs on the page.
