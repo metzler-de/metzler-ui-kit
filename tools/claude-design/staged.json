@@ -25,6 +25,22 @@
  },
  {
   "group": "Icons",
+  "name": "header-account.svg",
+  "src": "header/icon-account.svg",
+  "size": 506,
+  "type": "image/svg+xml",
+  "blob": "cca80bf1b1981454fe3146af91ba0e1a"
+ },
+ {
+  "group": "Icons",
+  "name": "header-basket.svg",
+  "src": "header/icon-basket.svg",
+  "size": 552,
+  "type": "image/svg+xml",
+  "blob": "b37b1f4282ad4795acf6dfd54a22036a"
+ },
+ {
+  "group": "Icons",
   "name": "icon-menu.svg",
   "src": "ICONS.md#menu",
   "size": 237,
