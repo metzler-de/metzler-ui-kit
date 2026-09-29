@@ -397,7 +397,7 @@ README = f"""Metzler GmbH makes stainless-steel outdoor hardware — video inter
 
 ## Logo
 
-- Metzler logo (red M-square + METZLER wordmark): `metzler-logo.svg` on light grounds, `metzler-logo-white.svg` on `color-teal-700` / dark. Use the files, never redraw or recolor the mark. Rules and incorrect usage: see the Brandbook chapter.
+- The Metzler logo is a **red M-square (#d32b25) with a white M, followed by the black METZLER wordmark (#1b181c)**. Use `metzler-logo.svg` on light grounds (header) and `metzler-logo-white.svg` on `color-teal-700` / dark (footer), **always as `<img src>`**. Never inline, redraw, simplify or recolor it; a black or single-color M-square is wrong. In the header the logo box is 224px wide, the image 38px tall. Rules and incorrect usage: see the Brandbook chapter.
 
 ## Building a page
 
@@ -410,7 +410,7 @@ wr('README.md', README)
 
 # asset group READMEs
 GROUP_NOTES = {
-    'Logos': 'Metzler logos. `metzler-logo.svg` (red M-square + digital-black wordmark) on light grounds; `metzler-logo-white.svg` on color-teal-700 and other dark grounds; `favicon.svg` for every page head. Never recolor or redraw.',
+    'Logos': 'Metzler logos, exactly as on the live shop. `metzler-logo.svg` (red #d32b25 M-square with white M + #1b181c wordmark) on light grounds; `metzler-logo-white.svg` on color-teal-700 and other dark grounds; `favicon.svg` for every page head. Never recolor or redraw.',
     'Icons': 'The 81 kit icons, inked in color-graphite-900 (#1A1A1F) for these tiles. For designs paste the inline SVG from the „Icons: inline SVG code“ chapter, which uses currentColor. Star, pdf-badge, guarantee and packaging symbols have fixed colors.',
     'Payment & Shipping': 'Footer badges, 53×30 white cards: shipping partners DPD, DHL, Hasenauer & Koch; payment methods SEPA, Amex, Visa, Amazon Pay, Klarna, PayPal, Mastercard, Apple Pay, Google Pay, Vorkasse. Use in this order.',
     'Social': 'White single-ink social icons for the footer (Pinterest, Facebook, Instagram, YouTube, X) on 35px round tiles at rgba(255,255,255,0.1).',
