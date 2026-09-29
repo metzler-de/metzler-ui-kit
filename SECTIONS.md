@@ -1,6 +1,6 @@
 # Metzler Design System — Section Catalog (SECTIONS.md)
 
-> Kit-Version **v1.11** · 2026-09-29 (new: Section 04c · FAQ · Split).
+> Kit-Version **v1.12** · 2026-09-29 (Section 01 phone fixed; 04c new in v1.11).
 
 > **Companion to `FOR-CLAUDE.md`.** That file defines tokens, primitives (buttons, forms, cards), header/footer and page scaffolding. **This file is the catalog of ready-made page sections.** When building a page: pick sections from here, stack them per the blueprints below, and only design something new when no existing section fits.
 >
@@ -121,7 +121,7 @@ Rules of thumb: max **one dark hero** per page; never stack two dark sections di
     <div class="support-card-title">Produktberatung &amp; Bestellung</div>
     <p class="support-card-desc">Individuelle Beratung zur passenden Konfiguration…</p>
     <div class="support-card-foot">
-      <span class="support-card-meta">+49 (0) 7181 / 4999 110</span>
+      <span class="support-card-meta">+49 (0) 7121 / 317 7333</span>
       <span class="support-card-arrow"><!-- arrow svg --></span>
     </div>
   </a>

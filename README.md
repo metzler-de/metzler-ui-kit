@@ -1,7 +1,7 @@
 # Metzler Design System (UI Kit)
 
 **The only design system for Metzler web work** — styles, tokens, header, footer, components, sections, icons and brand rules.
-Current version: **v1.11 · 2026-09-29** (history in [`CHANGELOG.md`](CHANGELOG.md)).
+Current version: **v1.12 · 2026-09-29** (history in [`CHANGELOG.md`](CHANGELOG.md)).
 
 - Claude Design: https://claude.ai/artifact/GmM9m9zSAbikHUorc4dJ3H
 - Repo: https://github.com/metzler-de/metzler-ui-kit

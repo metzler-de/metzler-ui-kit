@@ -1,6 +1,6 @@
 # Metzler Design System — Claude Page Brief
 
-> Kit-Version **v1.11** · 2026-09-29 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
+> Kit-Version **v1.12** · 2026-09-29 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
 
 Claude reads this file directly from the kit folder (`~/Documents/Claude/Projects/Metzler UI Kit`) before building any Metzler page, section or component. No pasting needed.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.
@@ -1269,7 +1269,7 @@ section { padding: 10px 0; }
   <div>
     <h3>Kontakt</h3>
     <p>Mo – Fr · 08:00 – 17:00 Uhr</p>
-    <p>+49 (0) 7181 / 4999 110</p>  <!-- WRONG phone number -->
+    <p>+49 (0) XXXX / XXX XXX</p>  <!-- WRONG: invented phone number -->
   </div>
 </footer>
 

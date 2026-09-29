@@ -2,6 +2,10 @@
 
 The kit (`index.html`) is the source of truth. Bump `CHANGELOG.version` in `index.html` and add a section here on every change.
 
+## v1.12 · 2026-09-29
+- **Fix — Section 01 Support & Kontakt:** the primary card showed a phone number that is not Metzler's and could belong to a stranger. It now shows the Sprechanlagen-Hotline +49 (0) 7121 / 317 7333 (kit preview, code sample, SECTIONS.md). The same number was removed from the "wrong" footer example in FOR-CLAUDE.md.
+- Version v1.12 everywhere.
+
 ## v1.11 · 2026-09-29
 - **New: Section 04c · FAQ · Split („Frage zum Artikel")** from the PDP prototype (Version B, `#sx-frage`): sticky Beratung card („Zum Kundensupport" + Sprechanlagen-Hotline +49 (0) 7121 / 317 7333, Mo–Fr 09:00–16:00 Uhr) next to a flat FAQ list on Paper; FAQ first below 56.25rem. Built from existing tokens only (title H1, card title + number H2, open row Teal 50, 0.25rem accent bar, answer line-height 1.7); chevron = Icons page `chevron-right` rotated, link arrow = `arrow-right`. Exported to SECTIONS.md; PDP blueprint notes 04c as the alternative to 01 + 04.
 - Version v1.11 everywhere (kit, tokens, .md exports).
