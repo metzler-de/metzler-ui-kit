@@ -368,6 +368,34 @@ wr('guidelines/30-brandbook.md', section_md('BRANDBOOK.md', 'Brandbook'))
 wr('guidelines/40-icons.md', section_md('ICONS.md', 'Icons: inline SVG code'))
 wr('guidelines/50-changelog.md', section_md('CHANGELOG.md', 'Changelog'))
 
+# ── shop knowledge (KIT/knowledge) → further chapters ─────────────────────
+KN = os.path.join(KIT, 'knowledge')
+def kn_section(src, dst, title):
+    t = open(src, encoding='utf-8').read()
+    if re.match(r'^# ', t): t = re.sub(r'^# .*\n', f'# {title}\n', t, count=1)
+    else: t = f'# {title}\n\n' + t
+    wr(dst, rewrite(t, '', dst))
+if os.path.isdir(KN):
+    if os.path.isfile(os.path.join(KN, 'website.md')):
+        kn_section(os.path.join(KN, 'website.md'), 'guidelines/60-website.md', 'Shop: structure, services, tone of voice')
+    if os.path.isfile(os.path.join(KN, 'products.md')):
+        kn_section(os.path.join(KN, 'products.md'), 'guidelines/70-products.md', 'Products: overview')
+    pdir = os.path.join(KN, 'products')
+    if os.path.isdir(pdir):
+        for i, f in enumerate(sorted(x for x in os.listdir(pdir) if x.endswith('.md'))[:14], 1):
+            first = open(os.path.join(pdir, f), encoding='utf-8').readline().lstrip('# ').strip() or f[:-3]
+            kn_section(os.path.join(pdir, f), f'guidelines/7{i:02d}-products-{f}', 'Products: ' + re.sub(r'^Products?:?\s*', '', first))
+    if os.path.isfile(os.path.join(KN, 'competitors.md')):
+        kn_section(os.path.join(KN, 'competitors.md'), 'guidelines/80-competitors.md', 'Competitors')
+    bdir = os.path.join(KN, 'best-practice')
+    if os.path.isdir(bdir):
+        parts = []
+        for f in sorted(x for x in os.listdir(bdir) if x.endswith('.md')):
+            t = open(os.path.join(bdir, f), encoding='utf-8').read()
+            t = re.sub(r'^# ', '## ', t, count=1) if t.startswith('# ') else f'## {f[:-3]}\n\n' + t
+            parts.append(re.sub(r'(?m)^(#{2,5}) ', lambda m: '#' + m.group(1) + ' ', t, count=0) if False else t)
+        wr('guidelines/90-best-practice.md', rewrite('# Best practice by page type\n\n' + '\n\n---\n\n'.join(parts), '', 'best-practice'))
+
 # ── README ────────────────────────────────────────────────────────────────
 logo = BLOB['header/logo.svg']; logo_w = BLOB['footer/Metzler_Logo_footer.svg']
 README = f"""Metzler GmbH makes stainless-steel outdoor hardware — video intercoms (XDM10, VDM10, SDM10), mailboxes, parcel boxes, doorbells and house numbers — sold on edelstahl-tuerklingel.de. This system is the shop's UI: calm, precise, product first. Everything here comes from the Metzler UI Kit v1.9 and is the only source for Metzler web styles.
@@ -401,6 +429,7 @@ README = f"""Metzler GmbH makes stainless-steel outdoor hardware — video inter
 
 ## Building a page
 
+0. **Research first.** Read the „Shop: structure, services, tone of voice“, „Products“, „Competitors“ and „Best practice by page type“ chapters for the page you are making. Use only real products, prices (gross, „ab … €“), Art.-Nr., dimensions and colours from the Products chapters — never invent them.
 1. Start from a page blueprint (Sections and page blueprints chapter) and stack ready-made **Sections** (SupportKontakt, NeueFeatures, FAQ, ProductHero, XDM10Hero, SpecCallouts …) before designing anything new.
 2. **Header and Footer are fixed.** Copy the markup, CSS and script of `components/Header/preview.html` (plus `HeaderSticky`, `HeaderMobile`, `HeaderMegaMenu`) and `components/Footer/preview.html` **1:1** into every page, with their images from the Logos, Navigation, Payment & Shipping, Social and Awards & Reviews assets. Never redraw or re-implement them as a new component (no „SiteHeader“), never change their texts, links, order, sizes or colors. They match the live shop edelstahl-tuerklingel.de (checked 28–29 Sep 2026). The header's account and cart icons are the shop's own filled icons (`header-account.svg`, `header-basket.svg`, 25px, color-digital-black, teal on hover), not `icon-user` / `icon-basket` from the line-icon set; show no cart-count badge unless the design is explicitly about a filled cart. There is nothing else to look up: do not browse GitHub.
 3. Build everything else from the components (Button, FormElements, ProductCards, Tabs, Breadcrumbs, Alerts, Modal …) and `components/bundle.css` classes. Reuse the closest existing token or component; if something truly does not exist, ask instead of inventing a value.
