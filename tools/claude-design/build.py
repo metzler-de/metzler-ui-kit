@@ -208,6 +208,7 @@ for name, ch in SECT.items():
         if lang == 'css': css_parts.append(f'/* ── SECTIONS · {name} ── */\n' + code)
 footer_css = [c for l, c in blocks(FC['14 · Footer']) if l == 'css'][0]
 css_parts.append('/* ── Footer (FOR-CLAUDE §14) ── */\n' + footer_css)
+css_parts.append('/* ── Guard: dark components keep their inherited text color when the global p/li rules load (same specificity as p, so component classes still win) ── */\n:where(.ft, .site-footer) p, :where(.ft, .site-footer) li, :where(.ft, .site-footer) strong, :where(.ft, .site-footer) small { color: inherit; }\n')
 bundle = rewrite('\n'.join(css_parts), '', 'bundle.css')
 bundle = bundle.replace('</style', '<\\/style').replace('var(--color-teal-dark)', 'var(--color-teal-700)')
 # guard: selectors that would leak outside a component

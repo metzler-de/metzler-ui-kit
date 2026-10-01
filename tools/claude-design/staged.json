@@ -1558,5 +1558,685 @@
   "size": 50644,
   "type": "image/webp",
   "blob": "82248a2cc62ad89d26c7fd689df518df"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-amazon.svg",
+  "src": "footer/payment/pay-amazon.svg",
+  "size": 4721,
+  "type": "image/svg+xml",
+  "blob": "94877c38f82d35ee2a81fcfc4510cf32"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-amex.svg",
+  "src": "footer/payment/pay-amex.svg",
+  "size": 1877,
+  "type": "image/svg+xml",
+  "blob": "f586651c221e36561638cf648a5ac03b"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-apple.svg",
+  "src": "footer/payment/pay-apple.svg",
+  "size": 1827,
+  "type": "image/svg+xml",
+  "blob": "3f2c22649458983db2daaedc643a4aac"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-google.svg",
+  "src": "footer/payment/pay-google.svg",
+  "size": 1615,
+  "type": "image/svg+xml",
+  "blob": "9de61a4cd320d96d1494792337f87602"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-klarna.svg",
+  "src": "footer/payment/pay-klarna.svg",
+  "size": 1834,
+  "type": "image/svg+xml",
+  "blob": "4dbd543ecf7da48d06ca50ebd08e7dcc"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-mastercard.svg",
+  "src": "footer/payment/pay-mastercard.svg",
+  "size": 13430,
+  "type": "image/svg+xml",
+  "blob": "4a79e6a5cfafdd56078709fe3c9b890f"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-paypal.svg",
+  "src": "footer/payment/pay-paypal.svg",
+  "size": 4753,
+  "type": "image/svg+xml",
+  "blob": "99cf6878a18f6a8418c75901a91ac572"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-sepa.svg",
+  "src": "footer/payment/pay-sepa.svg",
+  "size": 6341,
+  "type": "image/svg+xml",
+  "blob": "435d11c4b4671a6e830a72c8fe24c9a8"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-visa.svg",
+  "src": "footer/payment/pay-visa.svg",
+  "size": 1282,
+  "type": "image/svg+xml",
+  "blob": "e2a09ec3bb652781e471169d209482f8"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-pay-vorkasse.svg",
+  "src": "footer/payment/pay-vorkasse.svg",
+  "size": 12049,
+  "type": "image/svg+xml",
+  "blob": "1c3a7a7bae7cc213dc2b3871d540899b"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-ship-dhl.svg",
+  "src": "footer/payment/ship-dhl.svg",
+  "size": 1435,
+  "type": "image/svg+xml",
+  "blob": "101b84b4410194e411ee82a866d6db6a"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-ship-dpd.svg",
+  "src": "footer/payment/ship-dpd.svg",
+  "size": 5285,
+  "type": "image/svg+xml",
+  "blob": "3676f43c5e3d0a40474979f4e101cc64"
+ },
+ {
+  "group": "Payment & Shipping",
+  "name": "footer-ship-hasenauer-koch.svg",
+  "src": "footer/payment/ship-hasenauer-koch.svg",
+  "size": 11245,
+  "type": "image/svg+xml",
+  "blob": "0e843a240f47be836e868f58f5adf5d7"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-google.svg",
+  "src": "footer/reviews/google.svg",
+  "size": 915,
+  "type": "image/svg+xml",
+  "blob": "57faa1f08800d262c06d97ac82f4d7dc"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-trustpilot.svg",
+  "src": "footer/reviews/trustpilot.svg",
+  "size": 339,
+  "type": "image/svg+xml",
+  "blob": "3624671d9d04123ca947466d10dd148a"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-ts-logo.png",
+  "src": "footer/reviews/ts-logo.png",
+  "size": 8263,
+  "type": "image/png",
+  "blob": "a8f59589c0820db76247532d80d6fe52"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-top-shop-2023.svg",
+  "src": "footer/topshop/top-shop-2023.svg",
+  "size": 28461,
+  "type": "image/svg+xml",
+  "blob": "a44251f964a3a5ee84ad3de445c67cdb"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-top-shop-2024.svg",
+  "src": "footer/topshop/top-shop-2024.svg",
+  "size": 28101,
+  "type": "image/svg+xml",
+  "blob": "3ad1d95f5a94106c6f8c19f9e8bf2c17"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-top-shop-2025.svg",
+  "src": "footer/topshop/top-shop-2025.svg",
+  "size": 27918,
+  "type": "image/svg+xml",
+  "blob": "a57acc36f2affe43a779d19bc9c839a9"
+ },
+ {
+  "group": "Awards & Reviews",
+  "name": "footer-top-shop.svg",
+  "src": "footer/topshop/top-shop.svg",
+  "size": 38117,
+  "type": "image/svg+xml",
+  "blob": "2c14400b6946f9c2c348bdc2dd61e3b2"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-poster-promo-briefkasten-v2.webp",
+  "src": "header/megamenu/posters/promo-briefkasten-v2.webp",
+  "size": 49624,
+  "type": "image/webp",
+  "blob": "003167aa690cfbd5dcae38c42c69b51a"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-poster-promo-paketbox-v2.webp",
+  "src": "header/megamenu/posters/promo-paketbox-v2.webp",
+  "size": 45452,
+  "type": "image/webp",
+  "blob": "9695726db99a85dfd2a1200fe924ba16"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-poster-promo-xdm10-v2.webp",
+  "src": "header/megamenu/posters/promo-xdm10-v2.webp",
+  "size": 56458,
+  "type": "image/webp",
+  "blob": "c063b33a6e0f1395a203fe2cce85d645"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-4g-kameras.webp",
+  "src": "header/megamenu/tiles/4g-kameras.webp",
+  "size": 7722,
+  "type": "image/webp",
+  "blob": "4a5498ab93041919e8732b157b327efb"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-akku-solar-und-kameraleuchten.webp",
+  "src": "header/megamenu/tiles/akku-solar-und-kameraleuchten.webp",
+  "size": 3236,
+  "type": "image/webp",
+  "blob": "57f441d0cc3ab43d5582d584bb8a33e2"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-alarmanlagen.webp",
+  "src": "header/megamenu/tiles/alarmanlagen.webp",
+  "size": 1852,
+  "type": "image/webp",
+  "blob": "b5b076920670abd04ffee9afc99c1ba1"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-anschlussdosen-zubehoer.webp",
+  "src": "header/megamenu/tiles/anschlussdosen-zubehoer.webp",
+  "size": 3136,
+  "type": "image/webp",
+  "blob": "d30d7052e2c2917904688da8471327a3"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-audio-tuersprechanlagen.webp",
+  "src": "header/megamenu/tiles/audio-tuersprechanlagen.webp",
+  "size": 2124,
+  "type": "image/webp",
+  "blob": "41c9c61995c53fdca112e9a0a48e875b"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-aufbewahrungen.webp",
+  "src": "header/megamenu/tiles/aufbewahrungen.webp",
+  "size": 7100,
+  "type": "image/webp",
+  "blob": "f6d898f44c8d145bd96ad65e0d99de4d"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-aufputz-tuerklingel.webp",
+  "src": "header/megamenu/tiles/aufputz-tuerklingel.webp",
+  "size": 2756,
+  "type": "image/webp",
+  "blob": "bd3d83a4b41504ca508b862e96b83403"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-beleuchtete-hausnummern.webp",
+  "src": "header/megamenu/tiles/beleuchtete-hausnummern.webp",
+  "size": 2538,
+  "type": "image/webp",
+  "blob": "b73ec7589a28a7c8959d5caa013eeab5"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkasten-funkklingel-sprechanlage.webp",
+  "src": "header/megamenu/tiles/briefkasten-funkklingel-sprechanlage.webp",
+  "size": 3230,
+  "type": "image/webp",
+  "blob": "9fb8db9079a444ee83f693f756f97ee8"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkasten-ohne-gravur.webp",
+  "src": "header/megamenu/tiles/briefkasten-ohne-gravur.webp",
+  "size": 1792,
+  "type": "image/webp",
+  "blob": "53a17f57896e3f92ca92ea80516c8907"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkasten-zubehoer.webp",
+  "src": "header/megamenu/tiles/briefkasten-zubehoer.webp",
+  "size": 2742,
+  "type": "image/webp",
+  "blob": "e3a153ab6bcacc892d59119ef1c811ce"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkasten-zweifamilienhaus.webp",
+  "src": "header/megamenu/tiles/briefkasten-zweifamilienhaus.webp",
+  "size": 2516,
+  "type": "image/webp",
+  "blob": "f48af500711a94671e944811528c9523"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkastenanlage.webp",
+  "src": "header/megamenu/tiles/briefkastenanlage.webp",
+  "size": 4974,
+  "type": "image/webp",
+  "blob": "6aaae1f24eeab7936a975c24a1ca9379"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkastenschilder.webp",
+  "src": "header/megamenu/tiles/briefkastenschilder.webp",
+  "size": 3732,
+  "type": "image/webp",
+  "blob": "a1377aa95678684302ee87bdd5228bf3"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-briefkastenstaender.webp",
+  "src": "header/megamenu/tiles/briefkastenstaender.webp",
+  "size": 1320,
+  "type": "image/webp",
+  "blob": "594fba184b44669cd6517e3bf5d05f1e"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-dual-objektiv-kameras.webp",
+  "src": "header/megamenu/tiles/dual-objektiv-kameras.webp",
+  "size": 1704,
+  "type": "image/webp",
+  "blob": "0be6dd141ac2f1d77b0a226caa29c692"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-easylink.webp",
+  "src": "header/megamenu/tiles/easylink.webp",
+  "size": 3346,
+  "type": "image/webp",
+  "blob": "a4a87e48e20df3c30da3d7a3bb668c43"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-ersatz-namensschilder.gif",
+  "src": "header/megamenu/tiles/ersatz-namensschilder.gif",
+  "size": 20846,
+  "type": "image/gif",
+  "blob": "d8f29e8e9969f3ee54adef840e98dba4"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-ersatzteile-zubehoer.webp",
+  "src": "header/megamenu/tiles/ersatzteile-zubehoer.webp",
+  "size": 2408,
+  "type": "image/webp",
+  "blob": "788d1f120f9a714ee7bed0e0978e80b6"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-ersatzteile-zubehoer_1.webp",
+  "src": "header/megamenu/tiles/ersatzteile-zubehoer_1.webp",
+  "size": 5060,
+  "type": "image/webp",
+  "blob": "12ca265bb3558472099a3f0e924a57fa"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-exklusiv-briefkasten.webp",
+  "src": "header/megamenu/tiles/exklusiv-briefkasten.webp",
+  "size": 3306,
+  "type": "image/webp",
+  "blob": "43e1c5675c77860589c761cca2e4e107"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-funkklingeln.webp",
+  "src": "header/megamenu/tiles/funkklingeln.webp",
+  "size": 5024,
+  "type": "image/webp",
+  "blob": "23a9104b63c099e0a5cb593e7a314365"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-gong.webp",
+  "src": "header/megamenu/tiles/gong.webp",
+  "size": 11344,
+  "type": "image/webp",
+  "blob": "991304da898d17aeec5a2a27f8c378b9"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-hausnummer-zubehoer.webp",
+  "src": "header/megamenu/tiles/hausnummer-zubehoer.webp",
+  "size": 7094,
+  "type": "image/webp",
+  "blob": "a13c7f06166c0dd9028d4b40791903ed"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-hausnummern-einzelne-ziffern.webp",
+  "src": "header/megamenu/tiles/hausnummern-einzelne-ziffern.webp",
+  "size": 6422,
+  "type": "image/webp",
+  "blob": "4253edbf97efcd1744dff0347984d603"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-hausnummernleuchten.webp",
+  "src": "header/megamenu/tiles/hausnummernleuchten.webp",
+  "size": 5100,
+  "type": "image/webp",
+  "blob": "5ee4a085655723d2f43cb544b7314efd"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-hausnummernschilder.webp",
+  "src": "header/megamenu/tiles/hausnummernschilder.webp",
+  "size": 3780,
+  "type": "image/webp",
+  "blob": "0252276d64c3c8efd543321aeab42c34"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-hochbeet.webp",
+  "src": "header/megamenu/tiles/hochbeet.webp",
+  "size": 9062,
+  "type": "image/webp",
+  "blob": "7ebbcf27620057642e2a84eabe7e0c9a"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-innenstationen.webp",
+  "src": "header/megamenu/tiles/innenstationen.webp",
+  "size": 5418,
+  "type": "image/webp",
+  "blob": "1825856ee9488e11025815d19cd89eb6"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-ip-kamera-sets.webp",
+  "src": "header/megamenu/tiles/ip-kamera-sets.webp",
+  "size": 4248,
+  "type": "image/webp",
+  "blob": "cbc5f609954948f6dee9013934114caa"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-ip-kameras.webp",
+  "src": "header/megamenu/tiles/ip-kameras.webp",
+  "size": 1942,
+  "type": "image/webp",
+  "blob": "056fd80e85540b9c0d12c6f386db134b"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-maehrobotergaragen.webp",
+  "src": "header/megamenu/tiles/maehrobotergaragen.webp",
+  "size": 9664,
+  "type": "image/webp",
+  "blob": "b8f9c4496ee0a8ae6be125c002ed236b"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-mehrfamilien-klingel.webp",
+  "src": "header/megamenu/tiles/mehrfamilien-klingel.webp",
+  "size": 5310,
+  "type": "image/webp",
+  "blob": "9390f65dc0a41c503b9055741a67e70e"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-metzler-24v-garten-lichtsystem-steinel.webp",
+  "src": "header/megamenu/tiles/metzler-24v-garten-lichtsystem-steinel.webp",
+  "size": 1188,
+  "type": "image/webp",
+  "blob": "588e880a01d67f2bb6898920a3536fbb"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-muelltonnenbox-fuer-1-tonne.webp",
+  "src": "header/megamenu/tiles/muelltonnenbox-fuer-1-tonne.webp",
+  "size": 2232,
+  "type": "image/webp",
+  "blob": "2d833966f875365bbb065fa895c289e8"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-muelltonnenbox-fuer-2-tonnen.webp",
+  "src": "header/megamenu/tiles/muelltonnenbox-fuer-2-tonnen.webp",
+  "size": 3034,
+  "type": "image/webp",
+  "blob": "dcc850fdbb9a0c5ea1121a9222217b6e"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-muelltonnenbox-fuer-3-tonnen.webp",
+  "src": "header/megamenu/tiles/muelltonnenbox-fuer-3-tonnen.webp",
+  "size": 3392,
+  "type": "image/webp",
+  "blob": "057918b5e78a90b0e422911480ab8310"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-muelltonnenbox-fuer-4-tonnen.webp",
+  "src": "header/megamenu/tiles/muelltonnenbox-fuer-4-tonnen.webp",
+  "size": 3342,
+  "type": "image/webp",
+  "blob": "42709b3a6d1f70592fed42e0365984fd"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-muelltonnenbox-fuer-5-tonnen.webp",
+  "src": "header/megamenu/tiles/muelltonnenbox-fuer-5-tonnen.webp",
+  "size": 2932,
+  "type": "image/webp",
+  "blob": "fa354657dd629af4740b7165dcaa65e5"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-namensschilder.webp",
+  "src": "header/megamenu/tiles/namensschilder.webp",
+  "size": 2700,
+  "type": "image/webp",
+  "blob": "eff851fd76aded84f29b85062349061c"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-paketboxen-beleuchtet.webp",
+  "src": "header/megamenu/tiles/paketboxen-beleuchtet.webp",
+  "size": 15382,
+  "type": "image/webp",
+  "blob": "7ceb379da9cd610e1abf0b7c856e36be"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-paketboxen-mit-gravur.webp",
+  "src": "header/megamenu/tiles/paketboxen-mit-gravur.webp",
+  "size": 2968,
+  "type": "image/webp",
+  "blob": "023568b6d1ab5c91cb0ef3cf0369f1ca"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-paketboxen-mit-klingel-sprechanlage.webp",
+  "src": "header/megamenu/tiles/paketboxen-mit-klingel-sprechanlage.webp",
+  "size": 6920,
+  "type": "image/webp",
+  "blob": "a45fbc42213fbc0c5531a4599334ace9"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-paketboxen-ohne-gravur.webp",
+  "src": "header/megamenu/tiles/paketboxen-ohne-gravur.webp",
+  "size": 2216,
+  "type": "image/webp",
+  "blob": "1d121ba646e695b556859a736e8ff949"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-paketboxen.webp",
+  "src": "header/megamenu/tiles/paketboxen.webp",
+  "size": 3534,
+  "type": "image/webp",
+  "blob": "57a06fbe06c969eb4de5793bc31b416d"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-plug-shine-gartenbeleuchtung.webp",
+  "src": "header/megamenu/tiles/plug-shine-gartenbeleuchtung.webp",
+  "size": 27846,
+  "type": "image/webp",
+  "blob": "b9756d3d282e552ead99adefec6a8b49"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-schriftzuege.webp",
+  "src": "header/megamenu/tiles/schriftzuege.webp",
+  "size": 4472,
+  "type": "image/webp",
+  "blob": "2948b5c59bbcdf4177fd595fc77b4aff"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-sensoren-zubehoer.webp",
+  "src": "header/megamenu/tiles/sensoren-zubehoer.webp",
+  "size": 3230,
+  "type": "image/webp",
+  "blob": "f671985c987e30f7839e0ed4a0999469"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-sprechanlage-briefkasten.webp",
+  "src": "header/megamenu/tiles/sprechanlage-briefkasten.webp",
+  "size": 3396,
+  "type": "image/webp",
+  "blob": "2e17250bf09ea5b8145b57d3ee2cb4be"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-sprechanlagen-sets.webp",
+  "src": "header/megamenu/tiles/sprechanlagen-sets.webp",
+  "size": 6892,
+  "type": "image/webp",
+  "blob": "c4ba0ab2696dab190405f7f4877c6400"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-standbriefkasten-sets.webp",
+  "src": "header/megamenu/tiles/standbriefkasten-sets.webp",
+  "size": 2928,
+  "type": "image/webp",
+  "blob": "11e288e36939df222308f4e5831e4be3"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-steckdosensaeulen.webp",
+  "src": "header/megamenu/tiles/steckdosensaeulen.webp",
+  "size": 1510,
+  "type": "image/webp",
+  "blob": "f06c4133c393994050e9f916bcfb4a0d"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-strahler-spots-wegeleuchten.webp",
+  "src": "header/megamenu/tiles/strahler-spots-wegeleuchten.webp",
+  "size": 2394,
+  "type": "image/webp",
+  "blob": "1b8576c942533f9aa329e7979c7e47b5"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-tuerklingel-weiterleitung.webp",
+  "src": "header/megamenu/tiles/tuerklingel-weiterleitung.webp",
+  "size": 3124,
+  "type": "image/webp",
+  "blob": "4c7ad7b5037e0ed6f669cdbe4de05752"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-tuerklingel-zubehoer.webp",
+  "src": "header/megamenu/tiles/tuerklingel-zubehoer.webp",
+  "size": 5368,
+  "type": "image/webp",
+  "blob": "9063f28501a37bef3cdc8fb011476c77"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-unterputz-briefkaesten.webp",
+  "src": "header/megamenu/tiles/unterputz-briefkaesten.webp",
+  "size": 2022,
+  "type": "image/webp",
+  "blob": "aeb47b0b7cf40aabcd04dabe4fc2ae19"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-unterputz-tuerklingeln.webp",
+  "src": "header/megamenu/tiles/unterputz-tuerklingeln.webp",
+  "size": 4218,
+  "type": "image/webp",
+  "blob": "fd5172a6c048c77d58f2bbb3c3b33f3e"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-vdm10-zubehoer.webp",
+  "src": "header/megamenu/tiles/vdm10-zubehoer.webp",
+  "size": 2978,
+  "type": "image/webp",
+  "blob": "23711d533c63d5056af02f7717075b4e"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-video-tuersprechanlagen.webp",
+  "src": "header/megamenu/tiles/video-tuersprechanlagen.webp",
+  "size": 2822,
+  "type": "image/webp",
+  "blob": "570889898105b288ac4ccb80ad376542"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-videorekorder.webp",
+  "src": "header/megamenu/tiles/videorekorder.webp",
+  "size": 3680,
+  "type": "image/webp",
+  "blob": "fcda417e06c50d27e65ab14a90be65e0"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-wand-deckenleuchten.webp",
+  "src": "header/megamenu/tiles/wand-deckenleuchten.webp",
+  "size": 1418,
+  "type": "image/webp",
+  "blob": "d721970462ce3f8b9897470110d23221"
+ },
+ {
+  "group": "Navigation",
+  "name": "mm-wlan-kameras.webp",
+  "src": "header/megamenu/tiles/wlan-kameras.webp",
+  "size": 2206,
+  "type": "image/webp",
+  "blob": "1173fa6f21cea2be3b3e85c358755d04"
  }
 ]
