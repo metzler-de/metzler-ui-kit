@@ -1,7 +1,7 @@
 # Metzler Design System (UI Kit)
 
 **The only design system for Metzler web work** — styles, tokens, header, footer, components, sections, icons and brand rules.
-Current version: **v1.13 · 2026-10-01** (history in [`CHANGELOG.md`](CHANGELOG.md)).
+Current version: **v1.14 · 2026-10-01** (history in [`CHANGELOG.md`](CHANGELOG.md)).
 
 - Claude Design: https://claude.ai/artifact/GmM9m9zSAbikHUorc4dJ3H
 - Repo: https://github.com/metzler-de/metzler-ui-kit
@@ -23,6 +23,7 @@ Current version: **v1.13 · 2026-10-01** (history in [`CHANGELOG.md`](CHANGELOG.
 | `ICONS.md` | All icons as SVG |
 | `BRANDBOOK.md` | Text version of the brandbook, for compliance checks |
 | `CLAUDE.md` | Rules Claude follows when working in this folder |
+| `tools/claude-code/metzler-anschlussschema/` | Claude skill: correct wiring diagrams (Anschlussschemata) as PDF in the kit style; kit section `#anschlussschemata` |
 
 ## Use it on a page
 

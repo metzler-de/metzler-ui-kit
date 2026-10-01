@@ -1,6 +1,6 @@
 # Metzler Design System — Brandbook (BRANDBOOK.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/brandbook.html), Stand 2026-10-01, Kit-Version v1.13 (Inhalt unverändert seit v1.8).
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/brandbook.html), Stand 2026-10-01, Kit-Version v1.14 (Inhalt unverändert seit v1.8).
 > Textfassung von brandbook.html: Logo-Regeln (inkl. Incorrect Usage), Farben, Typografie, Grid/Whitespace, Imagery, Do/Don't Quick Reference. Für Compliance-Prüfungen gedacht: Was hier als Don't steht, darf nie generiert werden.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 

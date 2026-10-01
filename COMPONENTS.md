@@ -1,6 +1,6 @@
 # Metzler Design System — Component Catalog (COMPONENTS.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-10-01, Kit-Version v1.13.
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-10-01, Kit-Version v1.14.
 > Vollständige Komponenten-Doku der ComponentsPage: alle 31 Kapitel mit Regeln, HTML-Beispielen und CSS-Definitionen.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 
@@ -2791,3 +2791,17 @@ Live component: `header/preview.html` (hover a category; standalone Briefkästen
 
 ## Footer · Mobile
 Same content, stacked (< 62rem / 992 px): brand block → Kontakt → Informationen / Service as accordions → Versandpartner → Bezahlen → Bewertungs-Pill → Social icons → Rechtliches + „Vertrag widerrufen“ → „* inkl. gesetzliche MwSt., zzgl. Versand / © 2013 - <Jahr> | Metzler GmbH“. Same file, same §14 export.
+
+## Anschlussschemata
+Tools section (`#anschlussschemata`, nav group „Tools“) for the Claude skill **metzler-anschlussschema** in `tools/claude-code/metzler-anschlussschema/`.
+- **What the skill does:** creates technically correct wiring diagrams for XDM10, VDM10 2.0, ADM10 and SDM10 as vector PDF + SVG in the kit style.
+- **Gallery:** the 5 reference schemes from the skill's `beispiele/`. Each card has:
+  - an SVG thumbnail on Paper,
+  - the system label (0.75rem, 700, Teal, caps),
+  - the title (1rem, 700),
+  - a meta line (0.875rem, Graphite 700),
+  - the arrow link „PDF öffnen“.
+
+  The whole card opens the PDF. Hover = Teal border, no lift.
+- **Below the gallery:** 4 workflow steps (ordered list with Teal counter), an example request in a code card, and the systems table (System · Verkabelung · Zentrale · Wichtigste Regel).
+- **Rules for Claude:** FOR-CLAUDE.md §21.

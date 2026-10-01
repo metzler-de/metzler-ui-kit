@@ -1,6 +1,6 @@
 # Metzler Design System — Claude Page Brief
 
-> Kit-Version **v1.13** · 2026-10-01 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
+> Kit-Version **v1.14** · 2026-10-01 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
 
 Claude reads this file directly from the kit folder (`~/Documents/Claude/Projects/Metzler UI Kit`) before building any Metzler page, section or component. No pasting needed.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.
@@ -1611,3 +1611,34 @@ Key rules:
 - `max-width: 54rem` on `.faq-list` is correct per design system — do not change it
 - Question: `font-size: 1.125rem; font-weight: 700` — NEVER 1rem/600
 - Answer: `font-size: 1rem; color: var(--color-graphite-700)` — 1rem is correct, g-700 is correct here
+
+---
+
+## 21 · Anschlussschemata — Claude skill `metzler-anschlussschema`
+
+Wiring diagrams (Anschlussschemata, Anschlusspläne, Verdrahtungspläne) for Metzler intercoms are **never drawn freehand**. Use the skill in `tools/claude-code/metzler-anschlussschema/`. It is installed like `metzler-web`: symlink it into `~/.claude/skills/`. Kit page: section `#anschlussschemata`.
+
+- **Systems:** XDM10 2-Draht-BUS, VDM10 2.0 (2-Draht IP and LAN/PoE), ADM10, SDM10 – also Paketbox and Briefkasten with intercom.
+- **Output:**
+  - Vector PDF + SVG, 1280 px canvas.
+  - Kit tokens only, type scale 30 · 24 · 20 · 18 · 16 · 14 · 12 px.
+  - German copy.
+  - Footer with source and „Arbeiten an 230 V nur durch eine Elektrofachkraft.“
+- **Cable colours:**
+
+  | Line | Drawn as |
+  |---|---|
+  | 2-Draht | red + yellow pair |
+  | RS-485 | green + white pair |
+  | LAN | blue cable with RJ45 plug |
+  | DC | red + / black − |
+  | 230 V | brown L / blue N |
+  | WLAN | teal dashed |
+
+- **Rules with sources:** `references/systeme.md`. Examples:
+  - VDM10 2-Draht: the door station always goes on CH6.
+  - XDM10: max. 4 indoor stations per PSU36.
+  - SDM10: never PoE at the door station.
+  - Sicherheitsmodul: 12 V DC door openers only, and it is the last device on the RS-485 bus.
+- **Devices:** only from `scripts/devices.py` (real proportions, shop look); catalogue in `references/geraete.md`.
+- **Examples:** `beispiele/` holds 5 reference schemes as PDF, SVG and PNG.

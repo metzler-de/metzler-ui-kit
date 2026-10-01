@@ -196,9 +196,10 @@
 
     // ── CHANGELOG — update this on every push ──
     const CHANGELOG = {
-      version: '1.13',
+      version: '1.14',
       date: '2026-10-01',
       entries: [
+        { type: 'new', text: 'Tools · Anschlussschemata: Claude skill metzler-anschlussschema (tools/claude-code/) creates correct wiring diagrams for XDM10, VDM10 2.0, ADM10 and SDM10 as vector PDF in the kit style; gallery of the 5 reference schemes, steps, example request, systems table; for-claude §18, FOR-CLAUDE.md §21' },
         { type: 'improved', text: 'Header mega menu synced 1:1 with edelstahl-tuerklingel.de: all 9 menus with the shop tiles (square image box, 2-line label, teal border tint + soft shadow on hover, no lift), promo posters for Briefkästen, Paketboxen and Sprechanlagen, Mülltonnenboxen menu added, 85 shop images copied into header/megamenu/ and footer/' },
         { type: 'improved', text: 'Header content inset now as on the shop: max 1600px, 100px side inset, 50px up to 1400px (was 40px up to 1199px)' },
         { type: 'improved', text: 'Footer rebuilt 1:1 from the live shop (desktop + mobile, checked element by element at 1440px and 375px): new sizes and greys, logo tiles 52×33, rating pill with 4 sources, button row, mobile layout below 62rem. Now one file, footer/preview.html, exported in FOR-CLAUDE.md §14' },
@@ -421,6 +422,8 @@
       { type:"item",  label:"Header · Sticky",   id:"header-sticky" },
       { type:"item",  label:"Footer",            id:"footer" },
       { type:"item",  label:"Footer · Mobile",   id:"footer-mobile" },
+      { type:"group", label:"Tools" },
+      { type:"item",  label:"Anschlussschemata", id:"anschlussschemata" },
     ];
     const allNavItems = navItems.filter(n=>n.type==="item");
 
@@ -13934,6 +13937,11 @@ cursor: pointer;
             <Lead>Stacked mobile footer (375px): contact block, Informationen / Service accordions, shipping + payment logos, rating pill, social icons, legal links.</Lead>
             <MobileFooterSection />
 
+            {/* ANSCHLUSSSCHEMATA — Tools */}
+            <SH1 id="anschlussschemata">Anschlussschemata</SH1>
+            <Lead>Claude-Skill <strong>metzler-anschlussschema</strong>: erstellt technisch korrekte Anschlussschemata für Metzler-Sprechanlagen als <strong>PDF</strong>. Die Geräte erscheinen in echten Proportionen und in Shop-Optik, die Leitungen sind farbcodiert, die Klemmen beschriftet, alles im Stil dieses Kits. Die Anschlussregeln stammen aus allen Metzler-Anleitungen für XDM10, VDM10 2.0, ADM10 und SDM10.</Lead>
+            <AnschlussschemataSection />
+
             <div style={{marginTop:60,paddingTop:40,borderTop:`1px solid ${T.g200}`}}>
               <div style={{fontSize:T.fXs,color:T.g500,fontFamily:font}}>
                 Metzler Design System v{CHANGELOG.version} · Last updated {CHANGELOG.date} 
@@ -13945,6 +13953,153 @@ cursor: pointer;
           </div>}{/* /content wrapper */}
         </div>
         </MobCtx.Provider>
+      );
+    };
+
+    // ── ANSCHLUSSSCHEMATA — Claude-Skill metzler-anschlussschema (tools/claude-code/) ──
+    // Doc section "Tools · Anschlussschemata". Examples are the skill's own reference
+    // schemes, so a rebuild of beispiele/ updates this section automatically.
+    const ANSCHLUSS_DIR = 'tools/claude-code/metzler-anschlussschema/beispiele/';
+    const ANSCHLUSS_SCHEMES = [
+      { base:'xdm10-einfamilienhaus-tueroeffner',          system:'XDM10 · 2-Draht-BUS',    title:'Einfamilienhaus mit Türöffner',
+        meta:'MAXIOR · Verteiler VT4 + PSU36 · 2 Innenstationen in Reihe · Sicherheitsmodul' },
+      { base:'xdm10-mehrfamilienhaus-stockwerksverteiler', system:'XDM10 · 2-Draht-BUS',    title:'Mehrfamilienhaus mit Stockwerksverteiler',
+        meta:'MAXIOR 3 Taster · XDM10-VT8 + 48 V 150 W · 4 Innenstationen' },
+      { base:'vdm10-2-draht-ip-stern',                     system:'VDM10 2.0 · 2-Draht IP', title:'Sternverkabelung am Verteiler VT6',
+        meta:'Türstation an CH6 · 3 Innenstationen an CH1–CH3 · 24-V-Transformator' },
+      { base:'vdm10-lan-poe',                              system:'VDM10 2.0 · LAN/PoE',    title:'Netzwerk mit PoE-Switch',
+        meta:'Innenstationen Home, Pro und Ultra · Router für die App · Türöffner mit Netzteil' },
+      { base:'sdm10-lan-sicherheitsmodul',                 system:'SDM10',                  title:'Gesichtserkennung mit Sicherheitsmodul',
+        meta:'12-V-Netzteil · LAN zum PoE-Switch · Türöffner über RS-485' },
+    ];
+
+    const AnschlussschemataSection = () => {
+      const { mob } = useContext(MobCtx);
+      const BH = ({children}) => (
+        <h3 style={{fontSize:T.fH4,fontWeight:700,color:T.black,fontFamily:font,margin:'2rem 0 0.625rem'}}>{children}</h3>
+      );
+      const BD = ({children}) => (
+        <p style={{fontSize:T.fSm,color:T.g700,fontFamily:font,margin:'0 0 1rem',lineHeight:1.6}}>{children}</p>
+      );
+      const Chip = ({children}) => (
+        <code style={{fontSize:T.fXs,background:T.teal50,color:T.teal,borderRadius:T.rSm,padding:'0.0625rem 0.3125rem',fontFamily:'monospace'}}>{children}</code>
+      );
+      const Card = ({children, code, lang}) => (
+        <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',marginBottom:'1.5rem'}}>
+          <div style={{padding:mob?'1.25rem':'1.5rem 2rem',background:T.white}}>{children}</div>
+          {code && <CodeBlock inline lang={lang} code={code}/>}
+        </div>
+      );
+
+      // Scheme card — the whole card opens the PDF; hover = teal border + kit arrow link (no lift)
+      const SchemeCard = ({s}) => {
+        const [hov, setHov] = useState(false);
+        return (
+          <a href={ANSCHLUSS_DIR + s.base + '.pdf'} target="_blank" rel="noopener noreferrer"
+            onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+            style={{display:'flex',flexDirection:'column',background:T.white,borderRadius:T.rLg,overflow:'hidden',
+              border:`0.0625rem solid ${hov ? T.teal : T.g200}`,textDecoration:'none',fontFamily:font,
+              transition:'border-color 0.2s ease'}}>
+            <span style={{display:'block',aspectRatio:'16 / 15',background:T.paper,borderBottom:`0.0625rem solid ${T.g200}`}}>
+              <img src={ANSCHLUSS_DIR + s.base + '.svg'} alt={'Anschlussschema ' + s.system + ': ' + s.title} loading="lazy"
+                style={{display:'block',width:'100%',height:'100%',objectFit:'contain'}}/>
+            </span>
+            <span style={{display:'flex',flexDirection:'column',gap:'0.25rem',padding:'1rem 1.25rem 1.25rem',flex:1}}>
+              <span style={{fontSize:T.fXs,fontWeight:700,color:T.teal,textTransform:'uppercase',letterSpacing:'0.08em'}}>{s.system}</span>
+              <b style={{fontSize:T.fBody,fontWeight:700,color:T.dBlack,lineHeight:1.35}}>{s.title}</b>
+              <span style={{fontSize:T.fSm,color:T.g700,lineHeight:1.5}}>{s.meta}</span>
+              <span style={{display:'inline-flex',alignItems:'center',gap:'0.375rem',marginTop:'auto',paddingTop:'0.75rem',fontSize:T.fSm,color:T.teal}}>
+                <span style={{textDecoration:hov?'underline':'none',textUnderlineOffset:'0.2em'}}>PDF öffnen</span>
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none"
+                  style={{transition:'transform 0.2s cubic-bezier(0.34,1.56,0.64,1)',transform:hov?'translateX(0.25rem)':'translateX(0)',flexShrink:0}}>
+                  <path d="M1 6h12M7 1l6 5-6 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </span>
+          </a>
+        );
+      };
+
+      const steps = [
+        <>Claude Code im Ordner <Chip>Metzler UI Kit</Chip> öffnen und das Schema beschreiben – Produkt oder Shop-Link, Wohnungen und Innenstationen, Türöffner, Extras.</>,
+        <>Claude ordnet das System zu und prüft alle Anschlussregeln und Grenzwerte aus den Metzler-Anleitungen. Ist ein Wunsch so nicht zulässig, kommt ein korrekter Gegenvorschlag.</>,
+        <>Geräte in echten Proportionen, farbcodierte Leitungen, Klemmen, Schritte und Hinweise entstehen im Stil dieses Kits und werden automatisch auf Überlappungen geprüft.</>,
+        <>Ergebnis: Vektor-PDF mit eingebetteten Schriften (druckt auf A3) und SVG im Arbeitsordner.</>,
+      ];
+
+      const cols = ['System', 'Verkabelung', 'Zentrale', 'Wichtigste Regel'];
+      const systems = [
+        ['XDM10 · 2-Draht-BUS',    '1 Aderpaar, Innenstationen in Reihe (max. 4)', 'VT4 + PSU36 · VT8 + 150 W · Stockwerksverteiler', 'max. 4 Innenstationen je PSU36, keine Netzwerkkabel'],
+        ['VDM10 2.0 · 2-Draht IP', 'sternförmig, 1 Aderpaar je Gerät',             'VDM10-VT6-2.0 + Trafo 24 V DC 36 W',              'Türstation immer an CH6'],
+        ['VDM10 2.0 · LAN/PoE',    'Netzwerkkabel je Gerät',                       'PoE-Switch (IEEE 802.3af)',                       'CAT5e bis 60 m, ab CAT6 bis 100 m'],
+        ['ADM10 · Audio',          'wie VDM10 2.0 (2-Draht IP oder LAN/PoE)',      'wie VDM10 2.0',                                   'Innenstation ADM10 Home 7″'],
+        ['SDM10',                  'LAN, Innenstationen per PoE',                  'SDM10-TRAFO 12 V DC + PoE-Switch',                'kein PoE an der Türstation'],
+      ];
+
+      return (
+        <div style={{fontFamily:font}}>
+          {/* GALLERY — the 5 reference schemes */}
+          <Preview>
+            <div style={{display:'grid',gap:'1rem',gridTemplateColumns:mob?'1fr':'repeat(auto-fill, minmax(17.5rem, 1fr))'}}>
+              {ANSCHLUSS_SCHEMES.map(s => <SchemeCard key={s.base} s={s}/>)}
+            </div>
+          </Preview>
+
+          {/* HOW IT WORKS */}
+          <BH>So entsteht ein Schema</BH>
+          <ol style={{listStyle:'none',padding:0,margin:'0 0 1.5rem'}}>
+            {steps.map((it,i)=>(
+              <li key={i} style={{display:'flex',alignItems:'baseline',gap:'0.875rem',padding:'0.3rem 0',
+                fontFamily:font,fontSize:T.fBody,color:T.g900,lineHeight:1.5}}>
+                <span style={{flexShrink:0,minWidth:'1.5rem',fontFamily:'monospace',fontSize:T.f13,fontWeight:700,color:T.teal}}>{String(i+1).padStart(2,'0')}</span>
+                <span>{it}</span>
+              </li>
+            ))}
+          </ol>
+          <Card lang="Beispiel-Anfrage" code={`Erstelle ein Anschlussschema als PDF für die VDM10 2.0 Kian
+mit 2 Klingeltastern im 2-Draht-IP-System. Zwei Innenstationen
+Home 7″ weiß, Türöffner über das Sicherheitsmodul, Router für die App.`}>
+            <BD>Die Anfrage darf frei formuliert sein, auf Deutsch oder Englisch. Fehlt etwas Wichtiges, fragt Claude nach. Sonst nimmt Claude sinnvolle Standards und nennt sie im Schema.</BD>
+          </Card>
+
+          {/* SYSTEMS */}
+          <BH>Abgedeckte Systeme</BH>
+          <BD>Regeln und Grenzwerte stammen aus 57 Anleitungen und Datenblättern im Shop (Stand 09/2026). Widersprüche zwischen den Dokumenten sind im Skill dokumentiert und entschieden.</BD>
+          <div style={{border:`0.0625rem solid ${T.g200}`,borderRadius:T.rLg,overflow:'hidden',overflowX:'auto',marginBottom:'1.5rem'}}>
+            <table style={{width:'100%',borderCollapse:'collapse',fontFamily:font,minWidth:'45rem'}}>
+              <thead>
+                <tr style={{borderBottom:`0.0625rem solid ${T.g200}`}}>
+                  {cols.map((c,i)=>(
+                    <th key={c} style={{padding:'0.75rem 1rem',textAlign:'left',fontSize:T.fSm,fontWeight:700,color:T.black,
+                      whiteSpace:'nowrap',background:T.g100,height:'3rem',boxSizing:'border-box',
+                      borderRight: i < cols.length-1 ? `0.0625rem solid ${T.g200}` : 'none'}}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {systems.map((row,ri)=>(
+                  <tr key={ri} style={{borderBottom: ri < systems.length-1 ? `0.0625rem solid ${T.g100}` : 'none',background:T.white}}>
+                    {row.map((cell,ci)=>(
+                      <td key={ci} style={{padding:'0.75rem 1rem',fontSize:T.fSm,lineHeight:1.45,verticalAlign:'top',
+                        color: ci===0 ? T.dBlack : T.g700, fontWeight: ci===0 ? 700 : 400, whiteSpace: ci===0 ? 'nowrap' : 'normal',
+                        borderRight: ci < row.length-1 ? `0.0625rem solid ${T.g100}` : 'none'}}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* FOR CLAUDE / DEVELOPERS */}
+          <BH>Skill im Kit</BH>
+          <Card lang="Ordner" code={`tools/claude-code/metzler-anschlussschema/
+  SKILL.md        Ablauf und Regeln, die nie gebrochen werden
+  references/     systeme · stil · geraete · quellen
+  scripts/        build.py · scheme.py · devices.py · referenz.py
+  beispiele/      5 Referenzschemata als PDF · SVG · PNG`}>
+            <BD>Der Skill liegt im Kit unter <Chip>tools/claude-code/metzler-anschlussschema/</Chip> und wird wie <Chip>metzler-web</Chip> nach <Chip>~/.claude/skills/</Chip> verlinkt. Neue Regeln, Geräte oder Beispiele werden dort mit Quelle nachgetragen; diese Galerie zeigt immer den aktuellen Stand von <Chip>beispiele/</Chip>.</BD>
+          </Card>
+        </div>
       );
     };
 
@@ -14279,6 +14434,15 @@ cursor: pointer;
         'Fetch that file before building any page with more than one content section. It contains, with exact markup and CSS:',
         '01 Support & Kontakt · 02 Neue Features grid · 03 Türöffnungsmöglichkeiten slider · 04 FAQ (+ 04b dark, 04c split with Beratung card) · 05 Gesichtserkennung process · 06 Editorial Q&A · 07 Product Hero · 08 Feature Detail · 09 Feature Duo · 10 XDM10 Hero (dark) · 11 In drei Schritten · 12 Technische Daten spec-callouts · 13 About Hero (split) · 14 Craft Story (image/text)',
         'It also defines page blueprints (which sections stack, in which order, for a PDP vs. a campaign landing page vs. an Über-uns page) and a maintenance protocol. Pick sections from there instead of inventing new ones; only design a new section if nothing there fits.',
+        '',
+        '---',
+        '## 18 · Anschlussschemata — Claude skill metzler-anschlussschema',
+        'Wiring diagrams (Anschlussschemata) for Metzler intercoms are made with the skill in tools/claude-code/metzler-anschlussschema/ (symlink it into ~/.claude/skills/ like metzler-web). Never draw a scheme freehand.',
+        'Use it for: Anschlussschema, Anschlussplan, Verdrahtungsplan, Schaltplan, wiring diagram — XDM10 2-Draht-BUS, VDM10 2.0 (2-Draht IP, LAN/PoE), ADM10, SDM10, Paketbox and Briefkasten with intercom.',
+        'Output: vector PDF + SVG, 1280 px canvas, kit tokens only, type scale 30/24/20/18/16/14/12 px, German copy, footer with source and "Arbeiten an 230 V nur durch eine Elektrofachkraft."',
+        'Cable colours: 2-Draht red + yellow · RS-485 green + white · LAN blue with RJ45 plug · DC red + / black − · 230 V brown L / blue N · WLAN teal dashed.',
+        'Wiring rules with sources: references/systeme.md (e.g. VDM10 2-Draht door station always on CH6, XDM10 max. 4 indoor stations per PSU36, SDM10 never PoE at the door station, Sicherheitsmodul only 12 V DC door openers).',
+        'Examples: tools/claude-code/metzler-anschlussschema/beispiele/ (5 reference schemes as PDF + SVG); kit page section #anschlussschemata.',
       ].join('\n');
     })();
   </script>

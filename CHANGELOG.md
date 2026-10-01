@@ -2,6 +2,16 @@
 
 The kit (`index.html`) is the source of truth. Bump `CHANGELOG.version` in `index.html` and add a section here on every change.
 
+## v1.14 · 2026-10-01
+- **New: Tools · Anschlussschemata** — the Claude skill `metzler-anschlussschema` (`tools/claude-code/metzler-anschlussschema/`, symlinked into `~/.claude/skills/` like `metzler-web`) creates technically correct wiring diagrams for Metzler intercoms as vector PDF + SVG:
+  - Devices drawn to scale from the shop photos.
+  - Colour-coded cables and labelled terminals.
+  - An info band with steps, notes and a legend.
+  - Wiring rules from all 57 Metzler manuals and data sheets, with sources and a list of the contradictions between them.
+- New kit section `#anschlussschemata` (nav group „Tools“): the 5 reference schemes (each opens its PDF), the workflow, an example request and the covered systems. The gallery reads the skill's `beispiele/` directly.
+- The hidden for-claude block §18 and FOR-CLAUDE.md §21 tell Claude to use the skill. README, CLAUDE.md and COMPONENTS.md point to it.
+- Version v1.14 everywhere (kit, tokens, .md exports).
+
 ## v1.13 · 2026-10-01
 - **Header mega menu synced 1:1 with edelstahl-tuerklingel.de** (`header/preview.html`): all 9 menus with the shop's tiles and links (Briefkästen 11 · Paketboxen 5 · Mülltonnenboxen 6 · Sprechanlagen 8 · Sicherheitstechnik 9 · Türklingeln 7 · Hausnummern 6 · Außenleuchten 7 · Garten 4). Square image box with graphite-100 border, 2-line label, hover = teal border tint + soft shadow (no lift, the old image lift is gone), promo posters for Briefkästen, Paketboxen and Sprechanlagen. Mülltonnenboxen menu was missing and is added. Panel heights match the shop exactly. `header/preview-megamenu.html` regenerated with the same design.
 - **Header inset as on the shop:** rows max 1600px, 100px side inset, 50px up to 1400px (was 40px up to 1199px); menu underline without scale animation.
