@@ -1,6 +1,6 @@
 /**
  * Metzler Design System — Design Tokens
- * Version: 1.12 (kit version; history in CHANGELOG.md)
+ * Version: 1.13 (kit version; history in CHANGELOG.md)
  * Font: Helvetica Neue on macOS / iOS / Linux, Arial on Windows (system stacks — no @font-face)
  * Base: 16px = 1rem
  *
@@ -194,6 +194,14 @@
 
   --color-black:  #000000;
   --color-white:  #FFFFFF;
+
+
+  /* ─────────────────────────────────────────
+     COLORS — FOOTER (on --color-teal-700, as on the live shop)
+  ───────────────────────────────────────── */
+
+  --color-footer-muted: #99A9AA;   /* footer secondary text, links, labels (= white 60 % on teal-700) */
+  --color-footer-line:  #1A3E3F;   /* footer divider lines (= white 10 % on teal-700) */
 
 
   /* ─────────────────────────────────────────

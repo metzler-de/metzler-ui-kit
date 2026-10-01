@@ -22,12 +22,12 @@
       transition: opacity 0.3s;
     }
     .hdr-row1-inner {
-      max-width: none; margin: 0 auto;
-      padding: 0 24px; height: 36px;
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 20px; height: 36px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    @media(min-width:1024px){ .hdr-row1-inner { padding: 0 40px; } }
-    @media(min-width:1200px){ .hdr-row1-inner { padding: 0 100px; } }
+    @media(min-width:768px){ .hdr-row1-inner { padding: 0 50px; } }
+    @media(min-width:1401px){ .hdr-row1-inner { padding: 0 100px; } }
     .hdr-badges {
       display: none; align-items: center; gap: 24px;
       overflow: hidden; min-width: 0; flex: 1;
@@ -52,12 +52,14 @@
       transition: opacity 0.3s;
     }
     .hdr-row2-inner {
-      max-width: none; margin: 0 auto;
-      padding: 0 24px; height: 70px;
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 20px; height: 70px;
       display: flex; align-items: center; gap: 24px;
     }
-    @media(min-width:1024px){ .hdr-row2-inner { padding: 0 40px; gap: 48px; } }
-    @media(min-width:1200px){ .hdr-row2-inner { padding: 0 100px; gap: 72px; } }
+    @media(min-width:768px){ .hdr-row2-inner { padding: 0 50px; } }
+    @media(min-width:1024px){ .hdr-row2-inner { gap: 48px; } }
+    @media(min-width:1200px){ .hdr-row2-inner { gap: 72px; } }
+    @media(min-width:1401px){ .hdr-row2-inner { padding: 0 100px; } }
     .hdr-logo {
       flex-shrink: 0; display: flex; align-items: center; width: 224px;
     }
@@ -106,12 +108,12 @@
       transition: box-shadow 0.3s, opacity 0.3s;
     }
     .nav-inner {
-      max-width: none; margin: 0 auto;
-      padding: 0 24px; height: 44px;
+      max-width: 1600px; margin: 0 auto;
+      padding: 0 20px; height: 44px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    @media(min-width:1024px){ .nav-inner { padding: 0 40px; } }
-    @media(min-width:1200px){ .nav-inner { padding: 0 100px; } }
+    @media(min-width:768px){ .nav-inner { padding: 0 50px; } }
+    @media(min-width:1401px){ .nav-inner { padding: 0 100px; } }
     .nav-categories {
       display: none; align-items: center; gap: 0; flex: 1;
       justify-content: space-between; height: 100%;
@@ -129,10 +131,10 @@
     .nav-cat:hover, .nav-cat.active { color: #015253; }
     .nav-cat::after {
       content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: 2px; background: #015253; transform: scaleX(0);
-      transition: transform 0.2s; transform-origin: center;
+      height: 2px; background: transparent;
+      transition: background-color 0.3s;
     }
-    .nav-cat:hover::after, .nav-cat.active::after { transform: scaleX(1); }
+    .nav-cat:hover::after, .nav-cat.active::after { background: #015253; }
     .nav-cat.nav-hidden { display: none !important; }
 
     /* Nav "Alle" overflow button */
@@ -267,46 +269,70 @@
     .side-menu-item:hover { background: #F5F6FA; color: #015253; }
     .side-menu-item svg { width: 20px; height: 20px; color: #999; flex-shrink: 0; }
 
-    /* Mega menu */
+    /* Mega menu — 1:1 with edelstahl-tuerklingel.de (1 Oct 2026). Opens below the category nav on hover.
+       Tile hover = teal border tint + soft shadow, no lift. */
     .mega-menu {
-      position: fixed; top: 151px; left: 0; right: 0;
-      background: #fff;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-      padding: 40px 0 24px;
-      opacity: 0; visibility: hidden;
-      transform: translateY(-8px);
-      transition: opacity 0.25s, transform 0.25s, visibility 0.25s;
-      z-index: 49;
+      position: fixed; top: 151px; left: 0; right: 0; z-index: 49;
+      max-height: calc(100vh - 10.625rem); overflow-y: auto;
+      background: var(--color-white, #FFFFFF);
+      border-top: 0.0625rem solid var(--color-graphite-300, #DADADA);
+      box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.12);
+      opacity: 0; visibility: hidden; transform: translateY(-0.5rem); pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s, visibility 0s linear 0.2s;
     }
     .mega-menu.open {
-      opacity: 1; visibility: visible; transform: translateY(0);
+      opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
+      transition: opacity 0.22s, transform 0.22s, visibility 0s;
     }
-    .mega-menu-inner {
-      max-width: 1600px; margin: 0 auto; padding: 0 40px;
+    .mega-menu-inner { max-width: 100rem; margin: 0 auto; padding: 1.5rem 6.25rem; }
+    @media (max-width: 87.5rem) { .mega-menu-inner { padding: 1.5rem 3.125rem; } }
+    @media (max-width: 47.9375rem) { .mega-menu-inner { padding: 1.5rem 1.25rem; } }
+    .mega-row { display: flex; align-items: flex-start; gap: 1.5rem 2.5rem; }
+    .mega-categories {
+      flex: 1 1 0; min-width: 0;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 1.25rem;
     }
-    .mega-menu-grid {
-      display: flex; flex-wrap: wrap; gap: 20px 36px;
-      justify-content: center;
-    }
-    .mega-item {
-      display: flex; flex-direction: column; align-items: center;
-      text-align: center; gap: 10px; padding: 4px 4px 16px;
-      border-radius: 8px; transition: background 0.2s;
-      width: 170px;
-    }
-    .mega-item:hover { background: none; }
+    .mega-item { display: flex; flex-direction: column; text-align: center; }
     .mega-item-img {
-      width: 130px; height: 130px; object-fit: contain;
-      border-radius: 0;
-      transition: transform 0.3s;
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 1 / 1; margin-bottom: 0.75rem; padding: 0.4rem; overflow: hidden;
+      background: var(--color-white, #FFFFFF);
+      border: 0.0625rem solid var(--color-graphite-100, #F0F0F0); border-radius: var(--radius-lg, 0.5rem);
+      transition: box-shadow 0.22s, border-color 0.22s;
     }
-    .mega-item:hover .mega-item-img { transform: translateY(-4px); }
+    .mega-item-img img { width: 100%; height: 100%; object-fit: cover; }
     .mega-item-label {
-      font-size: 14px; font-weight: 500;
-      color: #555; line-height: 1.3;
-      transition: color 0.2s;
+      display: block; min-height: 3em; font-size: 0.875rem; font-weight: 500; line-height: 1.5; letter-spacing: -0.0125rem;
+      color: var(--color-black, #000000); transition: color 0.22s;
     }
-    .mega-item:hover .mega-item-label { color: #015253; }
+    .mega-item:hover .mega-item-img, .mega-poster:hover, .mega-poster:focus-within {
+      border-color: rgba(1,82,83,0.3); box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.08);
+    }
+    .mega-item:hover .mega-item-label { color: var(--color-teal, #015253); }
+    .mega-poster-col { flex: 0 0 clamp(16.25rem, 24%, 21.25rem); }
+    .mega-poster {
+      position: relative; padding: 1rem;
+      background: var(--color-teal-50, #F2F6F6); color: var(--color-digital-black, #1A171B);
+      border: 0.0625rem solid var(--color-graphite-200, #E6E6E8); border-radius: var(--radius-lg, 0.5rem);
+      transition: box-shadow 0.22s, border-color 0.22s;
+    }
+    .mega-poster__media { margin-bottom: 1rem; padding: 0.375rem; background: var(--color-white, #FFFFFF); border-radius: var(--radius-lg, 0.5rem); }
+    .mega-poster__bg { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius, 0.25rem); }
+    .mega-poster__eyebrow {
+      display: block; margin-bottom: 0.75rem; font-size: 0.75rem; font-weight: 700; line-height: 1.4;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-teal, #015253);
+    }
+    .mega-poster__title { margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+    .mega-poster__features { margin: 0 0 1rem; font-size: 0.8125rem; line-height: 1.5; color: var(--color-graphite-700, #54545C); }
+    .mega-poster__cta {
+      display: flex; align-items: center; justify-content: center; width: 100%;
+      padding: 0.7rem 1.2rem; border: 0.0625rem solid var(--color-teal, #015253); border-radius: var(--radius, 0.25rem);
+      background: var(--color-teal, #015253); color: var(--color-white, #FFFFFF);
+      font-size: 1rem; font-weight: 600; line-height: 1.2; transition: background 0.3s, border-color 0.3s;
+    }
+    .mega-poster__cta:hover { background: var(--color-teal-600, #014A4B); border-color: var(--color-teal-600, #014A4B); }
+    .mega-poster__cta::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-lg, 0.5rem); }
+    @media (max-width: 61.9375rem) { .mega-poster-col { display: none; } }
   </style>
 </head>
 <body>
@@ -356,15 +382,15 @@
         Alle
       </button>
       <div class="nav-categories" id="navCategories">
-        <a href="#" class="nav-cat" data-menu="briefkasten">Briefkästen</a>
-        <a href="#" class="nav-cat" data-menu="paketboxen">Paketboxen</a>
-        <a href="#" class="nav-cat" data-menu="muelltonnen">Mülltonnenboxen</a>
-        <a href="#" class="nav-cat" data-menu="sprechanlagen">Sprechanlagen</a>
-        <a href="#" class="nav-cat" data-menu="sicherheit">Sicherheitstechnik</a>
-        <a href="#" class="nav-cat" data-menu="tuerklingeln">Türklingeln</a>
-        <a href="#" class="nav-cat" data-menu="hausnummern">Hausnummern</a>
-        <a href="#" class="nav-cat" data-menu="leuchten">Außenleuchten</a>
-        <a href="#" class="nav-cat" data-menu="garten">Garten</a>
+        <a href="https://edelstahl-tuerklingel.de/briefkasten" class="nav-cat" data-menu="briefkasten">Briefkästen</a>
+        <a href="https://edelstahl-tuerklingel.de/paketboxen" class="nav-cat" data-menu="paketboxen">Paketboxen</a>
+        <a href="https://edelstahl-tuerklingel.de/muelltonnenbox" class="nav-cat" data-menu="muelltonnen">Mülltonnenboxen</a>
+        <a href="https://edelstahl-tuerklingel.de/tuersprechanlagen" class="nav-cat" data-menu="sprechanlagen">Sprechanlagen</a>
+        <a href="https://edelstahl-tuerklingel.de/sicherheitstechnik" class="nav-cat" data-menu="sicherheit">Sicherheitstechnik</a>
+        <a href="https://edelstahl-tuerklingel.de/tuerklingel" class="nav-cat" data-menu="tuerklingeln">Türklingeln</a>
+        <a href="https://edelstahl-tuerklingel.de/hausnummern-schilder-schriftzuege" class="nav-cat" data-menu="hausnummern">Hausnummern</a>
+        <a href="https://edelstahl-tuerklingel.de/beleuchtung" class="nav-cat" data-menu="leuchten">Außenleuchten</a>
+        <a href="https://edelstahl-tuerklingel.de/garten" class="nav-cat" data-menu="garten">Garten</a>
       </div>
     </div>
   </header>
@@ -444,92 +470,144 @@
     </div>
   </nav>
 
-  <!-- Mega menus -->
-  <div class="mega-menu" id="mega-briefkasten">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/einfamilien_briefkasten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Einfamilien Briefkasten</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkasten_ohne_gravur.png" alt="" class="mega-item-img"/><span class="mega-item-label">Briefkasten ohne Gravur</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/standbriefkaesten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Standbriefkästen</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkasten_mit_klingel.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mit Klingel & Sprechanlage</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/mehrfamilien_briefkaesten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mehrfamilien Briefkästen</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/unterputz_briefkaesten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Unterputz Briefkästen</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/Briefkastenanlage_configurator.png" alt="" class="mega-item-img"/><span class="mega-item-label">Konfigurator</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkastenschilder.png" alt="" class="mega-item-img"/><span class="mega-item-label">Briefkastenschilder</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/briefkastenstaender.png" alt="" class="mega-item-img"/><span class="mega-item-label">Briefkastenständer</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/briefkasten/ersatzteile.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
-    </div></div>
+  <!-- Mega menus — 1:1 with edelstahl-tuerklingel.de (1 Oct 2026): category tiles + optional promo poster -->
+  <div class="mega-menu" id="mega-briefkasten" role="region" aria-label="Briefkästen">
+    <div class="mega-menu-inner">
+      <div class="mega-row has-poster">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/exklusiv-briefkasten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/exklusiv-briefkasten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/exklusiv-briefkasten">Einfamilien Briefkasten</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkasten-ohne-gravur" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkasten-ohne-gravur.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkasten-ohne-gravur">Briefkasten ohne Gravur</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/standbriefkasten-sets" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/standbriefkasten-sets.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/standbriefkasten-sets">Standbriefkästen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkasten-funkklingel-sprechanlage" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkasten-funkklingel-sprechanlage.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkasten-funkklingel-sprechanlage">Briefkasten mit Klingel &amp; Sprechanlage</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkasten-zweifamilienhaus" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkasten-zweifamilienhaus.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkasten-zweifamilienhaus">Mehrfamilien Briefkästen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/unterputz-briefkaesten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/unterputz-briefkaesten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/unterputz-briefkaesten">Unterputz Briefkästen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/paketboxen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/paketboxen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/paketboxen">Paketboxen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkastenanlage" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkastenanlage.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkastenanlage">Briefkastenanlagen Konfigurator</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkastenschilder" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkastenschilder.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkastenschilder">Briefkastenschilder</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkastenstaender" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkastenstaender.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkastenstaender">Briefkastenständer</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkasten-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkasten-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkasten-zubehoer">Ersatzteile &amp; Zubehör</a></div>
+        </div>
+        <div class="mega-poster-col"><aside class="mega-poster" aria-label="Metzler Briefkasten aus hochwertigem Stahl"><div class="mega-poster__media"><img class="mega-poster__bg" src="megamenu/posters/promo-briefkasten-v2.webp" alt="Metzler Einfamilien Briefkasten aus Stahl, an einer weißen Putzwand montiert" loading="lazy"></div><div class="mega-poster__content"><span class="mega-poster__eyebrow">Einfamilien Briefkasten</span><p class="mega-poster__title">Metzler Briefkasten aus hochwertigem Stahl</p><p class="mega-poster__features">Farbe · Gravur · Befestigung</p><a class="mega-poster__cta" href="https://edelstahl-tuerklingel.de/metzler-briefkasten-aus-hochwertigem-stahl-siebert">Jetzt konfigurieren</a></div></aside></div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-paketboxen">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Paketboxen mit Gravur</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen_beleuchtet.png" alt="" class="mega-item-img"/><span class="mega-item-label">Paketboxen beleuchtet</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen_mit_klingel.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mit Klingel & Sprechanlage</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/paketboxen_ohne_gravur.png" alt="" class="mega-item-img"/><span class="mega-item-label">Paketboxen ohne Gravur</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/paketboxen/ersatzteile.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-paketboxen" role="region" aria-label="Paketboxen">
+    <div class="mega-menu-inner">
+      <div class="mega-row has-poster">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/paketboxen-mit-gravur" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/paketboxen-mit-gravur.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/paketboxen-mit-gravur">Paketboxen mit Gravur</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/paketboxen-beleuchtet" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/paketboxen-beleuchtet.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/paketboxen-beleuchtet">Paketboxen beleuchtet</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/paketboxen-mit-klingel-sprechanlage" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/paketboxen-mit-klingel-sprechanlage.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/paketboxen-mit-klingel-sprechanlage">Paketboxen mit Klingel &amp; Sprechanlage</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/paketboxen-ohne-gravur" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/paketboxen-ohne-gravur.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/paketboxen-ohne-gravur">Paketboxen ohne Gravur</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/ersatzteile-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/ersatzteile-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/ersatzteile-zubehoer">Ersatzteile &amp; Zubehör</a></div>
+        </div>
+        <div class="mega-poster-col"><aside class="mega-poster" aria-label="Metzler Paketbox XL mit Briefkasten"><div class="mega-poster__media"><img class="mega-poster__bg" src="megamenu/posters/promo-paketbox-v2.webp" alt="Metzler Paketbox XL mit integriertem Briefkasten neben einer Hauseinfahrt" loading="lazy"></div><div class="mega-poster__content"><span class="mega-poster__eyebrow">Paketbox mit Briefkasten</span><p class="mega-poster__title">Metzler Paketbox XL mit Briefkasten</p><p class="mega-poster__features">Farbe · Gravur · Befestigung</p><a class="mega-poster__cta" href="https://edelstahl-tuerklingel.de/metzler-paketbox-xl-mit-briefkasten-paketkasten-rostfrei-personalisiert-mit-gravur-bispo-max-2">Jetzt konfigurieren</a></div></aside></div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-sprechanlagen">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/video_sprechanlagen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Video Sprechanlagen</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/sprechanlagen_sets.png" alt="" class="mega-item-img"/><span class="mega-item-label">Sprechanlagen Sets</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/audio_sprechanlagen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Audio Sprechanlagen</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/video_sprechanlagen_mit_briefkasten.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mit Briefkasten/Paketbox</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/innenstationen.png" alt="" class="mega-item-img"/><span class="mega-item-label">Innenstationen</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/ersatz_namensschilder.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatz Namensschilder</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/sprechanlagen/erweiterungen_zubehoer.png" alt="" class="mega-item-img"/><span class="mega-item-label">Erweiterungen & Zubehör</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-muelltonnen" role="region" aria-label="Mülltonnenboxen">
+    <div class="mega-menu-inner">
+      <div class="mega-row">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-1-tonne" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/muelltonnenbox-fuer-1-tonne.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-1-tonne">Mülltonnenbox für 1 Tonne</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-2-tonnen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/muelltonnenbox-fuer-2-tonnen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-2-tonnen">Mülltonnenbox für 2 Tonnen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-3-tonnen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/muelltonnenbox-fuer-3-tonnen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-3-tonnen">Mülltonnenbox für 3 Tonnen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-4-tonnen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/muelltonnenbox-fuer-4-tonnen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-4-tonnen">Mülltonnenbox für 4 Tonnen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-5-tonnen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/muelltonnenbox-fuer-5-tonnen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/muelltonnenbox-fuer-5-tonnen">Mülltonnenbox für 5 Tonnen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/ersatzteile-zubehoer_1" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/ersatzteile-zubehoer_1.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/ersatzteile-zubehoer_1">Ersatzteile &amp; Zubehör</a></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-sicherheit">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="pictures/nav/alarmanlagen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Alarmanlagen</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/ip-kamera-sets.png" alt="" class="mega-item-img"/><span class="mega-item-label">IP Kamera Sets</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/ip-kameras.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">IP Kameras</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/easylink.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">EasyLink WLAN Sets</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/dual-objektiv-kameras.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Dual-Objektiv Kameras</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/wlan-kameras.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">WLAN Kameras</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/videorekorder.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Videorekorder</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/anschlussdosen-zubehoer.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Anschlussdosen & Zubehör</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-sprechanlagen" role="region" aria-label="Sprechanlagen">
+    <div class="mega-menu-inner">
+      <div class="mega-row has-poster">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/video-tuersprechanlagen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/video-tuersprechanlagen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/video-tuersprechanlagen">Video Sprechanlagen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/sprechanlagen-sets" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/sprechanlagen-sets.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/sprechanlagen-sets">Sprechanlagen Sets</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/audio-tuersprechanlagen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/audio-tuersprechanlagen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/audio-tuersprechanlagen">Audio Sprechanlagen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/sprechanlage-briefkasten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/sprechanlage-briefkasten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/sprechanlage-briefkasten">Video Sprechanlagen mit Briefkasten/Paketbox</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/briefkastenanlage" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/briefkastenanlage.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/briefkastenanlage">Briefkastenanlagen Konfigurator</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/innenstationen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/innenstationen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/innenstationen">Innenstationen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/ersatz-namensschilder" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/ersatz-namensschilder.gif" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/ersatz-namensschilder">Ersatz Namensschilder</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/vdm10-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/vdm10-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/vdm10-zubehoer">Erweiterungen &amp; Zubehör</a></div>
+        </div>
+        <div class="mega-poster-col"><aside class="mega-poster" aria-label="Metzler XDM10 mit austauschbarem Namensschild"><div class="mega-poster__media"><img class="mega-poster__bg" src="megamenu/posters/promo-xdm10-v2.webp" alt="Metzler XDM10 Video-Türsprechanlage mit austauschbarem Namensschild an einer Wand" loading="lazy"></div><div class="mega-poster__content"><span class="mega-poster__eyebrow">Video-Türsprechanlage</span><p class="mega-poster__title">Metzler XDM10 mit austauschbarem Namensschild</p><p class="mega-poster__features">Farbe · Klingeltaster</p><a class="mega-poster__cta" href="https://edelstahl-tuerklingel.de/metzler-xdm10-video-tuersprechanlage-mit-austauschbarem-namensschild-2-draht-bus-1-klingeltaster-maxior">Jetzt konfigurieren</a></div></aside></div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-tuerklingeln">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/funkklingeln.png" alt="" class="mega-item-img"/><span class="mega-item-label">Funkklingeln</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/aufputz_tuerklingeln.png" alt="" class="mega-item-img"/><span class="mega-item-label">Aufputz Türklingeln</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/unterputz_tuerklingeln.png" alt="" class="mega-item-img"/><span class="mega-item-label">Unterputz Türklingeln</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/mehrfamilien_klingel.png" alt="" class="mega-item-img"/><span class="mega-item-label">Mehrfamilien Klingel</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/tuergongs.png" alt="" class="mega-item-img"/><span class="mega-item-label">Türgongs</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/tuerklingel_weiterleitung.png" alt="" class="mega-item-img"/><span class="mega-item-label">Türklingel Weiterleitung</span></a>
-      <a href="#" class="mega-item"><img src="../subcategory_photos/tuerklingeln/ersatzteile_zubehoer.png" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-sicherheit" role="region" aria-label="Sicherheitstechnik">
+    <div class="mega-menu-inner">
+      <div class="mega-row">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/alarmanlagen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/alarmanlagen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/alarmanlagen">Alarmanlagen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/ip-kamera-sets" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/ip-kamera-sets.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/ip-kamera-sets">IP Kamera Sets</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/ip-kameras" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/ip-kameras.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/ip-kameras">IP Kameras</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/easylink" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/easylink.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/easylink">EasyLink WLAN Sets</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/wlan-kameras" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/wlan-kameras.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/wlan-kameras">WLAN Kameras</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/4g-kameras" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/4g-kameras.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/4g-kameras">4G Kameras</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/dual-objektiv-kameras" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/dual-objektiv-kameras.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/dual-objektiv-kameras">Dual-Objektiv Kameras</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/videorekorder" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/videorekorder.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/videorekorder">Videorekorder</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/anschlussdosen-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/anschlussdosen-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/anschlussdosen-zubehoer">Anschlussdosen &amp; Zubehör</a></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-hausnummern">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="pictures/nav/hausnummern-einzelne-ziffern.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Einzelne Ziffern & Buchstaben</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/beleuchtete-hausnummern.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Beleuchtete Hausnummern</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/hausnummernschilder.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Hausnummernschilder</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/schriftzuege.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Schriftzüge</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/namensschilder.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Namens- & Hinweisschilder</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/hausnummer-zubehoer.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Ersatzteile & Zubehör</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-tuerklingeln" role="region" aria-label="Türklingeln">
+    <div class="mega-menu-inner">
+      <div class="mega-row">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/funkklingeln" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/funkklingeln.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/funkklingeln">Funkklingeln</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/aufputz-tuerklingel" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/aufputz-tuerklingel.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/aufputz-tuerklingel">Aufputz Türklingeln</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/unterputz-tuerklingeln" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/unterputz-tuerklingeln.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/unterputz-tuerklingeln">Unterputz Türklingeln</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/mehrfamilien-klingel" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/mehrfamilien-klingel.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/mehrfamilien-klingel">Mehrfamilien Klingel</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/gong" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/gong.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/gong">Türgongs</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/tuerklingel-weiterleitung" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/tuerklingel-weiterleitung.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/tuerklingel-weiterleitung">Türklingel Weiterleitung</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/tuerklingel-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/tuerklingel-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/tuerklingel-zubehoer">Ersatzteile &amp; Zubehör</a></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-leuchten">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="pictures/nav/wand-deckenleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Wand- & Deckenleuchten</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/hausnummernleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Hausnummernleuchten</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/strahler-spots-wegeleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Strahler, Spots & Wege</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/akku-solar-kameraleuchten.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Akku, Solar & Kamera</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/plug-shine.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Plug & Shine</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/metzler-24v-lichtsystem.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">24V Garten-Lichtsystem</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/sensoren-zubehoer.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Sensoren & Zubehör</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-hausnummern" role="region" aria-label="Hausnummern">
+    <div class="mega-menu-inner">
+      <div class="mega-row">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/hausnummern-einzelne-ziffern" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/hausnummern-einzelne-ziffern.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/hausnummern-einzelne-ziffern">Einzelne Ziffern &amp; Buchstaben</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/beleuchtete-hausnummern" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/beleuchtete-hausnummern.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/beleuchtete-hausnummern">Beleuchtete Hausnummern</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/hausnummernschilder" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/hausnummernschilder.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/hausnummernschilder">Hausnummernschilder</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/schriftzuege" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/schriftzuege.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/schriftzuege">Schriftzüge</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/namensschilder" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/namensschilder.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/namensschilder">Namens- &amp; Hinweisschilder</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/hausnummer-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/hausnummer-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/hausnummer-zubehoer">Ersatzteile &amp; Zubehör</a></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="mega-menu" id="mega-garten">
-    <div class="mega-menu-inner"><div class="mega-menu-grid">
-      <a href="#" class="mega-item"><img src="pictures/nav/hochbeet.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Hochbeete</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/aufbewahrungen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Aufbewahrungen</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/maehrobotergaragen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Mährobotergaragen</span></a>
-      <a href="#" class="mega-item"><img src="pictures/nav/steckdosensaeulen.jpg" alt="" class="mega-item-img"/><span class="mega-item-label">Steckdosensäulen</span></a>
-    </div></div>
+  <div class="mega-menu" id="mega-leuchten" role="region" aria-label="Außenleuchten">
+    <div class="mega-menu-inner">
+      <div class="mega-row">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/wand-deckenleuchten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/wand-deckenleuchten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/wand-deckenleuchten">Wand- &amp; Deckenleuchten</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/hausnummernleuchten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/hausnummernleuchten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/hausnummernleuchten">Hausnummernleuchten</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/strahler-spots-wegeleuchten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/strahler-spots-wegeleuchten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/strahler-spots-wegeleuchten">Strahler/Spots &amp; Wegeleuchten</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/akku-solar-und-kameraleuchten" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/akku-solar-und-kameraleuchten.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/akku-solar-und-kameraleuchten">Akku-, Solar- und Kameraleuchten</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/plug-shine-gartenbeleuchtung" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/plug-shine-gartenbeleuchtung.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/plug-shine-gartenbeleuchtung">Plug &amp; Shine Gartenbeleuchtung</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/metzler-24v-garten-lichtsystem-steinel" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/metzler-24v-garten-lichtsystem-steinel.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/metzler-24v-garten-lichtsystem-steinel">24V Garten-Lichtsystem</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/sensoren-zubehoer" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/sensoren-zubehoer.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/sensoren-zubehoer">Sensoren &amp; Zubehör</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mega-menu" id="mega-garten" role="region" aria-label="Garten">
+    <div class="mega-menu-inner">
+      <div class="mega-row">
+        <div class="mega-categories">
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/hochbeet" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/hochbeet.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/hochbeet">Hochbeete</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/aufbewahrungen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/aufbewahrungen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/aufbewahrungen">Aufbewahrungen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/maehrobotergaragen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/maehrobotergaragen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/maehrobotergaragen">Mährobotergaragen</a></div>
+          <div class="mega-item"><a class="mega-item-img" href="https://edelstahl-tuerklingel.de/steckdosensaeulen" tabindex="-1" aria-hidden="true"><img src="megamenu/tiles/steckdosensaeulen.webp" alt="" loading="lazy"></a><a class="mega-item-label" href="https://edelstahl-tuerklingel.de/steckdosensaeulen">Steckdosensäulen</a></div>
+        </div>
+      </div>
+    </div>
   </div>
 
 <script>

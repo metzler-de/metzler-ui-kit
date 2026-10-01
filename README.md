@@ -1,7 +1,7 @@
 # Metzler Design System (UI Kit)
 
 **The only design system for Metzler web work** — styles, tokens, header, footer, components, sections, icons and brand rules.
-Current version: **v1.12 · 2026-09-29** (history in [`CHANGELOG.md`](CHANGELOG.md)).
+Current version: **v1.13 · 2026-10-01** (history in [`CHANGELOG.md`](CHANGELOG.md)).
 
 - Claude Design: https://claude.ai/artifact/GmM9m9zSAbikHUorc4dJ3H
 - Repo: https://github.com/metzler-de/metzler-ui-kit
@@ -14,8 +14,8 @@ Current version: **v1.12 · 2026-09-29** (history in [`CHANGELOG.md`](CHANGELOG.
 | `index.html` | **Source of truth.** The rendered kit: tokens, components, sections, header, footer, icons |
 | `metzler-tokens.css` | All CSS custom properties. Link it, never copy it |
 | `brandbook.html` | Logo, colour, type, imagery rules (Do / Don't) |
-| `header/` | Canonical header, mega menu, sticky + mobile variants (`header/preview.html`) |
-| `footer/` | Footer logos, badges, payment and social icons |
+| `header/` | Canonical header with the live shop's mega menu (`header/preview.html`, tiles in `header/megamenu/`), sticky + mobile variants |
+| `footer/` | Canonical footer (`footer/preview.html`, 1:1 with the live shop) + its payment, TopShop and review images |
 | `media/`, `img/`, `Pictures/`, `subcategory_photos/` | Images the kit and header use |
 | `FOR-CLAUDE.md` | Page brief: tokens, typography, layout, header, **footer (§14, full HTML/CSS)**, rules |
 | `SECTIONS.md` | Ready-made page sections + page blueprints + maintenance protocol |
@@ -26,7 +26,7 @@ Current version: **v1.12 · 2026-09-29** (history in [`CHANGELOG.md`](CHANGELOG.
 
 ## Use it on a page
 
-Link `metzler-tokens.css` from this kit (the repo is private, GitHub Pages is off). Header: copy `header/preview.html` (thumbnails in `header/pictures/nav/`). Footer: copy `FOR-CLAUDE.md` §14 with the `footer/` assets.
+Link `metzler-tokens.css` from this kit (the repo is public; live at https://metzler-de.github.io/metzler-ui-kit/). Header: copy `header/preview.html` (thumbnails in `header/pictures/nav/`). Footer: copy `FOR-CLAUDE.md` §14 with the `footer/` assets.
 
 ## Claude Design
 

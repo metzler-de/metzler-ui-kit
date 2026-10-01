@@ -2,6 +2,14 @@
 
 The kit (`index.html`) is the source of truth. Bump `CHANGELOG.version` in `index.html` and add a section here on every change.
 
+## v1.13 · 2026-10-01
+- **Header mega menu synced 1:1 with edelstahl-tuerklingel.de** (`header/preview.html`): all 9 menus with the shop's tiles and links (Briefkästen 11 · Paketboxen 5 · Mülltonnenboxen 6 · Sprechanlagen 8 · Sicherheitstechnik 9 · Türklingeln 7 · Hausnummern 6 · Außenleuchten 7 · Garten 4). Square image box with graphite-100 border, 2-line label, hover = teal border tint + soft shadow (no lift, the old image lift is gone), promo posters for Briefkästen, Paketboxen and Sprechanlagen. Mülltonnenboxen menu was missing and is added. Panel heights match the shop exactly. `header/preview-megamenu.html` regenerated with the same design.
+- **Header inset as on the shop:** rows max 1600px, 100px side inset, 50px up to 1400px (was 40px up to 1199px); menu underline without scale animation.
+- **Footer rebuilt 1:1 from the live shop** (desktop + mobile, every box within 1px at 1440px and 375px): new font sizes, greys and spacing, shipping/payment tiles 52×33 with the shop's logo files, TopShop badges, rating pill rotating every 5 s through Alle / Trusted Shops / Google / Trustpilot, „Vertrag widerrufen“ on its own last row, mobile layout below 62rem (992px). One file, `footer/preview.html`, shown in the kit and exported in FOR-CLAUDE.md §14; the React footer in `index.html` is gone.
+- **New tokens:** `--color-footer-muted` #99A9AA and `--color-footer-line` #1A3E3F (Colors → Footer).
+- **Images:** 85 files copied from the shop: `header/megamenu/tiles/` (63), `header/megamenu/posters/` (3), `footer/payment/` (13), `footer/topshop/` (4), `footer/reviews/` (3).
+- Version v1.13 everywhere.
+
 ## v1.12 · 2026-09-29
 - **Fix — Section 01 Support & Kontakt:** the primary card showed a phone number that is not Metzler's and could belong to a stranger. It now shows the Sprechanlagen-Hotline +49 (0) 7121 / 317 7333 (kit preview, code sample, SECTIONS.md). The same number was removed from the "wrong" footer example in FOR-CLAUDE.md.
 - Version v1.12 everywhere.

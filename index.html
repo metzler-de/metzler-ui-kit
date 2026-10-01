@@ -159,6 +159,8 @@
       g500:'#A1A1A1', g600:'#6A6A6A', g700:'#54545C', g800:'#2E2E36',
       g850:'#333333', g900:'#1A1A1F',
       white:'#FFFFFF', black:'#000000',
+      // Footer (on teal-700)
+      ftMuted:'#99A9AA', ftLine:'#1A3E3F',
       // Border Radius
       rSm:'0.125rem', r:'0.25rem', rLg:'0.5rem', rPill:'624.94rem',
       // Font sizes
@@ -189,13 +191,18 @@
       '#A1A1A1':'--color-graphite-500','#6A6A6A':'--color-graphite-600','#54545C':'--color-graphite-700',
       '#2E2E36':'--color-graphite-800','#333333':'--color-graphite-850','#1A1A1F':'--color-graphite-900',
       '#FFFFFF':'--color-white','#000000':'--color-black',
+      '#99A9AA':'--color-footer-muted','#1A3E3F':'--color-footer-line',
     };
 
     // ── CHANGELOG — update this on every push ──
     const CHANGELOG = {
-      version: '1.12',
-      date: '2026-09-29',
+      version: '1.13',
+      date: '2026-10-01',
       entries: [
+        { type: 'improved', text: 'Header mega menu synced 1:1 with edelstahl-tuerklingel.de: all 9 menus with the shop tiles (square image box, 2-line label, teal border tint + soft shadow on hover, no lift), promo posters for Briefkästen, Paketboxen and Sprechanlagen, Mülltonnenboxen menu added, 85 shop images copied into header/megamenu/ and footer/' },
+        { type: 'improved', text: 'Header content inset now as on the shop: max 1600px, 100px side inset, 50px up to 1400px (was 40px up to 1199px)' },
+        { type: 'improved', text: 'Footer rebuilt 1:1 from the live shop (desktop + mobile, checked element by element at 1440px and 375px): new sizes and greys, logo tiles 52×33, rating pill with 4 sources, button row, mobile layout below 62rem. Now one file, footer/preview.html, exported in FOR-CLAUDE.md §14' },
+        { type: 'new', text: 'Tokens --color-footer-muted (#99A9AA) and --color-footer-line (#1A3E3F) — the two footer greys of the live shop (Colors → Footer)' },
         { type: 'fix', text: 'Section 01 Support & Kontakt: primary card showed a phone number that is not a Metzler number; now the Sprechanlagen-Hotline +49 (0) 7121 / 317 7333. The same stranger number was removed from the FOR-CLAUDE.md "wrong" footer example' },
         { type: 'new', text: 'Section 04c · FAQ · Split ("Frage zum Artikel") from the PDP prototype: sticky Beratung card (Zum Kundensupport + Sprechanlagen-Hotline) next to a flat FAQ list on Paper; FAQ first on tablet/mobile. Built from existing tokens only; chevron = Icons page chevron-right rotated, link arrow = arrow-right. Exported to SECTIONS.md' },
         { type: 'fix', text: 'Typography: brand font now follows the OS automatically — Helvetica Neue on macOS, iOS and Linux, Arial on Windows (was "Arial on all platforms"). Kit, OS banner (now detects iOS), typeface showcase and scale previews show the active font; metzler-tokens.css switches --font-family via html.os-windows' },
@@ -458,6 +465,9 @@
       {value:"#000000", label:"True Black",   subtitle:"Logo · Primary CTA",               role:'Logo, primary CTA, "Add to cart"',                                                                          hex:"#000000", rgb:"0 · 0 · 0",       grp:"Base"},
       {value:"#FFFFFF", label:"Pure White",   subtitle:"Surfaces · Button labels",          role:"Card backgrounds, modal surfaces, button label on teal/dark, icon fill on teal",                           hex:"#FFFFFF", rgb:"255 · 255 · 255",  grp:"Base"},
       {value:"rgba(255,255,255,0.5)", label:"White 50%", subtitle:"Ghost text · Dark bg",  role:"Footer accordion labels, footer nav text, top-bar secondary text on teal",                                 hex:"#FFFFFF", rgb:"rgba(255, 255, 255, 0.50)", grp:"Base"},
+      // ── FOOTER ──
+      {value:"#99A9AA", label:"Footer Muted", subtitle:"Footer text · Links · Labels", role:"Footer subtitle, opening hours, Informationen/Service links, legal links, copyright, „Unsere Versandpartner:“ labels. Only on the teal-700 footer", hex:"#99A9AA", rgb:"153 · 169 · 170", grp:"Footer"},
+      {value:"#1A3E3F", label:"Footer Line",  subtitle:"Footer dividers",             role:"Divider lines between the footer rows and the mobile accordion/payment blocks. Only on the teal-700 footer", hex:"#1A3E3F", rgb:"26 · 62 · 63", grp:"Footer"},
       // ── ACCENT ──
       {value:"#5CDBD3", label:"Teal Mint",           subtitle:"Footer links · Dark bg hyperlinks",    role:"Hyperlinks on dark/teal backgrounds, hover colour for footer nav links",                          hex:"#5CDBD3", rgb:"92 · 219 · 211",   grp:"Accent"},
       // ── GRADIENTS ──
@@ -570,6 +580,7 @@
         {id:'Graphite Surfaces', label:'GRAPHITE · SURFACES', desc:'Surfaces & borders — from page background to focused ring'},
         {id:'Graphite Text',     label:'GRAPHITE · TEXT',     desc:'Text & icons — four levels from placeholder to heading'},
         {id:'Base',              label:'BASE · BLACK & WHITE', desc:'Pure black, pure white and White 50 % for text on dark surfaces'},
+        {id:'Footer',       label:'FOOTER',          desc:'Two greys of the live shop footer on Teal 700 (= white 60 % and white 10 %)'},
         {id:'Accent',       label:'ACCENT',          desc:'Highlights, info states, star ratings, trust bar'},
         {id:'Gradients',    label:'GRADIENTS',       desc:'Multi-stop gradients for hero sections and decorative surfaces'},
       ];
@@ -11117,7 +11128,7 @@ cursor: pointer;
     const HeaderSection = () => (
       <iframe
         src="./header/preview.html"
-        style={{width:'100%', height:'580px', border:'none', display:'block'}}
+        style={{width:'100%', height:'900px', border:'none', display:'block'}}
         title="Metzler Header Preview"
       />
     );
@@ -11337,788 +11348,30 @@ cursor: pointer;
       </div>
     );
 
-    // ── Trusted Shops slide data (shared between desktop + mobile footer) ──
-    const tsSlides = [
-      // Values as on edelstahl-tuerklingel.de, 28 Sep 2026 (live shop loads them dynamically)
-      { stars:5, score:'4,71', label:'Sehr gut', sub:'36.705 Bewertungen', img:"./footer/Property 1=all.svg" },
-      { stars:5, score:'4,73', label:'Sehr gut', sub:'32.400 Bewertungen', img:"./footer/Property 1=e.svg"   },
-      { stars:5, score:'4,63', label:'Sehr gut', sub:'3.179 Bewertungen',  img:"./footer/Property 1=g.svg"   },
-      { stars:4, score:'4,42', label:'Gut',      sub:'1.126 Bewertungen',  img:"./footer/Property 1=t.svg"   },
-    ];
-
-    // ── Footer link data (shared by desktop + mobile footer) — matches the live shop, 28 Sep 2026 ──
-    const ETK = 'https://edelstahl-tuerklingel.de';
-    const FOOTER_INFO_LINKS = [
-      { l:'Auszeichnungen',      h:ETK+'/auszeichnungen' },
-      { l:'Geschenkgutschein',   h:ETK+'/metzler-geschenkgutschein' },
-      { l:'Kundenbilder',        h:ETK+'/tuerklingel-galerie' },
-      { l:'Stellenangebote',     h:'https://www.metzlergmbh.de/jobs/' },
-      { l:'Wir über uns',        h:ETK+'/ueber-uns' },
-      { l:'News',                h:ETK+'/News' },
-      { l:'Zahlung und Versand', h:ETK+'/zahlung-und-versand' },
-    ];
-    const FOOTER_SERVICE_LINKS = [
-      { l:'Begriffserklärung', h:ETK+'/begriffserklaerung' },
-      { l:'FAQ',               h:ETK+'/faq' },
-      { l:'Geschäftskunden',   h:ETK+'/b2b' },
-      { l:'Newsletter',        h:ETK+'/newsletter' },
-      { l:'VDM10 FAQ',         h:ETK+'/faq/sprechanlagen' },
-    ];
-    const FOOTER_LEGAL_LINKS = [
-      { l:'Geprüfte Kundenbewertungen',             h:ETK+'/kundenbewertungen' },
-      { l:'Metzler Garantieerklärung',              h:ETK+'/metzler-garantieerklaerung' },
-      { l:'Datenschutz',                            h:ETK+'/datenschutz' },
-      { l:'AGB',                                    h:ETK+'/AGB' },
-      { l:'Sitemap',                                h:ETK+'/Sitemap' },
-      { l:'Zahlung und Versand',                    h:ETK+'/zahlung-und-versand' },
-      { l:'Impressum',                              h:ETK+'/impressum' },
-      { l:'Gesetzliche Gewährleistung',             h:ETK+'/gesetzliche-gewaehrleistung' },
-      { l:'Barrierefreiheit',                       h:ETK+'/barrierefreiheit' },
-      { l:'Batterieentsorgungsgesetz',              h:ETK+'/Batterieentsorgungsgesetz' },
-      { l:'Widerrufsrecht',                         h:ETK+'/Widerrufsrecht' },
-      { l:'Hinweise zur Elektroaltgeräteentsorgung', h:ETK+'/elektroaltgeraeteentsorgung' },
-      { l:'Cookie-Einstellungen',                   h:'#' },
-    ];
-    // Legally required button (Widerrufsbutton), shown centred under the legal links
-    const FOOTER_WITHDRAW = { l:'Vertrag widerrufen', h:ETK+'/online-widerrufsformular' };
-    const FOOTER_ABOUT    = { l:'Mehr erfahren',      h:ETK+'/ueber-uns' };
-    const FOOTER_SOCIAL = {
-      pinterest:'https://www.pinterest.de/METZLERGmBH/',
-      facebook: 'https://www.facebook.com/MetzlerGmbHDE',
-      instagram:'https://www.instagram.com/metzlergmbh/?hl=de',
-      youtube:  'https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos',
-      x:        'https://twitter.com/metzlerklingeln?lang=de',
-    };
-    const FOOTER_YEAR = new Date().getFullYear();
-
-    // "Vertrag widerrufen" button — teal, small, centred
-    const WithdrawButton = ({small}) => (
-      <a href={FOOTER_WITHDRAW.h} target="_blank" rel="noopener noreferrer"
-        style={{display:'inline-flex',alignItems:'center',justifyContent:'center',
-          background:T.teal, color:T.white, borderRadius:'0.25rem', textDecoration:'none',
-          fontFamily:"'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight:600,
-          fontSize: small ? T.fXxs : T.fSm, lineHeight:1, padding: small ? '0.4375rem 0.75rem' : '0.5rem 0.875rem',
-          whiteSpace:'nowrap'}}>{FOOTER_WITHDRAW.l}</a>
-    );
-
-    // ── Shared footer font and trusted image (used by FootLink and TrustedSlider) ──
-    const footerFf = "'Helvetica Neue', Helvetica, Arial, sans-serif";
-    const footerImgTrusted = "./footer/Property 1=all.svg";
-
-    const FootLink = ({children, href}) => {
-      const [hov,setHov] = useState(false);
-      return (
-        <a href={href || '#'} target={href && href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
-          style={{display:'block',textDecoration:'none',fontFamily:footerFf,fontSize:T.fBody,fontWeight:400,lineHeight:'18px',cursor:'pointer',
-            color: hov ? T.white : 'rgba(255,255,255,0.5)', transition:'color 0.15s'}}
-          onMouseEnter={()=>setHov(true)}
-          onMouseLeave={()=>setHov(false)}
-        >{children}</a>
-      );
-    };
-
-    // Shared mint-colored link with hover underline + slight brighten
-    const MintLink = ({href, fontSize, lineHeight, children}) => {
-      const [hov,setHov] = useState(false);
-      return (
-        <a href={href} target={href && href.startsWith('http') ? '_blank' : undefined}
-          rel="noopener noreferrer"
-          style={{fontFamily:footerFf, fontSize:fontSize||T.fBody, color:T.mint,
-            lineHeight:lineHeight||'24px', textDecoration: hov ? 'underline' : 'none',
-            opacity: hov ? 0.8 : 1, transition:'opacity 0.15s', cursor:'pointer'}}
-          onMouseEnter={()=>setHov(true)}
-          onMouseLeave={()=>setHov(false)}>
-          {children}
-        </a>
-      );
-    };
-
-    const TrustedSlider = () => {
-      const [idx, setIdx]       = useState(0);
-      const [paused, setPaused] = useState(false);
+    // ── FOOTER — rendered from footer/preview.html: 1:1 with the live shop (desktop ≥ 62rem, mobile below).
+    //    The same markup + CSS is exported in FOR-CLAUDE.md §14. Height follows the iframe content. ──
+    const FooterFrame = ({ width }) => {
+      const ref = React.useRef(null);
+      const [h, setH] = useState(width ? 1342 : 863);
       useEffect(() => {
-        if (paused) return;
-        const t = setInterval(() => setIdx(i => (i + 1) % tsSlides.length), 3000);
-        return () => clearInterval(t);
-      }, [paused]);
-      const prev = () => setIdx(i => (i - 1 + tsSlides.length) % tsSlides.length);
-      const next = () => setIdx(i => (i + 1) % tsSlides.length);
-      const slide = tsSlides[idx];
-      // 15×15 SVG stars matching the  80px/5-star row
-      const TStar = ({filled}) => (
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-          <path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"
-            fill={filled ? '#F5A623' : 'rgba(255,255,255,0.18)'}
-            stroke={filled ? '#E09000' : 'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
-        </svg>
-      );
-      const ArrBtn = ({left, onClick}) => (
-        <button onClick={onClick} style={{width:30,height:30,borderRadius:'50%',background:T.white,border:'none',
-          cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,transition:'background 0.12s'}}
-          onMouseEnter={e=>e.currentTarget.style.background=T.g200}
-          onMouseLeave={e=>e.currentTarget.style.background=T.white}
-        >
-          <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-            <path d={left ? 'M6 1L1 6L6 11' : 'M1 1L6 6L1 11'} stroke={T.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      );
-      return (
-        <div onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)}
-          style={{display:'flex',alignItems:'center',justifyContent:'space-between',
-            background:'rgba(255,255,255,0.08)',borderRadius:60,padding:'10px 15px',
-            width:360,flexShrink:0,gap:10}}>
-          {/* Rate: logo + stars + text */}
-          <div style={{display:'flex',gap:10,alignItems:'center',flex:1,minWidth:0,height:32}}>
-            {/* Logo 30×30 — per-slide logo from footer folder */}
-            <img src={slide.img} alt="Trusted Shops"
-              style={{width:30,height:30,objectFit:'contain',flexShrink:0,borderRadius:'50%'}} />
-            {/* Stars + text column, gap 3px */}
-            <div style={{display:'flex',flexDirection:'column',gap:3,minWidth:0,flex:1}}>
-              {/* Stars row: 80px wide, 5 stars with gap 3px */}
-              <div style={{display:'flex',gap:3,width:80,alignItems:'center'}}>
-                {[0,1,2,3,4].map(i=><TStar key={i} filled={i < slide.stars}/>)}
-              </div>
-              {/* Text line — animated per slide */}
-              <div key={idx} style={{animation:'tslidein 0.3s ease',display:'flex',flexWrap:'wrap',columnGap:5,rowGap:1,alignItems:'center',minWidth:0}}>
-                {slide.score ? (
-                  <>
-                    <span style={{fontFamily:footerFf,fontSize:T.f13,fontWeight:400,color:T.white,whiteSpace:'nowrap',lineHeight:'14px'}}>
-                      {slide.score} {slide.label}
-                    </span>
-                    <span style={{fontFamily:footerFf,fontSize:T.f13,fontWeight:400,color:T.mint,whiteSpace:'nowrap',lineHeight:'14px'}}>
-                      {slide.sub}
-                    </span>
-                  </>
-                ) : (
-                  <div style={{minWidth:0}}>
-                    <div style={{fontFamily:footerFf,fontSize:T.fXs,fontWeight:400,color:T.white,lineHeight:'14px',
-                      overflow:'hidden',whiteSpace:'nowrap',textOverflow:'ellipsis'}}>{slide.label}</div>
-                    <div style={{fontFamily:footerFf,fontSize:T.fXxs,fontWeight:400,color:'rgba(255,255,255,0.5)',lineHeight:'14px'}}>{slide.sub}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          {/* Nav buttons: gap 6px, no dots */}
-          <div style={{display:'flex',gap:6,flexShrink:0,alignItems:'center'}}>
-            <ArrBtn left onClick={prev}/>
-            <ArrBtn left={false} onClick={next}/>
-          </div>
-        </div>
-      );
-    };
-
-    // ── FOOTER SECTION ── (desktop ≥1200px · tablet 768–1199px)
-    const FooterSection = () => {
-      const ff  = "'Helvetica Neue', Helvetica, Arial, sans-serif";
-      const fi  = "'Inter', 'Helvetica Neue', Arial, sans-serif";
-
-      // Use ResizeObserver on the component's own container so breakpoints respond
-      // to rendered width, not viewport width (important when used inside a sidebar layout).
-      const containerRef = React.useRef(null);
-      const [containerW, setContainerW] = useState(1600);
-      const narrow     = containerW < 1141;
-      const veryNarrow = containerW < 901;
-
-      useEffect(() => {
-        const el = containerRef.current;
-        if (!el) return;
-        const ro = new ResizeObserver(([entry]) => setContainerW(entry.contentRect.width));
-        ro.observe(el);
-        setContainerW(el.getBoundingClientRect().width);
-        return () => ro.disconnect();
+        const el = ref.current; if (!el) return;
+        let ro = null;
+        const ft = () => el.contentDocument && el.contentDocument.querySelector('footer');
+        const fit = () => { try { const f = ft(); if (f) setH(Math.ceil(f.getBoundingClientRect().height)); } catch (e) {} };
+        const onLoad = () => { fit(); try { ro = new ResizeObserver(fit); ro.observe(ft()); } catch (e) {} };
+        el.addEventListener('load', onLoad);
+        if (el.contentDocument && el.contentDocument.readyState === 'complete') onLoad();
+        return () => { el.removeEventListener('load', onLoad); if (ro) ro.disconnect(); };
       }, []);
-
-      const imgSocPin     = "./footer/Icon=Pinterest.svg";
-      const imgSocFb      = "./footer/Icon=Facebook.svg";
-      const imgSocIg      = "./footer/Icon=VaInstagram.svg";
-      const imgSocYt      = "./footer/Icon=Youtube.svg";
-      const imgSocX       = "./footer/Icon=X.svg";
-      const imgBadge1     = "./footer/2023.png";
-      const imgBadge2     = "./footer/2024.png";
-      const imgBadge3     = "./footer/2025.png";
-      const imgBadge4     = "./footer/3jahre.png";
-      const imgDpd        = "./footer/Choice=dpd.svg";
-      const imgDhlVector  = "./footer/Choice=dhl.svg";
-      const imgHasenauer  = "./footer/Choice=hasenauer-koch.svg";
-      const imgSepa       = "./footer/Choice=sepa.svg";
-      const imgAmex       = "./footer/Choice=amex.svg";
-      const imgVisa       = "./footer/Choice=visa.svg";
-      const imgAmazonPay  = "./footer/Choice=pay.svg";
-      const imgKlarna     = "./footer/Choice=klarna.svg";
-      const imgPayPal     = "./footer/Choice=paypal.svg";
-      const imgMastercard = "./footer/Choice=mastercard.svg";
-      const imgApplePay   = "./footer/Choice=apple.svg";
-      const imgGooglePay  = "./footer/Choice=google.svg";
-      const imgVorkasse   = "./footer/Choice=vorkasse.svg";
-
-      // ── Sub-components ──────────────────────────────────────────────────
-      const ColHead = ({children}) => (
-        <p style={{fontFamily:ff,fontSize:T.fBody,fontWeight:700,color:T.white,lineHeight:'normal',margin:0,whiteSpace:'nowrap'}}>{children}</p>
-      );
-      const SocialBtn = ({src, iw, ih, href, label}) => {
-        const [hov, setHov] = useState(false);
-        return (
-          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} style={{width:35,height:35,borderRadius:70,
-            background: hov ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
-            display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0,
-            transform: hov ? 'scale(1.1)' : 'scale(1)',
-            transition:'background 0.15s, transform 0.15s'}}
-            onMouseEnter={()=>setHov(true)}
-            onMouseLeave={()=>setHov(false)}>
-            <img src={src} alt="" style={{width:iw,height:ih,objectFit:'contain'}} />
-          </a>
-        );
-      };
-
-      const infoLinks    = FOOTER_INFO_LINKS;
-      const serviceLinks = FOOTER_SERVICE_LINKS;
-      const legalLinks   = FOOTER_LEGAL_LINKS;
-
-      // Shared Follow us + Qualität block (inlined to avoid hooks in dynamic components)
-      const socialRow = (
-        <div style={{display:'flex',gap:10,alignItems:'center'}}>
-          <SocialBtn src={imgSocPin} iw={17} ih={22} href={FOOTER_SOCIAL.pinterest} label="Pinterest" />
-          <SocialBtn src={imgSocFb}  iw={11} ih={20} href={FOOTER_SOCIAL.facebook}  label="Facebook" />
-          <SocialBtn src={imgSocIg}  iw={22} ih={21} href={FOOTER_SOCIAL.instagram} label="Instagram" />
-          <SocialBtn src={imgSocYt}  iw={25} ih={18} href={FOOTER_SOCIAL.youtube}   label="YouTube" />
-          <SocialBtn src={imgSocX}   iw={19} ih={19} href={FOOTER_SOCIAL.x}         label="X / Twitter" />
-        </div>
-      );
-      const qualityRow = (
-        <div style={{display:'flex',gap:10,alignItems:'flex-end'}}>
-          <img src={imgBadge1} alt="TopShop 2023" style={{width:48,height:72,objectFit:'contain'}} />
-          <img src={imgBadge2} alt="TopShop 2024" style={{width:48,height:72,objectFit:'contain'}} />
-          <img src={imgBadge3} alt="TopShop 2025" style={{width:48,height:72,objectFit:'contain'}} />
-          <img src={imgBadge4} alt="TopShop 3J"   style={{width:44,height:72,objectFit:'contain'}} />
-        </div>
-      );
-
       return (
-        <div ref={containerRef} style={{background:T.teal700,marginBottom:20,fontFamily:ff,width:'100%',boxSizing:'border-box'}}>
-          {/* ─── centred content, max 1600px ─── */}
-          <div style={{maxWidth:1600,margin:'0 auto',padding:'1.25rem 1.25rem 0 1.25rem',boxSizing:'border-box'}}>
-
-            {/* ══ ROW 1: navigation columns ══
-                ≥1200px:   5 cols: Logo | Contact | Informationen | Service | Follow us+Qualität
-                900–1199px: 4 cols: Logo+Follow us+Qualität | Contact | Informationen | Service
-                768–899px:  3 cols: Logo+Follow us+Qualität | Contact | Informationen+Service */}
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'nowrap',
-              gap:narrow ? 16 : 20,paddingTop:10,paddingBottom:40,borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
-
-              {/* ── Col 1: Logo + tagline [tablet: + Follow us + Qualität below] ── */}
-              <div style={{width: narrow ? 269 : 280, minWidth:200, display:'flex', flexDirection:'column',
-                gap:25, flexShrink:0, alignItems:'flex-start'}}>
-                <img src="./footer/Metzler_Logo_footer.svg" alt="Metzler"
-                  style={{height:40, width:'auto', objectFit:'contain'}} />
-                <p style={{fontFamily:ff,fontSize:T.fBody,fontWeight:400,color:'rgba(255,255,255,0.5)',
-                  lineHeight:'22px',margin:0}}>
-                  {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
-                  <MintLink href="https://metzlergmbh.de" fontSize={T.fBody} lineHeight="22px">Metzler Gruppe</MintLink>
-                </p>
-                <p style={{fontFamily:ff,fontSize:T.fH4,fontWeight:700,color:T.white,lineHeight:'normal',margin:0}}>
-                  Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
-                </p>
-                <a href={FOOTER_ABOUT.h} target="_blank" rel="noopener noreferrer"
-                  style={{fontFamily:ff,fontSize:T.fBody,fontWeight:700,color:T.white,textDecoration:'none',lineHeight:'normal'}}>
-                  {FOOTER_ABOUT.l}
-                </a>
-                {/* Tablet only: Follow us + Qualität stacked under tagline in Col 1 */}
-                {narrow && <>
-                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                    <ColHead>Follow us</ColHead>
-                    {socialRow}
-                  </div>
-                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                    <ColHead>Qualität</ColHead>
-                    {qualityRow}
-                  </div>
-                </>}
-              </div>
-
-              {/* ── Col 2: Contact ── */}
-              <div style={{width: narrow ? 232 : 192, minWidth:160, display:'flex',
-                flexDirection:'column', gap:30, flexShrink:0}}>
-                <div style={{display:'flex',flexDirection:'column',gap:5}}>
-                  <ColHead>Allgemeine Hotline:</ColHead>
-                  <MintLink href="tel:+4971213177310">+49 (0) 7121 / 317 7310</MintLink>
-                  <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr: 09:00-16:00 Uhr)</span>
-                </div>
-                <div style={{display:'flex',flexDirection:'column',gap:5}}>
-                  <ColHead>Sprechanlagen Hotline:</ColHead>
-                  <MintLink href="tel:+4971213177333">+49 (0) 7121 / 317 7333</MintLink>
-                  <span style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px'}}>(Mo-Fr: 09:00-16:00 Uhr)</span>
-                </div>
-                <div style={{display:'flex',flexDirection:'column',gap:5}}>
-                  <ColHead>E-Mail Support:</ColHead>
-                  <MintLink href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</MintLink>
-                </div>
-                <div style={{display:'flex',flexDirection:'column',gap:5}}>
-                  <ColHead>Kontaktformular:</ColHead>
-                  <MintLink href="https://edelstahl-tuerklingel.de/Kontakt">Zum Kontaktformular</MintLink>
-                </div>
-              </div>
-
-              {/* ── Col 3 desktop: Informationen only
-                    D1200:   Informationen only (link gap 20, header→links gap 30)
-                    Tablet:  Informationen + Service combined (each gap 30 header→links, link gap 12, 10px between blocks) ── */}
-              <div style={{display:'flex', flexDirection:'column', gap: veryNarrow ? 10 : 30, flexShrink:0, minWidth:160}}>
-                <div style={{display:'flex',flexDirection:'column',gap: narrow ? 30 : 20}}>
-                  <ColHead>Informationen</ColHead>
-                  <div style={{display:'flex',flexDirection:'column',gap: veryNarrow ? 12 : 20}}>
-                    {infoLinks.map(l => <FootLink key={l.l} href={l.h}>{l.l}</FootLink>)}
-                  </div>
-                </div>
-                {/* Tablet only (768–899px): Service merged into Col 3 */}
-                {veryNarrow && (
-                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                    <ColHead>Service</ColHead>
-                    <div style={{display:'flex',flexDirection:'column',gap:12}}>
-                      {serviceLinks.map(l => <FootLink key={l.l} href={l.h}>{l.l}</FootLink>)}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* ── Col 4: Service only (≥900px — both desktop and D1200, gap:30 header→links, link gap:20) ── */}
-              {!veryNarrow && (
-                <div style={{display:'flex',flexDirection:'column',gap:30,flexShrink:0,minWidth:140}}>
-                  <ColHead>Service</ColHead>
-                  <div style={{display:'flex',flexDirection:'column',gap:20}}>
-                    {serviceLinks.map(l => <FootLink key={l.l} href={l.h}>{l.l}</FootLink>)}
-                  </div>
-                </div>
-              )}
-
-              {/* ── Col 5 desktop: Follow us + Qualität ── */}
-              {!narrow && (
-                <div style={{display:'flex',flexDirection:'column',gap:40,flexShrink:0}}>
-                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                    <ColHead>Follow us</ColHead>
-                    {socialRow}
-                  </div>
-                  <div style={{display:'flex',flexDirection:'column',gap:30}}>
-                    <ColHead>Qualität</ColHead>
-                    {qualityRow}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* ══ ROW 2: badges + TrustedSlider ══
-                ≥1200px:   Versandpartners | divider | Bezahlen | → | TrustedSlider (one row)
-                900–1199px: Versandpartners + Bezahlen side-by-side (row), TrustedSlider below (col)
-                768–899px:  fully stacked: Versandpartners → Bezahlen → TrustedSlider */}
-            {!narrow ? (
-              /* ── Desktop ≥1141px: Versandpartners | Bezahlen (flexible) | TrustedSlider ── */
-              <div style={{display:'flex',alignItems:'flex-start',gap:20,
-                padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
-                {/* Versandpartners — fixed left */}
-                <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
-                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartner:</span>
-                  <div style={{display:'flex',gap:15,alignItems:'center'}}>
-                    <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgHasenauer} alt="Hasenauer & Koch" style={{width:53,height:30,flexShrink:0}} />
-                  </div>
-                </div>
-                {/* Bezahlen — grows to fill available space so TrustedSlider always fits */}
-                <div style={{display:'flex',flexDirection:'column',gap:10,flex:'1 1 auto',minWidth:0}}>
-                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Einfach bezahlen:</span>
-                  <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
-                    <img src={imgSepa}       alt="SEPA"       style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgAmex}       alt="AMEX"       style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgVisa}       alt="Visa"       style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgAmazonPay}  alt="Amazon Pay" style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgKlarna}     alt="Klarna"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgPayPal}     alt="PayPal"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgMastercard} alt="Mastercard" style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgApplePay}   alt="Apple Pay"  style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgGooglePay}  alt="Google Pay" style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgVorkasse}   alt="Vorkasse"   style={{width:53,height:30,flexShrink:0}} />
-                  </div>
-                </div>
-                {/* TrustedSlider — fixed right */}
-                <div style={{flexShrink:0}}>
-                  <TrustedSlider />
-                </div>
-              </div>
-            ) : !veryNarrow ? (
-              /* ── Desktop 1200 (900–1199px): V+B side-by-side (gap:30, no divider), TrustedSlider below ── */
-              <div style={{display:'flex',flexDirection:'column',gap:30,
-                padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
-                <div style={{display:'flex',alignItems:'flex-end',flexWrap:'nowrap',gap:30}}>
-                  <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
-                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartner:</span>
-                    <div style={{display:'flex',gap:15,alignItems:'center'}}>
-                      <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgHasenauer} alt="Hasenauer & Koch" style={{width:53,height:30,flexShrink:0}} />
-                    </div>
-                  </div>
-                  <div style={{display:'flex',flexDirection:'column',gap:10,flexShrink:0}}>
-                    <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Einfach bezahlen:</span>
-                    <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
-                      <img src={imgSepa}       alt="SEPA"       style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgAmex}       alt="AMEX"       style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgVisa}       alt="Visa"       style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgAmazonPay}  alt="Amazon Pay" style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgKlarna}     alt="Klarna"     style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgPayPal}     alt="PayPal"     style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgMastercard} alt="Mastercard" style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgApplePay}   alt="Apple Pay"  style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgGooglePay}  alt="Google Pay" style={{width:53,height:30,flexShrink:0}} />
-                      <img src={imgVorkasse}   alt="Vorkasse"   style={{width:53,height:30,flexShrink:0}} />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <TrustedSlider />
-                </div>
-              </div>
-            ) : (
-              /* ── Tablet 768–899px: fully stacked (gap:30 between sections, badge gap:15) ── */
-              <div style={{display:'flex',flexDirection:'column',gap:30,
-                padding:'20px 0',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
-                <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Unsere Versandpartner:</span>
-                  <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
-                    <img src={imgDpd}       alt="DPD"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgDhlVector} alt="DHL"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgHasenauer} alt="Hasenauer & Koch" style={{width:53,height:30,flexShrink:0}} />
-                  </div>
-                </div>
-                <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                  <span style={{fontFamily:fi,fontSize:T.fSm,fontWeight:400,color:T.white,lineHeight:'20px'}}>Einfach bezahlen:</span>
-                  <div style={{display:'flex',gap:15,alignItems:'center',flexWrap:'wrap'}}>
-                    <img src={imgSepa}       alt="SEPA"       style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgAmex}       alt="AMEX"       style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgVisa}       alt="Visa"       style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgAmazonPay}  alt="Amazon Pay" style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgKlarna}     alt="Klarna"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgPayPal}     alt="PayPal"     style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgMastercard} alt="Mastercard" style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgApplePay}   alt="Apple Pay"  style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgGooglePay}  alt="Google Pay" style={{width:53,height:30,flexShrink:0}} />
-                    <img src={imgVorkasse}   alt="Vorkasse"   style={{width:53,height:30,flexShrink:0}} />
-                  </div>
-                </div>
-                <div>
-                  <TrustedSlider />
-                </div>
-              </div>
-            )}
-
-            {/* ══ ROW 3: Legal links ══ */}
-            <div style={{borderTop:'1px solid rgba(255,255,255,0.1)',borderBottom:'1px solid rgba(255,255,255,0.1)',
-              padding:'20px 0',display:'flex',flexWrap:'wrap',gap:'8px 20px',alignItems:'center',justifyContent:'center'}}>
-              {legalLinks.map(l => (
-                <a key={l.l} href={l.h} target={l.h.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
-                  style={{fontFamily:ff,fontSize:T.fSm,color:'rgba(255,255,255,0.5)',lineHeight:'16px',cursor:'pointer',whiteSpace:'nowrap',textDecoration:'none'}}
-                  onMouseEnter={e=>e.currentTarget.style.color='rgba(255,255,255,0.9)'}
-                  onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.5)'}
-                >{l.l}</a>
-              ))}
-              <div style={{flexBasis:'100%',display:'flex',justifyContent:'center',paddingTop:4}}>
-                <WithdrawButton />
-              </div>
-            </div>
-
-            {/* ══ ROW 4: Copyright ══ */}
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center',padding:'16px 0'}}>
-              <span style={{fontFamily:ff,fontSize:T.fSm,color:T.white,lineHeight:'16px'}}>
-                inkl. gesetzliche MwSt., zzgl.{' '}
-                <a href={ETK+'/zahlung-und-versand'} target="_blank" rel="noopener noreferrer"
-                  style={{color:'rgba(255,255,255,0.5)',textDecoration:'underline',cursor:'pointer'}}>Versand</a>
-                {' '}© 2013 - {FOOTER_YEAR} | Metzler GmbH
-              </span>
-            </div>
-
-          </div>
+        <div style={{display:'flex', justifyContent:'center'}}>
+          <iframe ref={ref} src="./footer/preview.html" title="Metzler Footer"
+            style={{width: width || '100%', height: h, border:'none', display:'block'}} />
         </div>
       );
     };
-
-
-    // ── MOBILE FOOTER SECTION ── (matches , 360px)
-    const MobileFooterSection = () => {
-      const ff = "'Helvetica Neue', Helvetica, Arial, sans-serif";
-
-      const imgMobLogo    = "./footer/Metzler_Logo_footer.svg";
-      const imgMobTrusted = "./footer/Property 1=all.svg";
-      // Social icons
-      const imgMobSocPin  = "./footer/Icon=Pinterest.svg";
-      const imgMobSocFb   = "./footer/Icon=Facebook.svg";
-      const imgMobSocIg   = "./footer/Icon=VaInstagram.svg";
-      const imgMobSocYt   = "./footer/Icon=Youtube.svg";
-      const imgMobSocX    = "./footer/Icon=X.svg";
-      // Shipping logos — complete badge SVGs (shell + logo)
-      const imgMobDpd     = "./footer/Choice=dpd.svg";
-      const imgMobDhl     = "./footer/Choice=dhl.svg";
-      const imgMobHasenauer = "./footer/Choice=hasenauer-koch.svg";
-      // Payment logos — complete badge SVGs (shell + logo)
-      const imgMobSepa    = "./footer/Choice=sepa.svg";
-      const imgMobAmex    = "./footer/Choice=amex.svg";
-      const imgMobVisa    = "./footer/Choice=visa.svg";
-      const imgMobAmazon  = "./footer/Choice=pay.svg";
-      const imgMobKlarna  = "./footer/Choice=klarna.svg";
-      const imgMobPayPal  = "./footer/Choice=paypal.svg";
-      const imgMobMC      = "./footer/Choice=mastercard.svg";
-      const imgMobApple   = "./footer/Choice=apple.svg";
-      const imgMobGPay    = "./footer/Choice=google.svg";
-      const imgMobVork    = "./footer/Choice=vorkasse.svg";
-
-      const [infoOpen, setInfoOpen] = useState(false);
-      const [servOpen, setServOpen] = useState(false);
-      const [mobIdx,   setMobIdx]   = useState(0);
-      const [mobPaused,setMobPaused]= useState(false);
-
-      useEffect(() => {
-        if (mobPaused) return;
-        const t = setInterval(() => setMobIdx(i => (i + 1) % tsSlides.length), 3000);
-        return () => clearInterval(t);
-      }, [mobPaused]);
-
-      const mobSlide = tsSlides[mobIdx];
-
-      const infoLinks    = FOOTER_INFO_LINKS;
-      const serviceLinks = FOOTER_SERVICE_LINKS;
-      const legalLinks   = FOOTER_LEGAL_LINKS;
-
-      // Payment badge — fixed 50×28px, 4px radius, never stretches
-      const MB = ({src, alt}) => (
-        <img src={src} alt={alt} style={{width:'3.125rem', height:'1.75rem', borderRadius:'0.25rem', display:'block', flexShrink:0, objectFit:'contain'}} />
-      );
-      // Empty spacer cell (for layout alignment)
-      const MBEmpty = () => <div style={{flex:'1 0 0', minWidth:0}} />;
-      // Star for slider
-      const TStar = ({filled}) => (
-        <svg style={{flex:'1 0 0'}} width="15" height="15" viewBox="0 0 15 15" fill="none">
-          <path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"
-            fill={filled?'#F5A623':'rgba(255,255,255,0.18)'}
-            stroke={filled?'#E09000':'rgba(255,255,255,0.1)'} strokeWidth="0.4"/>
-        </svg>
-      );
-      // Hoverable social icon (mobile)
-      const MobSocBtn = ({src, alt, iw, ih, href}) => {
-        const [hov, setHov] = React.useState(false);
-        return (
-          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={alt} style={{width:'1.375rem', height:'1.375rem', display:'flex', alignItems:'center', justifyContent:'center',
-            cursor:'pointer', transform: hov ? 'scale(1.15)' : 'scale(1)', transition:'transform 0.15s',
-            opacity: hov ? 1 : 0.7}}
-            onMouseEnter={()=>setHov(true)}
-            onMouseLeave={()=>setHov(false)}>
-            <img src={src} alt={alt} style={{width:iw, height:ih, objectFit:'contain'}} />
-          </a>
-        );
-      };
-      // Hoverable link item inside accordion
-      const MobLink = ({label, href}) => {
-        const [hov, setHov] = React.useState(false);
-        return (
-          <a href={href || '#'} target={href && href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
-            style={{fontFamily:ff, fontSize:T.fSm, color: hov ? T.white : 'rgba(255,255,255,0.7)',
-            cursor:'pointer', lineHeight:'1.25rem', transition:'color 0.15s', textDecoration:'none'}}
-            onMouseEnter={()=>setHov(true)}
-            onMouseLeave={()=>setHov(false)}>{label}</a>
-        );
-      };
-      // Collapsible menu item
-      const MobMenu = ({label, open, onToggle, links}) => (
-        <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', width:'100%'}}>
-          <button onClick={onToggle} style={{width:'100%', background:'none', border:'none',
-            cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between',
-            padding:'0.9375rem 0'}}>
-            <span style={{fontFamily:ff, fontSize:T.fBody, fontWeight:700, color:T.white}}>{label}</span>
-            <svg width="9" height="16" viewBox="0 0 9 16" fill="none"
-              style={{transform: open ? 'rotate(90deg)' : 'rotate(-90deg)', transition:'transform 0.2s ease', flexShrink:0}}>
-              <path d="M1.5 1.5L7.5 8L1.5 14.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-          {open && (
-            <div style={{display:'flex', flexDirection:'column', gap:'0.625rem', paddingBottom:'0.9375rem'}}>
-              {links.map(l => <MobLink key={l.l} label={l.l} href={l.h} />)}
-            </div>
-          )}
-        </div>
-      );
-
-      return (
-        <div style={{background:T.teal700, width:'100%', padding:'1.25rem 1.5rem',
-          boxSizing:'border-box', fontFamily:ff, marginBottom:'1.25rem'}}>
-          <div style={{display:'flex', flexDirection:'column', gap:'0.9375rem', alignItems:'center', width:'100%'}}>
-
-            {/* ── Section 1: Logo + tagline ── */}
-            <div style={{borderBottom:'0.0625rem solid rgba(255,255,255,0.2)', paddingBottom:'0.9375rem',
-              width:'100%', display:'flex', flexDirection:'column', gap:'0.9375rem'}}>
-              <img src={imgMobLogo} alt="Metzler" style={{width:'10rem', height:'1.75rem', objectFit:'contain'}} />
-              <p style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, lineHeight:'1rem', margin:0}}>
-                Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.
-              </p>
-              <p style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'0.875rem', margin:0}}>
-                {'Edelstahl-Tuerklingel.de ist ein Unternehmen der '}
-                <MintLink href="https://metzlergmbh.de" fontSize={T.fXs} lineHeight="0.875rem">Metzler Gruppe</MintLink>
-              </p>
-              <a href={FOOTER_ABOUT.h} target="_blank" rel="noopener noreferrer"
-                style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, textDecoration:'none', lineHeight:'1rem'}}>
-                {FOOTER_ABOUT.l}
-              </a>
-            </div>
-
-            {/* ── Section 2: Contact info ── */}
-            <div style={{display:'flex', flexDirection:'column', gap:'1.25rem', width:'100%'}}>
-              {[
-                {label:'Allgemeine Hotline:',    phone:'+49 (0) 7121 / 317 7310', href:'tel:+4971213177310'},
-                {label:'Sprechanlagen Hotline:', phone:'+49 (0) 7121 / 317 7333', href:'tel:+4971213177333'},
-              ].map(c => (
-                <div key={c.label} style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
-                  <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white, lineHeight:'normal'}}>{c.label}</span>
-                  <MintLink href={c.href} fontSize={T.fSm} lineHeight="1rem">{c.phone}</MintLink>
-                  <span style={{fontFamily:ff, fontSize:T.fXs, color:'rgba(255,255,255,0.5)', lineHeight:'1.625rem'}}>(Mo-Fr: 09:00-16:00 Uhr)</span>
-                </div>
-              ))}
-              <div style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
-                <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white}}>E-Mail Support:</span>
-                <MintLink href="mailto:service@metzlergmbh.de" fontSize={T.fSm} lineHeight="1rem">service@metzlergmbh.de</MintLink>
-              </div>
-              <div style={{display:'flex', flexDirection:'column', gap:'0.3125rem'}}>
-                <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:700, color:T.white}}>Kontaktformular:</span>
-                <MintLink href="https://edelstahl-tuerklingel.de/Kontakt" fontSize={T.fSm} lineHeight="1rem">Zum Kontaktformular</MintLink>
-              </div>
-            </div>
-
-            {/* ── Section 3: Collapsible menus + logos ── */}
-            <div style={{width:'100%'}}>
-              <MobMenu label="Informationen" open={infoOpen} onToggle={()=>setInfoOpen(o=>!o)} links={infoLinks} />
-              <MobMenu label="Service"       open={servOpen} onToggle={()=>setServOpen(o=>!o)} links={serviceLinks} />
-
-              {/* Logos block */}
-              <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', borderBottom:'0.0625rem solid rgba(255,255,255,0.2)',
-                paddingTop:'0.9375rem', paddingBottom:'1.25rem', display:'flex', flexDirection:'column', gap:'1.25rem'}}>
-
-                {/* Versandpartners — fixed 50px badges, wrap naturally */}
-                <div style={{display:'flex', flexDirection:'column', gap:'0.625rem'}}>
-                  <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:400, color:T.white, lineHeight:'1.25rem'}}>
-                    Unsere Versandpartner:
-                  </span>
-                  <div style={{display:'flex', gap:'0.3125rem', flexWrap:'wrap'}}>
-                    <MB src={imgMobDpd}     alt="DPD" />
-                    <MB src={imgMobDhl}     alt="DHL" />
-                    <MB src={imgMobHasenauer} alt="Hasenauer & Koch" />
-                  </div>
-                </div>
-
-                {/* Einfach bezahlen — fixed 50px badges, wrap naturally */}
-                <div style={{display:'flex', flexDirection:'column', gap:'0.625rem'}}>
-                  <span style={{fontFamily:ff, fontSize:T.fSm, fontWeight:400, color:T.white, lineHeight:'1.25rem'}}>
-                    Einfach bezahlen:
-                  </span>
-                  <div style={{display:'flex', gap:'0.3125rem', flexWrap:'wrap'}}>
-                    <MB src={imgMobSepa}   alt="SEPA" />
-                    <MB src={imgMobAmex}   alt="AMEX" />
-                    <MB src={imgMobVisa}   alt="Visa" />
-                    <MB src={imgMobAmazon} alt="Amazon Pay" />
-                    <MB src={imgMobKlarna} alt="Klarna" />
-                    <MB src={imgMobPayPal} alt="PayPal" />
-                    <MB src={imgMobMC}     alt="Mastercard" />
-                    <MB src={imgMobApple}  alt="Apple Pay" />
-                    <MB src={imgMobGPay}   alt="Google Pay" />
-                    <MB src={imgMobVork}   alt="Vorkasse" />
-                  </div>
-                </div>
-
-                {/* Mobile TrustedSlider — full-width, same slide data */}
-                <div onMouseEnter={()=>setMobPaused(true)} onMouseLeave={()=>setMobPaused(false)}
-                  style={{display:'flex', alignItems:'center', justifyContent:'space-between',
-                    background:'rgba(255,255,255,0.08)', borderRadius:'3.75rem', padding:'0.625rem 0.9375rem',
-                    width:'100%', boxSizing:'border-box', gap:'0.625rem'}}>
-                  <div style={{display:'flex', gap:'0.625rem', alignItems:'center', flex:1, minWidth:0, height:'2rem'}}>
-                    <img src={mobSlide.img} alt="Trusted Shops"
-                      style={{width:'1.875rem', height:'1.875rem', objectFit:'contain', flexShrink:0, borderRadius:'50%'}} />
-                    <div style={{display:'flex', flexDirection:'column', gap:'0.1875rem', minWidth:0, flex:1}}>
-                      <div style={{display:'flex', gap:'0.125rem', width:'5rem', alignItems:'center'}}>
-                        {[0,1,2,3,4].map(i => <TStar key={i} filled={i < mobSlide.stars} />)}
-                      </div>
-                      <div key={mobIdx} style={{animation:'tslidein 0.3s ease',
-                        display:'flex', flexWrap:'wrap', columnGap:'0.3125rem', rowGap:'0.0625rem', alignItems:'center', minWidth:0}}>
-                        {mobSlide.score ? (
-                          <>
-                            <span style={{fontFamily:ff, fontSize:T.fXs, color:T.white, whiteSpace:'nowrap', lineHeight:'0.875rem'}}>
-                              {mobSlide.score} {mobSlide.label}
-                            </span>
-                            <span style={{fontFamily:ff, fontSize:T.fXs, color:T.mint, whiteSpace:'nowrap', lineHeight:'0.875rem'}}>
-                              {mobSlide.sub}
-                            </span>
-                          </>
-                        ) : (
-                          <div style={{minWidth:0}}>
-                            <div style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem',
-                              overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis'}}>{mobSlide.label}</div>
-                            <div style={{fontFamily:ff, fontSize:T.fXxs, color:'rgba(255,255,255,0.5)', lineHeight:'0.875rem'}}>{mobSlide.sub}</div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{display:'flex', gap:'0.375rem', flexShrink:0}}>
-                    <button onClick={()=>setMobIdx(i=>(i-1+tsSlides.length)%tsSlides.length)}
-                      style={{width:'1.875rem', height:'1.875rem', borderRadius:'50%', background:'rgba(255,255,255,0.15)', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, padding:0}}>
-                      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-                        <path d="M6 1L1 6L6 11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                    <button onClick={()=>setMobIdx(i=>(i+1)%tsSlides.length)}
-                      style={{width:'1.875rem', height:'1.875rem', borderRadius:'50%', background:'rgba(255,255,255,0.15)', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, padding:0}}>
-                      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-                        <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* ── Section 4: Social icons ── */}
-            <div style={{display:'flex', gap:'2.125rem', alignItems:'center', justifyContent:'center', padding:'0.3125rem 0'}}>
-              <MobSocBtn src={imgMobSocPin} alt="Pinterest" href={FOOTER_SOCIAL.pinterest} iw="0.9375rem" ih="1.1875rem" />
-              <MobSocBtn src={imgMobSocFb}  alt="Facebook" href={FOOTER_SOCIAL.facebook}  iw="0.625rem"  ih="1.125rem" />
-              <MobSocBtn src={imgMobSocIg}  alt="Instagram" href={FOOTER_SOCIAL.instagram} iw="1.1875rem" ih="1.1875rem" />
-              <MobSocBtn src={imgMobSocYt}  alt="YouTube" href={FOOTER_SOCIAL.youtube}   iw="1.375rem"  ih="1rem" />
-              <MobSocBtn src={imgMobSocX}   alt="X" href={FOOTER_SOCIAL.x}         iw="1.0625rem" ih="1.0625rem" />
-            </div>
-
-            {/* ── Section 5: Legal links ── */}
-            <div style={{borderTop:'0.0625rem solid rgba(255,255,255,0.2)', paddingTop:'0.9375rem', width:'100%',
-              display:'flex', flexWrap:'wrap', gap:'0.3125rem 0.9375rem', justifyContent:'center'}}>
-              {legalLinks.map(l => (
-                <a key={l.l} href={l.h} target={l.h.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
-                  style={{fontFamily:ff, fontSize:T.fXxs, color:'rgba(255,255,255,0.5)',
-                  lineHeight:'0.875rem', textDecoration:'underline', cursor:'pointer', whiteSpace:'nowrap'}}>
-                  {l.l}
-                </a>
-              ))}
-              <div style={{flexBasis:'100%', display:'flex', justifyContent:'center', paddingTop:'0.3125rem'}}>
-                <WithdrawButton small />
-              </div>
-            </div>
-
-            {/* ── Section 6: Copyright ── */}
-            <div style={{textAlign:'center'}}>
-              <p style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem', margin:'0 0 0.125rem'}}>
-                * inkl. gesetzliche MwSt., zzgl.{' '}
-                <a href={ETK+'/zahlung-und-versand'} target="_blank" rel="noopener noreferrer"
-                  style={{color:'rgba(255,255,255,0.5)', textDecoration:'underline', cursor:'pointer'}}>Versand</a>
-              </p>
-              <p style={{fontFamily:ff, fontSize:T.fXxs, color:T.white, lineHeight:'0.875rem', margin:0}}>
-                © 2013 - {FOOTER_YEAR} | Metzler GmbH
-              </p>
-            </div>
-
-          </div>
-        </div>
-      );
-    };
+    const FooterSection       = () => <FooterFrame />;
+    const MobileFooterSection = () => <FooterFrame width="375px" />;
 
         // ── TOP NAVBAR ──
     const KIT_FILES = [
@@ -14673,12 +13926,12 @@ cursor: pointer;
 
             {/* FOOTER */}
             <SH1 id="footer">Footer</SH1>
-            <Lead>Full-width dark footer with link columns, trust badges, and payment/shipping logos. Mobile breakpoint &lt;768px switches to the stacked accordion layout.</Lead>
+            <Lead>The live shop footer, 1:1 (checked 1 Oct 2026): 5 link columns, shipping + payment logos, the rotating rating pill, legal links with the „Vertrag widerrufen“ button, copyright. Below 62rem (992px) it switches to the stacked mobile layout. Rendered from <code>footer/preview.html</code>; copy it from FOR-CLAUDE.md §14.</Lead>
             {isMobile ? <MobileFooterSection /> : <FooterSection />}
 
             {/* FOOTER — MOBILE */}
             <SH1 id="footer-mobile">Footer · Mobile</SH1>
-            <Lead>Stacked mobile footer with accordion link groups, newsletter field, and trust/payment logos.</Lead>
+            <Lead>Stacked mobile footer (375px): contact block, Informationen / Service accordions, shipping + payment logos, rating pill, social icons, legal links.</Lead>
             <MobileFooterSection />
 
             <div style={{marginTop:60,paddingTop:40,borderTop:`1px solid ${T.g200}`}}>

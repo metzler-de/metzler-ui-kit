@@ -1,6 +1,6 @@
 # Metzler Design System — Claude Page Brief
 
-> Kit-Version **v1.12** · 2026-09-29 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
+> Kit-Version **v1.13** · 2026-10-01 · source of truth: `index.html` in this folder (history: `CHANGELOG.md`).
 
 Claude reads this file directly from the kit folder (`~/Documents/Claude/Projects/Metzler UI Kit`) before building any Metzler page, section or component. No pasting needed.
 Follow every rule here exactly. Do not invent values, do not skip sections, do not use custom fonts or external libraries.
@@ -59,6 +59,8 @@ Follow every rule here exactly. Do not invent values, do not skip sections, do n
   /* ── SURFACES ── */
   --color-white:      #FFFFFF;   /* card backgrounds, input backgrounds */
   --color-black:      #000000;   /* reserved — never for text or section backgrounds */
+  --color-footer-muted: #99A9AA; /* footer secondary text + links (white 60 % on teal-700) */
+  --color-footer-line:  #1A3E3F; /* footer divider lines (white 10 % on teal-700) */
   --color-paper:      #F5F6FA;   /* page background, secondary surfaces */
   --color-graphite-100:      #F0F0F0;   /* row separators, skeleton fills */
   --color-graphite-200:      #E6E6E8;   /* hairline dividers (1px lines) */
@@ -748,234 +750,296 @@ Critical: `placeholder=" "` (single space) is **required** — the CSS uses `:no
 
 ## 14 · Footer
 
-> **Canonical source:** the `FooterSection` (desktop) and `MobileFooterSection` (< 48rem) components in **`index.html`**; link data lives in `FOOTER_INFO_LINKS`, `FOOTER_SERVICE_LINKS` and `FOOTER_LEGAL_LINKS`. The block below is their **1:1 static export**: use it for every real page. Content matches the live shop **edelstahl-tuerklingel.de as of 28 Sep 2026**.
+> **Canonical source:** `footer/preview.html` (rendered in the kit under Footer and Footer · Mobile). The block below is its **1:1 static export**: use it for every real page. It matches the live shop **edelstahl-tuerklingel.de as of 1 Oct 2026** (checked element by element at 1440 px and 375 px).
 >
-> **Assets:** every logo and badge comes from the kit's `footer/` folder (paths below are relative to the kit root). In Claude Design they are in the Payment & Shipping, Social, Awards & Reviews and Logos asset groups.
+> **Assets:** every logo and badge comes from the kit's `footer/` folder (paths below are relative to the kit root): `footer/payment/` (shipping + payment tiles), `footer/topshop/` (TopShop badges), `footer/reviews/` (Trusted Shops, Google, Trustpilot). The Metzler logo, social icons, stars and the combined-rating badge are inline SVG, exactly as on the shop.
 
 **Fixed content. Do not invent, rename, reorder or drop anything:**
-- **5 columns:** Logo + tagline + „Mehr erfahren“ | Kontakt (exact phone numbers and hours) | Informationen (7 links) | Service (5 links) | Follow us (5 social icons) + Qualität (4 TopShop badges)
-- **Row 2:** „Unsere Versandpartner:“ DPD · DHL · Hasenauer & Koch; „Einfach bezahlen:“ SEPA · Amex · Visa · Amazon Pay · Klarna · PayPal · Mastercard · Apple Pay · Google Pay · Vorkasse; rating pill (the shop loads the live score; 4,71 / 36.705 is the value on 28 Sep 2026)
-- **Row 3:** 13 legal links **plus the „Vertrag widerrufen“ button** (the legally required Widerrufsbutton; never remove it)
+- **Desktop (≥ 62rem / 992 px), 5 columns:** Logo + „Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe“ + tagline + „Mehr erfahren“ | Kontakt (Allgemeine Hotline +49 (0) 7121 / 317 7310, Sprechanlagen Hotline +49 (0) 7121 / 317 7333, both Mo-Fr 09:00-16:00 Uhr; service@metzlergmbh.de; Zum Kontaktformular) | Informationen (7 links) | Service (5 links) | Follow us (5 social icons) + Qualität (4 TopShop badges)
+- **Row 2 (stacked; side by side from 93.75rem / 1500 px):** „Unsere Versandpartner:“ DPD · DHL · Hasenauer & Koch; „Einfach bezahlen:“ SEPA · Amex · Visa · Amazon Pay · Klarna · PayPal · Mastercard · Apple Pay · Google Pay · Vorkasse; the **rating pill** rotating every 5 s through Alle Bewertungen 4,71 (36.785) · Trusted Shops 4,73 (32.461) · Google 4,63 (3.190) · Trustpilot 4,42 (1.134) — values of 1 Oct 2026, the shop loads them live
+- **Row 3:** 13 legal links + Cookie-Einstellungen; the **„Vertrag widerrufen“ button** (legally required Widerrufsbutton) always sits alone on the last row, centred
 - **Row 4:** „inkl. gesetzliche MwSt., zzgl. Versand © 2013 - <current year> | Metzler GmbH“
-- Background always `var(--color-teal-700)`; links on dark always `var(--color-mint)`, or white at 50 % opacity.
+- **Mobile (< 62rem):** logo block → contact → Informationen / Service accordions → shipping → payment → rating pill → social icons → legal links + button → „* inkl. gesetzliche MwSt., zzgl. Versand / © 2013 - <year> | Metzler GmbH“
+- Colors: background `var(--color-teal-700)`, secondary text and links `var(--color-footer-muted)`, divider lines `var(--color-footer-line)`, phone/e-mail/„Metzler Gruppe“ `var(--color-mint)`. The only literal colors are the payment brands (DHL, Amex, Klarna), the logo tile outline and the rating widget's arrows.
 
 ```html
-<footer class="site-footer">
-  <div class="container">
-
-    <!-- Row 1: 5 columns -->
-    <div class="footer-top">
-      <div class="footer-col footer-col--brand">
-        <a href="https://edelstahl-tuerklingel.de/" class="footer-logo"><img src="footer/Metzler_Logo_footer.svg" alt="Metzler"></a>
-        <p class="footer-muted">Edelstahl-Tuerklingel.de ist ein Unternehmen der <a class="footer-mint" href="https://metzlergmbh.de">Metzler Gruppe</a></p>
-        <p class="footer-claim">Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.</p>
-        <a class="footer-more" href="https://edelstahl-tuerklingel.de/ueber-uns">Mehr erfahren</a>
+<!-- needs metzler-tokens.css -->
+<footer class="ft" role="contentinfo">
+  <div class="ft-desktop">
+    <div class="ft-top">
+      <div class="ft-col ft-col--brand">
+        <a class="ft-logo" href="https://edelstahl-tuerklingel.de/" aria-label="Metzler – zur Startseite"><svg aria-hidden="true" viewBox="0 0 230 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.5177 1.80762H2.82788V36.5249H34.5177V1.80762Z" fill="white"></path><path d="M37.4156 0H1.20394C0.541308 0 0 0.560657 0 1.24698V38.753C0 39.4393 0.541308 40 1.20394 40H37.4156C38.0782 40 38.6195 39.4393 38.6195 38.753V1.24698C38.6195 0.560657 38.0782 0 37.4156 0ZM14.7087 7.55437L18.6985 14.7124L16.6919 18.3084L10.7002 7.55437H14.7087ZM14.7273 23.5669L9.81354 14.7463V33.3881H6.34171V7.55437H9.81354L16.7339 19.971L25.9688 3.39778H29.9773L16.7292 27.1677L14.7226 23.5718L14.7273 23.5669ZM32.0912 33.3881H28.6193V14.7511L21.7037 27.1532H17.6952L28.6147 7.55921H32.0865V33.3929L32.0912 33.3881Z" fill="#D32B25"></path><path d="M70.9394 33.3881L70.8694 19.6955L64.4577 30.8409H61.3218L54.9428 20.0628V33.3881H48.4238V7.55432H54.2335L62.9971 22.4649L71.5507 7.55432H77.3604L77.4304 33.3881H70.9441H70.9394Z" fill="white"></path><path d="M104.006 27.7428V33.3881H83.9821V7.55432H103.544V13.1996H90.9678V17.5543H102.051V23.0159H90.9678V27.738H104.011L104.006 27.7428Z" fill="white"></path><path d="M115.159 13.3494H107.496V7.55432H129.839V13.3494H122.214V33.3881H115.159V13.3494Z" fill="white"></path><path d="M154.963 27.5978V33.3929H132.621V28.8158L145.197 13.3542H132.938V7.55432H154.422V12.1314L141.846 27.593H154.959L154.963 27.5978Z" fill="white"></path><path d="M160.339 7.55432H167.395V27.5978H179.294V33.3929H160.339V7.55432Z" fill="white"></path><path d="M202.244 27.7428V33.3881H182.22V7.55432H201.782V13.1996H189.206V17.5543H200.289V23.0159H189.206V27.738H202.249L202.244 27.7428Z" fill="white"></path><path d="M217.923 26.5248H214.073V33.3881H207.018V7.55432H218.418C220.676 7.55432 222.636 7.94098 224.298 8.7143C225.959 9.48762 227.242 10.5944 228.147 12.0347C229.048 13.4751 229.501 15.1667 229.501 17.1097C229.501 19.0526 229.081 20.6089 228.236 22.0009C227.391 23.3929 226.188 24.4804 224.62 25.2682L230 33.3881H222.445L217.919 26.5248H217.923ZM221.274 14.3112C220.536 13.6491 219.445 13.3156 217.993 13.3156H214.073V20.8796H217.993C219.44 20.8796 220.536 20.5558 221.274 19.9033C222.011 19.2508 222.38 18.3228 222.38 17.1193C222.38 15.9158 222.011 14.9782 221.274 14.316V14.3112Z" fill="white"></path></svg></a>
+        <p class="ft-subtitle">Edelstahl-Tuerklingel.de ist ein Unternehmen der <a class="ft-special" href="https://metzlergmbh.de">Metzler Gruppe</a></p>
+        <p class="ft-tagline"><strong>Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.</strong></p>
+        <p class="ft-tagline ft-tagline--cta"><strong><a href="https://edelstahl-tuerklingel.de/ueber-uns">Mehr erfahren</a></strong></p>
       </div>
-
-      <div class="footer-col footer-col--contact">
-        <div class="footer-contact"><p class="footer-head">Allgemeine Hotline:</p><a class="footer-mint" href="tel:+4971213177310">+49 (0) 7121 / 317 7310</a><span class="footer-hours">(Mo-Fr: 09:00-16:00 Uhr)</span></div>
-        <div class="footer-contact"><p class="footer-head">Sprechanlagen Hotline:</p><a class="footer-mint" href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a><span class="footer-hours">(Mo-Fr: 09:00-16:00 Uhr)</span></div>
-        <div class="footer-contact"><p class="footer-head">E-Mail Support:</p><a class="footer-mint" href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</a></div>
-        <div class="footer-contact"><p class="footer-head">Kontaktformular:</p><a class="footer-mint" href="https://edelstahl-tuerklingel.de/Kontakt">Zum Kontaktformular</a></div>
-      </div>
-
-      <details class="footer-col footer-acc" open>
-        <summary class="footer-head">Informationen</summary>
-        <ul class="footer-links">
-          <li><a href="https://edelstahl-tuerklingel.de/auszeichnungen">Auszeichnungen</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/metzler-geschenkgutschein">Geschenkgutschein</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/tuerklingel-galerie">Kundenbilder</a></li>
-          <li><a href="https://www.metzlergmbh.de/jobs/">Stellenangebote</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/ueber-uns">Wir über uns</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/News">News</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a></li>
-        </ul>
-      </details>
-
-      <details class="footer-col footer-acc" open>
-        <summary class="footer-head">Service</summary>
-        <ul class="footer-links">
-          <li><a href="https://edelstahl-tuerklingel.de/begriffserklaerung">Begriffserklärung</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/faq">FAQ</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/b2b">Geschäftskunden</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/newsletter">Newsletter</a></li>
-          <li><a href="https://edelstahl-tuerklingel.de/faq/sprechanlagen">VDM10 FAQ</a></li>
-        </ul>
-      </details>
-
-      <div class="footer-col footer-col--social">
-        <p class="footer-head">Follow us</p>
-        <div class="footer-social">
-          <a href="https://www.pinterest.de/METZLERGmBH/" aria-label="Pinterest"><img src="footer/Icon=Pinterest.svg" alt=""></a>
-          <a href="https://www.facebook.com/MetzlerGmbHDE" aria-label="Facebook"><img src="footer/Icon=Facebook.svg" alt=""></a>
-          <a href="https://www.instagram.com/metzlergmbh/?hl=de" aria-label="Instagram"><img src="footer/Icon=VaInstagram.svg" alt=""></a>
-          <a href="https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos" aria-label="YouTube"><img src="footer/Icon=Youtube.svg" alt=""></a>
-          <a href="https://twitter.com/metzlerklingeln?lang=de" aria-label="X / Twitter"><img src="footer/Icon=X.svg" alt=""></a>
-        </div>
-        <p class="footer-head">Qualität</p>
-        <div class="footer-topshop">
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/2023.png" alt="TopShop 2023"></a>
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/2024.png" alt="TopShop 2024"></a>
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/2025.png" alt="TopShop 2025"></a>
-          <a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/3jahre.png" alt="TopShop 3 Jahre"></a>
-        </div>
+      <div class="ft-col ft-col--contact">
+<div class="ft-contact"><strong>Allgemeine Hotline:</strong><a href="tel:+4971213177310">+49 (0) 7121 / 317 7310</a><small>(Mo-Fr: 09:00-16:00 Uhr)</small></div>
+<div class="ft-contact"><strong>Sprechanlagen Hotline:</strong><a href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a><small>(Mo-Fr: 09:00-16:00 Uhr)</small></div>
+<div class="ft-contact"><strong>E-Mail Support:</strong><a href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</a></div>
+<div class="ft-contact"><strong>Kontaktformular:</strong><a href="https://edelstahl-tuerklingel.de/Kontakt">Zum Kontaktformular</a></div></div>
+      <div class="ft-col ft-col--links"><strong>Informationen</strong><ul><li><a href="https://edelstahl-tuerklingel.de/auszeichnungen">Auszeichnungen</a></li><li><a href="https://edelstahl-tuerklingel.de/metzler-geschenkgutschein">Geschenkgutschein</a></li><li><a href="https://edelstahl-tuerklingel.de/tuerklingel-galerie">Kundenbilder</a></li><li><a href="https://www.metzlergmbh.de/jobs/" target="_blank" rel="noopener">Stellenangebote</a></li><li><a href="https://edelstahl-tuerklingel.de/ueber-uns">Wir über uns</a></li><li><a href="https://edelstahl-tuerklingel.de/News">News</a></li><li><a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a></li></ul></div>
+      <div class="ft-col ft-col--links"><strong>Service</strong><ul><li><a href="https://edelstahl-tuerklingel.de/begriffserklaerung">Begriffserklärung</a></li><li><a href="https://edelstahl-tuerklingel.de/faq">FAQ</a></li><li><a href="https://edelstahl-tuerklingel.de/b2b">Geschäftskunden</a></li><li><a href="https://edelstahl-tuerklingel.de/newsletter">Newsletter</a></li><li><a href="https://edelstahl-tuerklingel.de/faq/sprechanlagen">VDM10 FAQ</a></li></ul></div>
+      <div class="ft-col ft-col--social">
+        <strong>Follow us</strong>
+<div class="ft-social"><a href="https://www.pinterest.de/METZLERGmBH/" title="Pinterest" aria-label="Pinterest" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.9888 20.5499C15.4141 23.5792 14.7137 26.4831 12.6366 28C11.9963 23.4219 13.5773 19.9845 14.3127 16.3348C13.0594 14.2118 14.4635 9.94169 17.1044 10.9944C20.355 12.2879 14.2897 18.8834 18.3609 19.7084C22.6124 20.5675 24.3475 12.2835 21.711 9.58969C17.9031 5.69798 10.625 9.4984 11.521 15.0698C11.7384 16.4315 13.1359 16.844 12.0793 18.7239C9.64163 18.1805 8.91393 16.2446 9.0079 13.664C9.15869 9.4401 12.7764 6.48446 16.4062 6.07417C20.9964 5.55608 25.3047 7.77143 25.9002 12.1174C26.5699 17.0244 23.8285 22.3395 18.9193 21.9567C17.5884 21.8522 17.0312 21.1878 15.9888 20.5499Z" fill="white"></path></svg></a><a href="https://www.facebook.com/MetzlerGmbHDE" title="Facebook" aria-label="Facebook" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23 6.83573L19.944 6.83203C16.9805 6.83203 15.0661 8.79539 15.0661 11.8375V14.1438H12V18.3173H15.0661L15.0624 27.1682H19.3524L19.3561 18.3173H22.8743L22.8715 14.1447H19.3561V12.1878C19.3561 11.2468 19.5789 10.7708 20.8037 10.7708L22.9908 10.7698L23 6.83573Z" fill="white"></path></svg></a><a href="https://www.instagram.com/metzlergmbh/?hl=de" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.9457 6.26147H13.0543C11.3164 6.26277 9.65005 6.93728 8.42117 8.1369C7.19229 9.33653 6.50132 10.9632 6.5 12.6597V21.3394C6.50106 23.0361 7.19191 24.663 8.42082 25.8629C9.64973 27.0627 11.3162 27.7373 13.0543 27.7386H21.9457C23.6837 27.7371 25.35 27.0624 26.5789 25.8626C27.8077 24.6628 28.4987 23.036 28.5 21.3394V12.6597C28.4992 10.963 27.8084 9.33607 26.5794 8.13633C25.3504 6.9366 23.6838 6.26225 21.9457 6.26147ZM26.2879 21.3394C26.2876 22.4635 25.8301 23.5415 25.0158 24.3364C24.2015 25.1313 23.0972 25.578 21.9457 25.5782H13.0543C12.4841 25.5782 11.9195 25.4686 11.3928 25.2556C10.866 25.0425 10.3874 24.7303 9.98425 24.3367C9.58112 23.943 9.26137 23.4757 9.04327 22.9615C8.82516 22.4472 8.71297 21.896 8.7131 21.3394V12.6597C8.71297 12.1032 8.82517 11.552 9.04329 11.0378C9.26141 10.5236 9.58117 10.0564 9.98431 9.66283C10.3875 9.26928 10.8661 8.95713 11.3928 8.74421C11.9196 8.53128 12.4842 8.42175 13.0543 8.42188H21.9457C23.097 8.42214 24.201 8.86871 25.0151 9.6634C25.8292 10.4581 26.2866 11.5359 26.2869 12.6597L26.2879 21.3394Z" fill="white"></path><path d="M17.5005 11.4458C14.3624 11.4458 11.8122 13.9362 11.8122 16.9986C11.8122 20.0611 14.3634 22.5515 17.5005 22.5515C20.6376 22.5515 23.1888 20.0611 23.1888 16.9986C23.1888 13.9362 20.6386 11.4458 17.5005 11.4458ZM17.5005 20.3911C16.5788 20.3912 15.6949 20.0339 15.043 19.3978C14.3912 18.7617 14.025 17.8989 14.0248 16.9991C14.0247 16.0994 14.3907 15.2365 15.0423 14.6002C15.694 13.9639 16.5778 13.6064 17.4995 13.6062C18.4212 13.6061 19.3051 13.9634 19.957 14.5995C20.6088 15.2356 20.975 16.0984 20.9752 16.9982C20.9753 17.8979 20.6093 18.7608 19.9577 19.3971C19.306 20.0334 18.4222 20.3909 17.5005 20.3911ZM23.2008 10.1562C23.4703 10.1564 23.7337 10.2346 23.9577 10.3809C24.1817 10.5272 24.3562 10.735 24.4593 10.9781C24.5623 11.2212 24.5892 11.4886 24.5366 11.7467C24.484 12.0047 24.3542 12.2417 24.1636 12.4277C23.973 12.6137 23.7302 12.7404 23.4659 12.7918C23.2016 12.8432 22.9276 12.8169 22.6786 12.7163C22.4296 12.6157 22.2167 12.4453 22.0668 12.2267C21.917 12.008 21.8369 11.7509 21.8367 11.4878C21.8367 10.7537 22.3467 10.1562 23.2008 10.1562Z" fill="white"></path></svg></a><a href="https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos" title="YouTube" aria-label="YouTube" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M26.9602 8.25967C26.9602 8.25967 23.9432 7.88013 17.4636 7.88013C11.1943 7.88013 8.03864 8.25967 8.03864 8.25967C7.23264 8.25997 6.45975 8.58037 5.88993 9.1504C5.32011 9.72044 5 10.4934 5 11.2994V22.7017C4.99985 23.1009 5.07833 23.4962 5.23095 23.8651C5.38358 24.2339 5.60736 24.5691 5.88953 24.8515C6.17169 25.1339 6.50671 25.3579 6.87545 25.5108C7.2442 25.6637 7.63945 25.7425 8.03864 25.7426C8.03864 25.7426 10.9727 26.1199 17.4636 26.1199C23.9511 26.1199 26.9602 25.7426 26.9602 25.7426C27.3596 25.7429 27.7551 25.6645 28.1241 25.5117C28.4931 25.359 28.8284 25.135 29.1107 24.8526C29.3931 24.5701 29.617 24.2348 29.7695 23.8657C29.9221 23.4966 30.0004 23.1011 30 22.7017V11.2972C30 10.8981 29.9214 10.5029 29.7686 10.1342C29.6158 9.76557 29.3918 9.43062 29.1095 9.14853C28.8272 8.86644 28.4921 8.64275 28.1233 8.49024C27.7545 8.33772 27.3593 8.25937 26.9602 8.25967ZM14.1602 21.5165V12.4881L22.267 16.9994L14.1602 21.5165Z" fill="white"></path></svg></a><a href="https://twitter.com/metzlerklingeln?lang=de" title="X / Twitter" aria-label="X / Twitter" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.3094 15.5461L26.3838 7.5H24.708L18.5627 14.4849L13.6582 7.5H8L15.4182 18.0634L8 26.5H9.6758L16.1611 19.1221L21.3418 26.5H27M10.2806 8.7365H12.8551L24.7067 25.3242H22.1316" fill="white"></path></svg></a></div>
+        <strong>Qualität</strong>
+<div class="ft-badges"><a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/topshop/top-shop-2023.svg" alt="TopShop 2023"></a><a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/topshop/top-shop-2024.svg" alt="TopShop 2024"></a><a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/topshop/top-shop-2025.svg" alt="TopShop 2025"></a><a href="https://edelstahl-tuerklingel.de/topshop"><img src="footer/topshop/top-shop.svg" alt="TopShop"></a></div>
       </div>
     </div>
-
-    <!-- Row 2: shipping, payment, rating -->
-    <div class="footer-mid">
-      <div class="footer-logos">
-        <span class="footer-label">Unsere Versandpartner:</span>
-        <ul class="footer-badges">
-          <li><img src="footer/Choice=dpd.svg" alt="DPD" width="53" height="30"></li>
-          <li><img src="footer/Choice=dhl.svg" alt="DHL" width="53" height="30"></li>
-          <li><img src="footer/Choice=hasenauer-koch.svg" alt="Hasenauer &amp; Koch" width="53" height="30"></li>
-        </ul>
-      </div>
-      <div class="footer-logos footer-logos--pay">
-        <span class="footer-label">Einfach bezahlen:</span>
-        <ul class="footer-badges">
-          <li><img src="footer/Choice=sepa.svg" alt="SEPA Lastschrift" width="53" height="30"></li>
-          <li><img src="footer/Choice=amex.svg" alt="American Express" width="53" height="30"></li>
-          <li><img src="footer/Choice=visa.svg" alt="Visa" width="53" height="30"></li>
-          <li><img src="footer/Choice=pay.svg" alt="Amazon Pay" width="53" height="30"></li>
-          <li><img src="footer/Choice=klarna.svg" alt="Klarna" width="53" height="30"></li>
-          <li><img src="footer/Choice=paypal.svg" alt="PayPal" width="53" height="30"></li>
-          <li><img src="footer/Choice=mastercard.svg" alt="Mastercard" width="53" height="30"></li>
-          <li><img src="footer/Choice=apple.svg" alt="Apple Pay" width="53" height="30"></li>
-          <li><img src="footer/Choice=google.svg" alt="Google Pay" width="53" height="30"></li>
-          <li><img src="footer/Choice=vorkasse.svg" alt="Vorkasse" width="53" height="30"></li>
-        </ul>
-      </div>
-      <a class="footer-rating" href="https://www.trustedshops.de/bewertung/info_XAC423DA09B591A4D639343B80266EF70.html">
-        <img src="footer/Property%201=all.svg" alt="" width="30" height="30">
-        <span class="footer-rating-body">
-          <span class="footer-stars"><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg><svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1.2l1.73 3.51 3.87.56-2.8 2.73.66 3.86L7.5 9.96l-3.46 1.92.66-3.86L1.9 5.27l3.87-.56z"/></svg></span>
-          <span class="footer-rating-text">4,71 Sehr gut <span class="footer-mint">36.705 Bewertungen</span></span>
-        </span>
-      </a>
+    <hr class="ft-hr">
+    <div class="ft-mid">
+      <div class="ft-mid__shipping"><span class="ft-label">Unsere Versandpartner:</span><ul class="ft-pay"><li class="ship-dpd" role="img" aria-label="DPD"></li><li class="ship-dhl" role="img" aria-label="DHL"></li><li class="ship-hk" role="img" aria-label="Hasenauer &amp; Koch"></li></ul></div>
+      <div class="ft-mid__payment"><span class="ft-label">Einfach bezahlen:</span><ul class="ft-pay"><li class="pay-sepa" role="img" aria-label="SEPA Lastschrift"></li><li class="pay-ae" role="img" aria-label="American Express"></li><li class="pay-visa" role="img" aria-label="Visa"></li><li class="pay-amazon" role="img" aria-label="Amazon Pay"></li><li class="pay-klarna" role="img" aria-label="Klarna"></li><li class="pay-paypal" role="img" aria-label="PayPal"></li><li class="pay-mastercard" role="img" aria-label="Mastercard"></li><li class="pay-apple" role="img" aria-label="Apple Pay"></li><li class="pay-google" role="img" aria-label="Google Pay"></li><li class="pay-vorkasse" role="img" aria-label="Vorkasse"></li></ul></div>
+      <div class="ft-mid__rating">
+<div class="ft-rating" data-ft-rating aria-roledescription="Karussell" aria-label="Kundenbewertungen">
+<div class="ft-rating__viewport" aria-live="polite">
+<div class="ft-rating__slide is-active" data-source="overall" title="Alle Bewertungen">
+<div class="ft-rating__badge" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="15" fill="#009951"></circle><path d="M9 15 l4 4 8-8" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,71 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24"><defs><linearGradient id="ft-half-d-overall"><stop offset="50%" stop-color="#F9DA53"></stop><stop offset="50%" stop-color="rgba(255,255,255,0.18)"></stop></linearGradient></defs><path fill="url(#ft-half-d-overall)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,71 Sehr gut</span><span class="ft-rating__count ft-rating__count--plain">36.785 Bewertungen</span></div></div></div>
+<div class="ft-rating__slide" data-source="TrustedShops" title="Trusted Shops">
+<div class="ft-rating__badge" aria-hidden="true"><img src="footer/reviews/ts-logo.png" alt="" loading="lazy"></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,73 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24"><defs><linearGradient id="ft-half-d-TrustedShops"><stop offset="50%" stop-color="#F9DA53"></stop><stop offset="50%" stop-color="rgba(255,255,255,0.18)"></stop></linearGradient></defs><path fill="url(#ft-half-d-TrustedShops)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,73 Sehr gut</span><a class="ft-rating__count" href="https://www.trustedshops.de/bewertung/info_XAC423DA09B591A4D639343B80266EF70.html" target="_blank" rel="noopener nofollow">32.461 Bewertungen</a></div></div></div>
+<div class="ft-rating__slide" data-source="Google" title="Google">
+<div class="ft-rating__badge" aria-hidden="true"><img src="footer/reviews/google.svg" alt="" loading="lazy"></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,63 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24"><defs><linearGradient id="ft-half-d-Google"><stop offset="50%" stop-color="#F9DA53"></stop><stop offset="50%" stop-color="rgba(255,255,255,0.18)"></stop></linearGradient></defs><path fill="url(#ft-half-d-Google)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,63 Sehr gut</span><a class="ft-rating__count" href="https://www.google.com/search?hl=de-DE&amp;gl=de&amp;q=Metzler+GmbH,+T%C3%A4leswiesenstra%C3%9Fe+9,+72770+Reutlingen" target="_blank" rel="noopener nofollow">3.190 Bewertungen</a></div></div></div>
+<div class="ft-rating__slide" data-source="Trustpilot" title="Trustpilot">
+<div class="ft-rating__badge" aria-hidden="true"><img src="footer/reviews/trustpilot.svg" alt="" loading="lazy"></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,42 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="rgba(255,255,255,0.18)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,42 Gut</span><a class="ft-rating__count" href="https://de.trustpilot.com/review/metzlergmbh.de" target="_blank" rel="noopener nofollow">1.134 Bewertungen</a></div></div></div></div>
+<div class="ft-rating__nav"><button type="button" class="ft-rating__arrow" data-dir="prev" aria-label="Vorherige Quelle"><svg viewBox="0 0 11 18" fill="none" aria-hidden="true"><path d="M9.5 17L1.5 9L9.5 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="ft-rating__arrow ft-rating__arrow--next" data-dir="next" aria-label="Nächste Quelle"><svg viewBox="0 0 11 18" fill="none" aria-hidden="true"><path d="M9.5 17L1.5 9L9.5 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div></div></div>
     </div>
-
-    <!-- Row 3: legal links + Widerrufsbutton -->
-    <nav class="footer-legal" aria-label="Rechtliches">
-      <a href="https://edelstahl-tuerklingel.de/kundenbewertungen">Geprüfte Kundenbewertungen</a>
-      <a href="https://edelstahl-tuerklingel.de/metzler-garantieerklaerung">Metzler Garantieerklärung</a>
-      <a href="https://edelstahl-tuerklingel.de/datenschutz">Datenschutz</a>
-      <a href="https://edelstahl-tuerklingel.de/AGB">AGB</a>
-      <a href="https://edelstahl-tuerklingel.de/Sitemap">Sitemap</a>
-      <a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a>
-      <a href="https://edelstahl-tuerklingel.de/impressum">Impressum</a>
-      <a href="https://edelstahl-tuerklingel.de/gesetzliche-gewaehrleistung">Gesetzliche Gewährleistung</a>
-      <a href="https://edelstahl-tuerklingel.de/barrierefreiheit">Barrierefreiheit</a>
-      <a href="https://edelstahl-tuerklingel.de/Batterieentsorgungsgesetz">Batterieentsorgungsgesetz</a>
-      <a href="https://edelstahl-tuerklingel.de/Widerrufsrecht">Widerrufsrecht</a>
-      <a href="https://edelstahl-tuerklingel.de/elektroaltgeraeteentsorgung">Hinweise zur Elektroaltgeräteentsorgung</a>
-      <a href="#">Cookie-Einstellungen</a>
-    </nav>
-    <div class="footer-withdraw">
-      <a class="footer-withdraw-btn" href="https://edelstahl-tuerklingel.de/online-widerrufsformular">Vertrag widerrufen</a>
+    <hr class="ft-hr">
+    <div class="ft-legal"><ul><li><a href="https://edelstahl-tuerklingel.de/kundenbewertungen">Geprüfte Kundenbewertungen</a></li><li><a href="https://edelstahl-tuerklingel.de/metzler-garantieerklaerung">Metzler Garantieerklärung</a></li><li><a href="https://edelstahl-tuerklingel.de/datenschutz">Datenschutz</a></li><li><a href="https://edelstahl-tuerklingel.de/AGB">AGB</a></li><li><a href="https://edelstahl-tuerklingel.de/Sitemap">Sitemap</a></li><li><a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a></li><li><a href="https://edelstahl-tuerklingel.de/impressum">Impressum</a></li><li><a href="https://edelstahl-tuerklingel.de/gesetzliche-gewaehrleistung">Gesetzliche Gewährleistung</a></li><li><a href="https://edelstahl-tuerklingel.de/barrierefreiheit">Barrierefreiheit</a></li><li class="ft-withdraw"><a href="https://edelstahl-tuerklingel.de/online-widerrufsformular">Vertrag widerrufen</a></li><li><a href="https://edelstahl-tuerklingel.de/Batterieentsorgungsgesetz">Batterieentsorgungsgesetz</a></li><li><a href="https://edelstahl-tuerklingel.de/Widerrufsrecht">Widerrufsrecht</a></li><li><a href="https://edelstahl-tuerklingel.de/elektroaltgeraeteentsorgung">Hinweise zur Elektroaltgeräteentsorgung</a></li><li><a href="#" role="button">Cookie-Einstellungen</a></li></ul></div>
+    <div class="ft-copy">inkl. gesetzliche MwSt., zzgl. <a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Versand</a> © 2013 - <span data-ft-year>2026</span> | Metzler GmbH</div>
+  </div>
+  <div class="ft-mobile">
+    <div class="ft-m-logo">
+      <a class="ft-logo" href="https://edelstahl-tuerklingel.de/" aria-label="Metzler – zur Startseite"><svg aria-hidden="true" viewBox="0 0 230 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.5177 1.80762H2.82788V36.5249H34.5177V1.80762Z" fill="white"></path><path d="M37.4156 0H1.20394C0.541308 0 0 0.560657 0 1.24698V38.753C0 39.4393 0.541308 40 1.20394 40H37.4156C38.0782 40 38.6195 39.4393 38.6195 38.753V1.24698C38.6195 0.560657 38.0782 0 37.4156 0ZM14.7087 7.55437L18.6985 14.7124L16.6919 18.3084L10.7002 7.55437H14.7087ZM14.7273 23.5669L9.81354 14.7463V33.3881H6.34171V7.55437H9.81354L16.7339 19.971L25.9688 3.39778H29.9773L16.7292 27.1677L14.7226 23.5718L14.7273 23.5669ZM32.0912 33.3881H28.6193V14.7511L21.7037 27.1532H17.6952L28.6147 7.55921H32.0865V33.3929L32.0912 33.3881Z" fill="#D32B25"></path><path d="M70.9394 33.3881L70.8694 19.6955L64.4577 30.8409H61.3218L54.9428 20.0628V33.3881H48.4238V7.55432H54.2335L62.9971 22.4649L71.5507 7.55432H77.3604L77.4304 33.3881H70.9441H70.9394Z" fill="white"></path><path d="M104.006 27.7428V33.3881H83.9821V7.55432H103.544V13.1996H90.9678V17.5543H102.051V23.0159H90.9678V27.738H104.011L104.006 27.7428Z" fill="white"></path><path d="M115.159 13.3494H107.496V7.55432H129.839V13.3494H122.214V33.3881H115.159V13.3494Z" fill="white"></path><path d="M154.963 27.5978V33.3929H132.621V28.8158L145.197 13.3542H132.938V7.55432H154.422V12.1314L141.846 27.593H154.959L154.963 27.5978Z" fill="white"></path><path d="M160.339 7.55432H167.395V27.5978H179.294V33.3929H160.339V7.55432Z" fill="white"></path><path d="M202.244 27.7428V33.3881H182.22V7.55432H201.782V13.1996H189.206V17.5543H200.289V23.0159H189.206V27.738H202.249L202.244 27.7428Z" fill="white"></path><path d="M217.923 26.5248H214.073V33.3881H207.018V7.55432H218.418C220.676 7.55432 222.636 7.94098 224.298 8.7143C225.959 9.48762 227.242 10.5944 228.147 12.0347C229.048 13.4751 229.501 15.1667 229.501 17.1097C229.501 19.0526 229.081 20.6089 228.236 22.0009C227.391 23.3929 226.188 24.4804 224.62 25.2682L230 33.3881H222.445L217.919 26.5248H217.923ZM221.274 14.3112C220.536 13.6491 219.445 13.3156 217.993 13.3156H214.073V20.8796H217.993C219.44 20.8796 220.536 20.5558 221.274 19.9033C222.011 19.2508 222.38 18.3228 222.38 17.1193C222.38 15.9158 222.011 14.9782 221.274 14.316V14.3112Z" fill="white"></path></svg></a>
+      <div class="ft-m-logo__text">
+        <span class="ft-m-logo__sub">Edelstahl-Tuerklingel.de ist ein Unternehmen der <a class="ft-special" href="https://metzlergmbh.de">Metzler Gruppe</a></span>
+        <strong>Der Anbieter für Briefkästen,<br>Sprechanlagen, Türklingeln und Hausnummern.</strong>
+        <p class="ft-m-logo__cta"><strong><a href="https://edelstahl-tuerklingel.de/ueber-uns">Mehr erfahren</a></strong></p>
+      </div>
     </div>
-
-    <!-- Row 4: copyright -->
-    <p class="footer-copy">inkl. gesetzliche MwSt., zzgl. <a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Versand</a> © 2013 - 2026 | Metzler GmbH</p>
-
+    <div class="ft-m-contact">
+<div class="ft-contact"><strong>Allgemeine Hotline:</strong><a href="tel:+4971213177310">+49 (0) 7121 / 317 7310</a><small>(Mo-Fr: 09:00-16:00 Uhr)</small></div>
+<div class="ft-contact"><strong>Sprechanlagen Hotline:</strong><a href="tel:+4971213177333">+49 (0) 7121 / 317 7333</a><small>(Mo-Fr: 09:00-16:00 Uhr)</small></div>
+<div class="ft-contact"><strong>E-Mail Support:</strong><a href="mailto:service@metzlergmbh.de">service@metzlergmbh.de</a></div>
+<div class="ft-contact"><strong>Kontaktformular:</strong><a href="https://edelstahl-tuerklingel.de/Kontakt">Zum Kontaktformular</a></div></div>
+    <div class="ft-acc">
+<div class="ft-acc__item"><button class="ft-acc__toggle" type="button" aria-expanded="false">Informationen<svg aria-hidden="true" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6L8 11L13 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+<div class="ft-acc__body"><ul><li><a href="https://edelstahl-tuerklingel.de/auszeichnungen">Auszeichnungen</a></li><li><a href="https://edelstahl-tuerklingel.de/metzler-geschenkgutschein">Geschenkgutschein</a></li><li><a href="https://edelstahl-tuerklingel.de/tuerklingel-galerie">Kundenbilder</a></li><li><a href="https://www.metzlergmbh.de/jobs/" target="_blank" rel="noopener">Stellenangebote</a></li><li><a href="https://edelstahl-tuerklingel.de/ueber-uns">Wir über uns</a></li><li><a href="https://edelstahl-tuerklingel.de/News">News</a></li><li><a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a></li></ul></div></div>
+<div class="ft-acc__item"><button class="ft-acc__toggle" type="button" aria-expanded="false">Service<svg aria-hidden="true" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6L8 11L13 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+<div class="ft-acc__body"><ul><li><a href="https://edelstahl-tuerklingel.de/begriffserklaerung">Begriffserklärung</a></li><li><a href="https://edelstahl-tuerklingel.de/faq">FAQ</a></li><li><a href="https://edelstahl-tuerklingel.de/b2b">Geschäftskunden</a></li><li><a href="https://edelstahl-tuerklingel.de/newsletter">Newsletter</a></li><li><a href="https://edelstahl-tuerklingel.de/faq/sprechanlagen">VDM10 FAQ</a></li></ul></div></div></div>
+    <div class="ft-m-pay"><span class="ft-label">Unsere Versandpartner:</span><ul class="ft-pay ft-pay--m"><li class="ship-dpd" role="img" aria-label="DPD"></li><li class="ship-dhl" role="img" aria-label="DHL"></li><li class="ship-hk" role="img" aria-label="Hasenauer &amp; Koch"></li></ul></div>
+    <div class="ft-m-pay"><span class="ft-label">Einfach bezahlen:</span><ul class="ft-pay ft-pay--m"><li class="pay-sepa" role="img" aria-label="SEPA Lastschrift"></li><li class="pay-ae" role="img" aria-label="American Express"></li><li class="pay-visa" role="img" aria-label="Visa"></li><li class="pay-amazon" role="img" aria-label="Amazon Pay"></li><li class="pay-klarna" role="img" aria-label="Klarna"></li><li class="pay-paypal" role="img" aria-label="PayPal"></li><li class="pay-mastercard" role="img" aria-label="Mastercard"></li><li class="pay-apple" role="img" aria-label="Apple Pay"></li><li class="pay-google" role="img" aria-label="Google Pay"></li><li class="pay-vorkasse" role="img" aria-label="Vorkasse"></li></ul></div>
+    <div class="ft-m-rating">
+<div class="ft-rating" data-ft-rating aria-roledescription="Karussell" aria-label="Kundenbewertungen">
+<div class="ft-rating__viewport" aria-live="polite">
+<div class="ft-rating__slide is-active" data-source="overall" title="Alle Bewertungen">
+<div class="ft-rating__badge" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><circle cx="15" cy="15" r="15" fill="#009951"></circle><path d="M9 15 l4 4 8-8" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,71 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24"><defs><linearGradient id="ft-half-m-overall"><stop offset="50%" stop-color="#F9DA53"></stop><stop offset="50%" stop-color="rgba(255,255,255,0.18)"></stop></linearGradient></defs><path fill="url(#ft-half-m-overall)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,71 Sehr gut</span><span class="ft-rating__count ft-rating__count--plain">36.785 Bewertungen</span></div></div></div>
+<div class="ft-rating__slide" data-source="TrustedShops" title="Trusted Shops">
+<div class="ft-rating__badge" aria-hidden="true"><img src="footer/reviews/ts-logo.png" alt="" loading="lazy"></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,73 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24"><defs><linearGradient id="ft-half-m-TrustedShops"><stop offset="50%" stop-color="#F9DA53"></stop><stop offset="50%" stop-color="rgba(255,255,255,0.18)"></stop></linearGradient></defs><path fill="url(#ft-half-m-TrustedShops)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,73 Sehr gut</span><a class="ft-rating__count" href="https://www.trustedshops.de/bewertung/info_XAC423DA09B591A4D639343B80266EF70.html" target="_blank" rel="noopener nofollow">32.461 Bewertungen</a></div></div></div>
+<div class="ft-rating__slide" data-source="Google" title="Google">
+<div class="ft-rating__badge" aria-hidden="true"><img src="footer/reviews/google.svg" alt="" loading="lazy"></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,63 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24"><defs><linearGradient id="ft-half-m-Google"><stop offset="50%" stop-color="#F9DA53"></stop><stop offset="50%" stop-color="rgba(255,255,255,0.18)"></stop></linearGradient></defs><path fill="url(#ft-half-m-Google)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,63 Sehr gut</span><a class="ft-rating__count" href="https://www.google.com/search?hl=de-DE&amp;gl=de&amp;q=Metzler+GmbH,+T%C3%A4leswiesenstra%C3%9Fe+9,+72770+Reutlingen" target="_blank" rel="noopener nofollow">3.190 Bewertungen</a></div></div></div>
+<div class="ft-rating__slide" data-source="Trustpilot" title="Trustpilot">
+<div class="ft-rating__badge" aria-hidden="true"><img src="footer/reviews/trustpilot.svg" alt="" loading="lazy"></div>
+<div class="ft-rating__body">
+<div class="ft-rating__stars" aria-label="4,42 von 5 Sternen"><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="#F9DA53"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><svg aria-hidden="true" class="ft-rating__star" viewBox="0 0 24 24" fill="rgba(255,255,255,0.18)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+<div class="ft-rating__meta"><span class="ft-rating__text">4,42 Gut</span><a class="ft-rating__count" href="https://de.trustpilot.com/review/metzlergmbh.de" target="_blank" rel="noopener nofollow">1.134 Bewertungen</a></div></div></div></div>
+<div class="ft-rating__nav"><button type="button" class="ft-rating__arrow" data-dir="prev" aria-label="Vorherige Quelle"><svg viewBox="0 0 11 18" fill="none" aria-hidden="true"><path d="M9.5 17L1.5 9L9.5 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="button" class="ft-rating__arrow ft-rating__arrow--next" data-dir="next" aria-label="Nächste Quelle"><svg viewBox="0 0 11 18" fill="none" aria-hidden="true"><path d="M9.5 17L1.5 9L9.5 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div></div></div>
+    <div class="ft-m-social"><a href="https://www.pinterest.de/METZLERGmBH/" title="Pinterest" aria-label="Pinterest" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.9888 20.5499C15.4141 23.5792 14.7137 26.4831 12.6366 28C11.9963 23.4219 13.5773 19.9845 14.3127 16.3348C13.0594 14.2118 14.4635 9.94169 17.1044 10.9944C20.355 12.2879 14.2897 18.8834 18.3609 19.7084C22.6124 20.5675 24.3475 12.2835 21.711 9.58969C17.9031 5.69798 10.625 9.4984 11.521 15.0698C11.7384 16.4315 13.1359 16.844 12.0793 18.7239C9.64163 18.1805 8.91393 16.2446 9.0079 13.664C9.15869 9.4401 12.7764 6.48446 16.4062 6.07417C20.9964 5.55608 25.3047 7.77143 25.9002 12.1174C26.5699 17.0244 23.8285 22.3395 18.9193 21.9567C17.5884 21.8522 17.0312 21.1878 15.9888 20.5499Z" fill="white"></path></svg></a><a href="https://www.facebook.com/MetzlerGmbHDE" title="Facebook" aria-label="Facebook" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23 6.83573L19.944 6.83203C16.9805 6.83203 15.0661 8.79539 15.0661 11.8375V14.1438H12V18.3173H15.0661L15.0624 27.1682H19.3524L19.3561 18.3173H22.8743L22.8715 14.1447H19.3561V12.1878C19.3561 11.2468 19.5789 10.7708 20.8037 10.7708L22.9908 10.7698L23 6.83573Z" fill="white"></path></svg></a><a href="https://www.instagram.com/metzlergmbh/?hl=de" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.9457 6.26147H13.0543C11.3164 6.26277 9.65005 6.93728 8.42117 8.1369C7.19229 9.33653 6.50132 10.9632 6.5 12.6597V21.3394C6.50106 23.0361 7.19191 24.663 8.42082 25.8629C9.64973 27.0627 11.3162 27.7373 13.0543 27.7386H21.9457C23.6837 27.7371 25.35 27.0624 26.5789 25.8626C27.8077 24.6628 28.4987 23.036 28.5 21.3394V12.6597C28.4992 10.963 27.8084 9.33607 26.5794 8.13633C25.3504 6.9366 23.6838 6.26225 21.9457 6.26147ZM26.2879 21.3394C26.2876 22.4635 25.8301 23.5415 25.0158 24.3364C24.2015 25.1313 23.0972 25.578 21.9457 25.5782H13.0543C12.4841 25.5782 11.9195 25.4686 11.3928 25.2556C10.866 25.0425 10.3874 24.7303 9.98425 24.3367C9.58112 23.943 9.26137 23.4757 9.04327 22.9615C8.82516 22.4472 8.71297 21.896 8.7131 21.3394V12.6597C8.71297 12.1032 8.82517 11.552 9.04329 11.0378C9.26141 10.5236 9.58117 10.0564 9.98431 9.66283C10.3875 9.26928 10.8661 8.95713 11.3928 8.74421C11.9196 8.53128 12.4842 8.42175 13.0543 8.42188H21.9457C23.097 8.42214 24.201 8.86871 25.0151 9.6634C25.8292 10.4581 26.2866 11.5359 26.2869 12.6597L26.2879 21.3394Z" fill="white"></path><path d="M17.5005 11.4458C14.3624 11.4458 11.8122 13.9362 11.8122 16.9986C11.8122 20.0611 14.3634 22.5515 17.5005 22.5515C20.6376 22.5515 23.1888 20.0611 23.1888 16.9986C23.1888 13.9362 20.6386 11.4458 17.5005 11.4458ZM17.5005 20.3911C16.5788 20.3912 15.6949 20.0339 15.043 19.3978C14.3912 18.7617 14.025 17.8989 14.0248 16.9991C14.0247 16.0994 14.3907 15.2365 15.0423 14.6002C15.694 13.9639 16.5778 13.6064 17.4995 13.6062C18.4212 13.6061 19.3051 13.9634 19.957 14.5995C20.6088 15.2356 20.975 16.0984 20.9752 16.9982C20.9753 17.8979 20.6093 18.7608 19.9577 19.3971C19.306 20.0334 18.4222 20.3909 17.5005 20.3911ZM23.2008 10.1562C23.4703 10.1564 23.7337 10.2346 23.9577 10.3809C24.1817 10.5272 24.3562 10.735 24.4593 10.9781C24.5623 11.2212 24.5892 11.4886 24.5366 11.7467C24.484 12.0047 24.3542 12.2417 24.1636 12.4277C23.973 12.6137 23.7302 12.7404 23.4659 12.7918C23.2016 12.8432 22.9276 12.8169 22.6786 12.7163C22.4296 12.6157 22.2167 12.4453 22.0668 12.2267C21.917 12.008 21.8369 11.7509 21.8367 11.4878C21.8367 10.7537 22.3467 10.1562 23.2008 10.1562Z" fill="white"></path></svg></a><a href="https://www.youtube.com/channel/UC8irktjZBDQh2l0Vl8kURqg/videos" title="YouTube" aria-label="YouTube" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M26.9602 8.25967C26.9602 8.25967 23.9432 7.88013 17.4636 7.88013C11.1943 7.88013 8.03864 8.25967 8.03864 8.25967C7.23264 8.25997 6.45975 8.58037 5.88993 9.1504C5.32011 9.72044 5 10.4934 5 11.2994V22.7017C4.99985 23.1009 5.07833 23.4962 5.23095 23.8651C5.38358 24.2339 5.60736 24.5691 5.88953 24.8515C6.17169 25.1339 6.50671 25.3579 6.87545 25.5108C7.2442 25.6637 7.63945 25.7425 8.03864 25.7426C8.03864 25.7426 10.9727 26.1199 17.4636 26.1199C23.9511 26.1199 26.9602 25.7426 26.9602 25.7426C27.3596 25.7429 27.7551 25.6645 28.1241 25.5117C28.4931 25.359 28.8284 25.135 29.1107 24.8526C29.3931 24.5701 29.617 24.2348 29.7695 23.8657C29.9221 23.4966 30.0004 23.1011 30 22.7017V11.2972C30 10.8981 29.9214 10.5029 29.7686 10.1342C29.6158 9.76557 29.3918 9.43062 29.1095 9.14853C28.8272 8.86644 28.4921 8.64275 28.1233 8.49024C27.7545 8.33772 27.3593 8.25937 26.9602 8.25967ZM14.1602 21.5165V12.4881L22.267 16.9994L14.1602 21.5165Z" fill="white"></path></svg></a><a href="https://twitter.com/metzlerklingeln?lang=de" title="X / Twitter" aria-label="X / Twitter" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.3094 15.5461L26.3838 7.5H24.708L18.5627 14.4849L13.6582 7.5H8L15.4182 18.0634L8 26.5H9.6758L16.1611 19.1221L21.3418 26.5H27M10.2806 8.7365H12.8551L24.7067 25.3242H22.1316" fill="white"></path></svg></a></div>
+    <div class="ft-m-legal"><ul><li><a href="https://edelstahl-tuerklingel.de/kundenbewertungen">Geprüfte Kundenbewertungen</a></li><li><a href="https://edelstahl-tuerklingel.de/metzler-garantieerklaerung">Metzler Garantieerklärung</a></li><li><a href="https://edelstahl-tuerklingel.de/datenschutz">Datenschutz</a></li><li><a href="https://edelstahl-tuerklingel.de/AGB">AGB</a></li><li><a href="https://edelstahl-tuerklingel.de/Sitemap">Sitemap</a></li><li><a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Zahlung und Versand</a></li><li><a href="https://edelstahl-tuerklingel.de/impressum">Impressum</a></li><li><a href="https://edelstahl-tuerklingel.de/gesetzliche-gewaehrleistung">Gesetzliche Gewährleistung</a></li><li><a href="https://edelstahl-tuerklingel.de/barrierefreiheit">Barrierefreiheit</a></li><li class="ft-withdraw"><a href="https://edelstahl-tuerklingel.de/online-widerrufsformular">Vertrag widerrufen</a></li><li><a href="https://edelstahl-tuerklingel.de/Batterieentsorgungsgesetz">Batterieentsorgungsgesetz</a></li><li><a href="https://edelstahl-tuerklingel.de/Widerrufsrecht">Widerrufsrecht</a></li><li><a href="https://edelstahl-tuerklingel.de/elektroaltgeraeteentsorgung">Hinweise zur Elektroaltgeräteentsorgung</a></li><li><a href="#" role="button">Cookie-Einstellungen</a></li></ul>
+      <span class="ft-m-copy">* inkl. gesetzliche MwSt., zzgl. <a href="https://edelstahl-tuerklingel.de/zahlung-und-versand">Versand</a><br> © 2013 - <span data-ft-year>2026</span> | Metzler GmbH</span>
+    </div>
   </div>
 </footer>
-
-<script>
-  /* Informationen / Service: open on desktop, collapsed accordions on mobile */
-  (function () {
-    var mq = window.matchMedia('(min-width: 48rem)');
-    function sync() { document.querySelectorAll('.footer-acc').forEach(function (d) { d.open = mq.matches; }); }
-    sync(); mq.addEventListener('change', sync);
-  })();
-</script>
 ```
 
 ```css
-/* ── FOOTER: tokens only, rem only. Copy exactly. ── */
-.site-footer { background: var(--color-teal-700); color: var(--color-white); font-family: var(--font-family); }
-.site-footer a { text-decoration: none; }
-.site-footer .container { padding-top: 1.875rem; }
+/* ── FOOTER — 1:1 with edelstahl-tuerklingel.de (1 Oct 2026). rem + tokens; the only literal colors
+      are the payment brands (DHL, Amex, Klarna), the logo tile outline and the rating widget's star/arrow colors. ── */
+.ft { background: var(--color-teal-700); color: var(--color-white); font-family: var(--font-family);
+  font-size: 1rem; line-height: 1.4; padding-top: 2rem; overflow-x: hidden; }
+.ft a { color: var(--color-white); text-decoration: none; }
+.ft ul { list-style: none; margin: 0; padding: 0; }
+.ft p { margin: 0; }
+.ft strong { font-weight: 600; }
+.ft-logo { display: inline-block; line-height: 0; }
+.ft-logo svg { width: 11.875rem; height: 2.0625rem; }
+.ft-special { color: var(--color-mint) !important; font-weight: 800; }
+.ft-label { display: block; margin-bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; line-height: 1.4; color: var(--color-footer-muted); }
+.ft-hr { height: 0; margin: 0.9375rem 0; border: 0; border-top: 0.0625rem solid var(--color-footer-line); }
 
-.footer-top { display: grid; grid-template-columns: 17.5rem 12rem 1fr 1fr auto; gap: 1.25rem;
-  padding-bottom: 2.5rem; border-bottom: 0.0625rem solid rgba(255,255,255,0.1); }
-.footer-col { display: flex; flex-direction: column; gap: 1.5625rem; min-width: 0; }
-.footer-col--contact, .footer-col--social { gap: 1.875rem; }
-.footer-logo img { height: 2.5rem; width: auto; display: block; }
-.footer-head { margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.2; color: var(--color-white); list-style: none; }
-.footer-acc { gap: 0; }
-.footer-acc > summary { cursor: default; margin-bottom: 1.875rem; }
-.footer-acc > summary::-webkit-details-marker { display: none; }
-.footer-muted { margin: 0; font-size: 1rem; line-height: 1.375rem; color: rgba(255,255,255,0.5); }
-.footer-claim { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.3; color: var(--color-white); }
-.footer-more { font-size: 1rem; font-weight: 700; color: var(--color-white); }
-.footer-mint { color: var(--color-mint); }
-.footer-mint:hover, .footer-more:hover { text-decoration: underline; }
-.footer-contact { display: flex; flex-direction: column; gap: 0.3125rem; }
-.footer-hours { font-size: 0.875rem; line-height: 1rem; color: rgba(255,255,255,0.5); }
-.footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.25rem; }
-.footer-links a { font-size: 1rem; line-height: 1.125rem; color: rgba(255,255,255,0.5); transition: color 0.15s; }
-.footer-links a:hover { color: var(--color-white); }
-.footer-social { display: flex; gap: 0.625rem; }
-.footer-social a { width: 2.1875rem; height: 2.1875rem; border-radius: var(--radius-pill); background: rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-.footer-social a:hover { background: rgba(255,255,255,0.2); }
-.footer-social img { width: 1.25rem; height: 1.25rem; object-fit: contain; }
-.footer-topshop { display: flex; gap: 0.625rem; align-items: flex-end; }
-.footer-topshop img { height: 4.5rem; width: auto; display: block; }
+/* Logo tiles (shipping + payment): 52×33 desktop, 44×28 mobile */
+.ft-pay { display: flex; flex-wrap: wrap; }
+.ft-pay li { width: 3.25rem; height: 2.0625rem; margin: 0 0.55rem 0.5rem 0; border-radius: 0.3125rem; outline: 0.0625rem solid #006D75; }
+.ft-pay .ship-dpd { background: url("footer/payment/ship-dpd.svg") center center / 70% auto no-repeat, var(--color-white); }
+.ft-pay .ship-dhl { background: url("footer/payment/ship-dhl.svg") center center / cover no-repeat, #FFCB00; }
+.ft-pay .ship-hk { background: url("footer/payment/ship-hasenauer-koch.svg") center center / 88% auto no-repeat, var(--color-white); }
+.ft-pay .pay-sepa { background: url("footer/payment/pay-sepa.svg") center center / 70% auto no-repeat, var(--color-white); }
+.ft-pay .pay-ae { background: url("footer/payment/pay-amex.svg") right center / 75% auto no-repeat, #006FCF; }
+.ft-pay .pay-visa { background: url("footer/payment/pay-visa.svg") center center / 70% auto no-repeat, var(--color-white); }
+.ft-pay .pay-amazon { background: url("footer/payment/pay-amazon.svg") center center / 45% auto no-repeat, var(--color-white); }
+.ft-pay .pay-klarna { background: url("footer/payment/pay-klarna.svg") center center / 80% auto no-repeat, #FFB4C7; }
+.ft-pay .pay-paypal { background: url("footer/payment/pay-paypal.svg") center center / 85% auto no-repeat, var(--color-white); }
+.ft-pay .pay-mastercard { background: url("footer/payment/pay-mastercard.svg") center center / 60% auto no-repeat, var(--color-white); }
+.ft-pay .pay-apple { background: url("footer/payment/pay-apple.svg") center center / 70% auto no-repeat, var(--color-white); }
+.ft-pay .pay-google { background: url("footer/payment/pay-google.svg") center center / 80% auto no-repeat, var(--color-white); }
+.ft-pay .pay-vorkasse { background: url("footer/payment/pay-vorkasse.svg") center center / 90% auto no-repeat, var(--color-white); }
 
-.footer-mid { display: flex; align-items: flex-start; gap: 1.25rem; padding: 1.25rem 0;
-  border-bottom: 0.0625rem solid rgba(255,255,255,0.1); }
-.footer-logos { display: flex; flex-direction: column; gap: 0.625rem; flex-shrink: 0; }
-.footer-logos--pay { flex: 1 1 auto; min-width: 0; }
-.footer-label { font-size: 0.875rem; line-height: 1.25rem; color: var(--color-white); }
-.footer-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.9375rem; }
-.footer-badges img { width: 3.3125rem; height: 1.875rem; display: block; }
-.footer-rating { display: flex; align-items: center; gap: 0.625rem; flex-shrink: 0; padding: 0.625rem 0.9375rem;
-  background: rgba(255,255,255,0.08); border-radius: var(--radius-pill); color: var(--color-white); }
-.footer-rating-body { display: flex; flex-direction: column; gap: 0.1875rem; }
-.footer-stars { display: flex; gap: 0.125rem; }
-.footer-stars svg { width: 0.9375rem; height: 0.9375rem; fill: var(--color-star); }
-.footer-rating-text { font-size: 0.75rem; line-height: 0.875rem; white-space: nowrap; }
+/* Rating pill (auto-rotates every 5 s, pauses on hover) */
+.ft-rating { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: space-between; gap: 0.625rem;
+  width: 100%; min-width: 25rem; height: 3.25rem; padding: 0.625rem 0.9375rem; border-radius: 3.75rem;
+  background: rgba(255,255,255,0.08); color: var(--color-white); line-height: 1.1; }
+.ft-rating__viewport { position: relative; flex: 1 1 auto; height: 2rem; min-width: 0; }
+.ft-rating__slide { position: absolute; inset: 0; display: flex; align-items: center; gap: 0.625rem; opacity: 0; visibility: hidden;
+  pointer-events: none; transition: opacity 0.3s cubic-bezier(0.4,0,0.2,1), visibility 0.3s cubic-bezier(0.4,0,0.2,1); }
+.ft-rating__slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+.ft-rating__badge { flex-shrink: 0; width: 1.875rem; height: 1.875rem; display: inline-flex; align-items: center; justify-content: center; }
+.ft-rating__badge img, .ft-rating__badge svg { width: 100%; height: 100%; object-fit: contain; display: block; }
+.ft-rating__body { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1875rem; min-width: 0; }
+.ft-rating__stars { display: inline-flex; align-items: center; gap: 0.1875rem; height: 1rem; }
+.ft-rating__star { width: 0.85rem; height: 0.85rem; flex: 0 0 auto; display: inline-block; }
+.ft-rating__meta { display: inline-flex; align-items: center; gap: 0.3125rem; height: 0.875rem; font-size: 0.8125rem; line-height: 0.875rem; white-space: nowrap; }
+.ft-rating__count { color: var(--color-mint) !important; }
+a.ft-rating__count:hover { text-decoration: underline; }
+.ft-rating__count--plain { color: rgba(255,255,255,0.65) !important; }
+.ft-rating__nav { flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.375rem; }
+.ft-rating__arrow { width: 1.375rem; height: 1.375rem; padding: 0; border: 0.0625rem solid #DDDDDD; border-radius: 0.4rem;
+  background: var(--color-white); color: var(--color-black); display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background-color 0.15s; }
+.ft-rating__arrow:hover { background: #F6F6F6; }
+.ft-rating__arrow svg { width: 0.29rem; height: 0.47rem; }
+.ft-rating__arrow--next svg { transform: rotate(180deg); }
 
-.footer-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.25rem; padding: 1.25rem 0 0.75rem; }
-.footer-legal a { font-size: 0.875rem; line-height: 1rem; color: rgba(255,255,255,0.5); white-space: nowrap; transition: color 0.15s; }
-.footer-legal a:hover { color: rgba(255,255,255,0.9); }
-.footer-withdraw { display: flex; justify-content: center; padding-bottom: 1.25rem;
-  border-bottom: 0.0625rem solid rgba(255,255,255,0.1); }
-.footer-withdraw-btn { display: inline-flex; align-items: center; background: var(--color-teal); color: var(--color-white);
-  border-radius: var(--radius); font-size: 0.875rem; font-weight: 600; line-height: 1; padding: 0.5rem 0.875rem; }
-.footer-withdraw-btn:hover { background: var(--color-teal-600); }
-.footer-copy { margin: 0; padding: 1rem 0; text-align: center; font-size: 0.875rem; line-height: 1rem; color: var(--color-white); }
-.footer-copy a { color: rgba(255,255,255,0.5); text-decoration: underline; }
+/* Legal links + Widerrufsbutton (always last, own row) */
+.ft-legal, .ft-m-legal { text-align: center; }
+.ft-legal ul, .ft-m-legal ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem 0.8rem; }
+.ft-legal a, .ft-m-legal a { font-size: 0.75rem; line-height: 1.4; color: var(--color-footer-muted); }
+.ft-legal a:hover, .ft-m-legal a:hover { color: var(--color-white); }
+.ft-withdraw { order: 99; flex-basis: 100%; margin-top: 0.5rem; }
+.ft .ft-withdraw a { display: inline-block; padding: 0.35rem 0.8rem; border-radius: var(--radius); background: var(--color-teal);
+  font-size: 0.75rem; font-weight: 600; line-height: 1.4; color: var(--color-white); }
+.ft .ft-withdraw a:hover { background: #00373A; color: var(--color-white); }
 
-/* ≤ 75rem: Follow us + Qualität move under the brand column */
-@media (max-width: 75rem) {
-  .footer-top { grid-template-columns: 16.8rem 14.5rem 1fr 1fr; }
-  .footer-col--social { grid-column: 1; grid-row: 2; }
-  .footer-mid { flex-wrap: wrap; }
-}
-/* < 48rem: mobile, stacked; Informationen / Service collapse into accordions */
-@media (max-width: 47.99rem) {
-  .footer-top { grid-template-columns: 1fr; gap: 0.9375rem; padding-bottom: 0; border-bottom: 0; }
-  .footer-col--social { grid-column: auto; grid-row: auto; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-  .footer-col--social .footer-head, .footer-topshop { display: none; }
-  .footer-acc { border-top: 0.0625rem solid rgba(255,255,255,0.2); gap: 0; }
-  .footer-acc > summary { margin: 0; padding: 0.9375rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-  .footer-acc > summary::after { content: ""; width: 0.5rem; height: 0.5rem; border-right: 0.125rem solid var(--color-white);
-    border-bottom: 0.125rem solid var(--color-white); transform: rotate(45deg); transition: transform 0.2s; }
-  .footer-acc[open] > summary::after { transform: rotate(-135deg); }
-  .footer-acc .footer-links { gap: 0.625rem; padding-bottom: 0.9375rem; }
-  .footer-links a { font-size: 0.875rem; color: rgba(255,255,255,0.7); }
-  .footer-mid { flex-direction: column; gap: 1.25rem; border-top: 0.0625rem solid rgba(255,255,255,0.2); }
-  .footer-badges { gap: 0.3125rem; }
-  .footer-badges img { width: 3.125rem; height: 1.75rem; }
-  .footer-rating { width: 100%; box-sizing: border-box; }
-  .footer-legal { gap: 0.3125rem 0.9375rem; }
-  .footer-legal a { font-size: 0.6875rem; line-height: 0.875rem; text-decoration: underline; }
-  .footer-copy { font-size: 0.6875rem; line-height: 0.875rem; }
-}
+/* ── Desktop (≥ 62rem) ── */
+.ft-desktop { display: none; max-width: 100rem; margin: 0 auto; padding: 0 6.25rem; }
+@media (max-width: 87.5rem) { .ft-desktop { padding: 0 3.125rem; } }
+.ft-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2.5rem; margin: 0 -0.9375rem; padding: 2.5rem 0 2rem; line-height: 1.5; }
+.ft-col { min-width: 0; padding: 0 0.9375rem; }
+.ft-col--brand, .ft-col--social { flex: 0 0 18%; }
+.ft-col--contact { flex: 0 0 20%; }
+.ft-col--links { flex: 0 0 14%; }
+.ft-subtitle { font-size: 0.85rem; line-height: 1.6; color: var(--color-footer-muted); }
+.ft-tagline { margin: 0.75rem 0 0.5rem !important; font-size: 0.9rem; font-weight: 700; line-height: 1.6; }
+.ft-tagline--cta { margin-top: 1.25rem !important; }
+.ft-contact { margin-bottom: 0.85rem; }
+.ft-contact strong, .ft-col--links strong, .ft-col--social strong { display: block; font-size: 1rem; font-weight: 700; }
+.ft-contact strong { margin-bottom: 0.15rem; }
+.ft-contact a { display: block; font-size: 0.9rem; font-weight: 700; color: var(--color-mint); }
+.ft-contact small { font-size: 0.8rem; line-height: 1.3; color: var(--color-footer-muted); }
+.ft-col--links strong { margin-bottom: 0.6rem; }
+.ft-col--links li { margin-bottom: 0.4rem; }
+.ft-col--links a { font-size: 0.9rem; color: var(--color-footer-muted); }
+.ft-col--links a:hover { color: var(--color-white); }
+.ft-col--social strong { margin-bottom: 0.5rem; }
+.ft-social { display: flex; gap: 0.6rem; margin-bottom: 2.25rem; }
+.ft-social a { display: flex; align-items: center; justify-content: center; padding: 0.25rem; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.ft-social svg { width: 1.75rem; height: 1.75rem; fill: var(--color-white); }
+.ft-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ft-badges img { display: block; width: auto; height: 4.6875rem; }
+.ft-mid { display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; }
+@media (min-width: 93.75rem) { .ft-mid { flex-direction: row; align-items: center; } }
+.ft-mid__shipping, .ft-mid__rating { flex: 0 0 auto; }
+.ft-mid__payment { flex: 1 1 0%; }
+.ft-legal { padding: 0.75rem 0; }
+.ft-copy { padding: 0.5rem 0 1rem; text-align: center; font-size: 0.75rem; line-height: 1.4; color: var(--color-footer-muted); }
+
+/* ── Mobile (< 62rem) ── */
+.ft-mobile { padding: 0 1.25rem 2rem; font-size: 0.9rem; }
+.ft-m-logo { padding: 1.25rem 0 1rem; }
+.ft-m-logo a { display: inline-block; margin-bottom: 0.75rem; }
+.ft-m-logo .ft-logo { line-height: 1.4; }
+.ft-m-logo__text { font-size: 0.85rem; line-height: 1.5; color: var(--color-footer-muted); }
+.ft-m-logo__sub { display: block; margin-bottom: 1rem; }
+.ft-m-logo__text > strong { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; font-weight: 700; color: var(--color-white); }
+.ft-m-logo__cta { margin: 1rem 0 1.75rem !important; font-size: 0.95rem; line-height: 1.5; }
+.ft-m-logo__cta strong { font-size: 0.9rem; font-weight: 700; }
+.ft-m-contact { padding-bottom: 1rem; border-bottom: 0.0625rem solid var(--color-footer-line); }
+.ft-m-contact .ft-contact { margin: 0.85rem 0 0; }
+.ft-m-contact strong { display: block; margin-bottom: 0.15rem; font-size: 0.85rem; font-weight: 700; }
+.ft-m-contact a { display: block; font-size: 0.9rem; font-weight: 700; color: var(--color-mint); }
+.ft-m-contact small { display: block; font-size: 0.78rem; line-height: 1.3; color: var(--color-footer-muted); }
+.ft-acc { border-top: 0.0625rem solid var(--color-footer-line); }
+.ft-acc__item { border-bottom: 0.0625rem solid var(--color-footer-line); }
+.ft-acc__toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 0;
+  border: 0; background: none; color: var(--color-white); font: inherit; font-size: 1rem; font-weight: 600; line-height: 1; letter-spacing: 0.01em; cursor: pointer; }
+.ft-acc__toggle svg { width: 1rem; height: 1rem; flex-shrink: 0; transition: transform 0.25s; }
+.ft-acc__toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.ft-acc__body { display: none; padding-bottom: 0.75rem; }
+.ft-acc__body.is-open { display: block; }
+.ft-acc__body li { padding: 0.35rem 0; }
+.ft-acc__body a { font-size: 0.9rem; }
+.ft-m-pay { padding: 0.85rem 0; border-bottom: 0.0625rem solid var(--color-footer-line); }
+.ft-m-pay .ft-label { line-height: 1.5; letter-spacing: 0.04em; }
+.ft-pay--m { gap: 0.5rem; }
+.ft-pay--m li { width: 2.75rem; height: 1.75rem; margin: 0; border-radius: var(--radius); outline: 0; flex-shrink: 0; }
+.ft-m-rating { padding: 1.25rem 0; border-bottom: 0.0625rem solid var(--color-footer-line); }
+@media (max-width: 30rem) { .ft-rating { min-width: 0; } .ft-rating__meta { font-size: 0.75rem; } }
+.ft-m-social { display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1.35rem 0; border-bottom: 0.0625rem solid var(--color-footer-line); }
+.ft-m-social a { display: flex; align-items: center; justify-content: center; width: 2.375rem; height: 2.375rem; border: 0.0625rem solid rgba(255,255,255,0.4); border-radius: 50%; }
+.ft-m-social svg { width: 1.25rem; height: 1.25rem; fill: var(--color-white); }
+.ft-m-legal { padding-top: 1.25rem; }
+.ft-m-legal li { font-size: 0.9rem; }
+.ft-m-copy { display: block; padding-top: 1.25rem; text-align: center; font-size: 0.75rem; line-height: 1.6; color: var(--color-footer-muted); }
+
+@media (min-width: 62rem) { .ft-desktop { display: block; } .ft-mobile { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ft-rating__slide, .ft-acc__toggle svg { transition: none; } }
+```
+
+```html
+<script>
+(function () {
+  document.querySelectorAll('[data-ft-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+  /* Mobile accordions: Informationen / Service */
+  document.querySelectorAll('.ft-acc__toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', open);
+      btn.nextElementSibling.classList.toggle('is-open', open);
+    });
+  });
+  /* Rating pill: 4 sources, 5 s autoplay, pause on hover */
+  document.querySelectorAll('[data-ft-rating]').forEach(function (root) {
+    var slides = root.querySelectorAll('.ft-rating__slide'), i = 0, timer = null;
+    function show(n) { slides[i].classList.remove('is-active'); i = (n + slides.length) % slides.length; slides[i].classList.add('is-active'); }
+    function play() { stop(); timer = setInterval(function () { show(i + 1); }, 5000); }
+    function stop() { if (timer) clearInterval(timer); timer = null; }
+    root.querySelector('[data-dir="prev"]').addEventListener('click', function () { show(i - 1); play(); });
+    root.querySelector('[data-dir="next"]').addEventListener('click', function () { show(i + 1); play(); });
+    root.addEventListener('mouseenter', stop); root.addEventListener('mouseleave', play);
+    play();
+  });
+})();
+</script>
 ```
 
 ## 15 · Mobile Rules

@@ -1,6 +1,6 @@
 # Metzler Design System — Component Catalog (COMPONENTS.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-29, Kit-Version v1.12.
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-10-01, Kit-Version v1.13.
 > Vollständige Komponenten-Doku der ComponentsPage: alle 31 Kapitel mit Regeln, HTML-Beispielen und CSS-Definitionen.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 
@@ -27,7 +27,7 @@ Self-contained Variante — inline Data-URI, kein externes Asset nötig (empfohl
 ```
 
 ## Colors
-`T.red` `--color-metzler-rot` `T.dBlack` `--color-digital-black` `T.teal50` `--color-teal-50` `T.teal75` `--color-teal-75` `T.teal100` `--color-teal-100` `T.teal` `--color-teal` `T.teal600` `--color-teal-600` `T.teal700` `--color-teal-700` `T.teal900` `--color-teal-900` `T.green` `--color-green` `T.green` `--color-green` `T.red50` `--color-red-50` `T.red` `--color-metzler-rot` `T.red600` `--color-red-600` `T.red900` `--color-red-900` `T.paper` `--color-paper` `T.g100` `--color-graphite-100` `T.g200` `--color-graphite-200` `T.g300` `--color-graphite-300` `T.g400` `--color-graphite-400` `T.g450` `--color-graphite-450` `T.g500` `--color-graphite-500` `T.g600` `--color-graphite-600` `T.g700` `--color-graphite-700` `T.g800` `--color-graphite-800` `T.g850` `--color-graphite-850` `T.g900` `--color-graphite-900` `T.black` `--color-black` `T.white` `--color-white` `T.white` `--color-white` `T.mint` `--color-mint` 
+`T.red` `--color-metzler-rot` `T.dBlack` `--color-digital-black` `T.teal50` `--color-teal-50` `T.teal75` `--color-teal-75` `T.teal100` `--color-teal-100` `T.teal` `--color-teal` `T.teal600` `--color-teal-600` `T.teal700` `--color-teal-700` `T.teal900` `--color-teal-900` `T.green` `--color-green` `T.green` `--color-green` `T.red50` `--color-red-50` `T.red` `--color-metzler-rot` `T.red600` `--color-red-600` `T.red900` `--color-red-900` `T.paper` `--color-paper` `T.g100` `--color-graphite-100` `T.g200` `--color-graphite-200` `T.g300` `--color-graphite-300` `T.g400` `--color-graphite-400` `T.g450` `--color-graphite-450` `T.g500` `--color-graphite-500` `T.g600` `--color-graphite-600` `T.g700` `--color-graphite-700` `T.g800` `--color-graphite-800` `T.g850` `--color-graphite-850` `T.g900` `--color-graphite-900` `T.black` `--color-black` `T.white` `--color-white` `T.white` `--color-white` `T.ftMuted` `--color-footer-muted` `T.ftLine` `--color-footer-line` `T.mint` `--color-mint` 
 ## Typography
 `"Helvetica Neue", Helvetica, Arial, sans-serif` `--font-family` `Arial, "Helvetica Neue", Helvetica, sans-serif` `--font-family-windows` `rem` `--display-1` `T.fD1` `--display-2` `T.fD2` `--display-3` `T.fD3` `--display-4` `T.fD4` 
 ```html
@@ -2689,6 +2689,13 @@ Width 50% per card (2-column grid). Same design as the desktop card — border (
 .category-nav__item:hover { color: var(--color-teal); }
 ```
 
+## Header · Mega menu
+Live component: `header/preview.html` (hover a category; standalone Briefkästen example: `header/preview-megamenu.html`). Synced 1:1 with edelstahl-tuerklingel.de on 2026-10-01.
+- 9 menus (Briefkästen 11 · Paketboxen 5 · Mülltonnenboxen 6 · Sprechanlagen 8 · Sicherheitstechnik 9 · Türklingeln 7 · Hausnummern 6 · Außenleuchten 7 · Garten 4 tiles), images in `header/megamenu/tiles/`.
+- Tiles: grid `repeat(auto-fill, minmax(10rem, 1fr))`, gap 1.25rem; square image box (0.4rem padding, `--color-graphite-100` border, `--radius-lg`), label 0.875rem/500, 2 lines reserved. Hover: teal border tint + soft shadow, label teal, **no lift**.
+- Promo poster on the right for Briefkästen, Paketboxen and Sprechanlagen (`header/megamenu/posters/`): `--color-teal-50` card, eyebrow, title, features, „Jetzt konfigurieren“ primary button; hidden below 62rem.
+- Panel: white, `--color-graphite-300` top line, shadow 0 0.75rem 2rem rgba(0,0,0,.12), fades in 0.22 s, max height = viewport − 10.625rem (scrolls).
+
 ## Header · Mobile
 
 ```html
@@ -2770,16 +2777,17 @@ Width 50% per card (2-column grid). Same design as the desktop card — border (
 ```
 
 ## Footer
-**Code:** full static HTML + CSS export in `FOR-CLAUDE.md` §14 (use that for real pages). Live component: `FooterSection` in `index.html`. Synced with edelstahl-tuerklingel.de on 2026-09-28.
+**Code:** full static HTML + CSS + JS export in `FOR-CLAUDE.md` §14 (use that for real pages). Live component: `footer/preview.html` (shown in `index.html`). Synced 1:1 with edelstahl-tuerklingel.de on 2026-10-01 (desktop ≥ 62rem).
 
 - **Col 1:** Logo · „Edelstahl-Tuerklingel.de ist ein Unternehmen der Metzler Gruppe“ · „Der Anbieter für Briefkästen, Sprechanlagen, Türklingeln und Hausnummern.“ · „Mehr erfahren“
 - **Col 2:** Allgemeine Hotline +49 (0) 7121 / 317 7310 · Sprechanlagen Hotline +49 (0) 7121 / 317 7333 (je Mo-Fr: 09:00-16:00 Uhr) · E-Mail Support service@metzlergmbh.de · Kontaktformular
 - **Informationen:** Auszeichnungen · Geschenkgutschein · Kundenbilder · Stellenangebote · Wir über uns · News · Zahlung und Versand
 - **Service:** Begriffserklärung · FAQ · Geschäftskunden · Newsletter · VDM10 FAQ
-- **Follow us:** Pinterest · Facebook · Instagram · YouTube · X — **Qualität:** TopShop 2023 · 2024 · 2025 · 3 Jahre
-- **Unsere Versandpartner:** DPD · DHL · Hasenauer & Koch — **Einfach bezahlen:** SEPA · Amex · Visa · Amazon Pay · Klarna · PayPal · Mastercard · Apple Pay · Google Pay · Vorkasse — Bewertungs-Slider (Alle / Trusted Shops / Google / Trustpilot)
-- **Rechtliches (13):** Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Zahlung und Versand · Impressum · Gesetzliche Gewährleistung · Barrierefreiheit · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen — plus Button **„Vertrag widerrufen“**
+- **Follow us:** Pinterest · Facebook · Instagram · YouTube · X — **Qualität:** TopShop 2023 · 2024 · 2025 · TopShop
+- **Unsere Versandpartner:** DPD · DHL · Hasenauer & Koch — **Einfach bezahlen:** SEPA · Amex · Visa · Amazon Pay · Klarna · PayPal · Mastercard · Apple Pay · Google Pay · Vorkasse — Bewertungs-Pill, wechselt alle 5 s: Alle 4,71 (36.785) · Trusted Shops 4,73 (32.461) · Google 4,63 (3.190) · Trustpilot 4,42 (1.134)
+- **Rechtliches:** Geprüfte Kundenbewertungen · Metzler Garantieerklärung · Datenschutz · AGB · Sitemap · Zahlung und Versand · Impressum · Gesetzliche Gewährleistung · Barrierefreiheit · Batterieentsorgungsgesetz · Widerrufsrecht · Hinweise zur Elektroaltgeräteentsorgung · Cookie-Einstellungen — „Vertrag widerrufen“ als Button in eigener Zeile darunter
 - **Copyright:** inkl. gesetzliche MwSt., zzgl. Versand © 2013 - <aktuelles Jahr> | Metzler GmbH
+- **Farben:** `--color-teal-700` Fläche · `--color-footer-muted` Text/Links · `--color-footer-line` Trennlinien · `--color-mint` Telefon, E-Mail, „Metzler Gruppe“
 
 ## Footer · Mobile
-Same content, stacked (< 48rem): brand block → Kontakt → Informationen / Service as accordions → Versandpartner → Bezahlen → Bewertungs-Slider → Social icons → Rechtliches + „Vertrag widerrufen“ → „* inkl. gesetzliche MwSt., zzgl. Versand“ / „© 2013 - <aktuelles Jahr> | Metzler GmbH“. Live component: `MobileFooterSection` in `index.html`.
+Same content, stacked (< 62rem / 992 px): brand block → Kontakt → Informationen / Service as accordions → Versandpartner → Bezahlen → Bewertungs-Pill → Social icons → Rechtliches + „Vertrag widerrufen“ → „* inkl. gesetzliche MwSt., zzgl. Versand / © 2013 - <Jahr> | Metzler GmbH“. Same file, same §14 export.

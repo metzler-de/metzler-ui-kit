@@ -1,6 +1,6 @@
 # Metzler Design System — Icon Library (ICONS.md)
 
-> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-09-29, Kit-Version v1.12 (Inhalt unverändert seit v1.8).
+> **Maschinell generierter Export** aus dem gerenderten UI Kit (https://metzler-de.github.io/metzler-ui-kit/), Stand 2026-10-01, Kit-Version v1.13 (Inhalt unverändert seit v1.8).
 > Alle 81 Icons der IconsPage als kopierfertiger SVG-Code. Konvention: 24×24 viewBox, stroke: currentColor (Farbe via CSS `color`), stroke-width 1.8. **Ausnahmen:** Die Bewertungssterne (star-yellow, star-gray, star-half), pdf-badge und guarantee haben feste Füllfarben (kein currentColor); die Verpackungssymbole (recyclable, pap, fragile, handle-with-care, this-way-up, keep-dry) haben eigene viewBoxes und stroke-width 2 — diese Icons unverändert übernehmen.
 > **Source of truth** ist das gerenderte Kit; bei Abweichungen gewinnt das Kit, dann diesen Export neu generieren.
 
